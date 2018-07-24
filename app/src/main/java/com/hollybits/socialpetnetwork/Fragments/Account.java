@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.adapters.PhotoGridAdapter;
@@ -36,6 +38,12 @@ public class Account extends Fragment {
 
     @BindView(R.id.photo_grid_view)
     GridView photoGridView;
+
+    @BindView(R.id.my_friends_button)
+    TextView myFriendButton;
+
+    @BindView(R.id.change_photo_button)
+    TextView changePhotoButton;
 
     Integer[] images = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
 
@@ -87,6 +95,20 @@ public class Account extends Fragment {
         photoGridView.setColumnWidth(imageWidth);
 
         photoGridView.setAdapter(photoGridAdapter);
+
+        myFriendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"List Of friends",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        changePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"Photo was changed",Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 
