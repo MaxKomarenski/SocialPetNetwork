@@ -6,20 +6,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    android:orientation="vertical"
-    tools:context=".Fragments.Account">
+    tools:context=".Fragments.Account"
+    android:orientation="vertical">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/user_photo_in_account_fragment"
-        android:layout_width="177dp"
-        android:layout_height="177dp"
-        android:src="@drawable/test_photo"
-        app:civ_border_color="#dfddde"
-        app:civ_border_width="6dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_photo_in_account_fragment"
+            android:layout_width="177dp"
+            android:layout_height="177dp"
+            android:src="@drawable/test_photo"
+            app:civ_border_color="#dfddde"
+            app:civ_border_width="6dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"/>
 
 
-    <include
-        layout="@layout/expansion_panel_for_user_information_in_account_fragment" />
+        <include
+            layout="@layout/expansion_panel_for_user_information_in_account_fragment" />
+
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/photo_grid_view"
+            android:numColumns="3"
+            android:verticalSpacing="1dp"
+            android:horizontalSpacing="1dp"
+            android:gravity="center"
+            android:stretchMode="columnWidth"
+
+            />
+
+
+
 </LinearLayout>

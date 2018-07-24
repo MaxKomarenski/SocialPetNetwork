@@ -7,8 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.adapters.PhotoGridAdapter;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +34,12 @@ public class Account extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    @BindView(R.id.photo_grid_view)
+    GridView photoGridView;
+
+    Integer[] images = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
+
+    private PhotoGridAdapter photoGridAdapter;
     private OnFragmentInteractionListener mListener;
 
     public Account() {
@@ -65,8 +76,21 @@ public class Account extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account, container, false);
+        View view = inflater.inflate(R.layout.fragment_account, container, false);
+        ButterKnife.bind(this, view);
+
+        photoGridAdapter = new PhotoGridAdapter(this.getContext(), images);
+
+        int gridWidth = getResources().getDisplayMetrics().widthPixels;
+        int imageWidth = gridWidth/3;
+
+        photoGridView.setColumnWidth(imageWidth);
+
+        photoGridView.setAdapter(photoGridAdapter);
+
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
