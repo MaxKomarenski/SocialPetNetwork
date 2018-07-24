@@ -108,6 +108,7 @@
                     android:id="@+id/userCity"
                     android:text="Lviv, "
                     android:layout_marginStart="10dp"
+
                     />
 
 
