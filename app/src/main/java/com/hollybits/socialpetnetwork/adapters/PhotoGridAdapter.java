@@ -7,8 +7,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.hollybits.socialpetnetwork.FragmentDispatcher;
+import com.hollybits.socialpetnetwork.Fragments.PhotoPage;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.helper.SquareImageView;
+
+import io.paperdb.Paper;
 
 
 public class PhotoGridAdapter extends BaseAdapter {
@@ -39,7 +43,7 @@ public class PhotoGridAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if(convertView == null){
@@ -47,6 +51,13 @@ public class PhotoGridAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.single_photo, null);
             SquareImageView imageView = (SquareImageView) view.findViewById(R.id.single_photo_in_photo_grid);
             imageView.setImageResource(images[position]);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Paper.book().write("Current choice", images[position]);
+                    FragmentDispatcher.launchFragment(PhotoPage.class);
+                }
+            });
 
         }
 
