@@ -51,13 +51,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
     @BindView(R.id.email_input_login)
-    private EditText emailInput;
+    EditText emailInput;
 
     @BindView(R.id.password_input_login)
-    private EditText passwordInput;
+    EditText passwordInput;
 
     @BindView(R.id.login_button)
-    private Button loginButton;
+    Button loginButton;
 
     private static final int REQUEST_READ_CONTACTS = 0;
 

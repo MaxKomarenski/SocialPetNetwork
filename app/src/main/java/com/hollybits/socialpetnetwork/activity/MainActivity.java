@@ -11,6 +11,7 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.network.ServerRequests;
 
 import io.paperdb.Paper;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private static Retrofit retrofit;
     private static ServerRequests serverRequests;
 
+    public static final String CURRENTUSER ="currentUser";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,5 +51,15 @@ public class MainActivity extends AppCompatActivity {
 
     public static void setServerRequests(ServerRequests serverRequests) {
         MainActivity.serverRequests = serverRequests;
+    }
+
+    public static User getCurrentUser(){
+        return Paper.book().read(CURRENTUSER);
+    }
+    public static void saveCurrentUser(User user){
+        Paper.book().write(CURRENTUSER,user);
+    }
+    public static void deleteCurrentUser(){
+        Paper.book().delete(CURRENTUSER);
     }
 }
