@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,9 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.hollybits.socialpetnetwork.Fragments.Account;
+import com.hollybits.socialpetnetwork.activity.LoginActivity;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import io.paperdb.Paper;
 
 public class FragmentDispatcher extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -88,6 +92,9 @@ public class FragmentDispatcher extends AppCompatActivity
         Class fragmentClass;
         if(options.containsKey(id)){
             fragmentClass = options.get(id);
+        } else if (!options.containsKey(id)){
+            logOut();
+            return false;
         }else {
             fragmentClass = Account.class;
         }
@@ -110,12 +117,19 @@ public class FragmentDispatcher extends AppCompatActivity
         return true;
     }
 
+    private void logOut(){
+        for(String s: Paper.book().getAllKeys()){
+            Paper.book().delete(s);
+        }
+        finish();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
     private void init(){
         options = new HashMap<>();
 
         options.put(R.id.nav_account, Account.class);
-
-
     }
 
     public static boolean launchFragment(Class fragmentClass){

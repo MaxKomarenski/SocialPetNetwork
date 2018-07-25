@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create(gson)) //Конвертер, необходимый для преобразования JSON'а в объекты
                 .build();
         serverRequests = retrofit.create(ServerRequests.class);
-        Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+        Intent intent = new Intent(MainActivity.this, LoginActivity
+                .class);
         startActivity(intent);
     }
 

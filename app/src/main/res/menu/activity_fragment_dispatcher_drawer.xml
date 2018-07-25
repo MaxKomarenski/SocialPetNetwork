@@ -11,4 +11,13 @@
 
     </group>
 
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_log_out"
+            android:icon="@drawable/ic_warning_black_24dp"
+            android:iconTint="#939393"
+            android:title="Log out"
+            />
+    </group>
+
 </menu>
