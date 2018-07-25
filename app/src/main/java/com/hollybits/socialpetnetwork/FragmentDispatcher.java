@@ -130,6 +130,7 @@ public class FragmentDispatcher extends AppCompatActivity
         options = new HashMap<>();
 
         options.put(R.id.nav_account, Account.class);
+        options.put(R.id.nav_map, com.hollybits.socialpetnetwork.Fragments.Map.class);
     }
 
     public static boolean launchFragment(Class fragmentClass){

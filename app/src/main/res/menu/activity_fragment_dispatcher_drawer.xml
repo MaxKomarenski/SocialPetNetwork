@@ -9,6 +9,13 @@
             android:icon="@drawable/ic_account_circle_black_24dp"
             android:title="Account" />
 
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_map"
+            android:iconTint="#939393"
+            android:title="Map"
+            />
+
     </group>
 
     <group android:checkableBehavior="single">
