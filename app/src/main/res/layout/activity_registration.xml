@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.hollybits.socialpetnetwork.activity.RegistrationActivity">
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/email_and_password_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center|top"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/email_edit_text_in_registration"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/password_edit_text_in_registration"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/registration_button"
+            android:layout_width="100dp"
+            android:layout_height="50dp" />
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/information_scroll_view"
+        >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|top">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/choose_photo_in_registration"
+                android:layout_width="120dp"
+                android:layout_height="120dp" />
+
+            <EditText
+                android:id="@+id/name_edit_text_in_registration"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:hint="Name"
+                android:inputType="textPersonName"
+                android:background="@drawable/rounded_corners_edittext"
+                android:textColorHint="#000000"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:textCursorDrawable="@drawable/color_cursor"
+                />
+
+            <EditText
+                android:id="@+id/type_edit_text_in_registration"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:hint="Who are you ? "
+                android:inputType="text"
+                android:background="@drawable/rounded_corners_edittext"
+                android:textColorHint="#000000"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:textCursorDrawable="@drawable/color_cursor"
+                />
+
+            <EditText
+                android:id="@+id/breed_edit_text_in_registration"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:hint="Breed"
+                android:inputType="text"
+                android:background="@drawable/rounded_corners_edittext"
+                android:textColorHint="#000000"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:textCursorDrawable="@drawable/color_cursor"
+                />
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/age_edit_text_in_registration"
+                    android:layout_width="300dp"
+                    android:layout_height="45dp"
+                    android:hint="Age"
+                    android:inputType="number"
+                    android:background="@drawable/rounded_corners_edittext"
+                    android:textColorHint="#000000"
+                    android:padding="10dp"
+                    android:textCursorDrawable="@drawable/color_cursor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="204dp"
+                    android:layout_marginTop="4dp"
+                    android:checked="false"
+                    android:text="Sex"
+                    android:textOff="M"
+                    android:textOn="F"
+                    android:textSize="22sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/age_edit_text_in_registration"
+                    app:showText="true" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <EditText
+                android:id="@+id/address_edit_text_in_registration"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:hint="Address"
+                android:inputType="text"
+                android:background="@drawable/rounded_corners_edittext"
+                android:textColorHint="#000000"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:textCursorDrawable="@drawable/color_cursor"/>
+
+            <EditText
+                android:id="@+id/weight_edit_text_in_registration"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:hint="Weight"
+                android:inputType="number"
+                android:background="@drawable/rounded_corners_edittext"
+                android:textColorHint="#000000"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:textCursorDrawable="@drawable/color_cursor"/>
+
+            <EditText
+                android:id="@+id/owner_name_edit_text_in_registration"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:hint="Your name"
+                android:inputType="textPersonName"
+                android:background="@drawable/rounded_corners_edittext"
+                android:textColorHint="#000000"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:textCursorDrawable="@drawable/color_cursor"/>
+
+            <EditText
+                android:id="@+id/owner_surname_edit_text_in_registration"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:hint="Your surname"
+                android:inputType="text"
+                android:background="@drawable/rounded_corners_edittext"
+                android:textColorHint="#000000"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:textCursorDrawable="@drawable/color_cursor"
+                />
+
+            <EditText
+                android:id="@+id/phone_number_edit_text_in_registration"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:hint="Phone"
+                android:inputType="phone"
+                android:background="@drawable/rounded_corners_edittext"
+                android:textColorHint="#000000"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:textCursorDrawable="@drawable/color_cursor"
+                />
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:id="@+id/access_button_in_registration"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

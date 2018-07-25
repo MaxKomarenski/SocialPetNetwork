@@ -20,8 +20,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login">
-        </activity>
+            android:label="@string/title_activity_login"></activity>
+        <activity
+            android:name=".activity.RegistrationActivity"
+            android:label="Sign up"></activity>
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main"
