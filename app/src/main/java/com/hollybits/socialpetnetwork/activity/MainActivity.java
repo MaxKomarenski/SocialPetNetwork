@@ -2,11 +2,7 @@ package com.hollybits.socialpetnetwork.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,17 +25,25 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String CURRENTUSER ="currentUser";
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Paper.init(this);
 
+        //TODO delete this
+//        for(String s: Paper.book().getAllKeys()){
+//            Paper.book().delete(s);
+//        }
+
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")
                 .setLenient()
                 .create();
         retrofit = new Retrofit.Builder()
-                .baseUrl(ServerRequests.BASE_LOCKAL) //Базовая часть адреса
+                .baseUrl(ServerRequests.BASE_LOCAL) //Базовая часть адреса
                 .addConverterFactory(GsonConverterFactory.create(gson)) //Конвертер, необходимый для преобразования JSON'а в объекты
                 .build();
         serverRequests = retrofit.create(ServerRequests.class);
