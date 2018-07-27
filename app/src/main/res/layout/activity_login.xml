@@ -3,89 +3,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_background"
+    android:background="#76cbf2"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.hollybits.socialpetnetwork.activity.LoginActivity"
     tools:layout_editor_absoluteY="81dp">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="116dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="76dp"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:layout_constraintTop_toTopOf="parent">
 
 
-    <EditText
-        android:id="@+id/email_input_login"
-        android:layout_width="215dp"
-        android:layout_height="40dp"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/emailText"
+            android:text="Email"
+            android:textColor="#000"
+            android:layout_gravity="start"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"/>
 
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="60dp"
-        android:background="#11000000"
-        android:drawableStart="@drawable/ic_action_email"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        <EditText
+            android:id="@+id/email_input_login"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/rounded_corners_edittext"
+            android:hint="example@gmail.com"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:textColor="#ffffff"
+            android:textColorHint="#ffffff"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textSize="16sp" />
 
-    <EditText
-        android:id="@+id/password_input_login"
-        android:layout_width="216dp"
-        android:layout_height="47dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="#11000000"
-        android:drawableStart="@drawable/ic_action_password"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_input_login" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Password"
+            android:id="@+id/passwordText"
+            android:textColor="#000"
+            android:layout_gravity="start"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"/>
+
+        <EditText
+            android:id="@+id/password_input_login"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/rounded_corners_edittext"
+            android:hint="· · · · · · · · "
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColor="#ffffff"
+            android:textColorHint="#ffffff"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textSize="16sp" />
 
 
-    <com.nihaskalam.progressbuttonlibrary.CircularProgressButton
+    </LinearLayout>
+
+    <ImageButton
         android:id="@+id/login_button"
-        android:layout_width="196dp"
-        android:layout_height="64dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Login"
-        android:textColor="@color/loginTextcolor"
-        android:textSize="22sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/login_button"
+        android:background="#76cbf2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_input_login"
-        app:pb_colorCancelText="@color/pb_orange"
-        app:pb_colorCompleteText="@color/pb_orange"
-        app:pb_colorErrorText="@color/pb_blue"
-        app:pb_colorIndicator="@color/colorButtonCompleteState"
-        app:pb_cornerRadius="48dp"
-        app:pb_iconCancel="@drawable/ic_action_cross"
-        app:pb_iconComplete="@drawable/ic_action_accepted"
-        app:pb_iconError="@drawable/ic_action_loginfailed"
-        app:pb_selectorCancel="@color/pb_cancel_state_selector"
-        app:pb_selectorIdle="@drawable/idle_state_selector"
-        app:pb_textIdle="Login" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
 
     <com.shaishavgandhi.loginbuttons.GoogleButton
@@ -93,12 +94,12 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
         app:iconSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/facebookButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
         app:transparentBackground="true" />
 
     <com.shaishavgandhi.loginbuttons.FacebookButton
@@ -108,12 +109,11 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         app:iconSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/twitterButton"
+        app:layout_constraintHorizontal_bias="0.563"
         app:layout_constraintStart_toEndOf="@+id/googleButton"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
         app:transparentBackground="true" />
 
     <com.shaishavgandhi.loginbuttons.TwitterButton
@@ -121,25 +121,13 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
         app:iconSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintStart_toEndOf="@+id/facebookButton"
         app:transparentBackground="true" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="222dp"
-        android:layout_height="38dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/Registration_option"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.hollybits.socialpetnetwork.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -34,6 +35,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import lib.kingja.switchbutton.SwitchMultiButton;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,15 +60,15 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.country_auto_complete_text_in_registration)
     AutoCompleteTextView countryAutoCompleteText;
 
-
-    private AutoCompleteCountryAdapter autoCompleteCountryAdapter;
-    private List<Country> countries = new ArrayList<>();
-
     @BindView(R.id.type_edit_text_in_registration)
     AutoCompleteTextView petTypeInput;
 
     @BindView(R.id.breed_edit_text_in_registration)
     AutoCompleteTextView breedInput;
+
+    @BindView(R.id.attitude_switch_multi_button)
+    SwitchMultiButton attitudeSwitchMultiButton;
+
 
     private BreedAdapter breedAdapter;
 
@@ -76,6 +78,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
 
+    private AutoCompleteCountryAdapter autoCompleteCountryAdapter;
+    private List<Country> countries = new ArrayList<>();
     private List<Breed> allBreadsForSelectedType;
 
 

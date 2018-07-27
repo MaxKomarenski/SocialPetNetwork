@@ -213,6 +213,7 @@
             <lib.kingja.switchbutton.SwitchMultiButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/attitude_switch_multi_button"
                 android:padding="8dp"
                 app:strokeRadius="5dp"
                 app:strokeWidth="1dp"

@@ -1,6 +1,7 @@
 package com.hollybits.socialpetnetwork.activity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -55,7 +58,13 @@ public class LoginActivity extends AppCompatActivity {
     EditText passwordInput;
 
     @BindView(R.id.login_button)
-    Button loginButton;
+    ImageButton loginButton;
+
+    @BindView(R.id.emailText)
+    TextView emailTextView;
+
+    @BindView(R.id.passwordText)
+    TextView passwordView;
 
     public static class Credentials{
         public String email;
@@ -71,6 +80,10 @@ public class LoginActivity extends AppCompatActivity {
         checkLogin();
         attachListeners();
         credentials = new Credentials();
+
+        Typeface mainFont = Typeface.createFromAsset(this.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        passwordView.setTypeface(mainFont);
+        emailTextView.setTypeface(mainFont);
 
 
     }
