@@ -3,6 +3,8 @@ package com.hollybits.socialpetnetwork.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,6 +12,8 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.network.ServerRequests;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.paperdb.Paper;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -23,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String CURRENTUSER ="currentUser";
 
+    @BindView(R.id.move_to_login)
+    Button goToLogin;
+    @BindView(R.id.move_to_sing_up)
+    Button goToRegistration;
 
 
 
@@ -30,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         Paper.init(this);
 
         //TODO delete this
@@ -45,9 +54,26 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create(gson)) //Конвертер, необходимый для преобразования JSON'а в объекты
                 .build();
         serverRequests = retrofit.create(ServerRequests.class);
-        Intent intent = new Intent(MainActivity.this, LoginActivity
-                .class);
-        startActivity(intent);
+
+
+        goToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity
+                        .class);
+                startActivity(intent);
+            }
+        });
+
+        goToRegistration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RegistrationActivity
+                        .class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     public static ServerRequests getServerRequests() {

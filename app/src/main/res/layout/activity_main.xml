@@ -6,5 +6,23 @@
     android:layout_height="match_parent"
     tools:context="com.hollybits.socialpetnetwork.activity.MainActivity">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/move_to_login"
+            android:text="LOGIN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/move_to_sing_up"
+            android:text="Sign UP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>

@@ -30,4 +30,5 @@ public interface ServerRequests {
     Call<List<Breed>> getBreedsForType(@Query("petType")PetType petType);
 
 
+
 }

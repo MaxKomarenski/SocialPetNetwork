@@ -121,11 +121,12 @@
                 android:textCursorDrawable="@drawable/color_cursor"
                 />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/type_edit_text_in_registration"
                 android:layout_width="300dp"
                 android:layout_height="45dp"
                 android:hint="Who are you ? "
+                android:completionThreshold = "1"
                 android:inputType="text"
                 android:background="@drawable/rounded_corners_edittext"
                 android:textColorHint="#000000"
@@ -134,11 +135,12 @@
                 android:textCursorDrawable="@drawable/color_cursor"
                 />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/breed_edit_text_in_registration"
                 android:layout_width="300dp"
                 android:layout_height="45dp"
                 android:hint="Breed"
+                android:completionThreshold = "2"
                 android:inputType="text"
                 android:background="@drawable/rounded_corners_edittext"
                 android:textColorHint="#000000"
