@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.hollybits.socialpetnetwork.FragmentDispatcher;
-import com.hollybits.socialpetnetwork.Fragments.Account;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.network.ServerRequests;

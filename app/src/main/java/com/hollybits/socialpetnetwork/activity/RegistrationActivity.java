@@ -12,6 +12,9 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.models.Breed;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +39,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
+
+
+    private List<Breed> allBreadsForSelectedType;
+
 
 
     @Override
@@ -68,9 +75,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 toast.show();
             }
         });
-
-
-
 
     }
 

@@ -5,9 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 
-import com.hollybits.socialpetnetwork.FragmentDispatcher;
+import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.Fragments.PhotoPage;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.helper.SquareImageView;

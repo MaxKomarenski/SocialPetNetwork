@@ -1,4 +1,4 @@
-package com.hollybits.socialpetnetwork;
+package com.hollybits.socialpetnetwork.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.hollybits.socialpetnetwork.Fragments.Account;
+import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.LoginActivity;
 
 import java.util.HashMap;

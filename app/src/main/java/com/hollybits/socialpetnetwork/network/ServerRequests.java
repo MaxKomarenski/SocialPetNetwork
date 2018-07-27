@@ -2,12 +2,18 @@ package com.hollybits.socialpetnetwork.network;
 
 import com.android.volley.toolbox.StringRequest;
 import com.hollybits.socialpetnetwork.activity.LoginActivity;
+import com.hollybits.socialpetnetwork.enums.PetType;
+import com.hollybits.socialpetnetwork.models.Breed;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Created by Victor on 24.07.2018.
@@ -20,7 +26,8 @@ public interface ServerRequests {
     String CURRENT_ENDPIONT = BASE_LOCAL;
 
 
-
+    @GET("/api/getBreedsForType")
+    Call<List<Breed>> getBreedsForType(@Query("petType")PetType petType);
 
 
 }
