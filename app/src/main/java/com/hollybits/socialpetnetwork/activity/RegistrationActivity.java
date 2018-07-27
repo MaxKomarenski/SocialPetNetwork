@@ -75,6 +75,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
 
+
     private List<Breed> allBreadsForSelectedType;
 
 
@@ -86,52 +87,7 @@ public class RegistrationActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         attachListeners();
         loadTypesInfo();
-
-
-        MainActivity.getServerRequests().getAllCountries().enqueue(new Callback<List<Country>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Country>> call, @NonNull Response<List<Country>> response) {
-                if(response.body() != null){
-                    countries.clear();
-                    countries.addAll(response.body());
-                    //System.err.println("-------------> " + countries.get(2).getName());
-
-                    autoCompleteCountryAdapter = new AutoCompleteCountryAdapter(RegistrationActivity.this,countries);
-                    countryAutoCompleteText.setAdapter(autoCompleteCountryAdapter);
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<Country>> call, Throwable t) {
-
-            }
-        });
-
-
-        chosenPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openGallery();
-            }
-        });
-
-        accessButtonInRegistration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                informationScrollView.setVisibility(View.GONE);
-                emailAndPasswordLinearLayout.setVisibility(View.VISIBLE);
-            }
-        });
-
-        registrationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "You are registrated", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+        loadCountriesList();
 
     }
 
@@ -166,6 +122,29 @@ public class RegistrationActivity extends AppCompatActivity {
                 Log.d("SELECTED BREED", breedInput.getText().toString());
             }
         });
+        chosenPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
+
+        accessButtonInRegistration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                informationScrollView.setVisibility(View.GONE);
+                emailAndPasswordLinearLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        registrationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "You are registrated", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
     }
 
     private void loadTypesInfo(){
@@ -173,6 +152,28 @@ public class RegistrationActivity extends AppCompatActivity {
         ArrayAdapter<PetType> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line,PetType.values());
         petTypeInput.setAdapter(adapter);
+    }
+
+    private void loadCountriesList(){
+        MainActivity.getServerRequests().getAllCountries().enqueue(new Callback<List<Country>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Country>> call, @NonNull Response<List<Country>> response) {
+                if(response.body() != null){
+                    countries.clear();
+                    countries.addAll(response.body());
+                    //System.err.println("-------------> " + countries.get(2).getName());
+
+                    autoCompleteCountryAdapter = new AutoCompleteCountryAdapter(RegistrationActivity.this,countries);
+                    countryAutoCompleteText.setAdapter(autoCompleteCountryAdapter);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Country>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void loadBreedsForSelectedType(PetType petType){
