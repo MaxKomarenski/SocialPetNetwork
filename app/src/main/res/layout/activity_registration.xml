@@ -210,7 +210,16 @@
                 android:layout_marginTop="10dp"
                 android:textCursorDrawable="@drawable/color_cursor"/>
 
-            <!--Attitude to another animals-->
+            <lib.kingja.switchbutton.SwitchMultiButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:strokeRadius="5dp"
+                app:strokeWidth="1dp"
+                app:selectedTab="0"
+                app:selectedColor="#eb7b00"
+                app:switchTabs="@array/switch_tabs"
+                app:textSize="12sp" />
 
             <Button
                 android:layout_width="100dp"

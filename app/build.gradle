@@ -71,5 +71,8 @@ dependencies {
 
     compile 'com.android.volley:volley:1.1.1'
 
+    // switch with multiple tabs
+    compile 'lib.kingja.switchbutton:switchbutton:1.1.7'
+
 
 }
