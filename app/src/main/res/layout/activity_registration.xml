@@ -59,7 +59,7 @@
             />
 
         <AutoCompleteTextView
-            android:id="@+id/country_edit_text_in_registration"
+            android:id="@+id/country_auto_complete_text_in_registration"
             android:layout_width="300dp"
             android:layout_height="45dp"
             android:hint="Country"

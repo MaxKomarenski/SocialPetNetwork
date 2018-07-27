@@ -17,14 +17,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
 
-
+    private static MainActivity instance;
     private static Retrofit retrofit;
     private static ServerRequests serverRequests;
 
     public static final String CURRENTUSER ="currentUser";
 
+    public MainActivity(){
+        instance = this;
+    }
 
-
+    public static MainActivity getInstance() {
+        return instance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create(gson)) //Конвертер, необходимый для преобразования JSON'а в объекты
                 .build();
         serverRequests = retrofit.create(ServerRequests.class);
-        Intent intent = new Intent(MainActivity.this, LoginActivity
+        Intent intent = new Intent(MainActivity.this, RegistrationActivity
                 .class);
         startActivity(intent);
     }

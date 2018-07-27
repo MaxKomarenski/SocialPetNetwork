@@ -16,6 +16,7 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.adapters.AutoCompleteCountryAdapter;
 import com.hollybits.socialpetnetwork.models.Country;
 
 import java.util.ArrayList;
@@ -48,6 +49,11 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.choose_photo_in_registration)
     CircleImageView chosenPhoto;
 
+    @BindView(R.id.country_auto_complete_text_in_registration)
+    AutoCompleteTextView countryAutoCompleteText;
+
+
+    private AutoCompleteCountryAdapter autoCompleteCountryAdapter;
     private List<Country> countries = new ArrayList<>();
 
     private static final int PICK_IMAGE = 100;
@@ -65,17 +71,18 @@ public class RegistrationActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-
         MainActivity.getServerRequests().getAllCountries().enqueue(new Callback<List<Country>>() {
             @Override
             public void onResponse(@NonNull Call<List<Country>> call, @NonNull Response<List<Country>> response) {
                 if(response.body() != null){
+                    countries.clear();
                     countries.addAll(response.body());
-                    System.err.println("-------------> " + countries.get(2).getName());
+                    //System.err.println("-------------> " + countries.get(2).getName());
+
+                    autoCompleteCountryAdapter = new AutoCompleteCountryAdapter(RegistrationActivity.this,countries);
+                    countryAutoCompleteText.setAdapter(autoCompleteCountryAdapter);
                 }
-//
-//                int resourceId =resources.getIdentifier(user.getCity().getCountry().getCode().toLowerCase(), "drawable",
-//                        MainAplication.getContext().getPackageName());
+
             }
 
             @Override
