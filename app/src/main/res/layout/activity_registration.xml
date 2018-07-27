@@ -58,12 +58,13 @@
             android:textCursorDrawable="@drawable/color_cursor"
             />
 
-        <EditText
-            android:id="@+id/address_edit_text_in_registration"
+        <AutoCompleteTextView
+            android:id="@+id/country_auto_complete_text_in_registration"
             android:layout_width="300dp"
             android:layout_height="45dp"
-            android:hint="Address"
+            android:hint="Country"
             android:inputType="text"
+            android:completionThreshold="1"
             android:background="@drawable/rounded_corners_edittext"
             android:textColorHint="#000000"
             android:padding="10dp"

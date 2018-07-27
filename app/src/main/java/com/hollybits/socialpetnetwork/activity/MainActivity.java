@@ -21,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
 
-
+    private static MainActivity instance;
     private static Retrofit retrofit;
     private static ServerRequests serverRequests;
 
@@ -31,8 +31,13 @@ public class MainActivity extends AppCompatActivity {
     Button goToLogin;
     @BindView(R.id.move_to_sing_up)
     Button goToRegistration;
+    public MainActivity(){
+        instance = this;
+    }
 
-
+    public static MainActivity getInstance() {
+        return instance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

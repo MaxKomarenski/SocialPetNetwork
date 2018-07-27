@@ -4,6 +4,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.hollybits.socialpetnetwork.activity.LoginActivity;
 import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.models.Breed;
+import com.hollybits.socialpetnetwork.models.Country;
 
 import java.util.List;
 
@@ -28,6 +29,9 @@ public interface ServerRequests {
 
     @GET("/api/getBreedsForType")
     Call<List<Breed>> getBreedsForType(@Query("petType")PetType petType);
+
+    @GET("/api/loadCountryList")
+    Call<List<Country>> getAllCountries();
 
 
 

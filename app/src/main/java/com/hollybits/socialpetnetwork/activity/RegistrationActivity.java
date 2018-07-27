@@ -4,18 +4,27 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.adapters.AutoCompleteCountryAdapter;
+import com.hollybits.socialpetnetwork.models.Country;
+
+import java.util.ArrayList;
+import java.util.List;
 import com.hollybits.socialpetnetwork.adapters.BreedAdapter;
 import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.models.Breed;
@@ -46,6 +55,13 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.choose_photo_in_registration)
     CircleImageView chosenPhoto;
 
+    @BindView(R.id.country_auto_complete_text_in_registration)
+    AutoCompleteTextView countryAutoCompleteText;
+
+
+    private AutoCompleteCountryAdapter autoCompleteCountryAdapter;
+    private List<Country> countries = new ArrayList<>();
+
     @BindView(R.id.type_edit_text_in_registration)
     AutoCompleteTextView petTypeInput;
 
@@ -70,6 +86,29 @@ public class RegistrationActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         attachListeners();
         loadTypesInfo();
+
+
+        MainActivity.getServerRequests().getAllCountries().enqueue(new Callback<List<Country>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Country>> call, @NonNull Response<List<Country>> response) {
+                if(response.body() != null){
+                    countries.clear();
+                    countries.addAll(response.body());
+                    //System.err.println("-------------> " + countries.get(2).getName());
+
+                    autoCompleteCountryAdapter = new AutoCompleteCountryAdapter(RegistrationActivity.this,countries);
+                    countryAutoCompleteText.setAdapter(autoCompleteCountryAdapter);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Country>> call, Throwable t) {
+
+            }
+        });
+
+
         chosenPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
