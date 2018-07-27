@@ -21,6 +21,56 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
+            android:id="@+id/owner_name_edit_text_in_registration"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:hint="Your name"
+            android:inputType="textPersonName"
+            android:background="@drawable/rounded_corners_edittext"
+            android:textColorHint="#000000"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:textCursorDrawable="@drawable/color_cursor"/>
+
+        <EditText
+            android:id="@+id/owner_surname_edit_text_in_registration"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:hint="Your surname"
+            android:inputType="text"
+            android:background="@drawable/rounded_corners_edittext"
+            android:textColorHint="#000000"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:textCursorDrawable="@drawable/color_cursor"
+            />
+
+        <EditText
+            android:id="@+id/phone_number_edit_text_in_registration"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:hint="Phone"
+            android:inputType="phone"
+            android:background="@drawable/rounded_corners_edittext"
+            android:textColorHint="#000000"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:textCursorDrawable="@drawable/color_cursor"
+            />
+
+        <EditText
+            android:id="@+id/address_edit_text_in_registration"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:hint="Address"
+            android:inputType="text"
+            android:background="@drawable/rounded_corners_edittext"
+            android:textColorHint="#000000"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:textCursorDrawable="@drawable/color_cursor"/>
+
+        <EditText
             android:id="@+id/email_edit_text_in_registration"
             android:layout_width="300dp"
             android:layout_height="45dp"
@@ -146,18 +196,6 @@
                 android:textCursorDrawable="@drawable/color_cursor"/>
 
             <EditText
-                android:id="@+id/address_edit_text_in_registration"
-                android:layout_width="300dp"
-                android:layout_height="45dp"
-                android:hint="Address"
-                android:inputType="text"
-                android:background="@drawable/rounded_corners_edittext"
-                android:textColorHint="#000000"
-                android:padding="10dp"
-                android:layout_marginTop="10dp"
-                android:textCursorDrawable="@drawable/color_cursor"/>
-
-            <EditText
                 android:id="@+id/weight_edit_text_in_registration"
                 android:layout_width="300dp"
                 android:layout_height="45dp"
@@ -168,44 +206,6 @@
                 android:padding="10dp"
                 android:layout_marginTop="10dp"
                 android:textCursorDrawable="@drawable/color_cursor"/>
-
-            <EditText
-                android:id="@+id/owner_name_edit_text_in_registration"
-                android:layout_width="300dp"
-                android:layout_height="45dp"
-                android:hint="Your name"
-                android:inputType="textPersonName"
-                android:background="@drawable/rounded_corners_edittext"
-                android:textColorHint="#000000"
-                android:padding="10dp"
-                android:layout_marginTop="10dp"
-                android:textCursorDrawable="@drawable/color_cursor"/>
-
-            <EditText
-                android:id="@+id/owner_surname_edit_text_in_registration"
-                android:layout_width="300dp"
-                android:layout_height="45dp"
-                android:hint="Your surname"
-                android:inputType="text"
-                android:background="@drawable/rounded_corners_edittext"
-                android:textColorHint="#000000"
-                android:padding="10dp"
-                android:layout_marginTop="10dp"
-                android:textCursorDrawable="@drawable/color_cursor"
-                />
-
-            <EditText
-                android:id="@+id/phone_number_edit_text_in_registration"
-                android:layout_width="300dp"
-                android:layout_height="45dp"
-                android:hint="Phone"
-                android:inputType="phone"
-                android:background="@drawable/rounded_corners_edittext"
-                android:textColorHint="#000000"
-                android:padding="10dp"
-                android:layout_marginTop="10dp"
-                android:textCursorDrawable="@drawable/color_cursor"
-                />
 
             <!--Attitude to another animals-->
 
