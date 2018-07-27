@@ -4,14 +4,22 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.models.Country;
+
+import java.util.ArrayList;
+import java.util.List;
 import com.hollybits.socialpetnetwork.models.Breed;
 
 import java.util.List;
@@ -19,6 +27,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -37,6 +48,8 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.choose_photo_in_registration)
     CircleImageView chosenPhoto;
 
+    private List<Country> countries = new ArrayList<>();
+
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
 
@@ -50,6 +63,26 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
+
+
+
+        MainActivity.getServerRequests().getAllCountries().enqueue(new Callback<List<Country>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Country>> call, @NonNull Response<List<Country>> response) {
+                if(response.body() != null){
+                    countries.addAll(response.body());
+                    System.err.println("-------------> " + countries.get(2).getName());
+                }
+//
+//                int resourceId =resources.getIdentifier(user.getCity().getCountry().getCode().toLowerCase(), "drawable",
+//                        MainAplication.getContext().getPackageName());
+            }
+
+            @Override
+            public void onFailure(Call<List<Country>> call, Throwable t) {
+
+            }
+        });
 
 
         chosenPhoto.setOnClickListener(new View.OnClickListener() {
