@@ -134,6 +134,18 @@
             </android.support.constraint.ConstraintLayout>
 
             <EditText
+                android:id="@+id/tag_number_edit_text_in_registration"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:hint="Tag id"
+                android:inputType="number"
+                android:background="@drawable/rounded_corners_edittext"
+                android:textColorHint="#000000"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:textCursorDrawable="@drawable/color_cursor"/>
+
+            <EditText
                 android:id="@+id/address_edit_text_in_registration"
                 android:layout_width="300dp"
                 android:layout_height="45dp"
@@ -194,6 +206,8 @@
                 android:layout_marginTop="10dp"
                 android:textCursorDrawable="@drawable/color_cursor"
                 />
+
+            <!--Attitude to another animals-->
 
             <Button
                 android:layout_width="100dp"
