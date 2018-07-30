@@ -22,68 +22,90 @@
 
         <EditText
             android:id="@+id/owner_name_edit_text_in_registration"
-            android:layout_width="300dp"
-            android:layout_height="45dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Your name"
             android:inputType="textPersonName"
-            android:background="@drawable/rounded_corners_edittext"
+            android:backgroundTint="#c5e4df"
             android:textColorHint="#000000"
-            android:padding="10dp"
+            android:padding="15dp"
             android:layout_marginTop="10dp"
-            android:textCursorDrawable="@drawable/color_cursor"/>
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:textCursorDrawable="@drawable/color_cursor_for_registration"/>
 
         <EditText
             android:id="@+id/owner_surname_edit_text_in_registration"
-            android:layout_width="300dp"
-            android:layout_height="45dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Your surname"
             android:inputType="text"
-            android:background="@drawable/rounded_corners_edittext"
+            android:backgroundTint="#c5e4df"
             android:textColorHint="#000000"
-            android:padding="10dp"
+            android:padding="15dp"
             android:layout_marginTop="10dp"
-            android:textCursorDrawable="@drawable/color_cursor"
-            />
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:textCursorDrawable="@drawable/color_cursor_for_registration"/>
 
         <EditText
             android:id="@+id/phone_number_edit_text_in_registration"
-            android:layout_width="300dp"
-            android:layout_height="45dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Phone"
             android:inputType="phone"
-            android:background="@drawable/rounded_corners_edittext"
+            android:backgroundTint="#c5e4df"
             android:textColorHint="#000000"
-            android:padding="10dp"
+            android:padding="15dp"
             android:layout_marginTop="10dp"
-            android:textCursorDrawable="@drawable/color_cursor"
-            />
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:textCursorDrawable="@drawable/color_cursor_for_registration"/>
 
         <AutoCompleteTextView
             android:id="@+id/country_auto_complete_text_in_registration"
-            android:layout_width="300dp"
-            android:layout_height="45dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Country"
             android:inputType="text"
             android:completionThreshold="1"
-            android:background="@drawable/rounded_corners_edittext"
+            android:backgroundTint="#c5e4df"
             android:textColorHint="#000000"
-            android:padding="10dp"
+            android:padding="15dp"
             android:layout_marginTop="10dp"
-            android:textCursorDrawable="@drawable/color_cursor"/>
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:textCursorDrawable="@drawable/color_cursor_for_registration"/>
 
         <EditText
             android:id="@+id/email_edit_text_in_registration"
-            android:layout_width="300dp"
-            android:layout_height="45dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:backgroundTint="#c5e4df"
+            android:textColorHint="#000000"
+            android:padding="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:textCursorDrawable="@drawable/color_cursor_for_registration"
+            />
 
         <EditText
             android:id="@+id/password_edit_text_in_registration"
-            android:layout_width="300dp"
-            android:layout_height="45dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:backgroundTint="#c5e4df"
+            android:textColorHint="#000000"
+            android:padding="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:textCursorDrawable="@drawable/color_cursor_for_registration"
+            />
 
         <Button
             android:id="@+id/registration_button"
@@ -111,114 +133,126 @@
 
             <EditText
                 android:id="@+id/name_edit_text_in_registration"
-                android:layout_width="300dp"
-                android:layout_height="45dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="Name"
                 android:inputType="textPersonName"
-                android:background="@drawable/rounded_corners_edittext"
                 android:textColorHint="#000000"
-                android:padding="10dp"
+                android:backgroundTint="#c5e4df"
+                android:padding="15dp"
                 android:layout_marginTop="10dp"
-                android:textCursorDrawable="@drawable/color_cursor"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:textCursorDrawable="@drawable/color_cursor_for_registration"
                 />
 
             <AutoCompleteTextView
                 android:id="@+id/type_edit_text_in_registration"
-                android:layout_width="300dp"
-                android:layout_height="45dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="Who are you ? "
                 android:completionThreshold = "1"
                 android:inputType="text"
-                android:background="@drawable/rounded_corners_edittext"
+                android:backgroundTint="#c5e4df"
                 android:textColorHint="#000000"
-                android:padding="10dp"
+                android:padding="15dp"
                 android:layout_marginTop="10dp"
-                android:textCursorDrawable="@drawable/color_cursor"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:textCursorDrawable="@drawable/color_cursor_for_registration"
                 />
 
             <AutoCompleteTextView
                 android:id="@+id/breed_edit_text_in_registration"
-                android:layout_width="300dp"
-                android:layout_height="45dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="Breed"
                 android:completionThreshold = "2"
                 android:inputType="text"
-                android:background="@drawable/rounded_corners_edittext"
+                android:backgroundTint="#c5e4df"
                 android:textColorHint="#000000"
-                android:padding="10dp"
+                android:padding="15dp"
                 android:layout_marginTop="10dp"
-                android:textCursorDrawable="@drawable/color_cursor"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:textCursorDrawable="@drawable/color_cursor_for_registration"
                 />
 
             <android.support.constraint.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
 
                 <EditText
                     android:id="@+id/age_edit_text_in_registration"
-                    android:layout_width="300dp"
-                    android:layout_height="45dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:hint="Age"
                     android:inputType="number"
-                    android:background="@drawable/rounded_corners_edittext"
+                    android:backgroundTint="#c5e4df"
                     android:textColorHint="#000000"
-                    android:padding="10dp"
-                    android:textCursorDrawable="@drawable/color_cursor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:padding="15dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="120dp"
+                    android:textCursorDrawable="@drawable/color_cursor_for_registration"
+                    />
 
                 <android.support.v7.widget.SwitchCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="204dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="7dp"
                     android:checked="false"
                     android:text="Sex"
                     android:textOff="M"
                     android:textOn="F"
                     android:textSize="22sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/age_edit_text_in_registration"
+                    app:layout_constraintStart_toEndOf="@+id/age_edit_text_in_registration"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:showText="true" />
 
             </android.support.constraint.ConstraintLayout>
 
             <EditText
                 android:id="@+id/tag_number_edit_text_in_registration"
-                android:layout_width="300dp"
-                android:layout_height="45dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="Tag id"
                 android:inputType="number"
-                android:background="@drawable/rounded_corners_edittext"
+                android:backgroundTint="#c5e4df"
                 android:textColorHint="#000000"
-                android:padding="10dp"
+                android:padding="15dp"
                 android:layout_marginTop="10dp"
-                android:textCursorDrawable="@drawable/color_cursor"/>
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:textCursorDrawable="@drawable/color_cursor_for_registration"
+                />
 
             <EditText
                 android:id="@+id/weight_edit_text_in_registration"
-                android:layout_width="300dp"
-                android:layout_height="45dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="Weight"
                 android:inputType="number"
-                android:background="@drawable/rounded_corners_edittext"
+                android:backgroundTint="#c5e4df"
                 android:textColorHint="#000000"
-                android:padding="10dp"
+                android:padding="15dp"
                 android:layout_marginTop="10dp"
-                android:textCursorDrawable="@drawable/color_cursor"/>
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:textCursorDrawable="@drawable/color_cursor_for_registration"
+                />
 
             <lib.kingja.switchbutton.SwitchMultiButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/attitude_switch_multi_button"
-                android:padding="8dp"
+                android:layout_marginTop="20dp"
+                android:padding="15dp"
                 app:strokeRadius="5dp"
                 app:strokeWidth="1dp"
                 app:selectedTab="0"
-                app:selectedColor="#eb7b00"
+                app:selectedColor="#c5e4df"
                 app:switchTabs="@array/switch_tabs"
                 app:textSize="12sp" />
 
