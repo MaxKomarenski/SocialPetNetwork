@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -22,6 +24,9 @@ import android.widget.Toast;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.adapters.AutoCompleteCountryAdapter;
+import com.hollybits.socialpetnetwork.enums.Attitude;
+import com.hollybits.socialpetnetwork.enums.Sex;
+import com.hollybits.socialpetnetwork.forms.RegistrationForm;
 import com.hollybits.socialpetnetwork.models.Country;
 
 import java.util.ArrayList;
@@ -29,6 +34,8 @@ import java.util.List;
 import com.hollybits.socialpetnetwork.adapters.BreedAdapter;
 import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.models.Breed;
+import com.hollybits.socialpetnetwork.models.Pet;
+import com.hollybits.socialpetnetwork.models.User;
 
 import java.util.List;
 
@@ -57,14 +64,44 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.choose_photo_in_registration)
     CircleImageView chosenPhoto;
 
-    @BindView(R.id.country_auto_complete_text_in_registration)
-    AutoCompleteTextView countryAutoCompleteText;
-
     @BindView(R.id.type_edit_text_in_registration)
     AutoCompleteTextView petTypeInput;
 
     @BindView(R.id.breed_edit_text_in_registration)
     AutoCompleteTextView breedInput;
+
+    @BindView(R.id.name_edit_text_in_registration)
+    EditText nameOfPet;
+
+    @BindView(R.id.age_edit_text_in_registration)
+    EditText ageOfPet;
+
+    @BindView(R.id.tag_number_edit_text_in_registration)
+    EditText tagNumberOfPet;
+
+    @BindView(R.id.weight_edit_text_in_registration)
+    EditText weightOfPet;
+
+    @BindView(R.id.owner_name_edit_text_in_registration)
+    EditText ownerName;
+
+    @BindView(R.id.owner_surname_edit_text_in_registration)
+    EditText ownerSurname;
+
+    @BindView(R.id.phone_number_edit_text_in_registration)
+    EditText phoneNumber;
+
+    @BindView(R.id.country_auto_complete_text_in_registration)
+    AutoCompleteTextView chosenCountry;
+
+    @BindView(R.id.email_edit_text_in_registration)
+    EditText email;
+
+    @BindView(R.id.password_edit_text_in_registration)
+    EditText password;
+
+    @BindView(R.id.sex_switch_compat_in_registration_activity)
+    SwitchCompat sexOfPet;
 
     @BindView(R.id.attitude_switch_multi_button)
     SwitchMultiButton attitudeSwitchMultiButton;
@@ -76,11 +113,11 @@ public class RegistrationActivity extends AppCompatActivity {
     Uri imageUri;
 
 
-
-
     private AutoCompleteCountryAdapter autoCompleteCountryAdapter;
     private List<Country> countries = new ArrayList<>();
     private List<Breed> allBreadsForSelectedType;
+    private Pet newPet;
+    private Sex s;
 
 
 
@@ -93,6 +130,39 @@ public class RegistrationActivity extends AppCompatActivity {
         loadTypesInfo();
         loadCountriesList();
 
+        sexOfPet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    s = Sex.FEMALE;
+                } else {
+                    s = Sex.MALE;
+                }
+            }
+        });
+
+        //get all information from registration activity
+
+
+    }
+
+    private Breed getChosenBreed(String nameOfChosenBreed){
+        for (Breed b: allBreadsForSelectedType){
+            if(b.getName().equalsIgnoreCase(nameOfChosenBreed)){
+                return b;
+            }
+        }
+
+        return new Breed(nameOfChosenBreed);
+    }
+
+    private Country getChosenCountry(String nameOfChosenCountry){
+        for (Country c: countries) {
+            if(c.getName().equalsIgnoreCase(nameOfChosenCountry)){
+                return c;
+            }
+        }
+
+        return new Country(nameOfChosenCountry);
     }
 
     private void openGallery(){
@@ -138,6 +208,27 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 informationScrollView.setVisibility(View.GONE);
                 emailAndPasswordLinearLayout.setVisibility(View.VISIBLE);
+                Breed breedOfPet = getChosenBreed(breedInput.getText().toString());
+
+                Attitude attitude;
+                if (attitudeSwitchMultiButton.getSelectedTab() == 0)
+                    attitude = Attitude.GOODWITHALL;
+                else if(attitudeSwitchMultiButton.getSelectedTab() == 1)
+                    attitude = Attitude.GOODWITHMALE;
+                else if(attitudeSwitchMultiButton.getSelectedTab() == 2)
+                    attitude = Attitude.GOODWITHFEMALE;
+                else
+                    attitude = Attitude.BAD;
+
+                newPet = new Pet(nameOfPet.getText().toString(),
+                        breedOfPet,
+                        Long.parseLong(ageOfPet.getText().toString()),
+                        s,
+                        tagNumberOfPet.getText().toString(),
+                        Long.parseLong(weightOfPet.getText().toString()),
+                        attitude);
+
+
             }
         });
 
@@ -147,6 +238,19 @@ public class RegistrationActivity extends AppCompatActivity {
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "You are registrated", Toast.LENGTH_SHORT);
                 toast.show();
+
+                Country country = getChosenCountry(chosenCountry.getText().toString());
+
+                RegistrationForm registrationForm = new RegistrationForm(ownerName.getText().toString(),
+                                                    ownerSurname.getText().toString(),
+                                                    phoneNumber.getText().toString(),
+                                                    country,
+                                                    email.getText().toString(),
+                                                    password.getText().toString(),
+                                                    newPet);
+
+                //TODO Send to the server
+
             }
         });
     }
@@ -168,7 +272,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     //System.err.println("-------------> " + countries.get(2).getName());
 
                     autoCompleteCountryAdapter = new AutoCompleteCountryAdapter(RegistrationActivity.this,countries);
-                    countryAutoCompleteText.setAdapter(autoCompleteCountryAdapter);
+                    chosenCountry.setAdapter(autoCompleteCountryAdapter);
                 }
 
             }

@@ -66,6 +66,12 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.passwordText)
     TextView passwordView;
 
+    @BindView(R.id.thank_text_1)
+    TextView thankText1;
+
+    @BindView(R.id.thank_text_2)
+    TextView thankText2;
+
     public static class Credentials{
         public String email;
         public String password;
@@ -84,6 +90,8 @@ public class LoginActivity extends AppCompatActivity {
         Typeface mainFont = Typeface.createFromAsset(this.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         passwordView.setTypeface(mainFont);
         emailTextView.setTypeface(mainFont);
+        thankText1.setTypeface(mainFont);
+        thankText2.setTypeface(mainFont);
 
 
     }

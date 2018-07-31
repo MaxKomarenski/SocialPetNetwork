@@ -14,6 +14,14 @@ public class Breed {
 
     private String name;
 
+    public Breed(){
+
+    }
+
+    public Breed(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
