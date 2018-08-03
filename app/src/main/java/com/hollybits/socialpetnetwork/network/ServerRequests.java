@@ -3,6 +3,7 @@ package com.hollybits.socialpetnetwork.network;
 import com.android.volley.toolbox.StringRequest;
 import com.hollybits.socialpetnetwork.activity.LoginActivity;
 import com.hollybits.socialpetnetwork.enums.PetType;
+import com.hollybits.socialpetnetwork.forms.RegistrationForm;
 import com.hollybits.socialpetnetwork.models.Breed;
 import com.hollybits.socialpetnetwork.models.Country;
 
@@ -32,6 +33,9 @@ public interface ServerRequests {
 
     @GET("/api/loadCountryList")
     Call<List<Country>> getAllCountries();
+
+    @POST("/registration")
+    Call<String> sendRegistrationFormToTheServer(@Body RegistrationForm registrationForm);
 
 
 

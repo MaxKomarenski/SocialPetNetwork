@@ -1,25 +1,24 @@
 package com.hollybits.socialpetnetwork.forms;
 
+import com.hollybits.socialpetnetwork.models.City;
 import com.hollybits.socialpetnetwork.models.Country;
 import com.hollybits.socialpetnetwork.models.Pet;
 
 public class RegistrationForm {
+
     private String name;
     private String surname;
     private String phone;
-    private Country country;
+    private City city;
     private String email;
     private String password;
     private Pet pet;
 
-    public RegistrationForm() {
-    }
-
-    public RegistrationForm(String name, String surname, String phone, Country country, String email, String password, Pet pet) {
+    public RegistrationForm(String name, String surname, String phone, City city, String email, String password, Pet pet) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
-        this.country = country;
+        this.city = city;
         this.email = email;
         this.password = password;
         this.pet = pet;
@@ -49,12 +48,12 @@ public class RegistrationForm {
         this.phone = phone;
     }
 
-    public Country getCountry() {
-        return country;
+    public City getCity() {
+        return city;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public String getEmail() {

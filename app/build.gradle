@@ -74,5 +74,7 @@ dependencies {
     // switch with multiple tabs
     compile 'lib.kingja.switchbutton:switchbutton:1.1.7'
 
+    implementation 'com.karumi:dexter:5.0.0'
+
 
 }

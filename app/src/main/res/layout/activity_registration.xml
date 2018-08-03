@@ -62,6 +62,20 @@
             android:layout_marginEnd="30dp"
             android:textCursorDrawable="@drawable/color_cursor_for_registration"/>
 
+        <EditText
+            android:id="@+id/city_edit_text_in_registration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="City"
+            android:inputType="text"
+            android:backgroundTint="#c5e4df"
+            android:textColorHint="#000000"
+            android:padding="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:textCursorDrawable="@drawable/color_cursor_for_registration"/>
+
         <AutoCompleteTextView
             android:id="@+id/country_auto_complete_text_in_registration"
             android:layout_width="match_parent"

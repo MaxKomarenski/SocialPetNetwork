@@ -1,23 +1,44 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+
+import android.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.hollybits.socialpetnetwork.R;
 
+import java.io.IOException;
+import java.util.List;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +63,10 @@ public class Map extends Fragment implements OnMapReadyCallback {
     private GoogleMap map;
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
+    private static final float DEFAULT_ZOOM = 15f;
+    private LocationManager locationManager;
+    LocationListener locationListener;
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
 
     public Map() {
         // Required empty public constructor
@@ -72,6 +97,54 @@ public class Map extends Fragment implements OnMapReadyCallback {
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_in_map_fragment);
         supportMapFragment.getMapAsync(this);
+
+        locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this.getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this.getActivity(), new String[]
+                            {Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION);
+        }
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                //get the location name from latitude and longitude
+                Geocoder geocoder = new Geocoder(getActivity().getApplicationContext());
+                try {
+                    List<Address> addresses =
+                            geocoder.getFromLocation(latitude, longitude, 1);
+                    String result = addresses.get(0).getLocality()+":";
+                    result += addresses.get(0).getCountryName();
+                    LatLng latLng = new LatLng(latitude, longitude);
+                    map.addMarker(new MarkerOptions().position(latLng).title(result));
+                    map.setMaxZoomPreference(20);
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5.0f));
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -91,12 +164,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
 
-        LatLng latLng = new LatLng(23.1235, 45.12312);
-        MarkerOptions markerOptions = new MarkerOptions();
 
-        markerOptions.position(latLng).title("Hui");
-        map.addMarker(markerOptions);
-        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
     /**

@@ -8,13 +8,12 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -27,6 +26,7 @@ import com.hollybits.socialpetnetwork.adapters.AutoCompleteCountryAdapter;
 import com.hollybits.socialpetnetwork.enums.Attitude;
 import com.hollybits.socialpetnetwork.enums.Sex;
 import com.hollybits.socialpetnetwork.forms.RegistrationForm;
+import com.hollybits.socialpetnetwork.models.City;
 import com.hollybits.socialpetnetwork.models.Country;
 
 import java.util.ArrayList;
@@ -35,9 +35,7 @@ import com.hollybits.socialpetnetwork.adapters.BreedAdapter;
 import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.models.Breed;
 import com.hollybits.socialpetnetwork.models.Pet;
-import com.hollybits.socialpetnetwork.models.User;
 
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,14 +89,17 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.phone_number_edit_text_in_registration)
     EditText phoneNumber;
 
-    @BindView(R.id.country_auto_complete_text_in_registration)
-    AutoCompleteTextView chosenCountry;
+    @BindView(R.id.city_edit_text_in_registration)
+    EditText cityEdit;
 
     @BindView(R.id.email_edit_text_in_registration)
     EditText email;
 
     @BindView(R.id.password_edit_text_in_registration)
     EditText password;
+
+    @BindView(R.id.country_auto_complete_text_in_registration)
+    AutoCompleteTextView chosenCountry;
 
     @BindView(R.id.sex_switch_compat_in_registration_activity)
     SwitchCompat sexOfPet;
@@ -117,7 +118,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private List<Country> countries = new ArrayList<>();
     private List<Breed> allBreadsForSelectedType;
     private Pet newPet;
-    private Sex s;
 
 
 
@@ -129,20 +129,6 @@ public class RegistrationActivity extends AppCompatActivity {
         attachListeners();
         loadTypesInfo();
         loadCountriesList();
-
-        sexOfPet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    s = Sex.FEMALE;
-                } else {
-                    s = Sex.MALE;
-                }
-            }
-        });
-
-        //get all information from registration activity
-
-
     }
 
     private Breed getChosenBreed(String nameOfChosenBreed){
@@ -206,8 +192,6 @@ public class RegistrationActivity extends AppCompatActivity {
         accessButtonInRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                informationScrollView.setVisibility(View.GONE);
-                emailAndPasswordLinearLayout.setVisibility(View.VISIBLE);
                 Breed breedOfPet = getChosenBreed(breedInput.getText().toString());
 
                 Attitude attitude;
@@ -220,13 +204,24 @@ public class RegistrationActivity extends AppCompatActivity {
                 else
                     attitude = Attitude.BAD;
 
+                Sex s;
+                if (sexOfPet.isChecked()) {
+                    s = Sex.FEMALE;
+                } else {
+                    s = Sex.MALE;
+                }
+
                 newPet = new Pet(nameOfPet.getText().toString(),
                         breedOfPet,
                         Long.parseLong(ageOfPet.getText().toString()),
                         s,
                         tagNumberOfPet.getText().toString(),
-                        Long.parseLong(weightOfPet.getText().toString()),
+                        Double.parseDouble(weightOfPet.getText().toString()),
                         attitude);
+
+                informationScrollView.setVisibility(View.GONE);
+                emailAndPasswordLinearLayout.setVisibility(View.VISIBLE);
+
 
 
             }
@@ -240,16 +235,36 @@ public class RegistrationActivity extends AppCompatActivity {
                 toast.show();
 
                 Country country = getChosenCountry(chosenCountry.getText().toString());
+                City city = new City(cityEdit.getText().toString() , country);
 
-                RegistrationForm registrationForm = new RegistrationForm(ownerName.getText().toString(),
+                String emailStr = email.getText().toString();
+                String passwordStr = password.getText().toString();
+
+
+                String encodedPassword = Base64.encodeToString(passwordStr.getBytes(), Base64.NO_WRAP);
+                String encodedEmail = Base64.encodeToString(emailStr.getBytes(), Base64.NO_WRAP);
+
+
+                final RegistrationForm registrationForm = new RegistrationForm(ownerName.getText().toString(),
                                                     ownerSurname.getText().toString(),
                                                     phoneNumber.getText().toString(),
-                                                    country,
-                                                    email.getText().toString(),
-                                                    password.getText().toString(),
+                                                    city,
+                                                    encodedEmail,
+                                                    encodedPassword,
                                                     newPet);
 
                 //TODO Send to the server
+                MainActivity.getServerRequests().sendRegistrationFormToTheServer(registrationForm).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        System.err.println("Response from registration -->   " + response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
 
             }
         });
