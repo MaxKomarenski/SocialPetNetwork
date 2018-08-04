@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#76cbf2"
+    android:background="#1e90ff"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context="com.hollybits.socialpetnetwork.activity.LoginActivity"
@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:src="@drawable/login_button"
-        android:background="#76cbf2"
+        android:background="#1e90ff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 

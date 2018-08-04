@@ -10,14 +10,14 @@ public class Pet {
     private Long age;
     private Sex sex;
     private String tagNumber;
-    private Double weight;
+    private Weight weight;
     private Attitude attitude;
 
     public Pet(){
 
     }
 
-    public Pet(String name, Breed breed, Long age, Sex sex, String tagNumber, Double weight, Attitude attitude) {
+    public Pet(String name, Breed breed, Long age, Sex sex, String tagNumber, Weight weight, Attitude attitude) {
         this.name = name;
         this.breed = breed;
         this.age = age;
@@ -67,11 +67,11 @@ public class Pet {
         this.tagNumber = tagNumber;
     }
 
-    public Double getWeight() {
+    public Weight getWeight() {
         return weight;
     }
 
-    public void setWeight(Double weight) {
+    public void setWeight(Weight weight) {
         this.weight = weight;
     }
 

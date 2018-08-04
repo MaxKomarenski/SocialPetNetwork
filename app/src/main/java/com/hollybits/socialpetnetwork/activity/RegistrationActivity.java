@@ -2,6 +2,7 @@ package com.hollybits.socialpetnetwork.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,13 +18,16 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.adapters.AutoCompleteCountryAdapter;
 import com.hollybits.socialpetnetwork.enums.Attitude;
+import com.hollybits.socialpetnetwork.enums.MassUnit;
 import com.hollybits.socialpetnetwork.enums.Sex;
 import com.hollybits.socialpetnetwork.forms.RegistrationForm;
 import com.hollybits.socialpetnetwork.models.City;
@@ -35,9 +39,11 @@ import com.hollybits.socialpetnetwork.adapters.BreedAdapter;
 import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.models.Breed;
 import com.hollybits.socialpetnetwork.models.Pet;
+import com.hollybits.socialpetnetwork.models.Weight;
 
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lib.kingja.switchbutton.SwitchMultiButton;
@@ -53,6 +59,9 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.information_scroll_view)
     ScrollView informationScrollView;
 
+    @BindView(R.id.choose_icon_text_view)
+    TextView chooseIconText;
+
     @BindView(R.id.access_button_in_registration)
     Button accessButtonInRegistration;
 
@@ -62,11 +71,11 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.choose_photo_in_registration)
     CircleImageView chosenPhoto;
 
-    @BindView(R.id.type_edit_text_in_registration)
-    AutoCompleteTextView petTypeInput;
-
     @BindView(R.id.breed_edit_text_in_registration)
     AutoCompleteTextView breedInput;
+
+    @BindView(R.id.country_auto_complete_text_in_registration)
+    AutoCompleteTextView chosenCountry;
 
     @BindView(R.id.name_edit_text_in_registration)
     EditText nameOfPet;
@@ -98,15 +107,19 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.password_edit_text_in_registration)
     EditText password;
 
-    @BindView(R.id.country_auto_complete_text_in_registration)
-    AutoCompleteTextView chosenCountry;
+    @BindViews({R.id.rat_pet_type_image_button, R.id.cat_pet_type_image_button,
+            R.id.bird_pet_type_image_button, R.id.dog_pet_type_image_button,
+            R.id.rabbit_rat_pet_type_image_button, R.id.raccoon_pet_type_image_button})
+    List<ImageButton> listOfPetTypes;
 
     @BindView(R.id.sex_switch_compat_in_registration_activity)
     SwitchCompat sexOfPet;
 
+    @BindView(R.id.weight_switch_compat_in_registration_activity)
+    SwitchCompat massUnitSwitchCompat;
+
     @BindView(R.id.attitude_switch_multi_button)
     SwitchMultiButton attitudeSwitchMultiButton;
-
 
     private BreedAdapter breedAdapter;
 
@@ -118,6 +131,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private List<Country> countries = new ArrayList<>();
     private List<Breed> allBreadsForSelectedType;
     private Pet newPet;
+    private PetType petType;
 
 
 
@@ -127,8 +141,10 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
         attachListeners();
-        loadTypesInfo();
         loadCountriesList();
+
+        Typeface mainFont = Typeface.createFromAsset(this.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        chooseIconText.setTypeface(mainFont);
     }
 
     private Breed getChosenBreed(String nameOfChosenBreed){
@@ -168,13 +184,125 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     private void attachListeners(){
-        petTypeInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                loadBreedsForSelectedType(PetType.valueOf(petTypeInput.getText().toString()));
+        //------ buttons for pet type------------
+//        petTypeInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                loadBreedsForSelectedType(PetType.valueOf(petTypeInput.getText().toString()));
+//            }
+//        });
+
+        listOfPetTypes.get(0).setOnClickListener(new View.OnClickListener() { // Rat
+            @Override
+            public void onClick(View v) {
+
+                petType = PetType.RAT;
+                listOfPetTypes.get(0).setBackgroundResource(R.drawable.circle_background_active);
+
+                listOfPetTypes.get(1).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(2).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(3).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(4).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(5).setBackgroundResource(R.drawable.circle_background);
+
+                loadBreedsForSelectedType(petType);
+
             }
         });
+
+        listOfPetTypes.get(1).setOnClickListener(new View.OnClickListener() { // Cat
+            @Override
+            public void onClick(View v) {
+
+                petType = PetType.CAT;
+                listOfPetTypes.get(1).setBackgroundResource(R.drawable.circle_background_active);
+
+                listOfPetTypes.get(0).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(2).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(3).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(4).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(5).setBackgroundResource(R.drawable.circle_background);
+
+                loadBreedsForSelectedType(petType);
+
+            }
+        });
+
+        listOfPetTypes.get(2).setOnClickListener(new View.OnClickListener() { //Bird
+            @Override
+            public void onClick(View v) {
+
+                petType = PetType.BIRD;
+                listOfPetTypes.get(2).setBackgroundResource(R.drawable.circle_background_active);
+
+                listOfPetTypes.get(0).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(1).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(3).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(4).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(5).setBackgroundResource(R.drawable.circle_background);
+
+                loadBreedsForSelectedType(petType);
+
+            }
+        });
+
+        listOfPetTypes.get(3).setOnClickListener(new View.OnClickListener() { //Dog
+            @Override
+            public void onClick(View v) {
+
+                petType = PetType.DOG;
+                listOfPetTypes.get(3).setBackgroundResource(R.drawable.circle_background_active);
+
+                listOfPetTypes.get(0).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(1).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(2).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(4).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(5).setBackgroundResource(R.drawable.circle_background);
+
+                loadBreedsForSelectedType(petType);
+
+            }
+        });
+
+        listOfPetTypes.get(4).setOnClickListener(new View.OnClickListener() { // Rabbit
+            @Override
+            public void onClick(View v) {
+
+                petType = PetType.RABBIT;
+                listOfPetTypes.get(4).setBackgroundResource(R.drawable.circle_background_active);
+
+                listOfPetTypes.get(0).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(1).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(2).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(3).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(5).setBackgroundResource(R.drawable.circle_background);
+
+                loadBreedsForSelectedType(petType);
+
+            }
+        });
+
+        listOfPetTypes.get(5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                petType = PetType.RACCOON;
+                listOfPetTypes.get(5).setBackgroundResource(R.drawable.circle_background_active);
+
+                listOfPetTypes.get(0).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(1).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(2).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(3).setBackgroundResource(R.drawable.circle_background);
+                listOfPetTypes.get(4).setBackgroundResource(R.drawable.circle_background);
+
+                loadBreedsForSelectedType(petType);
+
+            }
+        });
+
+        //------------------------
 
         breedInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -211,12 +339,22 @@ public class RegistrationActivity extends AppCompatActivity {
                     s = Sex.MALE;
                 }
 
+                MassUnit massUnit;
+
+                if (massUnitSwitchCompat.isChecked()){
+                    massUnit = MassUnit.POUNDS;
+                }else {
+                    massUnit = MassUnit.KG;
+                }
+
+                Weight w = new Weight(Double.parseDouble(weightOfPet.getText().toString()), massUnit);
+
                 newPet = new Pet(nameOfPet.getText().toString(),
                         breedOfPet,
                         Long.parseLong(ageOfPet.getText().toString()),
                         s,
                         tagNumberOfPet.getText().toString(),
-                        Double.parseDouble(weightOfPet.getText().toString()),
+                        w,
                         attitude);
 
                 informationScrollView.setVisibility(View.GONE);
@@ -268,13 +406,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    private void loadTypesInfo(){
-
-        ArrayAdapter<PetType> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_dropdown_item_1line,PetType.values());
-        petTypeInput.setAdapter(adapter);
     }
 
     private void loadCountriesList(){
