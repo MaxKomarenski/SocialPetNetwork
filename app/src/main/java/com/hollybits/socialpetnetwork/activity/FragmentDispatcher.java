@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.hollybits.socialpetnetwork.Fragments.Account;
+import com.hollybits.socialpetnetwork.Fragments.StartingMenu;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.LoginActivity;
 
@@ -35,10 +36,13 @@ public class FragmentDispatcher extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
+        setContentView(R.layout.activity_menu_dispatcher);
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_fragment_dispatcher);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if(toolbar!=null)
+            getSupportActionBar().hide();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -51,7 +55,8 @@ public class FragmentDispatcher extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        launchFragment(Account.class);
+
+        launchFragment(StartingMenu.class);
         setTitle("Account");
 
     }

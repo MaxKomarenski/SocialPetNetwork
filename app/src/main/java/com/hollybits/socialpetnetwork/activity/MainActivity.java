@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,6 +15,8 @@ import com.google.gson.GsonBuilder;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.network.ServerRequests;
+
+import java.sql.Timestamp;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private static MainActivity instance;
     private static Retrofit retrofit;
     private static ServerRequests serverRequests;
+
+    private final static String  DATE = "lastLoginDate";
+    private static final long MILISECOND_IN_9_DAYS = 777_600_000;
 
     public static final String CURRENTUSER ="currentUser";
 
@@ -70,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create(gson)) //Конвертер, необходимый для преобразования JSON'а в объекты
                 .build();
         serverRequests = retrofit.create(ServerRequests.class);
+        checkLogin();
 
         Typeface nameFont = Typeface.createFromAsset(this.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         welcome.setTypeface(nameFont);
@@ -98,6 +105,32 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
+    private void checkLogin(){
+        User current = Paper.book().read(MainActivity.CURRENTUSER);
+        if(current != null){
+            Log.d("checkLogin ","Current is not null");
+            Timestamp lastLoginDate = Paper.book().read(DATE);
+            Timestamp currentDate = new Timestamp(System.currentTimeMillis());
+            if(currentDate.getNanos() - lastLoginDate.getNanos() > MILISECOND_IN_9_DAYS){
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }else {
+                Log.d("checkLogin ","Moving to profile");
+                moveToProfile();
+            }
+        }else {
+            Log.d("checkLogin ", "Current is null waiting for auth");
+        }
+    }
+
+    private  void moveToProfile(){
+        Intent intent = new Intent(MainActivity.this, FragmentDispatcher.class);
+        startActivity(intent);
+    }
+
+
 
     public static ServerRequests getServerRequests() {
         return serverRequests;
