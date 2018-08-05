@@ -31,7 +31,6 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.hollybits.socialpetnetwork.Fragments.Map;
 import com.hollybits.socialpetnetwork.R;
-import com.hollybits.socialpetnetwork.forms.DeviceOS;
 import com.hollybits.socialpetnetwork.forms.UpdateTokenForm;
 import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.network.ServerRequests;
@@ -243,7 +242,7 @@ public class LoginActivity extends AppCompatActivity {
                         String token = task.getResult().getToken();
                         form.setToken(Base64.encodeToString(token.getBytes(), Base64.NO_WRAP));
                         form.setId(Base64.encodeToString(user.getId().toString().getBytes(), Base64.NO_WRAP));
-                        form.setDeviceOS(DeviceOS.ANDROID);
+
 
                         java.util.Map<String, String> heades = new HashMap<>();
                         heades.put("Authorization", user.getAuthorizationCode());

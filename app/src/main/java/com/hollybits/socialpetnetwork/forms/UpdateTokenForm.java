@@ -8,7 +8,7 @@ public class UpdateTokenForm {
 
     private String id;
     private String token;
-    private DeviceOS deviceOS;
+
 
     public void setId(String id) {
         this.id = id;
@@ -18,7 +18,5 @@ public class UpdateTokenForm {
         this.token = token;
     }
 
-    public void setDeviceOS(DeviceOS deviceOS) {
-        this.deviceOS = deviceOS;
-    }
+
 }
