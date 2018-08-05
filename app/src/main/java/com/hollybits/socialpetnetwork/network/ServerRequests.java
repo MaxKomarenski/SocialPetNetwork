@@ -25,7 +25,7 @@ public interface ServerRequests {
 
     String BASE_REMOTE_OUR = "http://206.189.61.135:8080/";
     String BASE_LOCAL = "http://10.0.2.2:8080/";
-    String CURRENT_ENDPIONT = BASE_LOCAL;
+    String CURRENT_ENDPIONT = BASE_REMOTE_OUR;
 
 
     @GET("/api/getBreedsForType")

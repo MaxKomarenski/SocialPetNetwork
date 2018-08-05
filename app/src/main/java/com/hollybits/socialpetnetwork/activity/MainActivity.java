@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 .setLenient()
                 .create();
         retrofit = new Retrofit.Builder()
-                .baseUrl(ServerRequests.BASE_LOCAL) //Базовая часть адреса
+                .baseUrl(ServerRequests.CURRENT_ENDPIONT) //Базовая часть адреса
                 .addConverterFactory(GsonConverterFactory.create(gson)) //Конвертер, необходимый для преобразования JSON'а в объекты
                 .build();
         serverRequests = retrofit.create(ServerRequests.class);

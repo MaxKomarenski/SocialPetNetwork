@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.hollybits.socialpetnetwork.R;
 
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -66,6 +68,7 @@ public class StartingMenu extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View view = inflater.inflate(R.layout.fragment_starting_menu, container, false);
+        ButterKnife.bind(this, view);
 
 
        return view;

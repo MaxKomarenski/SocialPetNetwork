@@ -185,15 +185,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void attachListeners(){
 
-        //------ buttons for pet type------------
-//        petTypeInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                loadBreedsForSelectedType(PetType.valueOf(petTypeInput.getText().toString()));
-//            }
-//        });
-
         listOfPetTypes.get(0).setOnClickListener(new View.OnClickListener() { // Rat
             @Override
             public void onClick(View v) {
@@ -447,7 +438,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Breed>> call, Throwable t) {
-                Log.d("getBreedsForType: ", "Failure");
+                Log.d("getBreedsForType: ", t.getMessage());
             }
         });
     }
