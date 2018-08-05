@@ -40,6 +40,7 @@ import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.models.Breed;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.Weight;
+import com.nightonke.jellytogglebutton.JellyToggleButton;
 
 
 import butterknife.BindView;
@@ -118,8 +119,8 @@ public class RegistrationActivity extends AppCompatActivity {
             R.id.rabbit_rat_pet_type_image_button, R.id.raccoon_pet_type_image_button})
     List<ImageButton> listOfPetTypes;
 
-    @BindView(R.id.sex_switch_compat_in_registration_activity)
-    SwitchCompat sexOfPet;
+    @BindView(R.id.sex_jelly_toggle_button)
+    JellyToggleButton sexOfPetJelly;
 
     @BindView(R.id.weight_switch_compat_in_registration_activity)
     SwitchCompat massUnitSwitchCompat;
@@ -138,9 +139,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private List<Breed> allBreadsForSelectedType;
     private Pet newPet;
     private PetType petType;
-    private PetType[] allPetTypes;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +147,12 @@ public class RegistrationActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         attachListeners();
         loadCountriesList();
+
+        sexOfPetJelly.setRightBackgroundColor("#f81894");
+        sexOfPetJelly.setLeftText("Male");
+        sexOfPetJelly.setRightText("Female");
+        sexOfPetJelly.setRightTextColor("#000000");
+        sexOfPetJelly.setLeftTextColor("#000000");
 
         Typeface mainFont = Typeface.createFromAsset(this.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         chooseIconText.setTypeface(mainFont);
@@ -216,7 +220,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     private void attachListeners(){
-        allPetTypes = new PetType[]{PetType.RAT, PetType.CAT, PetType.BIRD, PetType.DOG, PetType.RABBIT, PetType.RACCOON};
+        PetType[] allPetTypes = new PetType[]{PetType.RAT, PetType.CAT, PetType.BIRD, PetType.DOG, PetType.RABBIT, PetType.RACCOON};
 
         changeColorOfPetTypeButtons(allPetTypes);
 
@@ -249,11 +253,12 @@ public class RegistrationActivity extends AppCompatActivity {
                     attitude = Attitude.BAD;
 
                 Sex s;
-                if (sexOfPet.isChecked()) {
+                if (sexOfPetJelly.isChecked()) {
                     s = Sex.FEMALE;
                 } else {
                     s = Sex.MALE;
                 }
+                System.err.println("-------------->   " + s);
 
                 MassUnit massUnit;
 
