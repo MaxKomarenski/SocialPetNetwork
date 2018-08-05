@@ -138,6 +138,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private List<Breed> allBreadsForSelectedType;
     private Pet newPet;
     private PetType petType;
+    private PetType[] allPetTypes;
 
 
 
@@ -191,118 +192,33 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
+    private void changeColorOfPetTypeButtons(final PetType[] allPetTypes){
+        for (int i = 0; i < allPetTypes.length; i++){
+            final int j = i;
+            listOfPetTypes.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    petType = allPetTypes[j];
+                    listOfPetTypes.get(j).setBackgroundResource(R.drawable.circle_background_active);
+
+                    for (int m = 0; m < allPetTypes.length; m++){
+                        if(m != j){
+                            listOfPetTypes.get(m).setBackgroundResource(R.drawable.circle_background);
+                        }
+                    }
+
+                    loadBreedsForSelectedType(petType);
+
+                }
+            });
+        }
+    }
+
 
     private void attachListeners(){
+        allPetTypes = new PetType[]{PetType.RAT, PetType.CAT, PetType.BIRD, PetType.DOG, PetType.RABBIT, PetType.RACCOON};
 
-        listOfPetTypes.get(0).setOnClickListener(new View.OnClickListener() { // Rat
-            @Override
-            public void onClick(View v) {
-
-                petType = PetType.RAT;
-                listOfPetTypes.get(0).setBackgroundResource(R.drawable.circle_background_active);
-
-                listOfPetTypes.get(1).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(2).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(3).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(4).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(5).setBackgroundResource(R.drawable.circle_background);
-
-                loadBreedsForSelectedType(petType);
-
-            }
-        });
-
-        listOfPetTypes.get(1).setOnClickListener(new View.OnClickListener() { // Cat
-            @Override
-            public void onClick(View v) {
-
-                petType = PetType.CAT;
-                listOfPetTypes.get(1).setBackgroundResource(R.drawable.circle_background_active);
-
-                listOfPetTypes.get(0).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(2).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(3).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(4).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(5).setBackgroundResource(R.drawable.circle_background);
-
-                loadBreedsForSelectedType(petType);
-
-            }
-        });
-
-        listOfPetTypes.get(2).setOnClickListener(new View.OnClickListener() { //Bird
-            @Override
-            public void onClick(View v) {
-
-                petType = PetType.BIRD;
-                listOfPetTypes.get(2).setBackgroundResource(R.drawable.circle_background_active);
-
-                listOfPetTypes.get(0).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(1).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(3).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(4).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(5).setBackgroundResource(R.drawable.circle_background);
-
-                loadBreedsForSelectedType(petType);
-
-            }
-        });
-
-        listOfPetTypes.get(3).setOnClickListener(new View.OnClickListener() { //Dog
-            @Override
-            public void onClick(View v) {
-
-                petType = PetType.DOG;
-                listOfPetTypes.get(3).setBackgroundResource(R.drawable.circle_background_active);
-
-                listOfPetTypes.get(0).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(1).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(2).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(4).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(5).setBackgroundResource(R.drawable.circle_background);
-
-                loadBreedsForSelectedType(petType);
-
-            }
-        });
-
-        listOfPetTypes.get(4).setOnClickListener(new View.OnClickListener() { // Rabbit
-            @Override
-            public void onClick(View v) {
-
-                petType = PetType.RABBIT;
-                listOfPetTypes.get(4).setBackgroundResource(R.drawable.circle_background_active);
-
-                listOfPetTypes.get(0).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(1).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(2).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(3).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(5).setBackgroundResource(R.drawable.circle_background);
-
-                loadBreedsForSelectedType(petType);
-
-            }
-        });
-
-        listOfPetTypes.get(5).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                petType = PetType.RACCOON;
-                listOfPetTypes.get(5).setBackgroundResource(R.drawable.circle_background_active);
-
-                listOfPetTypes.get(0).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(1).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(2).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(3).setBackgroundResource(R.drawable.circle_background);
-                listOfPetTypes.get(4).setBackgroundResource(R.drawable.circle_background);
-
-                loadBreedsForSelectedType(petType);
-
-            }
-        });
-
-        //------------------------
+        changeColorOfPetTypeButtons(allPetTypes);
 
         breedInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -359,9 +275,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 informationScrollView.setVisibility(View.GONE);
                 emailAndPasswordLinearLayout.setVisibility(View.VISIBLE);
-
-
-
             }
         });
 
@@ -391,7 +304,6 @@ public class RegistrationActivity extends AppCompatActivity {
                                                     encodedPassword,
                                                     newPet);
 
-                //TODO Send to the server
                 MainActivity.getServerRequests().sendRegistrationFormToTheServer(registrationForm).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
@@ -415,7 +327,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 if(response.body() != null){
                     countries.clear();
                     countries.addAll(response.body());
-                    //System.err.println("-------------> " + countries.get(2).getName());
 
                     autoCompleteCountryAdapter = new AutoCompleteCountryAdapter(RegistrationActivity.this,countries);
                     chosenCountry.setAdapter(autoCompleteCountryAdapter);
