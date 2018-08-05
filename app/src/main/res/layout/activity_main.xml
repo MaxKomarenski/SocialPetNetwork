@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#76cbf2"
+    android:background="@color/primeBackground"
     tools:context="com.hollybits.socialpetnetwork.activity.MainActivity"
     tools:layout_editor_absoluteY="25dp">
 

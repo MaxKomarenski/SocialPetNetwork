@@ -1,20 +1,27 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.adapters.PhotoGridAdapter;
 
+import java.util.List;
+
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 
 /**
@@ -25,6 +32,7 @@ import butterknife.ButterKnife;
  * Use the {@link Account#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class Account extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,18 +44,24 @@ public class Account extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    @BindView(R.id.photo_grid_view)
-    GridView photoGridView;
+//    @BindView(R.id.photo_grid_view)
+//    GridView photoGridView;
+//    Integer[] images = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
+//
+//    private PhotoGridAdapter photoGridAdapter;
 
-    @BindView(R.id.my_friends_button)
-    TextView myFriendButton;
+    @BindView(R.id.open_navigation_drawer_image_button)
+    ImageButton openDrawerButton;
 
-    @BindView(R.id.change_photo_button)
-    TextView changePhotoButton;
+    @BindViews({R.id.name_of_pet_text_view, R.id.sex_of_pet_text_view,
+                R.id.breed_word_text_view, R.id.name_of_breed_text_view, R.id.address_word_text_view,
+                R.id.place_of_user_text_view, R.id.age_word_text_view, R.id.number_of_age_word_text_view,
+                R.id.weight_word_text_view, R.id.amount_of_weight_text_view, R.id.attitude_word_text_view,
+                R.id.attitude_state_text_view
+    })
+    List<TextView> informationAboutPet;
+    DrawerLayout drawer;
 
-    Integer[] images = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
-
-    private PhotoGridAdapter photoGridAdapter;
     private OnFragmentInteractionListener mListener;
 
     public Account() {
@@ -87,30 +101,28 @@ public class Account extends Fragment {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         ButterKnife.bind(this, view);
 
-        photoGridAdapter = new PhotoGridAdapter(this.getContext(), images);
+//        photoGridAdapter = new PhotoGridAdapter(this.getContext(), images);
+//
+//        int gridWidth = getResources().getDisplayMetrics().widthPixels;
+//        int imageWidth = gridWidth/3;
+//
+//        photoGridView.setColumnWidth(imageWidth);
+//
+//        photoGridView.setAdapter(photoGridAdapter);
 
-        int gridWidth = getResources().getDisplayMetrics().widthPixels;
-        int imageWidth = gridWidth/3;
+        Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        for (TextView textView:
+             informationAboutPet) {
+            textView.setTypeface(mainFont);
+        }
 
-        photoGridView.setColumnWidth(imageWidth);
-
-        photoGridView.setAdapter(photoGridAdapter);
-
-        myFriendButton.setOnClickListener(new View.OnClickListener() {
+        openDrawerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"List Of friends",Toast.LENGTH_SHORT).show();
+                drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+                drawer.openDrawer(Gravity.START);
             }
         });
-
-        changePhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(),"Photo was changed",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
 
         return view;
     }
