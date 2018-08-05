@@ -4,15 +4,18 @@ import com.android.volley.toolbox.StringRequest;
 import com.hollybits.socialpetnetwork.activity.LoginActivity;
 import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.forms.RegistrationForm;
+import com.hollybits.socialpetnetwork.forms.UpdateTokenForm;
 import com.hollybits.socialpetnetwork.models.Breed;
 import com.hollybits.socialpetnetwork.models.Country;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -36,6 +39,10 @@ public interface ServerRequests {
 
     @POST("/registration")
     Call<String> sendRegistrationFormToTheServer(@Body RegistrationForm registrationForm);
+
+
+    @POST("/updateUsersToken")
+    Call<String> updateToken(@HeaderMap Map<String, String> headers, @Body UpdateTokenForm tokenForm);
 
 
 

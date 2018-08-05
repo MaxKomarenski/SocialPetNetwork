@@ -13,6 +13,6 @@
         android:top="0dp" />
     <stroke
         android:width="0.5dp"
-        android:color="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" />
+        android:color="@color/google" />
     <solid android:color="@color/google" />
 </shape>
