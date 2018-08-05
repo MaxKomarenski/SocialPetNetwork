@@ -62,11 +62,17 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.choose_icon_text_view)
     TextView chooseIconText;
 
+    @BindView(R.id.now_some_info_text_view)
+    TextView textView1;
+
+    @BindView(R.id.about_you_text_view)
+    TextView textView2;
+
     @BindView(R.id.access_button_in_registration)
     Button accessButtonInRegistration;
 
     @BindView(R.id.registration_button)
-    Button registrationButton;
+    ImageButton registrationButton;
 
     @BindView(R.id.choose_photo_in_registration)
     CircleImageView chosenPhoto;
@@ -145,6 +151,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
         Typeface mainFont = Typeface.createFromAsset(this.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         chooseIconText.setTypeface(mainFont);
+        textView1.setTypeface(mainFont);
+        textView2.setTypeface(mainFont);
+        accessButtonInRegistration.setTypeface(mainFont);
     }
 
     private Breed getChosenBreed(String nameOfChosenBreed){

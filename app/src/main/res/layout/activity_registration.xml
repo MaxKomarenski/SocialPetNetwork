@@ -8,7 +8,7 @@
     tools:context="com.hollybits.socialpetnetwork.activity.RegistrationActivity">
 
     <LinearLayout
-        android:visibility="gone"
+
         android:id="@+id/email_and_password_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,15 +21,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/now_some_info_text_view"
+                android:text="Now, some information "
+                android:textColor="#0658a4"
+                android:textSize="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/about_you_text_view"
+                android:text="about you"
+                android:textColor="#fff"
+                android:textSize="15dp"/>
+
+        </LinearLayout>
+
         <EditText
             android:id="@+id/owner_name_edit_text_in_registration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Your name"
             android:inputType="textPersonName"
-            android:background="@drawable/rounded_corners_edittext"
+            android:backgroundTint="#fff"
             android:textColorHint="#fff"
-            android:padding="15dp"
+            android:paddingStart="15dp"
+            android:textColor="#fff"
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
@@ -41,9 +65,10 @@
             android:layout_height="wrap_content"
             android:hint="Your surname"
             android:inputType="text"
-            android:background="@drawable/rounded_corners_edittext"
+            android:backgroundTint="#fff"
             android:textColorHint="#fff"
-            android:padding="15dp"
+            android:paddingStart="15dp"
+            android:textColor="#fff"
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
@@ -55,9 +80,26 @@
             android:layout_height="wrap_content"
             android:hint="Phone"
             android:inputType="phone"
-            android:background="@drawable/rounded_corners_edittext"
+            android:backgroundTint="#fff"
             android:textColorHint="#fff"
-            android:padding="15dp"
+            android:paddingStart="15dp"
+            android:textColor="#fff"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:textCursorDrawable="@drawable/color_cursor"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/country_auto_complete_text_in_registration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Country"
+            android:textColor="#fff"
+            android:inputType="text"
+            android:completionThreshold="1"
+            android:backgroundTint="#fff"
+            android:textColorHint="#fff"
+            android:paddingStart="15dp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
@@ -69,24 +111,10 @@
             android:layout_height="wrap_content"
             android:hint="City"
             android:inputType="text"
-            android:background="@drawable/rounded_corners_edittext"
+            android:textColor="#fff"
+            android:backgroundTint="#fff"
             android:textColorHint="#fff"
-            android:padding="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:textCursorDrawable="@drawable/color_cursor"/>
-
-        <AutoCompleteTextView
-            android:id="@+id/country_auto_complete_text_in_registration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Country"
-            android:inputType="text"
-            android:completionThreshold="1"
-            android:background="@drawable/rounded_corners_edittext"
-            android:textColorHint="#fff"
-            android:padding="15dp"
+            android:paddingStart="15dp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
@@ -98,9 +126,10 @@
             android:layout_height="wrap_content"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:background="@drawable/rounded_corners_edittext"
+            android:backgroundTint="#fff"
+            android:textColor="#fff"
             android:textColorHint="#fff"
-            android:padding="15dp"
+            android:paddingStart="15dp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
@@ -113,26 +142,32 @@
             android:layout_height="wrap_content"
             android:hint="Password"
             android:inputType="textPassword"
-            android:background="@drawable/rounded_corners_edittext"
+            android:backgroundTint="#fff"
+            android:textColor="#fff"
             android:textColorHint="#fff"
-            android:padding="15dp"
+            android:paddingStart="15dp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:textCursorDrawable="@drawable/color_cursor"
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/registration_button"
-            android:layout_width="100dp"
-            android:layout_height="50dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/login_button"
+            android:layout_gravity="end"
+            android:background="@color/primeBackground"/>
     </LinearLayout>
 
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/information_scroll_view"
+        android:visibility="gone"
         >
 
 
@@ -141,7 +176,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|top"
-            android:layout_marginTop="40dp">
+            >
 
             <TextView
                 android:id="@+id/choose_icon_text_view"
@@ -221,8 +256,6 @@
             </HorizontalScrollView>
 
 
-
-
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -233,23 +266,26 @@
                     android:id="@+id/choose_photo_in_registration"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="30dp"
                     android:src="@drawable/plus_photo"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayout6"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
+                    android:id="@+id/linearLayout6"
                     android:layout_width="181dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="30dp"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/choose_photo_in_registration"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@+id/choose_photo_in_registration"
                     app:layout_constraintTop_toTopOf="@+id/choose_photo_in_registration"
                     app:layout_constraintVertical_bias="0.555">
 
@@ -258,11 +294,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/rounded_corners_edittext"
-                        android:hint="Name"
-                        android:textColor="#fff"
-                        android:inputType="textPersonName"
                         android:gravity="center_horizontal"
-                        android:padding="15dp"
+                        android:hint="Name"
+                        android:inputType="textPersonName"
+                        android:padding="@dimen/padding_of_edit_text"
+                        android:textColor="#fff"
                         android:textColorHint="#fff"
                         android:textCursorDrawable="@drawable/color_cursor" />
 
@@ -296,7 +332,7 @@
                 android:inputType="text"
                 android:background="@drawable/rounded_corners_edittext"
                 android:textColorHint="#fff"
-                android:padding="15dp"
+                android:padding="@dimen/padding_of_edit_text"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
@@ -313,7 +349,7 @@
                 android:inputType="number"
                 android:background="@drawable/rounded_corners_edittext"
                 android:textColorHint="#fff"
-                android:padding="15dp"
+                android:padding="@dimen/padding_of_edit_text"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
@@ -330,7 +366,7 @@
                     android:textColor="#fff"
                     android:textColorHint="#fff"
                     android:gravity="center_horizontal"
-                    android:padding="15dp"
+                    android:padding="@dimen/padding_of_edit_text"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="30dp"
@@ -352,7 +388,7 @@
                     android:gravity="center_horizontal"
                     android:background="@drawable/rounded_corners_edittext"
                     android:textColorHint="#fff"
-                    android:padding="15dp"
+                    android:padding="@dimen/padding_of_edit_text"
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="120dp"
                     android:textCursorDrawable="@drawable/color_cursor"
@@ -387,10 +423,23 @@
                 app:switchTabs="@array/switch_tabs"
                 app:textSize="12sp" />
 
+
             <Button
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:id="@+id/access_button_in_registration"/>
+                android:id="@+id/access_button_in_registration"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="100dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/login_button_selector"
+                android:backgroundTint="#f36f21"
+                android:elevation="100dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="continue   "
+                android:drawableEnd="@drawable/ic_arrow_forward_white_24dp"
+                android:gravity="end|center"
+                android:textColor="#FFFFFF"/>
         </LinearLayout>
 
     </ScrollView>
