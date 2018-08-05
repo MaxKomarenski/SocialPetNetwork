@@ -2,9 +2,11 @@ package com.hollybits.socialpetnetwork.activity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,7 +25,14 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.hollybits.socialpetnetwork.Fragments.Map;
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.forms.DeviceOS;
+import com.hollybits.socialpetnetwork.forms.UpdateTokenForm;
 import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.network.ServerRequests;
 
@@ -33,10 +42,13 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 /**
  * A login screen that offers login via email/password.
@@ -208,8 +220,52 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private  void moveToProfile(){
+        getFCMToken();
         Intent intent = new Intent(LoginActivity.this, FragmentDispatcher.class);
         startActivity(intent);
+    }
+
+
+    private void getFCMToken(){
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TOKEN", "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        User user = Paper.book().read(MainActivity.CURRENTUSER);
+
+                        UpdateTokenForm form = new UpdateTokenForm();
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        form.setToken(Base64.encodeToString(token.getBytes(), Base64.NO_WRAP));
+                        form.setId(Base64.encodeToString(user.getId().toString().getBytes(), Base64.NO_WRAP));
+                        form.setDeviceOS(DeviceOS.ANDROID);
+
+                        java.util.Map<String, String> heades = new HashMap<>();
+                        heades.put("Authorization", user.getAuthorizationCode());
+
+                        MainActivity.getServerRequests().updateToken(heades, form).enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                                Log.d("TOKEN UPDATED", response.body());
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                Log.d("TOKEN UPDATE fail", t.getMessage());
+                            }
+                        });
+
+
+                        // Log and toast
+
+                        Log.d("TOKEN", token);
+                    }
+                });
     }
 
 }

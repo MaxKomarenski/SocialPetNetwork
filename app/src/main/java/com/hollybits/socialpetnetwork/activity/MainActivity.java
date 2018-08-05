@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.vision.text.Text;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hollybits.socialpetnetwork.R;
