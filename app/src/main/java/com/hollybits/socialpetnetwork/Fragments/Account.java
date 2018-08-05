@@ -5,10 +5,13 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +50,9 @@ public class Account extends Fragment {
 //
 //    private PhotoGridAdapter photoGridAdapter;
 
+    @BindView(R.id.open_navigation_drawer_image_button)
+    ImageButton openDrawerButton;
+
     @BindViews({R.id.name_of_pet_text_view, R.id.sex_of_pet_text_view,
                 R.id.breed_word_text_view, R.id.name_of_breed_text_view, R.id.address_word_text_view,
                 R.id.place_of_user_text_view, R.id.age_word_text_view, R.id.number_of_age_word_text_view,
@@ -54,6 +60,7 @@ public class Account extends Fragment {
                 R.id.attitude_state_text_view
     })
     List<TextView> informationAboutPet;
+    DrawerLayout drawer;
 
     private OnFragmentInteractionListener mListener;
 
@@ -106,11 +113,16 @@ public class Account extends Fragment {
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         for (TextView textView:
              informationAboutPet) {
-
             textView.setTypeface(mainFont);
         }
 
-
+        openDrawerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+                drawer.openDrawer(Gravity.START);
+            }
+        });
 
         return view;
     }
