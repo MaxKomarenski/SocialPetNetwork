@@ -39,6 +39,7 @@ import com.hollybits.socialpetnetwork.network.ServerRequests;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -123,69 +124,35 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean login(final Credentials credentials, final boolean isReLogin){
 
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            String URL = ServerRequests.CURRENT_ENDPIONT+"/login";
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("email", credentials.email);
-            jsonBody.put("password", credentials.password);
-            final String requestBody = jsonBody.toString();
+        MainActivity.getServerRequests().login(credentials).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+                    String code = response.headers().get("authorization");
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.i("VOLLEY", response);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
-                }
-            }) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return requestBody == null ? null : requestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                        return null;
-                    }
-                }
-
-                @Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    String responseString = "";
-                    if (response != null) {
-                        String code = response.headers.get("authorization");
-                        System.err.println(code);
-                        if(!code.equals("Login Failed")){
-                            if(!isReLogin) {
-                                User user = new User();
-                                user.setAuthorizationCode(code);
-                                user.setCredentials(credentials);
-                                Long id = Long.decode(response.headers.get("id"));
-                                user.setId(id);
-                                loadUserInfo(user);
-                            }else {
-                                User user = Paper.book().read(MainActivity.CURRENTUSER);
-                                user.setAuthorizationCode(code);
-                                Paper.book().write(MainActivity.CURRENTUSER, user);
-                            }
+                    System.err.println(code);
+                    if(!code.equals("Login Failed")){
+                        if(!isReLogin) {
+                            User user = new User();
+                            user.setAuthorizationCode(code);
+                            user.setCredentials(credentials);
+                            Long id = Long.decode(response.headers().get("id"));
+                            user.setId(id);
+                            loadUserInfo(user);
+                        }else {
+                            User user = Paper.book().read(MainActivity.CURRENTUSER);
+                            user.setAuthorizationCode(code);
+                            Paper.book().write(MainActivity.CURRENTUSER, user);
                         }
                     }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                }
-            };
+                    Log.d("LOGIN", "OK");
+            }
 
-            requestQueue.add(stringRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+                Log.d("LOGIN EXEPTION", t.getMessage());
+            }
+        });
         return true;
     }
 
