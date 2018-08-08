@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,11 +17,26 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.network.ServerRequests;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.sql.Timestamp;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.paperdb.Paper;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -63,20 +79,17 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Paper.init(this);
 
-        //TODO delete this
-//        for(String s: Paper.book().getAllKeys()){
-//            Paper.book().delete(s);
-//        }
 
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")
-                .setLenient()
-                .create();
-        retrofit = new Retrofit.Builder()
-                .baseUrl(ServerRequests.CURRENT_ENDPIONT) //Базовая часть адреса
-                .addConverterFactory(GsonConverterFactory.create(gson)) //Конвертер, необходимый для преобразования JSON'а в объекты
-                .build();
-        serverRequests = retrofit.create(ServerRequests.class);
-        checkLogin();
+        if(retrofitInit()){
+            Log.d("RETROFIT INIT", "OK");
+            checkLogin();
+        }
+        else {
+            //TODO Error!!!!!!!!!!!!!
+            Log.d("RETROFIT INIT", "FAIL");
+        }
+
+
 
         Typeface nameFont = Typeface.createFromAsset(this.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         welcome.setTypeface(nameFont);
@@ -106,6 +119,44 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private boolean retrofitInit(){
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .setLenient()
+                .create();
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(ServerRequests.CURRENT_ENDPIONT)
+                .addConverterFactory(GsonConverterFactory.create(gson));
+
+        OkHttpClient okHttp;
+        try {
+            okHttp = new OkHttpClient.Builder()
+                    .sslSocketFactory(getSSLConfig(this).getSocketFactory()).
+                            hostnameVerifier((host, session)-> true)
+                    .build();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+            return false;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return false;
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        retrofit = builder.client(okHttp)//Конвертер, необходимый для преобразования JSON'а в объекты
+                .build();
+        serverRequests = retrofit.create(ServerRequests.class);
+
+        return true;
+    }
+
 
     private void checkLogin(){
         User current = Paper.book().read(MainActivity.CURRENTUSER);
@@ -130,6 +181,36 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private static SSLContext getSSLConfig(Context context) throws CertificateException, IOException,
+            KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+
+        // Loading CAs from an InputStream
+        CertificateFactory cf = null;
+        cf = CertificateFactory.getInstance("X.509");
+
+        Certificate ca;
+        // I'm using Java7. If you used Java6 close it manually with finally.
+        try (InputStream cert = context.getResources().openRawResource(R.raw.social_pet_net_sertificate)) {
+            ca = cf.generateCertificate(cert);
+        }
+
+        // Creating a KeyStore containing our trusted CAs
+        String keyStoreType = KeyStore.getDefaultType();
+        KeyStore keyStore   = KeyStore.getInstance(keyStoreType);
+        keyStore.load(null, null);
+        keyStore.setCertificateEntry("ca", ca);
+
+        // Creating a TrustManager that trusts the CAs in our KeyStore.
+        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+        tmf.init(keyStore);
+
+        // Creating an SSLSocketFactory that uses our TrustManager
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, tmf.getTrustManagers(), null);
+
+        return sslContext;
+    }
 
 
     public static ServerRequests getServerRequests() {
