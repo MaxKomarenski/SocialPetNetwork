@@ -123,7 +123,7 @@ public class RegistrationActivity extends AppCompatActivity {
     JellyToggleButton sexOfPetJelly;
 
     @BindView(R.id.weight_switch_compat_in_registration_activity)
-    SwitchCompat massUnitSwitchCompat;
+    JellyToggleButton massUnitJelly;
 
     @BindView(R.id.attitude_switch_multi_button)
     SwitchMultiButton attitudeSwitchMultiButton;
@@ -153,6 +153,9 @@ public class RegistrationActivity extends AppCompatActivity {
         sexOfPetJelly.setRightText("Female");
         sexOfPetJelly.setRightTextColor("#000000");
         sexOfPetJelly.setLeftTextColor("#000000");
+
+        massUnitJelly.setLeftText("kg");
+        massUnitJelly.setRightText("lb");
 
         Typeface mainFont = Typeface.createFromAsset(this.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         chooseIconText.setTypeface(mainFont);
@@ -262,7 +265,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 MassUnit massUnit;
 
-                if (massUnitSwitchCompat.isChecked()){
+                if (massUnitJelly.isChecked()){
                     massUnit = MassUnit.POUNDS;
                 }else {
                     massUnit = MassUnit.KG;

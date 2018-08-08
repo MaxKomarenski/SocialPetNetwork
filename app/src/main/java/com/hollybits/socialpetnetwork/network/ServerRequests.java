@@ -3,6 +3,7 @@ package com.hollybits.socialpetnetwork.network;
 import com.android.volley.toolbox.StringRequest;
 import com.hollybits.socialpetnetwork.activity.LoginActivity;
 import com.hollybits.socialpetnetwork.enums.PetType;
+import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
 import com.hollybits.socialpetnetwork.forms.RegistrationForm;
 import com.hollybits.socialpetnetwork.forms.UpdateTokenForm;
 import com.hollybits.socialpetnetwork.models.Breed;
@@ -48,6 +49,9 @@ public interface ServerRequests {
 
     @POST("/login")
     Call<Void> login(@Body LoginActivity.Credentials credentials);
+
+    @POST("/getAllInformationAboutUserAndPets")
+    Call<InformationOfUserAndHisPet> getAllInformationAboutUserAndPets(@HeaderMap Map<String, String> headers, @Body Long id);
 
 
 

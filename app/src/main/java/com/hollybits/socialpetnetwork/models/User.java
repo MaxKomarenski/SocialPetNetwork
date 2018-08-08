@@ -16,7 +16,7 @@ public class User {
     private String name;
     private String surname;
     private String phone;
-    private Country country;
+    private City city;
     private List<Pet> pets;
 
 
@@ -24,18 +24,18 @@ public class User {
         credentials = new LoginActivity.Credentials();
     }
 
-    public User(String name, String surname, String phone, Country country) {
+    public User(String name, String surname, String phone, City city) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
-        this.country = country;
+        this.city = city;
     }
 
-    public User(String name, String surname, String phone, Country country, List<Pet> pets) {
+    public User(String name, String surname, String phone, City city, List<Pet> pets) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
-        this.country = country;
+        this.city = city;
         this.pets = pets;
     }
 
@@ -88,12 +88,12 @@ public class User {
         this.phone = phone;
     }
 
-    public Country getCountry() {
-        return country;
+    public City getCity() {
+        return city;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public void setCredentials(LoginActivity.Credentials credentials) {

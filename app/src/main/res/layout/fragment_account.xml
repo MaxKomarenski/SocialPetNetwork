@@ -31,23 +31,23 @@
                                 <ImageButton
                                     android:id="@+id/open_navigation_drawer_image_button"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="40dp"
+                                    android:layout_height="30dp"
                                     android:src="@drawable/ic_menu"
                                     android:background="#fff"
                                     android:scaleType="fitCenter"
-                                    android:tint="@color/primeBackground"
+                                    android:tint="@color/petInfoInAccount"
                                     />
 
                                 <ImageButton
                                     android:id="@+id/settings_account_img_button"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="40dp"
+                                    android:layout_height="30dp"
                                     android:layout_alignParentEnd="true"
                                     android:layout_alignParentTop="true"
                                     android:background="#fff"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_settings"
-                                    android:tint="@color/primeBackground"/>
+                                    android:tint="@color/petInfoInAccount"/>
 
                         </RelativeLayout>
 
@@ -56,7 +56,7 @@
                             android:layout_width="140dp"
                             android:layout_height="140dp"
                             android:src="@drawable/test_photo"
-                            app:civ_border_color="#49df38"
+                            app:civ_border_color="#43b748"
                             app:civ_border_width="6dp"
                             android:layout_marginTop="5dp"/>
 
@@ -83,7 +83,7 @@
                                     android:text="male"
                                     android:layout_marginStart="10dp"
                                     android:textSize="18sp"
-                                    android:textColor="#008b00"
+                                    android:textColor="@color/petInfoInAccount"
                                     android:layout_gravity="center"
                                     android:layout_marginTop="2dp"
                                     />
@@ -114,7 +114,7 @@
                                     android:layout_marginStart="36dp"
                                     android:layout_marginTop="8dp"
                                     android:text="name Of breed"
-                                    android:textColor="#646464"
+                                    android:textColor="@color/petInfoInAccount"
                                     android:textSize="@dimen/size_of_text_in_account"
                                     app:layout_constraintBottom_toBottomOf="@+id/breed_word_text_view"
                                     app:layout_constraintStart_toEndOf="@+id/breed_word_text_view"
@@ -139,13 +139,11 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="36dp"
                                     android:layout_marginTop="16dp"
-                                    android:text="Lviv, Ukraine"
-                                    android:textColor="#646464"
+                                    android:text="Lviv"
+                                    android:textColor="@color/petInfoInAccount"
                                     android:textSize="@dimen/size_of_text_in_account"
-                                    app:layout_constraintBottom_toBottomOf="@+id/address_word_text_view"
                                     app:layout_constraintStart_toEndOf="@+id/address_word_text_view"
-                                    app:layout_constraintTop_toBottomOf="@+id/name_of_breed_text_view"
-                                    app:layout_constraintVertical_bias="1.0" />
+                                    app:layout_constraintTop_toBottomOf="@+id/name_of_breed_text_view" />
 
                                 <TextView
                                     android:id="@+id/age_word_text_view"
@@ -166,7 +164,7 @@
                                     android:layout_marginStart="36dp"
                                     android:layout_marginTop="16dp"
                                     android:text="12"
-                                    android:textColor="#646464"
+                                    android:textColor="@color/petInfoInAccount"
                                     android:textSize="@dimen/size_of_text_in_account"
                                     app:layout_constraintBottom_toBottomOf="@+id/age_word_text_view"
                                     app:layout_constraintStart_toEndOf="@+id/age_word_text_view"
@@ -192,7 +190,7 @@
                                     android:layout_marginStart="36dp"
                                     android:layout_marginTop="16dp"
                                     android:text="43"
-                                    android:textColor="#646464"
+                                    android:textColor="@color/petInfoInAccount"
                                     android:textSize="@dimen/size_of_text_in_account"
                                     app:layout_constraintBottom_toBottomOf="@+id/weight_word_text_view"
                                     app:layout_constraintStart_toEndOf="@+id/weight_word_text_view"
@@ -217,7 +215,7 @@
                                     android:layout_marginStart="36dp"
                                     android:layout_marginTop="16dp"
                                     android:text="Friendly"
-                                    android:textColor="#646464"
+                                    android:textColor="@color/petInfoInAccount"
                                     android:textSize="@dimen/size_of_text_in_account"
                                     app:layout_constraintStart_toEndOf="@+id/attitude_word_text_view"
                                     app:layout_constraintTop_toBottomOf="@+id/amount_of_weight_text_view" />
@@ -234,12 +232,6 @@
                 </LinearLayout>
 
         </ScrollView>
-
-
-
-
-
-
 
         
         <!--<GridView-->
