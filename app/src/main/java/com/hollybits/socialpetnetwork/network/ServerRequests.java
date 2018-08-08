@@ -46,4 +46,9 @@ public interface ServerRequests {
 
 
 
+    @POST("/login")
+    Call<Void> login(@Body LoginActivity.Credentials credentials);
+
+
+
 }
