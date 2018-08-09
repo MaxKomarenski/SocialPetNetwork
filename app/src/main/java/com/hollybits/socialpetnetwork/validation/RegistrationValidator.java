@@ -137,6 +137,7 @@ public class RegistrationValidator implements Validator {
     }
     private RegistrationValidator validatePassword(EditText passwordEditText){
         if(!validationState)
+
             return this;
         String password = passwordEditText.getText().toString();
 
