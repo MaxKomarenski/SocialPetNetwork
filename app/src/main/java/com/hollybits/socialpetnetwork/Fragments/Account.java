@@ -16,13 +16,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.PhotoGridAdapter;
+import com.hollybits.socialpetnetwork.models.Pet;
+import com.hollybits.socialpetnetwork.models.User;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import io.paperdb.Paper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,6 +64,13 @@ public class Account extends Fragment {
                 R.id.attitude_state_text_view
     })
     List<TextView> informationAboutPet;
+
+    @BindViews({R.id.owner_name_and_surname_in_expansion_panel,
+            R.id.owner_phone_in_expansion_panel,
+            R.id.owner_email_in_expansion_panel})
+    List<TextView> informationAboutUser;
+
+
     DrawerLayout drawer;
 
     private OnFragmentInteractionListener mListener;
@@ -110,6 +121,8 @@ public class Account extends Fragment {
 //
 //        photoGridView.setAdapter(photoGridAdapter);
 
+        showAllInformationOnTheScreen();
+
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         for (TextView textView:
              informationAboutPet) {
@@ -125,6 +138,25 @@ public class Account extends Fragment {
         });
 
         return view;
+    }
+
+    private void showAllInformationOnTheScreen(){
+        //TODO make if user has more than one pet
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Pet currentPet = currentUser.getPets().get(0);
+
+
+        informationAboutPet.get(0).setText(currentPet.getName()); //name
+        informationAboutPet.get(1).setText(currentPet.getSex().name().toLowerCase()); //sex
+        informationAboutPet.get(3).setText(currentPet.getBreed().getName()); //breed
+        informationAboutPet.get(5).setText(currentUser.getCity().getName() + ", " + currentUser.getCity().getCountry().getName());// city and country
+        informationAboutPet.get(7).setText(currentPet.getAge().toString()); // age
+        informationAboutPet.get(9).setText(currentPet.getWeight().getMass().toString() + " " + currentPet.getWeight().getMassUnit().getName().toLowerCase());
+        informationAboutPet.get(11).setText(currentPet.getAttitude().toString());
+
+        informationAboutUser.get(0).setText(currentUser.getName() + " " + currentUser.getSurname());
+        informationAboutUser.get(1).setText(currentUser.getPhone());
+        informationAboutUser.get(2).setText(currentUser.getCredentials().email);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

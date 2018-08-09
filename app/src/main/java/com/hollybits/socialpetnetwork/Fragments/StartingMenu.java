@@ -4,13 +4,24 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
+import com.hollybits.socialpetnetwork.models.User;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.ButterKnife;
+import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,11 +78,38 @@ public class StartingMenu extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       View view = inflater.inflate(R.layout.fragment_starting_menu, container, false);
+        View view = inflater.inflate(R.layout.fragment_starting_menu, container, false);
         ButterKnife.bind(this, view);
 
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String,String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
 
-       return view;
+        Log.d("id", currentUser.getId().toString());
+
+        MainActivity.getServerRequests().getAllInformationAboutUserAndPets(authorisationCode, currentUser.getId()).enqueue(new Callback<InformationOfUserAndHisPet>() {
+            @Override
+            public void onResponse(Call<InformationOfUserAndHisPet> call, Response<InformationOfUserAndHisPet> response) {
+                InformationOfUserAndHisPet info = response.body();
+                currentUser.setName(info.getName());
+                currentUser.setPhone(info.getPhone());
+                currentUser.setSurname(info.getSurname());
+                currentUser.setCity(info.getCity());
+                currentUser.setPets(info.getPet());
+
+                Paper.book().write(MainActivity.CURRENTUSER, currentUser);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<InformationOfUserAndHisPet> call, Throwable t) {
+
+            }
+        });
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

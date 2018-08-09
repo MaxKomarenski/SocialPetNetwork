@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -42,6 +43,7 @@ import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.Weight;
 import com.hollybits.socialpetnetwork.validation.RegistrationValidator;
 import com.hollybits.socialpetnetwork.validation.Validator;
+import com.nightonke.jellytogglebutton.JellyToggleButton;
 
 
 import butterknife.BindView;
@@ -120,11 +122,11 @@ public class RegistrationActivity extends AppCompatActivity {
             R.id.rabbit_rat_pet_type_image_button, R.id.raccoon_pet_type_image_button})
     List<ImageButton> listOfPetTypes;
 
-    @BindView(R.id.sex_switch_compat_in_registration_activity)
-    SwitchCompat sexOfPet;
+    @BindView(R.id.sex_jelly_toggle_button)
+    JellyToggleButton sexOfPetJelly;
 
     @BindView(R.id.weight_switch_compat_in_registration_activity)
-    SwitchCompat massUnitSwitchCompat;
+    JellyToggleButton massUnitJelly;
 
     @BindView(R.id.attitude_switch_multi_button)
     SwitchMultiButton attitudeSwitchMultiButton;
@@ -134,7 +136,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
 
-
+    private ProgressDialog progressDialog;
     private AutoCompleteCountryAdapter autoCompleteCountryAdapter;
     private List<Country> countries = new ArrayList<>();
     private List<Breed> allBreadsForSelectedType;
@@ -150,6 +152,10 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        progressDialog = new ProgressDialog(RegistrationActivity.this,
+                R.style.AppTheme_Dark_Dialog);
+
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
         instance = this;
@@ -157,11 +163,36 @@ public class RegistrationActivity extends AppCompatActivity {
         attachListeners();
         loadCountriesList();
 
+        sexOfPetJelly.setRightBackgroundColor("#f81894");
+        sexOfPetJelly.setLeftText("Male");
+        sexOfPetJelly.setRightText("Female");
+        sexOfPetJelly.setRightTextColor("#000000");
+        sexOfPetJelly.setLeftTextColor("#000000");
+
+        massUnitJelly.setLeftText("kg");
+        massUnitJelly.setRightText("lb");
+
         Typeface mainFont = Typeface.createFromAsset(this.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         chooseIconText.setTypeface(mainFont);
         textView1.setTypeface(mainFont);
         textView2.setTypeface(mainFont);
         accessButtonInRegistration.setTypeface(mainFont);
+    }
+
+    private void dismissLoadingDialog(int time) {
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+
+                        progressDialog.dismiss();
+                    }
+                }, time);
+    }
+
+    private void showDialogProgress(String message){
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage(message);
+        progressDialog.show();
     }
 
     private Breed getChosenBreed(String nameOfChosenBreed){
@@ -225,7 +256,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     private void attachListeners(){
-        allPetTypes = new PetType[]{PetType.RAT, PetType.CAT, PetType.BIRD, PetType.DOG, PetType.RABBIT, PetType.RACCOON};
+        PetType[] allPetTypes = new PetType[]{PetType.RAT, PetType.CAT, PetType.BIRD, PetType.DOG, PetType.RABBIT, PetType.RACCOON};
 
         changeColorOfPetTypeButtons(allPetTypes);
 
@@ -263,15 +294,16 @@ public class RegistrationActivity extends AppCompatActivity {
                     attitude = Attitude.BAD;
 
                 Sex s;
-                if (sexOfPet.isChecked()) {
+                if (sexOfPetJelly.isChecked()) {
                     s = Sex.FEMALE;
                 } else {
                     s = Sex.MALE;
                 }
+                System.err.println("-------------->   " + s);
 
                 MassUnit massUnit;
 
-                if (massUnitSwitchCompat.isChecked()){
+                if (massUnitJelly.isChecked()){
                     massUnit = MassUnit.POUNDS;
                 }else {
                     massUnit = MassUnit.KG;
