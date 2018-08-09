@@ -40,6 +40,8 @@ import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.models.Breed;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.Weight;
+import com.hollybits.socialpetnetwork.validation.RegistrationValidator;
+import com.hollybits.socialpetnetwork.validation.Validator;
 
 
 import butterknife.BindView;
@@ -139,6 +141,9 @@ public class RegistrationActivity extends AppCompatActivity {
     private Pet newPet;
     private PetType petType;
     private PetType[] allPetTypes;
+    private RegistrationActivity instance;
+
+    private Validator validator;
 
 
 
@@ -147,6 +152,8 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
+        instance = this;
+        validator  = new RegistrationValidator();
         attachListeners();
         loadCountriesList();
 
@@ -158,6 +165,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private Breed getChosenBreed(String nameOfChosenBreed){
+        if(allBreadsForSelectedType != null)
         for (Breed b: allBreadsForSelectedType){
             if(b.getName().equalsIgnoreCase(nameOfChosenBreed)){
                 return b;
@@ -168,6 +176,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private Country getChosenCountry(String nameOfChosenCountry){
+        if(countries != null)
         for (Country c: countries) {
             if(c.getName().equalsIgnoreCase(nameOfChosenCountry)){
                 return c;
@@ -236,6 +245,11 @@ public class RegistrationActivity extends AppCompatActivity {
         accessButtonInRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(!validator.validate(instance, 0)){
+                    return;
+                }
+
                 Breed breedOfPet = getChosenBreed(breedInput.getText().toString());
 
                 Attitude attitude;
@@ -281,6 +295,11 @@ public class RegistrationActivity extends AppCompatActivity {
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(!validator.validate(instance, 1)){
+                    return;
+                }
+
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "You are registrated", Toast.LENGTH_SHORT);
                 toast.show();
@@ -327,6 +346,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if(response.body() != null){
                     countries.clear();
                     countries.addAll(response.body());
+                    ((RegistrationValidator) validator).setCountries(countries);
 
                     autoCompleteCountryAdapter = new AutoCompleteCountryAdapter(RegistrationActivity.this,countries);
                     chosenCountry.setAdapter(autoCompleteCountryAdapter);
@@ -349,6 +369,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if(response.body() != null){
                     allBreadsForSelectedType = response.body();
                     breedAdapter = new BreedAdapter(RegistrationActivity.this, allBreadsForSelectedType);
+                    ((RegistrationValidator) validator).setBreeds(allBreadsForSelectedType);
                     breedInput.setAdapter(breedAdapter);
 
                 }else {
