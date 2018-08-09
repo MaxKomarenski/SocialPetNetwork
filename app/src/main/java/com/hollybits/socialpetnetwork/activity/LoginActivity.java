@@ -1,5 +1,8 @@
 package com.hollybits.socialpetnetwork.activity;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
@@ -89,6 +92,8 @@ public class LoginActivity extends AppCompatActivity {
         public String password;
     }
 
+    ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +101,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         checkLogin();
+
+        progressDialog = new ProgressDialog(LoginActivity.this,
+                R.style.AppTheme_Dark_Dialog);
+
         attachListeners();
         credentials = new Credentials();
 
@@ -105,13 +114,16 @@ public class LoginActivity extends AppCompatActivity {
         thankText1.setTypeface(mainFont);
         thankText2.setTypeface(mainFont);
 
-
     }
 
     private void attachListeners(){
+
         loginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Authenticating...");
+                progressDialog.show();
                 credentials.email = emailInput.getText().toString();
                 credentials.password = passwordInput.getText().toString();
                 login(credentials, false);
@@ -130,21 +142,33 @@ public class LoginActivity extends AppCompatActivity {
                     String code = response.headers().get("authorization");
 
                     System.err.println(code);
-                    if(!code.equals("Login Failed")){
-                        if(!isReLogin) {
-                            User user = new User();
-                            user.setAuthorizationCode(code);
-                            user.setCredentials(credentials);
-                            Long id = Long.decode(response.headers().get("id"));
-                            user.setId(id);
-                            loadUserInfo(user);
-                        }else {
-                            User user = Paper.book().read(MainActivity.CURRENTUSER);
-                            user.setAuthorizationCode(code);
-                            Paper.book().write(MainActivity.CURRENTUSER, user);
+
+                    try {
+
+                        if(!code.equals("Login Failed")){
+                            if(!isReLogin) {
+                                User user = new User();
+                                user.setAuthorizationCode(code);
+                                user.setCredentials(credentials);
+                                Long id = Long.decode(response.headers().get("id"));
+                                user.setId(id);
+                                loadUserInfo(user);
+                            }else {
+                                User user = Paper.book().read(MainActivity.CURRENTUSER);
+                                user.setAuthorizationCode(code);
+                                Paper.book().write(MainActivity.CURRENTUSER, user);
+                            }
+
                         }
+
+                        dismissLoadingDialog(3000);
+                        Log.d("LOGIN", "OK");
+
+                    }catch (NullPointerException e){
+                        dismissLoadingDialog(1000);
+                        showErrorMessage();
                     }
-                    Log.d("LOGIN", "OK");
+
             }
 
             @Override
@@ -154,6 +178,33 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    private void dismissLoadingDialog(int time){
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        // On complete call either onSignupSuccess or onSignupFailed
+                        // depending on success
+                        // onSignupFailed();
+                        progressDialog.dismiss();
+                    }
+                }, time);
+    }
+
+    private void showErrorMessage(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setTitle("Error")
+                .setMessage("Some issues with login. Please, try again.")
+                .setCancelable(false)
+                .setNegativeButton("OK, I'll try again",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void loadUserInfo(User user){
