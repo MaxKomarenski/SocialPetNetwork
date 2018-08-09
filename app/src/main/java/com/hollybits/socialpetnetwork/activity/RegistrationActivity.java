@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -133,7 +134,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
 
-
+    private ProgressDialog progressDialog;
     private AutoCompleteCountryAdapter autoCompleteCountryAdapter;
     private List<Country> countries = new ArrayList<>();
     private List<Breed> allBreadsForSelectedType;
@@ -143,6 +144,10 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        progressDialog = new ProgressDialog(RegistrationActivity.this,
+                R.style.AppTheme_Dark_Dialog);
+
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
         attachListeners();
@@ -162,6 +167,22 @@ public class RegistrationActivity extends AppCompatActivity {
         textView1.setTypeface(mainFont);
         textView2.setTypeface(mainFont);
         accessButtonInRegistration.setTypeface(mainFont);
+    }
+
+    private void dismissLoadingDialog(int time) {
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+
+                        progressDialog.dismiss();
+                    }
+                }, time);
+    }
+
+    private void showDialogProgress(String message){
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage(message);
+        progressDialog.show();
     }
 
     private Breed getChosenBreed(String nameOfChosenBreed){
