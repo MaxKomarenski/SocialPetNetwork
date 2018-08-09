@@ -51,9 +51,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.google.firebase:firebase-messaging:17.1.0'
 
-
-
-                // this line must be included to use FCM
+    // this line must be included to use FCM
     //circle image
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 

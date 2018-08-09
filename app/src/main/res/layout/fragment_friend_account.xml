@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_account"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    tools:context=".Fragments.FriendAccount"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="10dp">
+
+                <ImageButton
+                    android:id="@+id/open_navigation_drawer_image_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_menu"
+                    android:background="#fff"
+                    android:scaleType="fitCenter"
+                    android:tint="@color/petInfoInAccount"
+                    />
+
+                <ImageButton
+                    android:id="@+id/settings_account_img_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:background="#fff"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_settings"
+                    android:tint="@color/petInfoInAccount"/>
+
+            </RelativeLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_photo_in_account_fragment"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:src="@drawable/test_photo"
+                app:civ_border_color="#7cc4ec"
+                app:civ_border_width="6dp"
+                android:layout_marginTop="5dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/back_ground_for_name_of_pet_in_friend_page"
+                android:layout_marginTop="20dp"
+                android:paddingStart="22dp"
+                android:paddingEnd="22dp">
+
+                <TextView
+                    android:id="@+id/name_of_pet_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textColor="#fff"
+                    android:textSize="25sp"/>
+
+                <TextView
+                    android:id="@+id/sex_of_pet_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="male"
+                    android:layout_marginStart="10dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/petInfoInAccount"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="2dp"
+                    />
+
+            </LinearLayout>
+
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/breed_word_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Breed"
+                    android:textColor="#646464"
+                    android:textSize="@dimen/size_of_text_in_account"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/name_of_breed_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginTop="8dp"
+                    android:text="name Of breed"
+                    android:textColor="@color/petInfoInAccount"
+                    android:textSize="@dimen/size_of_text_in_account"
+                    app:layout_constraintBottom_toBottomOf="@+id/breed_word_text_view"
+                    app:layout_constraintStart_toEndOf="@+id/breed_word_text_view"
+                    app:layout_constraintTop_toTopOf="@+id/breed_word_text_view"
+                    app:layout_constraintVertical_bias="1.0" />
+
+
+                <TextView
+                    android:id="@+id/address_word_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Address"
+                    android:textColor="#646464"
+                    android:textSize="@dimen/size_of_text_in_account"
+                    app:layout_constraintEnd_toEndOf="@+id/breed_word_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/breed_word_text_view" />
+
+                <TextView
+                    android:id="@+id/place_of_user_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Lviv"
+                    android:textColor="@color/petInfoInAccount"
+                    android:textSize="@dimen/size_of_text_in_account"
+                    app:layout_constraintStart_toEndOf="@+id/address_word_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/name_of_breed_text_view" />
+
+                <TextView
+                    android:id="@+id/age_word_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Age"
+                    android:textColor="#646464"
+                    android:textSize="@dimen/size_of_text_in_account"
+                    app:layout_constraintEnd_toEndOf="@+id/address_word_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/address_word_text_view" />
+
+                <TextView
+                    android:id="@+id/number_of_age_word_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginTop="16dp"
+                    android:text="12"
+                    android:textColor="@color/petInfoInAccount"
+                    android:textSize="@dimen/size_of_text_in_account"
+                    app:layout_constraintBottom_toBottomOf="@+id/age_word_text_view"
+                    app:layout_constraintStart_toEndOf="@+id/age_word_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/place_of_user_text_view"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/weight_word_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Weight"
+                    android:textColor="#646464"
+                    android:textSize="@dimen/size_of_text_in_account"
+                    app:layout_constraintEnd_toEndOf="@+id/age_word_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/age_word_text_view" />
+
+                <TextView
+                    android:id="@+id/amount_of_weight_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginTop="16dp"
+                    android:text="43"
+                    android:textColor="@color/petInfoInAccount"
+                    android:textSize="@dimen/size_of_text_in_account"
+                    app:layout_constraintBottom_toBottomOf="@+id/weight_word_text_view"
+                    app:layout_constraintStart_toEndOf="@+id/weight_word_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/number_of_age_word_text_view"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/attitude_word_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Attitude"
+                    android:textColor="#646464"
+                    android:textSize="@dimen/size_of_text_in_account"
+                    app:layout_constraintEnd_toEndOf="@+id/weight_word_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/weight_word_text_view" />
+
+                <TextView
+                    android:id="@+id/attitude_state_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Friendly"
+                    android:textColor="@color/petInfoInAccount"
+                    android:textSize="@dimen/size_of_text_in_account"
+                    app:layout_constraintStart_toEndOf="@+id/attitude_word_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/amount_of_weight_text_view" />
+
+
+
+
+            </android.support.constraint.ConstraintLayout>
+
+            <include
+                layout="@layout/expansion_panel_for_user_information_in_account_fragment"
+                />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|bottom"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/img_dialog" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Leave a message" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/img_dog" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Become friend" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/img_map" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="See on map" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <!--<GridView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/photo_grid_view"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:numColumns="3"-->
+    <!--android:verticalSpacing="1dp"-->
+    <!--android:horizontalSpacing="1dp"-->
+    <!--android:gravity="center"-->
+    <!--android:stretchMode="columnWidth"-->
+
+    <!--/>-->
+
+
+
+</LinearLayout>

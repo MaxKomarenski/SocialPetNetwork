@@ -5,21 +5,21 @@
     android:id="@+id/fragment_account"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primeBackground"
+    android:background="#fff"
     tools:context=".Fragments.Account"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:background="@drawable/background_for_linear_layout_in_account"
-                    android:paddingBottom="40dp">
+                    >
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -66,7 +66,8 @@
                             android:orientation="horizontal"
                             android:background="@drawable/background_for_name_of_pet"
                             android:layout_marginTop="20dp"
-                            android:paddingHorizontal="22dp">
+                            android:paddingStart="22dp"
+                            android:paddingEnd="22dp">
 
                                 <TextView
                                     android:id="@+id/name_of_pet_text_view"
@@ -74,7 +75,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Name"
                                     android:textColor="#fff"
-                                    android:textSize="30sp"/>
+                                    android:textSize="25sp"/>
 
                                 <TextView
                                     android:id="@+id/sex_of_pet_text_view"
@@ -93,13 +94,13 @@
 
                         <android.support.constraint.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content">
 
                                 <TextView
                                     android:id="@+id/breed_word_text_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="56dp"
+                                    android:layout_marginStart="80dp"
                                     android:layout_marginTop="16dp"
                                     android:text="Breed"
                                     android:textColor="#646464"
@@ -228,6 +229,86 @@
                         <include
                             layout="@layout/expansion_panel_for_user_information_in_account_fragment"
                             />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|bottom"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                        <ImageButton
+                            android:layout_width="104dp"
+                            android:layout_height="104dp"
+                            android:background="@null"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/img_gallery" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gallery" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                        <ImageButton
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:background="@null"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/img_map_2" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Map" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                        <ImageButton
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:background="@null"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/img_store" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Store" />
+
+                </LinearLayout>
+
+
+        </LinearLayout>
+
+
 
                 </LinearLayout>
 
