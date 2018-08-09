@@ -25,6 +25,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.esotericsoftware.kryo.Registration;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.adapters.AutoCompleteCountryAdapter;
 import com.hollybits.socialpetnetwork.enums.Attitude;
@@ -41,8 +42,12 @@ import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.models.Breed;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.Weight;
+import com.hollybits.socialpetnetwork.validation.RegistrationValidator;
+import com.hollybits.socialpetnetwork.validation.Validator;
 import com.nightonke.jellytogglebutton.JellyToggleButton;
 
+
+import javax.net.ssl.HttpsURLConnection;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -140,6 +145,12 @@ public class RegistrationActivity extends AppCompatActivity {
     private List<Breed> allBreadsForSelectedType;
     private Pet newPet;
     private PetType petType;
+    private PetType[] allPetTypes;
+    private RegistrationActivity instance;
+
+    private Validator validator;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +161,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
+        instance = this;
+        validator  = new RegistrationValidator();
         attachListeners();
         loadCountriesList();
 
@@ -186,6 +199,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private Breed getChosenBreed(String nameOfChosenBreed){
+        if(allBreadsForSelectedType != null)
         for (Breed b: allBreadsForSelectedType){
             if(b.getName().equalsIgnoreCase(nameOfChosenBreed)){
                 return b;
@@ -196,6 +210,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private Country getChosenCountry(String nameOfChosenCountry){
+        if(countries != null)
         for (Country c: countries) {
             if(c.getName().equalsIgnoreCase(nameOfChosenCountry)){
                 return c;
@@ -264,6 +279,14 @@ public class RegistrationActivity extends AppCompatActivity {
         accessButtonInRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                showDialogProgress("Validating info");
+                if(!validator.validate(instance, 0)){
+                    dismissLoadingDialog(1500);
+                    return;
+                }
+                dismissLoadingDialog(1500);
+
                 Breed breedOfPet = getChosenBreed(breedInput.getText().toString());
 
                 Attitude attitude;
@@ -310,6 +333,16 @@ public class RegistrationActivity extends AppCompatActivity {
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                showDialogProgress("Validating");
+                if(!validator.validate(instance, 1)){
+                    Log.d("Validation","Fail");
+                    dismissLoadingDialog(1500);
+                    return;
+                }
+                Log.d("Validation","OK");
+                progressDialog.setMessage("Signing you up!");
+
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "You are registrated", Toast.LENGTH_SHORT);
                 toast.show();
@@ -336,12 +369,21 @@ public class RegistrationActivity extends AppCompatActivity {
                 MainActivity.getServerRequests().sendRegistrationFormToTheServer(registrationForm).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        if(response.code()== HttpsURLConnection.HTTP_ACCEPTED){
+                            dismissLoadingDialog(500);
+                            Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                        }else {
+                            progressDialog.setMessage("Something wrong with registration :( Message from server: "+response.body());
+                            dismissLoadingDialog(4000);
+                        }
                         System.err.println("Response from registration -->   " + response.body());
                     }
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-
+                        progressDialog.setMessage("Can`t connect to server. Please check your connection and try again");
+                        dismissLoadingDialog(4000);
                     }
                 });
 
@@ -356,6 +398,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if(response.body() != null){
                     countries.clear();
                     countries.addAll(response.body());
+                    ((RegistrationValidator) validator).setCountries(countries);
 
                     autoCompleteCountryAdapter = new AutoCompleteCountryAdapter(RegistrationActivity.this,countries);
                     chosenCountry.setAdapter(autoCompleteCountryAdapter);
@@ -378,6 +421,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if(response.body() != null){
                     allBreadsForSelectedType = response.body();
                     breedAdapter = new BreedAdapter(RegistrationActivity.this, allBreadsForSelectedType);
+                    ((RegistrationValidator) validator).setBreeds(allBreadsForSelectedType);
                     breedInput.setAdapter(breedAdapter);
 
                 }else {
