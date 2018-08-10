@@ -5,5 +5,6 @@
         <item name="windowNoTitle">true</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="android:statusBarColor">#1e90ff</item>
+
     </style>
 </resources>

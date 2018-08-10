@@ -1,24 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_account"
-            android:icon="@drawable/ic_account_circle_black_24dp"
-            android:title="Account" />
-
+    <group android:checkableBehavior="single" tools:ignore="MenuTitle">
+    <group android:checkableBehavior="single" android:id="@+id/group1" >
         <item
             android:id="@+id/nav_map"
-            android:icon="@drawable/ic_map"
-            android:iconTint="#939393"
-            android:title="Map"
+            app:actionLayout="@layout/maps_in_nav_bar_layout"
             />
-
+    </group>
+    <group android:checkableBehavior="single" android:id="@+id/group2" >
+        <item
+            android:id="@+id/nav_account"
+            app:actionLayout="@layout/profile_in_nav_bar_layout"
+            />
+    </group>
+    <group android:checkableBehavior="single" android:id="@+id/group3" >
+        <item
+            android:id="@+id/nav_friends"
+            app:actionLayout="@layout/friend_in_nav_bar_layout"
+            />
+    </group>
+    <group android:checkableBehavior="single" android:id="@+id/group4" >
+        <item
+            android:id="@+id/nav_messages"
+            app:actionLayout="@layout/messages_in_nav_bar_layout"
+            />
+    </group>
+    <group android:checkableBehavior="single" android:id="@+id/group5" >
+        <item
+            android:id="@+id/nav_store"
+            app:actionLayout="@layout/store_in_nav_bar_layout"
+            />
+    </group>
+    <group android:checkableBehavior="single" android:id="@+id/group6" >
+        <item
+            android:id="@+id/nav_gallery"
+            app:actionLayout="@layout/gallery_in_nav_bar_layout"
+            />
+    </group>
     </group>
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single" android:id="@+id/group7" >
         <item
             android:id="@+id/nav_log_out"
             android:icon="@drawable/ic_warning_black_24dp"

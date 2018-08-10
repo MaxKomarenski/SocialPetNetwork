@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.Fragments.Account;
 import com.hollybits.socialpetnetwork.Fragments.StartingMenu;
@@ -96,6 +97,8 @@ public class FragmentDispatcher extends AppCompatActivity
         int id = item.getItemId();
         Fragment fragment = null;
         Class fragmentClass;
+        TextView textView = item.getActionView().findViewById(R.id.text_in_menu);
+        textView.setTextColor(getResources().getColor(R.color.active_item));
         if(options.containsKey(id)){
             fragmentClass = options.get(id);
         } else if (!options.containsKey(id)){
@@ -112,8 +115,6 @@ public class FragmentDispatcher extends AppCompatActivity
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
