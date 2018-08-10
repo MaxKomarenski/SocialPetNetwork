@@ -4,12 +4,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
 import com.hollybits.socialpetnetwork.models.User;
@@ -17,6 +19,7 @@ import com.hollybits.socialpetnetwork.models.User;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.paperdb.Paper;
 import retrofit2.Call;
@@ -32,8 +35,10 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 public class StartingMenu extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+    @BindView(R.id.friends_card_view_in_starting_menu)
+    CardView friendsCardView;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -81,6 +86,12 @@ public class StartingMenu extends Fragment {
         View view = inflater.inflate(R.layout.fragment_starting_menu, container, false);
         ButterKnife.bind(this, view);
 
+        friendsCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(UserFriends.class);
+            }
+        });
 
         return view;
     }
