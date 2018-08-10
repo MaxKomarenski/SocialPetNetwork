@@ -16,6 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.Fragments.Account;
@@ -60,6 +62,14 @@ public class FragmentDispatcher extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        ImageButton logout = navigationView.getHeaderView(0).findViewById(R.id.logout_imagebutton_in_nav_header);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logOut();
+            }
+        });
         navigationView.setNavigationItemSelectedListener(this);
         loadUserInfo();
         launchFragment(StartingMenu.class);
@@ -106,9 +116,6 @@ public class FragmentDispatcher extends AppCompatActivity
         textView.setTextColor(getResources().getColor(R.color.active_item));
         if(options.containsKey(id)){
             fragmentClass = options.get(id);
-        } else if (!options.containsKey(id)){
-            logOut();
-            return false;
         }else {
             fragmentClass = Account.class;
         }
