@@ -81,33 +81,6 @@ public class StartingMenu extends Fragment {
         View view = inflater.inflate(R.layout.fragment_starting_menu, container, false);
         ButterKnife.bind(this, view);
 
-        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-        Map<String,String> authorisationCode = new HashMap<>();
-        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-
-        Log.d("id", currentUser.getId().toString());
-
-        MainActivity.getServerRequests().getAllInformationAboutUserAndPets(authorisationCode, currentUser.getId()).enqueue(new Callback<InformationOfUserAndHisPet>() {
-            @Override
-            public void onResponse(Call<InformationOfUserAndHisPet> call, Response<InformationOfUserAndHisPet> response) {
-                InformationOfUserAndHisPet info = response.body();
-                currentUser.setName(info.getName());
-                currentUser.setPhone(info.getPhone());
-                currentUser.setSurname(info.getSurname());
-                currentUser.setCity(info.getCity());
-                currentUser.setPets(info.getPet());
-
-                Paper.book().write(MainActivity.CURRENTUSER, currentUser);
-
-
-            }
-
-            @Override
-            public void onFailure(Call<InformationOfUserAndHisPet> call, Throwable t) {
-
-            }
-        });
-
 
         return view;
     }

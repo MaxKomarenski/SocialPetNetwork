@@ -44,7 +44,7 @@
         app:layout_constraintVertical_bias="0.692" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/name_surname_nav_header"
         android:layout_width="wrap_content"
         android:layout_height="29dp"
         android:layout_marginBottom="8dp"

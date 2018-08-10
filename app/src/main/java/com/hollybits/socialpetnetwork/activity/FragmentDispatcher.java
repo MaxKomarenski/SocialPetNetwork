@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,11 +22,17 @@ import com.hollybits.socialpetnetwork.Fragments.Account;
 import com.hollybits.socialpetnetwork.Fragments.StartingMenu;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.LoginActivity;
+import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
+import com.hollybits.socialpetnetwork.models.Pet;
+import com.hollybits.socialpetnetwork.models.User;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FragmentDispatcher extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,9 +61,7 @@ public class FragmentDispatcher extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-
+        loadUserInfo();
         launchFragment(StartingMenu.class);
         setTitle("Account");
 
@@ -118,7 +123,6 @@ public class FragmentDispatcher extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
-        item.setCheckable(true);
         setTitle(item.getTitle());
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -133,6 +137,38 @@ public class FragmentDispatcher extends AppCompatActivity
         startActivity(intent);
     }
 
+    private void loadUserInfo() {
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+
+        Log.d("id", currentUser.getId().toString());
+
+        MainActivity.getServerRequests().getAllInformationAboutUserAndPets(authorisationCode, currentUser.getId()).enqueue(new Callback<InformationOfUserAndHisPet>() {
+            @Override
+            public void onResponse(Call<InformationOfUserAndHisPet> call, Response<InformationOfUserAndHisPet> response) {
+                InformationOfUserAndHisPet info = response.body();
+                currentUser.setName(info.getName());
+                currentUser.setPhone(info.getPhone());
+                currentUser.setSurname(info.getSurname());
+                currentUser.setCity(info.getCity());
+                currentUser.setPets(info.getPet());
+                Paper.book().write(MainActivity.CURRENTUSER, currentUser);
+                Paper.book().write(MainActivity.CURRENT_PET, currentUser.getPets().get(0)); //TODO smth
+
+                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                TextView name = navigationView.getHeaderView(0).findViewById(R.id.name_surname_nav_header);
+                Pet currentPet = Paper.book().read(MainActivity.CURRENT_PET);
+                name.setText(currentPet.getName());
+            }
+
+            @Override
+            public void onFailure(Call<InformationOfUserAndHisPet> call, Throwable t) {
+
+
+            }
+        });
+    }
     private void init(){
         options = new HashMap<>();
 

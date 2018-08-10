@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private final static String  DATE = "lastLoginDate";
     private static final long MILISECOND_IN_9_DAYS = 777_600_000;
 
+    public static final String CURRENT_PET = "currentPet";
     public static final String CURRENTUSER ="currentUser";
 
     @BindView(R.id.move_to_login)
