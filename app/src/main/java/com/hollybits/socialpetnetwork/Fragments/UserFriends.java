@@ -107,6 +107,7 @@ public class UserFriends extends Fragment {
         friends.add(friend7);
         friends.add(friend8);
 
+
         userFriendsAdapter = new UserFriendsAdapter(friends);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         userFriendsRecyclerView.setLayoutManager(layoutManager);
