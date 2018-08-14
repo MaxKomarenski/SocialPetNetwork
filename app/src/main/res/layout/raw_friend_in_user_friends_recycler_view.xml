@@ -4,65 +4,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_for_raw_of_recycler_view"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:layout_marginEnd="20dp"
     android:layout_marginStart="20dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/pet_photo_in_user_friend_recycler_view"
-        android:layout_width="70dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/test_photo"
-        app:civ_border_color="#43b748"
-        app:civ_border_width="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/pet_photo_in_user_friend_recycler_view"
-        app:layout_constraintStart_toEndOf="@+id/pet_photo_in_user_friend_recycler_view"
-        app:layout_constraintTop_toTopOf="@+id/pet_photo_in_user_friend_recycler_view"
-        app:layout_constraintVertical_bias="0.444">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/pet_photo_in_user_friend_recycler_view"
+            android:layout_width="70dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/test_photo"
+            app:civ_border_color="#43b748"
+            app:civ_border_width="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/name_of_pet_in_user_friend_recycler_view"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="name"
-            android:textColor="#000"
-            android:textSize="25sp" />
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/pet_photo_in_user_friend_recycler_view"
+            app:layout_constraintStart_toEndOf="@+id/pet_photo_in_user_friend_recycler_view"
+            app:layout_constraintTop_toTopOf="@+id/pet_photo_in_user_friend_recycler_view"
+            app:layout_constraintVertical_bias="0.444">
 
-        <TextView
-            android:id="@+id/breed_of_pet_in_user_friend_recycler_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="breed"
-            android:textColor="#979ea4"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/name_of_pet_in_user_friend_recycler_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="name"
+                android:textColor="#000"
+                android:textSize="25sp" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/breed_of_pet_in_user_friend_recycler_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="breed"
+                android:textColor="#979ea4"
+                android:textSize="20sp" />
 
-    <ImageView
-        android:id="@+id/indicator_in_user_friend_recycler_view"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/indicator_in_user_friend_recycler_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>
