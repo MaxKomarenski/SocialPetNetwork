@@ -11,16 +11,24 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.UserFriendsAdapter;
+import com.hollybits.socialpetnetwork.models.FriendInfo;
+import com.hollybits.socialpetnetwork.models.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.paperdb.Paper;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class UserFriends extends Fragment {
@@ -28,7 +36,7 @@ public class UserFriends extends Fragment {
     @BindView(R.id.user_friends_recycler_view)
     RecyclerView userFriendsRecyclerView;
 
-    private List<Map<String, Object>> friends = new ArrayList<>();
+    private List<FriendInfo> friends;
 
     private UserFriendsAdapter userFriendsAdapter;
 
@@ -69,41 +77,7 @@ public class UserFriends extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_friends, container, false);
         ButterKnife.bind(this, view);
 
-        Map<String,Object> friend1 = new HashMap<>();
-        friend1.put("name", "Dibil");
-        friend1.put("breed", "Fuck you");
-
-        Map<String,Object> friend2 = new HashMap<>();
-        friend2.put("name", "Dibil2");
-        friend2.put("breed", "Fuck you2");
-
-        Map<String,Object> friend4 = new HashMap<>();
-        friend4.put("name", "Dibil2");
-        friend4.put("breed", "Fuck you2");
-
-        Map<String,Object> friend5 = new HashMap<>();
-        friend5.put("name", "Dibil2");
-        friend5.put("breed", "Fuck you2");
-
-        Map<String,Object> friend6 = new HashMap<>();
-        friend6.put("name", "Dibil2");
-        friend6.put("breed", "Fuck you2");
-
-        Map<String,Object> friend7 = new HashMap<>();
-        friend7.put("name", "Dibil2");
-        friend7.put("breed", "Fuck you2");
-
-        Map<String,Object> friend8 = new HashMap<>();
-        friend8.put("name", "Dibil2");
-        friend8.put("breed", "Fuck you2");
-
-        friends.add(friend1);
-        friends.add(friend2);
-        friends.add(friend4);
-        friends.add(friend5);
-        friends.add(friend6);
-        friends.add(friend7);
-        friends.add(friend8);
+        getAllUserFriends();
 
 
         userFriendsAdapter = new UserFriendsAdapter(friends);
@@ -117,6 +91,25 @@ public class UserFriends extends Fragment {
         userFriendsAdapter.notifyDataSetChanged();
 
         return view;
+    }
+
+    private void getAllUserFriends(){
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        MainActivity.getServerRequests().getAllUserFriends(authorisationCode, currentUser.getId()).enqueue(new Callback<Set<FriendInfo>>() {
+            @Override
+            public void onResponse(Call<Set<FriendInfo>> call, Response<Set<FriendInfo>> response) {
+                friends.clear();
+                friends.addAll(response.body());
+                userFriendsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<Set<FriendInfo>> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override

@@ -8,9 +8,11 @@ import com.hollybits.socialpetnetwork.forms.RegistrationForm;
 import com.hollybits.socialpetnetwork.forms.UpdateTokenForm;
 import com.hollybits.socialpetnetwork.models.Breed;
 import com.hollybits.socialpetnetwork.models.Country;
+import com.hollybits.socialpetnetwork.models.FriendInfo;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -53,6 +55,7 @@ public interface ServerRequests {
     @POST("/getAllInformationAboutUserAndPets")
     Call<InformationOfUserAndHisPet> getAllInformationAboutUserAndPets(@HeaderMap Map<String, String> headers, @Body Long id);
 
-
+    @POST("/getUsersFriends")
+    Call<Set<FriendInfo>> getAllUserFriends(@HeaderMap Map<String, String> headers, @Query("id") Long id);
 
 }

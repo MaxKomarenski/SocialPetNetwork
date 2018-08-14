@@ -15,6 +15,8 @@ public class FriendInfo {
     private String PetBreedName;
     private Timestamp lastActiveTime;
 
+    public FriendInfo() {
+    }
 
     public Long getId() {
         return id;
