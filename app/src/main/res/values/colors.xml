@@ -11,6 +11,7 @@
     <color name="colorButtonCompleteState">#0AFF26</color>
 
     <color name="active_item">#7cc4ec</color>
+    <color name="not_active_item">#f3732a</color>
     <color name="petInfoInAccount">#1a3665</color>
 
 </resources>

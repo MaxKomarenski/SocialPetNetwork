@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:text="Profile"
+        android:text="Friends"
         android:textColor="#f3732a"
         android:textStyle="bold"
         />

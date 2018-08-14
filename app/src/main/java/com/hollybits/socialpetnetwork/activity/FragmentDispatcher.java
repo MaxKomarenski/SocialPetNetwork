@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.Fragments.Account;
 import com.hollybits.socialpetnetwork.Fragments.StartingMenu;
+import com.hollybits.socialpetnetwork.Fragments.UserFriends;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.LoginActivity;
 import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
@@ -41,6 +42,7 @@ public class FragmentDispatcher extends AppCompatActivity
 
     private Map<Integer, Class> options;
     private static FragmentManager fragmentManager;
+    private MenuItem previoust;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +111,11 @@ public class FragmentDispatcher extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        if(previoust != null){
+            TextView textView = previoust.getActionView().findViewById(R.id.text_in_menu);
+            textView.setTextColor(getResources().getColor(R.color.not_active_item));
+        }
+        previoust = item;
         int id = item.getItemId();
         Fragment fragment = null;
         Class fragmentClass;
@@ -181,6 +188,7 @@ public class FragmentDispatcher extends AppCompatActivity
 
         options.put(R.id.nav_account, Account.class);
         options.put(R.id.nav_map, com.hollybits.socialpetnetwork.Fragments.Map.class);
+        options.put(R.id.nav_friends, UserFriends.class);
     }
 
     public static boolean launchFragment(Class fragmentClass){
