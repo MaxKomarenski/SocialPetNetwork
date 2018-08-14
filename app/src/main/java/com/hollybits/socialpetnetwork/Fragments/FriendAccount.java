@@ -9,11 +9,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.models.Pet;
+import com.hollybits.socialpetnetwork.models.UserInfo;
 
 import java.util.List;
 
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import io.paperdb.Paper;
 
 
 public class FriendAccount extends Fragment {
@@ -73,11 +77,41 @@ public class FriendAccount extends Fragment {
         View view = inflater.inflate(R.layout.fragment_friend_account, container, false);
         ButterKnife.bind(this, view);
 
+        fillAllInformation();
+
 
 
         return view;
     }
 
+    private void fillAllInformation(){
+        UserInfo userInfo = Paper.book().read(MainActivity.CURRENT_CHOICE);
+        Pet pet = new Pet();
+        for (Pet p:
+             userInfo.getPets()) {
+            if(p.getId().equals(userInfo.getPet_id())){
+                pet = p;
+            }
+        }
+        
+        String[] info = {
+                pet.getName(),
+                pet.getSex().name().toLowerCase(),
+                pet.getBreed().getName(),
+                userInfo.getCity().getName() + ", " + userInfo.getCity().getCountry().getName(),
+                pet.getAge().toString(),
+                pet.getWeight().getMass().toString() + " " + pet.getWeight().getMassUnit().name().toLowerCase(),
+                pet.getAttitude().name(),
+                userInfo.getName() + " " + userInfo.getSurname(),
+                userInfo.getPhone(),
+                userInfo.getEmail()
+        };
+
+        for(int i = 0; i < info.length; i++){
+            allChangedInformation.get(i).setText(info[i]);
+        }
+        
+    }
 
     /**
      * Use this factory method to create a new instance of

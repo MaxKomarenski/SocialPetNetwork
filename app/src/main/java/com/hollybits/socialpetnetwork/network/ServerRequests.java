@@ -9,6 +9,7 @@ import com.hollybits.socialpetnetwork.forms.UpdateTokenForm;
 import com.hollybits.socialpetnetwork.models.Breed;
 import com.hollybits.socialpetnetwork.models.Country;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
+import com.hollybits.socialpetnetwork.models.UserInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -47,9 +48,8 @@ public interface ServerRequests {
     @POST("/updateUsersToken")
     Call<String> updateToken(@HeaderMap Map<String, String> headers, @Body UpdateTokenForm tokenForm);
 
-
-
-
+    @POST("/getInformationOfAnotherUser")
+    Call<UserInfo> getInformationOfAnotherUser(@HeaderMap Map<String, String> headers, @Query("id") Long id);
 
     @POST("/login")
     Call<Void> login(@Body LoginActivity.Credentials credentials);

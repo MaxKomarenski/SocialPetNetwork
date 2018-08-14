@@ -9,18 +9,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hollybits.socialpetnetwork.Fragments.FriendAccount;
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
+import com.hollybits.socialpetnetwork.models.User;
+import com.hollybits.socialpetnetwork.models.UserInfo;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.MyViewHolder> implements Filterable{
 
@@ -46,6 +57,7 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
         public TextView user_name_bg, pet_name_bg, breed_bg;
         public CircleImageView img_bg;
         public ImageView indicator_bg;
+        public ImageButton infoButton, messageButton, mapButton;
 
 
         public MyViewHolder(View view){
@@ -68,7 +80,9 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
             breed_bg = view.findViewById(R.id.pressed_breed_of_pet_in_user_friend_recycler_view);
             img_bg = view.findViewById(R.id.pressed_user_photo_in_user_friend_recycler_view);
             indicator_bg = view.findViewById(R.id.pressed_indicator_in_user_friend_recycler_view);
-
+            infoButton = view.findViewById(R.id.info_button_in_pressed_item);
+            //messageButton
+            //mapButton
         }
     }
 
@@ -101,6 +115,13 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
             holder.indicator_bg.setImageResource(R.drawable.red_lock);
         }
 
+        holder.infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAllInformationOfChosenUser(friend.getId());
+            }
+        });
+
         holder.smallConstraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +151,7 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
         int five_minutes = 5 * 60 * 1000;
         long currentTime = System.currentTimeMillis();
         Log.d("time", String.valueOf(currentTime - timestamp.getTime()));
-        return currentTime - timestamp.getTime() < five_minutes;
+        return currentTime - timestamp.getTime() > five_minutes;
 
     }
 
@@ -168,6 +189,25 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
                 notifyDataSetChanged();
             }
         };
+    }
+
+    private void getAllInformationOfChosenUser(Long id){
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        MainActivity.getServerRequests().getInformationOfAnotherUser(authorisationCode, id).enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                Paper.book().write(MainActivity.CURRENT_CHOICE, response.body());
+                FragmentDispatcher.launchFragment(FriendAccount.class);
+
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+
+            }
+        });
     }
 
 }
