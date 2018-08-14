@@ -12,7 +12,7 @@ public class FriendInfo {
     private String name;
     private String surname;
     private String petName;
-    private String PetBreedName;
+    private String petBreedName;
     private Timestamp lastActiveTime;
 
     public FriendInfo() {
@@ -51,11 +51,11 @@ public class FriendInfo {
     }
 
     public String getPetBreedName() {
-        return PetBreedName;
+        return petBreedName;
     }
 
     public void setPetBreedName(String petBreedName) {
-        PetBreedName = petBreedName;
+        this.petBreedName = petBreedName;
     }
 
     public Timestamp getLastActiveTime() {

@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,14 +16,16 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.MyViewHolder> {
+public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.MyViewHolder> implements Filterable{
 
     private List<FriendInfo> friends;
+    private List<FriendInfo> filtredFriends;
     private MyViewHolder previousHolder;
 
     public UserFriendsAdapter(List<FriendInfo> friends){
@@ -128,6 +132,42 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
         Log.d("time", String.valueOf(currentTime - timestamp.getTime()));
         return currentTime - timestamp.getTime() < five_minutes;
 
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    filtredFriends = friends;
+                } else {
+                    List<FriendInfo> filteredList = new ArrayList<>();
+                    for (FriendInfo row : friends) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if((row.getName()+row.getSurname()).contains(charSequence)){
+                            filteredList.add(row);
+                        }
+                    }
+
+                    filtredFriends = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filtredFriends;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                filtredFriends = (ArrayList<FriendInfo>) filterResults.values;
+                // refresh the list with filtered data
+                notifyDataSetChanged();
+            }
+        };
     }
 
 }

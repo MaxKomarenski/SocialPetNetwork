@@ -10,7 +10,7 @@
 
 
     <com.hollybits.socialpetnetwork.widgets.ExpandableSearchView
-        android:id="@+id/expandableSearchView"
+        android:id="@+id/search_in_friends"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"

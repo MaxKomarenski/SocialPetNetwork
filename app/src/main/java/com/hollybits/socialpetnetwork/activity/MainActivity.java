@@ -177,6 +177,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    public static void pingOnline(){
+
+    }
+
     private  void moveToProfile(){
         Intent intent = new Intent(MainActivity.this, FragmentDispatcher.class);
         startActivity(intent);
