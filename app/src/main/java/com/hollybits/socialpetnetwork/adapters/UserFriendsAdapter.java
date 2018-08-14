@@ -150,10 +150,11 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
     }
 
     private boolean isUserOnline(Timestamp timestamp){
-        int five_minutes = 5 * 60 * 1000;
+        long five_minutes = 5 * 60 * 1000;
         long currentTime = System.currentTimeMillis();
+        Log.d("last active", timestamp.toString());
         Log.d("time", String.valueOf(currentTime - timestamp.getTime()));
-        return currentTime - timestamp.getTime() > five_minutes;
+        return currentTime - timestamp.getTime() < five_minutes;
 
     }
 

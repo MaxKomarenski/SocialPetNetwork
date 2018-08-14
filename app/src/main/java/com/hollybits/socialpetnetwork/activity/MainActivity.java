@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean retrofitInit(){
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")
+        Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy HH:mm:ss")
                 .setLenient()
                 .create();
         Retrofit.Builder builder = new Retrofit.Builder()
