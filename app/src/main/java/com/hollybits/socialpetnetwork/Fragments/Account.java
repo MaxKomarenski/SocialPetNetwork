@@ -1,6 +1,5 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,14 +9,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
-import com.hollybits.socialpetnetwork.adapters.PhotoGridAdapter;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
 

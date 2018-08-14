@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
-import com.hollybits.socialpetnetwork.activity.MainActivity;
 
 import java.util.List;
 import java.util.Map;

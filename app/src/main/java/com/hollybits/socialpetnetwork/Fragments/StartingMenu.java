@@ -1,30 +1,18 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
-import com.hollybits.socialpetnetwork.activity.MainActivity;
-import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
-import com.hollybits.socialpetnetwork.models.User;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.paperdb.Paper;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
