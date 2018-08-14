@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -80,6 +81,8 @@ public class StartingMenu extends Fragment {
                 FragmentDispatcher.launchFragment(UserFriends.class);
             }
         });
+
+
 
         return view;
     }

@@ -26,11 +26,15 @@ import com.hollybits.socialpetnetwork.Fragments.UserFriends;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.LoginActivity;
 import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
+import com.hollybits.socialpetnetwork.helper.OnlineHandler;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import io.paperdb.Paper;
 import retrofit2.Call;
@@ -42,6 +46,7 @@ public class FragmentDispatcher extends AppCompatActivity
 
     private Map<Integer, Class> options;
     private static FragmentManager fragmentManager;
+    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
     private MenuItem previoust;
 
     @Override
@@ -56,6 +61,8 @@ public class FragmentDispatcher extends AppCompatActivity
         if(toolbar!=null)
             getSupportActionBar().hide();
 
+
+        executor.scheduleAtFixedRate(new OnlineHandler(),0, 4 , TimeUnit.MINUTES);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -183,6 +190,14 @@ public class FragmentDispatcher extends AppCompatActivity
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("FRAGMENT DISPATCHER", "ON DESTROY");
+        executor.shutdown();
+    }
+
     private void init(){
         options = new HashMap<>();
 
@@ -204,4 +219,6 @@ public class FragmentDispatcher extends AppCompatActivity
 
         return true;
     }
+
+
 }

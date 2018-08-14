@@ -80,6 +80,7 @@ public class UserFriends extends Fragment {
         getAllUserFriends();
 
 
+
         userFriendsAdapter = new UserFriendsAdapter(friends);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         userFriendsRecyclerView.setLayoutManager(layoutManager);

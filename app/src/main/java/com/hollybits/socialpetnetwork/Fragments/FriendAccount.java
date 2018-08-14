@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
 
 import java.util.List;
 
@@ -72,6 +73,7 @@ public class FriendAccount extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friend_account, container, false);
         ButterKnife.bind(this, view);
+
 
 
 
