@@ -50,6 +50,7 @@ public class Account extends Fragment {
 //
 //    private PhotoGridAdapter photoGridAdapter;
 
+
     @BindView(R.id.open_navigation_drawer_image_button)
     ImageButton openDrawerButton;
 
