@@ -89,13 +89,13 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
         holder.pet_name_bg.setText(friend.getPetName());
         holder.breed_bg.setText(friend.getPetBreedName());
 
-//        if(isUserOnline(friend.getLastActiveTime())){
-//            holder.indicator_sm.setImageResource(R.drawable.green_dot);
-//            holder.indicator_bg.setImageResource(R.drawable.green_dot);
-//        }else {
-//            holder.indicator_sm.setImageResource(R.drawable.red_lock);
-//            holder.indicator_bg.setImageResource(R.drawable.red_lock);
-//        }
+        if(isUserOnline(friend.getLastActiveTime())){
+            holder.indicator_sm.setImageResource(R.drawable.green_dot);
+            holder.indicator_bg.setImageResource(R.drawable.green_dot);
+        }else {
+            holder.indicator_sm.setImageResource(R.drawable.red_lock);
+            holder.indicator_bg.setImageResource(R.drawable.red_lock);
+        }
 
         holder.smallConstraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,10 +121,13 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
     public int getItemCount() {
         return friends.size();
     }
-//
-//    private boolean isUserOnline(Timestamp timestamp){
-//
-//
-//    }
+
+    private boolean isUserOnline(Timestamp timestamp){
+        int five_minutes = 5 * 60 * 1000;
+        long currentTime = System.currentTimeMillis();
+        Log.d("time", String.valueOf(currentTime - timestamp.getTime()));
+        return currentTime - timestamp.getTime() < five_minutes;
+
+    }
 
 }

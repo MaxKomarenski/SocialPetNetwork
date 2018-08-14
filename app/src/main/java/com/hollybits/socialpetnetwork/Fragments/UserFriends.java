@@ -36,7 +36,7 @@ public class UserFriends extends Fragment {
     @BindView(R.id.user_friends_recycler_view)
     RecyclerView userFriendsRecyclerView;
 
-    private List<FriendInfo> friends;
+    private List<FriendInfo> friends = new ArrayList<>();
 
     private UserFriendsAdapter userFriendsAdapter;
 
