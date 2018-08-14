@@ -482,13 +482,14 @@ public class ExpandableSearchView extends FrameLayout {
         }
     }
 
-    private void search() {
-        if (!isExpanded || TextUtils.isEmpty(searchEditText.getText().toString())) {
+    private void search(String s) {
+        if (!isExpanded || TextUtils.isEmpty(s)) {
             return;
         }
 
         if (onSearchActionListener != null) {
-            onSearchActionListener.onSearchAction(searchEditText.getText().toString());
+            onSearchActionListener.onSearchAction(s);
+            return;
         }
 
         startExpandContractAnimation();
@@ -527,13 +528,34 @@ public class ExpandableSearchView extends FrameLayout {
             } catch (Exception ignored) {
             }
 
+
+            addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    search(s.toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+
+
+
             setOnEditorActionListener(new OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        search();
                         return true;
                     }
+
 
                     return false;
                 }

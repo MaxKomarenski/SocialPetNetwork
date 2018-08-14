@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -50,6 +51,10 @@ public interface ServerRequests {
 
     @POST("/getInformationOfAnotherUser")
     Call<UserInfo> getInformationOfAnotherUser(@HeaderMap Map<String, String> headers, @Query("id") Long id);
+
+    @POST("/online")
+    Call<String> online(@HeaderMap Map<String, String> headers, @Query("id") Long id);
+
 
     @POST("/login")
     Call<Void> login(@Body LoginActivity.Credentials credentials);

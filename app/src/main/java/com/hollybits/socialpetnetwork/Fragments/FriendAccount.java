@@ -12,6 +12,7 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.UserInfo;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
 
 import java.util.List;
 
@@ -81,6 +82,7 @@ public class FriendAccount extends Fragment {
 
 
 
+
         return view;
     }
 
@@ -93,7 +95,7 @@ public class FriendAccount extends Fragment {
                 pet = p;
             }
         }
-        
+
         String[] info = {
                 pet.getName(),
                 pet.getSex().name().toLowerCase(),
@@ -110,7 +112,7 @@ public class FriendAccount extends Fragment {
         for(int i = 0; i < info.length; i++){
             allChangedInformation.get(i).setText(info[i]);
         }
-        
+
     }
 
     /**

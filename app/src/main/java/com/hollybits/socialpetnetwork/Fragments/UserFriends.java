@@ -5,16 +5,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 
+import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.UserFriendsAdapter;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.User;
+import com.hollybits.socialpetnetwork.widgets.ExpandableSearchView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +38,10 @@ public class UserFriends extends Fragment {
 
     @BindView(R.id.user_friends_recycler_view)
     RecyclerView userFriendsRecyclerView;
+
+    @BindView(R.id.search_in_friends)
+    ExpandableSearchView searchView;
+
 
     private List<FriendInfo> friends = new ArrayList<>();
 
@@ -78,12 +85,11 @@ public class UserFriends extends Fragment {
         ButterKnife.bind(this, view);
 
         getAllUserFriends();
-
-
         userFriendsAdapter = new UserFriendsAdapter(friends);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         userFriendsRecyclerView.setLayoutManager(layoutManager);
 
+        attachListeners();
         SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
 
         userFriendsRecyclerView.setItemAnimator(animator);
@@ -110,6 +116,18 @@ public class UserFriends extends Fragment {
 
             }
         });
+    }
+
+
+    private void attachListeners(){
+        searchView.setOnSearchActionListener(new ExpandableSearchView.OnSearchActionListener() {
+            @Override
+            public void onSearchAction(String text) {
+                Log.d("SEARCH TEXT", text);
+                userFriendsAdapter.getFilter().filter(text);
+            }
+        });
+
     }
 
     @Override

@@ -40,7 +40,10 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
     private MyViewHolder previousHolder;
 
     public UserFriendsAdapter(List<FriendInfo> friends){
+
         this.friends = friends;
+        filtredFriends = friends;
+        notifyDataSetChanged();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -51,7 +54,6 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
         public TextView user_name_sm, pet_name_sm, breed_sm;
         public CircleImageView img_sm;
         public ImageView indicator_sm;
-
         //-------------big----------------
         public ConstraintLayout bigConstraintLayout;
         public TextView user_name_bg, pet_name_bg, breed_bg;
@@ -97,7 +99,7 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        FriendInfo friend = friends.get(position);
+        FriendInfo friend = filtredFriends.get(position);
 
         holder.user_name_sm.setText(friend.getName() + " " + friend.getSurname());
         holder.pet_name_sm.setText(friend.getPetName());
@@ -144,7 +146,7 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
 
     @Override
     public int getItemCount() {
-        return friends.size();
+        return filtredFriends.size();
     }
 
     private boolean isUserOnline(Timestamp timestamp){
