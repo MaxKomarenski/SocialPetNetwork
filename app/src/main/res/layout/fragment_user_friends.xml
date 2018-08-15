@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#edf4fc"
+    android:background="@drawable/background_for_friend_page"
     tools:context=".Fragments.UserFriends">
 
 
     <com.hollybits.socialpetnetwork.widgets.ExpandableSearchView
         android:id="@+id/search_in_friends"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,22 +22,32 @@
         android:id="@+id/friendship_request_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_in_friends">
 
     </android.support.v7.widget.RecyclerView>
 
+    <View
+        android:id="@+id/whiteLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#fff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/friendship_request_recycler_view" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/user_friends_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friendship_request_recycler_view">
+        app:layout_constraintTop_toBottomOf="@+id/whiteLine">
 
     </android.support.v7.widget.RecyclerView>
 

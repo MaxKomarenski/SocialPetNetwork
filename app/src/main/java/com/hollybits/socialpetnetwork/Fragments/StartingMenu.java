@@ -28,6 +28,9 @@ public class StartingMenu extends Fragment {
     @BindView(R.id.friends_card_view_in_starting_menu)
     CardView friendsCardView;
 
+    @BindView(R.id.profile_card_view_in_starting_menu)
+    CardView profileCardView;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -79,6 +82,13 @@ public class StartingMenu extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentDispatcher.launchFragment(UserFriends.class);
+            }
+        });
+
+        profileCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(Account.class);
             }
         });
 

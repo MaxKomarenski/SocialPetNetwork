@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.adapters;
 
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -38,12 +39,15 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
     private List<FriendInfo> friends;
     private List<FriendInfo> filtredFriends;
     private MyViewHolder previousHolder;
+    private Typeface nameFont, breedFont;
 
-    public UserFriendsAdapter(List<FriendInfo> friends){
+    public UserFriendsAdapter(List<FriendInfo> friends, Typeface nameFont, Typeface breedFont){
 
         this.friends = friends;
         filtredFriends = friends;
         notifyDataSetChanged();
+        this.nameFont = nameFont;
+        this.breedFont = breedFont;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -102,12 +106,18 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
         FriendInfo friend = filtredFriends.get(position);
 
         holder.user_name_sm.setText(friend.getName() + " " + friend.getSurname());
+        holder.user_name_sm.setTypeface(nameFont);
         holder.pet_name_sm.setText(friend.getPetName());
+        holder.pet_name_sm.setTypeface(nameFont);
         holder.breed_sm.setText(friend.getPetBreedName());
+        holder.breed_sm.setTypeface(breedFont);
         //----------------------------------
         holder.user_name_bg.setText(friend.getName() + " " + friend.getSurname());
+        holder.user_name_bg.setTypeface(nameFont);
         holder.pet_name_bg.setText(friend.getPetName());
+        holder.pet_name_bg.setTypeface(nameFont);
         holder.breed_bg.setText(friend.getPetBreedName());
+        holder.breed_bg.setTypeface(breedFont);
 
         if(isUserOnline(friend.getLastActiveTime())){
             holder.indicator_sm.setImageResource(R.drawable.green_dot);

@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -49,12 +50,16 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
     @BindView(R.id.search_in_friends)
     ExpandableSearchView searchView;
 
+    @BindView(R.id.whiteLine)
+    View whiteLine;
 
     private List<FriendInfo> friends;
     private List<InfoAboutUserFriendShipRequest> friendShipRequests;
 
     private UserFriendsAdapter userFriendsAdapter;
     private FriendshipRequestAdapter friendshipRequestAdapter;
+
+    private Typeface nameFont, breedFont;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -92,6 +97,10 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_friends, container, false);
         ButterKnife.bind(this, view);
+
+        nameFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/GOTHIC.TTF");
+        breedFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr.ttf");
+
         getAllFriendshipRequests();
         getAllUserFriends();
         FriendShipRequestQueue.getInstance().addObserver(this);
@@ -114,6 +123,10 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
         SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
         friendshipRequestRecyclerView.setItemAnimator(animator);
         friendshipRequestAdapter.notifyDataSetChanged();
+
+        if(friendShipRequests.size() == 0){
+            whiteLine.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void getAllUserFriends(){
@@ -127,7 +140,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                 public void onResponse(Call<Set<FriendInfo>> call, Response<Set<FriendInfo>> response) {
                     friends = new ArrayList<>();
                     friends.addAll(response.body());
-                    userFriendsAdapter = new UserFriendsAdapter(friends);
+                    userFriendsAdapter = new UserFriendsAdapter(friends, nameFont, breedFont);
                     userFriendsRecyclerView.setAdapter(userFriendsAdapter);
                     userFriendsAdapter.notifyDataSetChanged();
                     Paper.book().write(MainActivity.FRIEND_LIST, friends);
@@ -139,7 +152,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                 }
             });
         }else {
-            userFriendsAdapter = new UserFriendsAdapter(friends);
+            userFriendsAdapter = new UserFriendsAdapter(friends, nameFont, breedFont);
             userFriendsRecyclerView.setAdapter(userFriendsAdapter);
             userFriendsAdapter.notifyDataSetChanged();
         }
