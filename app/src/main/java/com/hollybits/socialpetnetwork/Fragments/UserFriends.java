@@ -16,6 +16,8 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.FriendshipRequestAdapter;
 import com.hollybits.socialpetnetwork.adapters.UserFriendsAdapter;
+import com.hollybits.socialpetnetwork.data_queues.FriendShipRequestQueue;
+import com.hollybits.socialpetnetwork.helper.FriendShipRequestObserver;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
 import com.hollybits.socialpetnetwork.models.User;
@@ -36,7 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class UserFriends extends Fragment {
+public class UserFriends extends Fragment implements FriendShipRequestObserver {
 
     @BindView(R.id.friendship_request_recycler_view)
     RecyclerView friendshipRequestRecyclerView;
@@ -92,6 +94,7 @@ public class UserFriends extends Fragment {
         ButterKnife.bind(this, view);
         getAllFriendshipRequests();
         getAllUserFriends();
+        FriendShipRequestQueue.getInstance().addObserver(this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         userFriendsRecyclerView.setLayoutManager(layoutManager);
         attachListeners();
@@ -160,6 +163,18 @@ public class UserFriends extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void update() {
+        Log.d("USER FRIENDS", "UPDATE CALL");
+        friendshipRequestAdapter.addItem(FriendShipRequestQueue.getInstance().poll());
+        try {
+            getActivity().runOnUiThread(() -> friendshipRequestAdapter.notifyDataSetChanged());
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
     }
 
     /**

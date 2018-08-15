@@ -37,6 +37,7 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
             place = itemView.findViewById(R.id.place_of_user_in_friendship_recycler_view);
             accept = itemView.findViewById(R.id.accept_button_in_friendship_recycler_view);
             reject = itemView.findViewById(R.id.reject_button_in_friendship_recycler_view);
+            breed = itemView.findViewById(R.id.pet_breed_in_friendship_recycler_view);
         }
     }
 

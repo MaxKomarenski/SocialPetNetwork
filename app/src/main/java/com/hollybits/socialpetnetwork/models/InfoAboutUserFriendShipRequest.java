@@ -3,11 +3,15 @@ package com.hollybits.socialpetnetwork.models;
 public class InfoAboutUserFriendShipRequest {
     private Long id;
     private String name;
+    private Long requestId;
     private String surname;
     private String city;
     private String country;
     private String petName;
     private String petBreed;
+
+    public InfoAboutUserFriendShipRequest() {
+    }
 
     public InfoAboutUserFriendShipRequest(Long id, String name, String surname, String city, String country, String petName, String petBreed) {
         this.id = id;
@@ -45,6 +49,14 @@ public class InfoAboutUserFriendShipRequest {
 
     public String getCity() {
         return city;
+    }
+
+    public Long getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
     }
 
     public void setCity(String city) {

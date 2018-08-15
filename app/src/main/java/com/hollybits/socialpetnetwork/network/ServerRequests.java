@@ -1,5 +1,7 @@
 package com.hollybits.socialpetnetwork.network;
 
+import android.util.Log;
+
 import com.android.volley.toolbox.StringRequest;
 import com.hollybits.socialpetnetwork.activity.LoginActivity;
 import com.hollybits.socialpetnetwork.enums.PetType;
@@ -64,5 +66,10 @@ public interface ServerRequests {
 
     @POST("/getUsersFriends")
     Call<Set<FriendInfo>> getAllUserFriends(@HeaderMap Map<String, String> headers, @Query("id") Long id);
+
+
+    @POST("/persist")
+    Call<String> notifyPersistance(@HeaderMap Map<String, String> headers, @Query("requestId") Long id, @Query("userID")Long userId);
+
 
 }

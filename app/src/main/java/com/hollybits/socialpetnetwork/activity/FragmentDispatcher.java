@@ -53,10 +53,6 @@ public class FragmentDispatcher extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();
-
-        Paper.book().write(MainActivity.FRIENDSHIP_REQUEST_LIST, new ArrayList<>());
-
         setContentView(R.layout.activity_menu_dispatcher);
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_fragment_dispatcher);
@@ -65,8 +61,9 @@ public class FragmentDispatcher extends AppCompatActivity
         if(toolbar!=null)
             getSupportActionBar().hide();
 
-
         executor.scheduleAtFixedRate(new OnlineHandler(),0, 4 , TimeUnit.MINUTES);
+        new Thread(this::init).start();
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -89,6 +86,13 @@ public class FragmentDispatcher extends AppCompatActivity
         setTitle("Account");
 
     }
+
+
+    private void prepareFriendShipRequestsList(){
+        if(Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST) == null)
+            Paper.book().write(MainActivity.FRIENDSHIP_REQUEST_LIST, new ArrayList<>());
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -204,10 +208,10 @@ public class FragmentDispatcher extends AppCompatActivity
 
     private void init(){
         options = new HashMap<>();
-
         options.put(R.id.nav_account, Account.class);
         options.put(R.id.nav_map, com.hollybits.socialpetnetwork.Fragments.Map.class);
         options.put(R.id.nav_friends, UserFriends.class);
+        prepareFriendShipRequestsList();
     }
 
     public static boolean launchFragment(Class fragmentClass){

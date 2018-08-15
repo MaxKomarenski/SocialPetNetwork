@@ -4,6 +4,11 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.hollybits.socialpetnetwork.data_queues.FriendShipRequestQueue;
+import com.hollybits.socialpetnetwork.enums.NotificationType;
+import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
+
+import java.util.Map;
 
 /**
  * Created by Victor on 05.08.2018.
@@ -38,14 +43,19 @@ public class NotificationsAcceptor extends FirebaseMessagingService {
 
         // Check if message contains a data payload.
 
+        Log.d("DATA", ":");
+        for(String s: remoteMessage.getData().keySet()){
+            Log.d(s, remoteMessage.getData().get(s));
+        }
+        handleNotification(remoteMessage);
         // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+
+        Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
-    }
+
     // [END receive_message]
 
 
@@ -91,7 +101,7 @@ public class NotificationsAcceptor extends FirebaseMessagingService {
     /**
      * Create and show a simple notification containing the received FCM message.
      *
-     * @param messageBody FCM message body received.
+ //    * @param messageBody FCM message body received.
      */
 //    private void sendNotification(String messageBody) {
 //        Intent intent = new Intent(this, MainActivity.class);
@@ -123,4 +133,35 @@ public class NotificationsAcceptor extends FirebaseMessagingService {
 //
 //        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
 //    }
+
+
+
+    private void handleNotification(RemoteMessage remoteMessage){
+
+        Log.d("NOTIFICATION ACCEPTOR", "HANDLE NOTIFICATION");
+        Map<String, String> data = remoteMessage.getData();
+        NotificationType type = NotificationType.valueOf(data.get("type"));
+        switch (type){
+
+            case PERSONALMESSAGE:{
+                break;
+            }
+            case FRIEDSHIPREQUEST:{
+                InfoAboutUserFriendShipRequest info = new InfoAboutUserFriendShipRequest();
+                info.setId(Long.decode(data.get("id")));
+                info.setName(data.get("name"));
+                info.setSurname(data.get("surname"));
+                info.setCity(data.get("city"));
+                info.setCountry(data.get("country"));
+                info.setPetName(data.get("petName"));
+                info.setPetBreed(data.get("petBreed"));
+                info.setRequestId(Long.decode(data.get("requestId")));
+                FriendShipRequestQueue.getInstance().add(info);
+                break;
+            }
+            case FRIENDSHIPACCEPTED:{
+                break;
+            }
+        }
+    }
 }
