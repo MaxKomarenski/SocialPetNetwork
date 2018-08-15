@@ -14,8 +14,10 @@ import android.view.animation.OvershootInterpolator;
 import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.adapters.FriendshipRequestAdapter;
 import com.hollybits.socialpetnetwork.adapters.UserFriendsAdapter;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
+import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
 import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.widgets.ExpandableSearchView;
 
@@ -36,6 +38,9 @@ import retrofit2.Response;
 
 public class UserFriends extends Fragment {
 
+    @BindView(R.id.friendship_request_recycler_view)
+    RecyclerView friendshipRequestRecyclerView;
+
     @BindView(R.id.user_friends_recycler_view)
     RecyclerView userFriendsRecyclerView;
 
@@ -43,9 +48,11 @@ public class UserFriends extends Fragment {
     ExpandableSearchView searchView;
 
 
-    private List<FriendInfo> friends = new ArrayList<>();
+    private List<FriendInfo> friends;
+    private List<InfoAboutUserFriendShipRequest> friendShipRequests;
 
     private UserFriendsAdapter userFriendsAdapter;
+    private FriendshipRequestAdapter friendshipRequestAdapter;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -85,37 +92,45 @@ public class UserFriends extends Fragment {
         ButterKnife.bind(this, view);
 
         getAllUserFriends();
-        userFriendsAdapter = new UserFriendsAdapter(friends);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         userFriendsRecyclerView.setLayoutManager(layoutManager);
-
         attachListeners();
         SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
-
         userFriendsRecyclerView.setItemAnimator(animator);
-        userFriendsRecyclerView.setAdapter(userFriendsAdapter);
-        userFriendsAdapter.notifyDataSetChanged();
+
 
         return view;
     }
 
     private void getAllUserFriends(){
-        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-        Map<String, String> authorisationCode = new HashMap<>();
-        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-        MainActivity.getServerRequests().getAllUserFriends(authorisationCode, currentUser.getId()).enqueue(new Callback<Set<FriendInfo>>() {
-            @Override
-            public void onResponse(Call<Set<FriendInfo>> call, Response<Set<FriendInfo>> response) {
-                friends.clear();
-                friends.addAll(response.body());
-                userFriendsAdapter.notifyDataSetChanged();
-            }
+        friends = Paper.book().read(MainActivity.FRIEND_LIST);
+        if(friends == null){
+            User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+            Map<String, String> authorisationCode = new HashMap<>();
+            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+            MainActivity.getServerRequests().getAllUserFriends(authorisationCode, currentUser.getId()).enqueue(new Callback<Set<FriendInfo>>() {
+                @Override
+                public void onResponse(Call<Set<FriendInfo>> call, Response<Set<FriendInfo>> response) {
+                    friends = new ArrayList<>();
+                    friends.addAll(response.body());
+                    userFriendsAdapter = new UserFriendsAdapter(friends);
+                    userFriendsRecyclerView.setAdapter(userFriendsAdapter);
+                    userFriendsAdapter.notifyDataSetChanged();
+                    Paper.book().write(MainActivity.FRIEND_LIST, friends);
+                }
 
-            @Override
-            public void onFailure(Call<Set<FriendInfo>> call, Throwable t) {
+                @Override
+                public void onFailure(Call<Set<FriendInfo>> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        }else {
+            userFriendsAdapter = new UserFriendsAdapter(friends);
+            userFriendsRecyclerView.setAdapter(userFriendsAdapter);
+            userFriendsAdapter.notifyDataSetChanged();
+        }
+
+
     }
 
 

@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String CURRENT_PET = "currentPet";
     public static final String CURRENTUSER ="currentUser";
     public static final String CURRENT_CHOICE = "CurrentChoice";
+    public static final String FRIEND_LIST = "FriendList";
 
     @BindView(R.id.move_to_login)
     Button goToLogin;
