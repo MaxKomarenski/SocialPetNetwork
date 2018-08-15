@@ -48,6 +48,8 @@ public class UserFriends extends Fragment {
     @BindView(R.id.search_in_friends)
     ExpandableSearchView searchView;
 
+    @BindView(R.id.whiteLine)
+    View whiteLine;
 
     private List<FriendInfo> friends;
     private List<InfoAboutUserFriendShipRequest> friendShipRequests;
@@ -118,6 +120,10 @@ public class UserFriends extends Fragment {
         SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
         friendshipRequestRecyclerView.setItemAnimator(animator);
         friendshipRequestAdapter.notifyDataSetChanged();
+
+        if(friendShipRequests.size() == 0){
+            whiteLine.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void getAllUserFriends(){
