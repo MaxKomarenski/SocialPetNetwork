@@ -1,21 +1,28 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.UserInfo;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import io.paperdb.Paper;
@@ -45,6 +52,21 @@ public class FriendAccount extends Fragment {
             R.id.owner_email_in_expansion_panel
     })
     List<TextView> allChangedInformation;
+
+    @BindView(R.id.open_navigation_drawer_image_button)
+    ImageView openNavigationDrawer;
+
+    @BindView(R.id.become_friend_button)
+    ImageButton becomeFriendButton;
+
+    @BindView(R.id.delete_friend_button)
+    ImageButton deleteFriendButton;
+
+    @BindView(R.id.become_friend_text)
+    TextView becomeFriendText;
+
+    DrawerLayout drawer;
+    UserInfo userInfo;
 
     // TODO: Rename parameter arguments, choose names that match
     private static final String ARG_PARAM1 = "param1";
@@ -78,16 +100,49 @@ public class FriendAccount extends Fragment {
         View view = inflater.inflate(R.layout.fragment_friend_account, container, false);
         ButterKnife.bind(this, view);
 
+        userInfo = Paper.book().read(MainActivity.CURRENT_CHOICE);
         fillAllInformation();
 
+        if(isThisUserAFriend()){
+            deleteFriendButton.setVisibility(View.VISIBLE);
+            becomeFriendText.setText("Delete friend");
+            becomeFriendButton.setVisibility(View.GONE);
+        }
 
+        Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        for (TextView textView:
+                words) {
+            textView.setTypeface(mainFont);
+        }
+        for (TextView textView:
+                allChangedInformation) {
+            textView.setTypeface(mainFont);
+        }
 
+        openNavigationDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+                drawer.openDrawer(Gravity.START);
+            }
+        });
 
         return view;
     }
 
+    private boolean isThisUserAFriend(){
+        List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
+        for (FriendInfo friend:
+             friends) {
+            if(friend.getId().equals(userInfo.getId())){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void fillAllInformation(){
-        UserInfo userInfo = Paper.book().read(MainActivity.CURRENT_CHOICE);
         Pet pet = new Pet();
         for (Pet p:
              userInfo.getPets()) {

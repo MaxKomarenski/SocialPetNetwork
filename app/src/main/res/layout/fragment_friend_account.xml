@@ -268,13 +268,24 @@
                     android:orientation="vertical">
 
                     <ImageButton
+                        android:id="@+id/become_friend_button"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:background="@null"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/img_dog" />
+                        android:src="@drawable/img_dog"/>
+
+                    <ImageButton
+                        android:id="@+id/delete_friend_button"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:visibility="gone"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/img_dog"/>
 
                     <TextView
+                        android:id="@+id/become_friend_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Become friend" />
