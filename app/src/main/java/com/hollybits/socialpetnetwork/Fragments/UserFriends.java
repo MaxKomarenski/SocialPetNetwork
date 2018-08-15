@@ -90,7 +90,7 @@ public class UserFriends extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_friends, container, false);
         ButterKnife.bind(this, view);
-
+        getAllFriendshipRequests();
         getAllUserFriends();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         userFriendsRecyclerView.setLayoutManager(layoutManager);
@@ -104,11 +104,6 @@ public class UserFriends extends Fragment {
 
     private void getAllFriendshipRequests(){
         friendShipRequests = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
-
-        if(friendShipRequests == null){
-            friendShipRequests = new ArrayList<>();
-        }
-
         friendshipRequestAdapter = new FriendshipRequestAdapter(friendShipRequests);
         friendshipRequestRecyclerView.setAdapter(friendshipRequestAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());

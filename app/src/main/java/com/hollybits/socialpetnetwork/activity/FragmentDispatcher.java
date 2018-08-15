@@ -30,6 +30,7 @@ import com.hollybits.socialpetnetwork.helper.OnlineHandler;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -53,6 +54,9 @@ public class FragmentDispatcher extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
+
+        Paper.book().write(MainActivity.FRIENDSHIP_REQUEST_LIST, new ArrayList<>());
+
         setContentView(R.layout.activity_menu_dispatcher);
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_fragment_dispatcher);
