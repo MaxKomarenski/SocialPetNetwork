@@ -53,11 +53,17 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
     public void onBindViewHolder(@NonNull FriendshipRequestAdapter.MyViewHolder holder, int position) {
         InfoAboutUserFriendShipRequest request = friendShipRequests.get(position);
         holder.userName.setText(request.getName() + " " + request.getSurname());
-
+        holder.place.setText(request.getCity() + ", " + request.getCountry());
+        holder.petName.setText(request.getPet_name());
+        holder.breed.setText(request.getPet_breed());
     }
 
     @Override
     public int getItemCount() {
         return friendShipRequests.size();
+    }
+
+    public void addItem(InfoAboutUserFriendShipRequest request){
+        friendShipRequests.add(request);
     }
 }

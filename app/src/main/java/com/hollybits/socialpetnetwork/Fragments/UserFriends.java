@@ -102,6 +102,22 @@ public class UserFriends extends Fragment {
         return view;
     }
 
+    private void getAllFriendshipRequests(){
+        friendShipRequests = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
+
+        if(friendShipRequests == null){
+            friendShipRequests = new ArrayList<>();
+        }
+
+        friendshipRequestAdapter = new FriendshipRequestAdapter(friendShipRequests);
+        friendshipRequestRecyclerView.setAdapter(friendshipRequestAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        friendshipRequestRecyclerView.setLayoutManager(layoutManager);
+        SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
+        friendshipRequestRecyclerView.setItemAnimator(animator);
+        friendshipRequestAdapter.notifyDataSetChanged();
+    }
+
     private void getAllUserFriends(){
         friends = Paper.book().read(MainActivity.FRIEND_LIST);
         if(friends == null){
