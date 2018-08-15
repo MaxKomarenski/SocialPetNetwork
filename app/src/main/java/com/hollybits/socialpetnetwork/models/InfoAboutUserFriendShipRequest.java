@@ -6,17 +6,17 @@ public class InfoAboutUserFriendShipRequest {
     private String surname;
     private String city;
     private String country;
-    private String pet_name;
-    private String pet_breed;
+    private String petName;
+    private String petBreed;
 
-    public InfoAboutUserFriendShipRequest(Long id, String name, String surname, String city, String country, String pet_name, String pet_breed) {
+    public InfoAboutUserFriendShipRequest(Long id, String name, String surname, String city, String country, String petName, String petBreed) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.city = city;
         this.country = country;
-        this.pet_name = pet_name;
-        this.pet_breed = pet_breed;
+        this.petName = petName;
+        this.petBreed = petBreed;
     }
 
     public Long getId() {
@@ -59,19 +59,19 @@ public class InfoAboutUserFriendShipRequest {
         this.country = country;
     }
 
-    public String getPet_name() {
-        return pet_name;
+    public String getPetName() {
+        return petName;
     }
 
-    public void setPet_name(String pet_name) {
-        this.pet_name = pet_name;
+    public void setPetName(String petName) {
+        this.petName = petName;
     }
 
-    public String getPet_breed() {
-        return pet_breed;
+    public String getPetBreed() {
+        return petBreed;
     }
 
-    public void setPet_breed(String pet_breed) {
-        this.pet_breed = pet_breed;
+    public void setPetBreed(String pet_breed) {
+        this.petBreed = pet_breed;
     }
 }

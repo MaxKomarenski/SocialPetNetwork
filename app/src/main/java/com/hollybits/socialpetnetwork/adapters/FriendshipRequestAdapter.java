@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
@@ -54,8 +53,8 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
         InfoAboutUserFriendShipRequest request = friendShipRequests.get(position);
         holder.userName.setText(request.getName() + " " + request.getSurname());
         holder.place.setText(request.getCity() + ", " + request.getCountry());
-        holder.petName.setText(request.getPet_name());
-        holder.breed.setText(request.getPet_breed());
+        holder.petName.setText(request.getPetName());
+        holder.breed.setText(request.getPetBreed());
     }
 
     @Override
