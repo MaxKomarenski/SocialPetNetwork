@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -122,7 +123,7 @@ public class Map extends Fragment  {
                         == PackageManager.PERMISSION_GRANTED) {
                     googleMap.setMyLocationEnabled(true);
                     mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Map.this.getContext());
-                    startTracking();
+                    positionTracker.scheduleAtFixedRate(Map.this::startTracking,0, 1, TimeUnit.SECONDS );
                 } else {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},ACCESS_FINE_LOCATION_CODE);
                 }
@@ -179,7 +180,7 @@ public class Map extends Fragment  {
                 try {
                     googleMap.setMyLocationEnabled(true);
                     mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Map.this.getContext());
-                    startTracking();
+                    positionTracker.scheduleAtFixedRate(Map.this::startTracking,0, 5, TimeUnit.SECONDS );
                 } catch (SecurityException e) {
                     Log.d("PERMISSION", "SecurityException");
                 }
@@ -207,6 +208,7 @@ public class Map extends Fragment  {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        positionTracker.shutdown();
     }
 
 
