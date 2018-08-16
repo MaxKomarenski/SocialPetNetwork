@@ -46,6 +46,7 @@ public class FragmentDispatcher extends AppCompatActivity
 
     private Map<Integer, Class> options;
     private static FragmentManager fragmentManager;
+    private static FragmentDispatcher instance;
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
     private MenuItem previoust;
 
@@ -54,6 +55,7 @@ public class FragmentDispatcher extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_dispatcher);
         fragmentManager = getSupportFragmentManager();
+        instance  = this;
         setContentView(R.layout.activity_fragment_dispatcher);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -86,6 +88,9 @@ public class FragmentDispatcher extends AppCompatActivity
 
     }
 
+    public static FragmentDispatcher getInstance() {
+        return instance;
+    }
 
     private void prepareFriendShipRequestsList(){
         if(Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST) == null)

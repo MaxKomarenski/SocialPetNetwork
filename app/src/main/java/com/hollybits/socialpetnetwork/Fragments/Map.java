@@ -2,6 +2,8 @@ package com.hollybits.socialpetnetwork.Fragments;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +29,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +53,7 @@ public class Map extends Fragment  {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private ScheduledExecutorService positionTracker = Executors.newScheduledThreadPool(1);
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -58,6 +67,7 @@ public class Map extends Fragment  {
     @BindView(R.id.mapView)
     MapView mMapView;
     private GoogleMap googleMap;
+    private Geocoder locationInfoSupplier = new Geocoder(FragmentDispatcher.getInstance());
 
 
     private FusedLocationProviderClient mFusedLocationClient;
@@ -119,17 +129,25 @@ public class Map extends Fragment  {
 
     private void startTracking() throws SecurityException {
         mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            googleMap.addMarker(new MarkerOptions()
-                                    .position(new LatLng(location.getLatitude(), location.getLongitude()))
-                                    .title("My Pos"));
-                            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 10);
-                            googleMap.animateCamera(cameraUpdate);
+                .addOnSuccessListener(location -> {
+                    if (location != null) {
+                        googleMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                                .title("My Pos"));
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 10);
+                        googleMap.animateCamera(cameraUpdate);
+
+                        try {
+                            List<Address> addresses = locationInfoSupplier.getFromLocation(location.getLatitude(), location.getLongitude(), 10);
+                            for (Address a:
+                                 addresses) {
+                                Log.d("Adrress", a.toString());
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+
+
                     }
                 });
     }
