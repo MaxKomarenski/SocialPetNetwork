@@ -2,8 +2,6 @@ package com.hollybits.socialpetnetwork.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -16,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -24,14 +21,16 @@ import com.hollybits.socialpetnetwork.Fragments.Account;
 import com.hollybits.socialpetnetwork.Fragments.StartingMenu;
 import com.hollybits.socialpetnetwork.Fragments.UserFriends;
 import com.hollybits.socialpetnetwork.R;
-import com.hollybits.socialpetnetwork.activity.LoginActivity;
+import com.hollybits.socialpetnetwork.data_queues.FriendShipRequestQueue;
 import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
 import com.hollybits.socialpetnetwork.helper.OnlineHandler;
+import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -158,6 +157,9 @@ public class FragmentDispatcher extends AppCompatActivity
     }
 
     private void logOut(){
+
+        sayServerThatAllFriendshipRequestIsDeletedFromCache();
+
         for(String s: Paper.book().getAllKeys()){
             Paper.book().delete(s);
         }
@@ -212,6 +214,7 @@ public class FragmentDispatcher extends AppCompatActivity
         options.put(R.id.nav_map, com.hollybits.socialpetnetwork.Fragments.Map.class);
         options.put(R.id.nav_friends, UserFriends.class);
         prepareFriendShipRequestsList();
+        getAllUnPersistentFriendShipRequests();
     }
 
     public static boolean launchFragment(Class fragmentClass){
@@ -226,6 +229,50 @@ public class FragmentDispatcher extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
 
         return true;
+    }
+
+    private void getAllUnPersistentFriendShipRequests(){
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        MainActivity.getServerRequests().getUnPersistentFriendShipRequests(authorisationCode, currentUser.getId()).enqueue(new Callback<List<InfoAboutUserFriendShipRequest>>() {
+            @Override
+            public void onResponse(Call<List<InfoAboutUserFriendShipRequest>> call, Response<List<InfoAboutUserFriendShipRequest>> response) {
+                List<InfoAboutUserFriendShipRequest> requests = response.body();
+
+                List<InfoAboutUserFriendShipRequest> list = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
+                for (InfoAboutUserFriendShipRequest info: requests) {
+
+                    list.add(info);
+                    FriendShipRequestQueue.getInstance().notifyPersistance(info);
+
+                }
+
+                Paper.book().write(MainActivity.FRIENDSHIP_REQUEST_LIST, list);
+            }
+
+            @Override
+            public void onFailure(Call<List<InfoAboutUserFriendShipRequest>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void sayServerThatAllFriendshipRequestIsDeletedFromCache(){
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        MainActivity.getServerRequests().allFriendshipRequestsIsDeletedFromCache(authorisationCode, currentUser.getId()).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.d("deleted from cache", response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
     }
 
 

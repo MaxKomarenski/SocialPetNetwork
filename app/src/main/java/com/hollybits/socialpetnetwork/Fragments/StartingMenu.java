@@ -78,6 +78,12 @@ public class StartingMenu extends Fragment {
         View view = inflater.inflate(R.layout.fragment_starting_menu, container, false);
         ButterKnife.bind(this, view);
 
+        allListeners();
+
+        return view;
+    }
+
+    private void allListeners(){
         friendsCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,10 +97,6 @@ public class StartingMenu extends Fragment {
                 FragmentDispatcher.launchFragment(Account.class);
             }
         });
-
-
-
-        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

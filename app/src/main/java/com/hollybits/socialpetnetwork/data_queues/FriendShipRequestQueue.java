@@ -63,7 +63,7 @@ public class FriendShipRequestQueue implements FriendshipRequestObservable {
         notifyPersistance(elem);
     }
 
-    private void notifyPersistance(InfoAboutUserFriendShipRequest elem){
+    public void notifyPersistance(InfoAboutUserFriendShipRequest elem){
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         Map<String, String> authorisationCode = new HashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());

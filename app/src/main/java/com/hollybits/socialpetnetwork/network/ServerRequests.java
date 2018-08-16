@@ -11,6 +11,7 @@ import com.hollybits.socialpetnetwork.forms.UpdateTokenForm;
 import com.hollybits.socialpetnetwork.models.Breed;
 import com.hollybits.socialpetnetwork.models.Country;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
+import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
 import com.hollybits.socialpetnetwork.models.UserInfo;
 
 import java.util.List;
@@ -71,5 +72,9 @@ public interface ServerRequests {
     @POST("/persist")
     Call<String> notifyPersistance(@HeaderMap Map<String, String> headers, @Query("requestId") Long id, @Query("userID")Long userId);
 
+    @POST("/getUnPersistentFriendShipRequests")
+    Call<List<InfoAboutUserFriendShipRequest>> getUnPersistentFriendShipRequests(@HeaderMap Map<String, String> headers, @Query("id") Long id);
 
+    @POST("/allFriendshipRequestsIsDeletedFromCache")
+    Call<String> allFriendshipRequestsIsDeletedFromCache(@HeaderMap Map<String, String> headers, @Query("id") Long id);
 }
