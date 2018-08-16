@@ -2,35 +2,34 @@ package com.hollybits.socialpetnetwork.Fragments;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 
-import android.location.LocationListener;
-
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.hollybits.socialpetnetwork.R;
-
-import java.io.IOException;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.content.Context.LOCATION_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,14 +50,20 @@ public class Map extends Fragment  {
     private String mParam1;
     private String mParam2;
 
+    private static int ACCESS_FINE_LOCATION_CODE = 1001;
     private OnFragmentInteractionListener mListener;
 
 
-    private static final int ERROR_DIALOG_REQUEST = 9001;
-    private static final float DEFAULT_ZOOM = 15f;
-    private LocationManager locationManager;
-    LocationListener locationListener;
-    private static final int REQUEST_LOCATION_PERMISSION = 1;
+
+    @BindView(R.id.mapView)
+    MapView mMapView;
+    private GoogleMap googleMap;
+
+
+    private FusedLocationProviderClient mFusedLocationClient;
+
+
+
 
     public Map() {
         // Required empty public constructor
@@ -80,7 +85,72 @@ public class Map extends Fragment  {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, view);
 
+        mMapView.onCreate(savedInstanceState);
+        mMapView.onResume();
+
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap mMap) {
+                googleMap = mMap;
+
+                // For showing a move to my location button
+                if (ContextCompat.checkSelfPermission(Map.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    googleMap.setMyLocationEnabled(true);
+                    mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Map.this.getContext());
+                    startTracking();
+                } else {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},ACCESS_FINE_LOCATION_CODE);
+                }
+                // For dropping a marker at a point on the Map
+            }
+        });
         return view;
+    }
+
+
+
+    private void startTracking() throws SecurityException {
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            googleMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                                    .title("My Pos"));
+                            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 10);
+                            googleMap.animateCamera(cameraUpdate);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == ACCESS_FINE_LOCATION_CODE) {
+            if (permissions.length == 1 &&
+                    permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                try {
+                    googleMap.setMyLocationEnabled(true);
+                    mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Map.this.getContext());
+                    startTracking();
+                } catch (SecurityException e) {
+                    Log.d("PERMISSION", "SecurityException");
+                }
+            } else {
+                Log.d("PERMISSION", "REJECTED"); // TODO ERROR MESSAGE
+            }
+        }
     }
 
     @Override

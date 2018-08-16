@@ -265,7 +265,7 @@ public class FragmentDispatcher extends AppCompatActivity
         MainActivity.getServerRequests().allFriendshipRequestsIsDeletedFromCache(authorisationCode, currentUser.getId()).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                Log.d("deleted from cache", response.body());
+                Log.d("deleted from cache", String.valueOf(response.code()));
             }
 
             @Override

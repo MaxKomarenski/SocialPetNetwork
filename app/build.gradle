@@ -51,6 +51,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.google.firebase:firebase-messaging:17.1.0'
 
+    implementation 'com.google.android.gms:play-services-maps:15.0.1'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+
     // this line must be included to use FCM
     //circle image
     implementation 'de.hdodenhof:circleimageview:2.2.0'

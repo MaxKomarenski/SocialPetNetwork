@@ -136,6 +136,8 @@ public class NotificationsAcceptor extends FirebaseMessagingService {
 
 
 
+
+
     private void handleNotification(RemoteMessage remoteMessage){
 
         Log.d("NOTIFICATION ACCEPTOR", "HANDLE NOTIFICATION");
