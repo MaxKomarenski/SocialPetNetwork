@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.network;
 
+import android.location.Address;
 import android.util.Log;
 
 import com.android.volley.toolbox.StringRequest;
@@ -77,4 +78,8 @@ public interface ServerRequests {
 
     @POST("/allFriendshipRequestsIsDeletedFromCache")
     Call<String> allFriendshipRequestsIsDeletedFromCache(@HeaderMap Map<String, String> headers, @Query("id") Long id);
+
+
+    @POST("/updateUserPosition")
+    Call<Void> updateMyPosition(@HeaderMap Map<String, String> headers, @Body Address address, @Query("id") Long id);
 }

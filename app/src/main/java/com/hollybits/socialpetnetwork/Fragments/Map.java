@@ -30,14 +30,21 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.models.User;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -138,11 +145,22 @@ public class Map extends Fragment  {
                         googleMap.animateCamera(cameraUpdate);
 
                         try {
-                            List<Address> addresses = locationInfoSupplier.getFromLocation(location.getLatitude(), location.getLongitude(), 10);
-                            for (Address a:
-                                 addresses) {
-                                Log.d("Adrress", a.toString());
-                            }
+                            List<Address> addresses = locationInfoSupplier.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                            User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+                            java.util.Map<String, String> authorisationCode = new HashMap<>();
+                            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+                            if(addresses.size() == 1)
+                                MainActivity.getServerRequests().updateMyPosition(authorisationCode,addresses.get(0), currentUser.getId()).enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        Log.d("Position update", String.valueOf(response.code()));
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
+                                        t.printStackTrace();
+                                    }
+                                });
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
