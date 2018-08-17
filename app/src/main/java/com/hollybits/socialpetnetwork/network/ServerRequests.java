@@ -10,9 +10,11 @@ import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
 import com.hollybits.socialpetnetwork.forms.RegistrationForm;
 import com.hollybits.socialpetnetwork.forms.UpdateTokenForm;
 import com.hollybits.socialpetnetwork.models.Breed;
+import com.hollybits.socialpetnetwork.models.Contact;
 import com.hollybits.socialpetnetwork.models.Country;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
+import com.hollybits.socialpetnetwork.models.Message;
 import com.hollybits.socialpetnetwork.models.UserInfo;
 
 import java.util.List;
@@ -35,7 +37,7 @@ import retrofit2.http.Query;
 
 public interface ServerRequests {
 
-    String BASE_REMOTE_OUR = "http://206.189.61.135:8080/";
+    String BASE_REMOTE_OUR = "https://206.189.61.135:8443/";
     String BASE_LOCAL = "https://10.0.2.2:8443/";
     String CURRENT_ENDPIONT = BASE_LOCAL;
 
@@ -49,7 +51,6 @@ public interface ServerRequests {
     @POST("/registration")
     Call<String> sendRegistrationFormToTheServer(@Body RegistrationForm registrationForm);
 
-
     @POST("/updateUsersToken")
     Call<String> updateToken(@HeaderMap Map<String, String> headers, @Body UpdateTokenForm tokenForm);
 
@@ -58,7 +59,6 @@ public interface ServerRequests {
 
     @POST("/online")
     Call<String> online(@HeaderMap Map<String, String> headers, @Query("id") Long id);
-
 
     @POST("/login")
     Call<Void> login(@Body LoginActivity.Credentials credentials);
@@ -69,7 +69,6 @@ public interface ServerRequests {
     @POST("/getUsersFriends")
     Call<Set<FriendInfo>> getAllUserFriends(@HeaderMap Map<String, String> headers, @Query("id") Long id);
 
-
     @POST("/persist")
     Call<String> notifyPersistance(@HeaderMap Map<String, String> headers, @Query("requestId") Long id, @Query("userID")Long userId);
 
@@ -79,7 +78,17 @@ public interface ServerRequests {
     @POST("/allFriendshipRequestsIsDeletedFromCache")
     Call<String> allFriendshipRequestsIsDeletedFromCache(@HeaderMap Map<String, String> headers, @Query("id") Long id);
 
+    @POST("/getAllContactsOfCurrentUser")
+    Call<List<Contact>> getAllContactsOfCurrentUser(@HeaderMap Map<String, String> headers, @Query("id") Long id);
+
+    @POST("/getAllMessages")
+    Call<List<Message>> getAllMessagesWithCurrentFriend(@HeaderMap Map<String, String> headers,
+                                                        @Query("user_id") Long userId,
+                                                        @Query("friend_id") Long friendId);
 
     @POST("/updateUserPosition")
     Call<Void> updateMyPosition(@HeaderMap Map<String, String> headers, @Body Address address, @Query("id") Long id);
+
+    @POST("/sendMessage")
+    Call<String> sendMessage(@HeaderMap Map<String, String> headers, @Body Message message, @Query("id") Long id, @Query("time") Long time);
 }

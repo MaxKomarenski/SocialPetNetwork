@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.Fragments.Account;
+import com.hollybits.socialpetnetwork.Fragments.Messages;
 import com.hollybits.socialpetnetwork.Fragments.StartingMenu;
 import com.hollybits.socialpetnetwork.Fragments.UserFriends;
 import com.hollybits.socialpetnetwork.R;
@@ -168,6 +169,9 @@ public class FragmentDispatcher extends AppCompatActivity
         for(String s: Paper.book().getAllKeys()){
             Paper.book().delete(s);
         }
+        for (String s: Paper.book(MainActivity.MESSAGE_BOOK).getAllKeys()){
+            Paper.book(MainActivity.MESSAGE_BOOK).delete(s);
+        }
         finish();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
@@ -218,6 +222,7 @@ public class FragmentDispatcher extends AppCompatActivity
         options.put(R.id.nav_account, Account.class);
         options.put(R.id.nav_map, com.hollybits.socialpetnetwork.Fragments.Map.class);
         options.put(R.id.nav_friends, UserFriends.class);
+        options.put(R.id.nav_messages, Messages.class);
         prepareFriendShipRequestsList();
         getAllUnPersistentFriendShipRequests();
     }

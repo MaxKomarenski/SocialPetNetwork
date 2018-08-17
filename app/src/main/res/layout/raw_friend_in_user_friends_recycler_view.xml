@@ -13,6 +13,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:id="@+id/small_constraintLayout_in_item"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,10 +36,11 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <LinearLayout
+            android:id="@+id/linearLayout4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginStart="36dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="@+id/user_photo_in_user_friend_recycler_view"
@@ -60,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:text="Dalbaobik"
                 android:textColor="#000"
-                android:textSize="22sp"/>
+                android:textSize="22sp" />
 
             <TextView
                 android:id="@+id/breed_of_pet_in_user_friend_recycler_view"
@@ -76,12 +78,13 @@
             android:id="@+id/indicator_in_user_friend_recycler_view"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/green_dot"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginTop="8dp"
+            android:src="@drawable/green_dot"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout4"
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
@@ -91,7 +94,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="15dp"
         android:id="@+id/big_constraintLayout_in_item"
-        android:visibility="gone"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,7 +104,7 @@
             android:id="@+id/pressed_user_photo_in_user_friend_recycler_view"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:src="@drawable/test_photo"
             app:civ_border_color="#43b748"
@@ -113,17 +116,19 @@
             android:id="@+id/pressed_indicator_in_user_friend_recycler_view"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginTop="4dp"
             android:src="@drawable/green_dot"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout7"
             app:layout_constraintTop_toTopOf="parent" />
 
 
         <LinearLayout
+            android:id="@+id/linearLayout7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:orientation="vertical"
             app:layout_constraintStart_toEndOf="@+id/pressed_user_photo_in_user_friend_recycler_view"

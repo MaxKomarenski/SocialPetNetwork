@@ -1,38 +1,43 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 
 import com.hollybits.socialpetnetwork.R;
-import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.adapters.ContactAdapter;
+import com.hollybits.socialpetnetwork.models.Contact;
+import com.hollybits.socialpetnetwork.models.User;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.paperdb.Paper;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link StartingMenu.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link StartingMenu#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class StartingMenu extends Fragment {
 
-    @BindView(R.id.friends_card_view_in_starting_menu)
-    CardView friendsCardView;
+public class Messages extends Fragment {
 
-    @BindView(R.id.profile_card_view_in_starting_menu)
-    CardView profileCardView;
+    @BindView(R.id.contacts_recycler_view)
+    RecyclerView contactsRecyclerView;
 
-    @BindView(R.id.messages_card_view_in_starting_menu)
-    CardView messagesCardView;
+    private List<Contact> contacts;
+    private ContactAdapter contactAdapter;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -43,21 +48,13 @@ public class StartingMenu extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public StartingMenu() {
-        // Required empty public constructor
+    public Messages() {
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment StartingMenu.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static StartingMenu newInstance(String param1, String param2) {
-        StartingMenu fragment = new StartingMenu();
+
+    public static Messages newInstance(String param1, String param2) {
+        Messages fragment = new Messages();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -77,37 +74,44 @@ public class StartingMenu extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_starting_menu, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_messages, container, false);
         ButterKnife.bind(this, view);
 
-        allListeners();
+        contacts = new ArrayList<>();
+        getContacts();
+        contactAdapter = new ContactAdapter(contacts);
+        contactsRecyclerView.setAdapter(contactAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        contactsRecyclerView.setLayoutManager(layoutManager);
+        SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
+        contactsRecyclerView.setItemAnimator(animator);
+        contactAdapter.notifyDataSetChanged();
 
         return view;
     }
 
-    private void allListeners(){
-        friendsCardView.setOnClickListener(new View.OnClickListener() {
+    private void getContacts(){
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        MainActivity.getServerRequests().getAllContactsOfCurrentUser(authorisationCode ,MainActivity.getCurrentUser().getId()).enqueue(new Callback<List<Contact>>() {
             @Override
-            public void onClick(View v) {
-                FragmentDispatcher.launchFragment(UserFriends.class);
-            }
-        });
+            public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
+                contacts.clear();
+                contacts.addAll(response.body());
+                contactAdapter.notifyDataSetChanged();
 
-        profileCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentDispatcher.launchFragment(Account.class);
             }
-        });
 
-        messagesCardView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                FragmentDispatcher.launchFragment(Messages.class);
+            public void onFailure(Call<List<Contact>> call, Throwable t) {
+
             }
         });
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -115,8 +119,6 @@ public class StartingMenu extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
-
-
 
     @Override
     public void onDetach() {

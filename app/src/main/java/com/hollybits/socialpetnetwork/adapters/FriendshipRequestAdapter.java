@@ -17,7 +17,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipRequestAdapter.MyViewHolder> {
 
-    List<InfoAboutUserFriendShipRequest> friendShipRequests;
+    private List<InfoAboutUserFriendShipRequest> friendShipRequests;
 
     public FriendshipRequestAdapter(List<InfoAboutUserFriendShipRequest> friendShipRequests){
         this.friendShipRequests = friendShipRequests;
