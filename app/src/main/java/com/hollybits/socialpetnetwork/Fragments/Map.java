@@ -141,7 +141,7 @@ public class Map extends Fragment  {
                     mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Map.this.getContext());
                     animateMapToUsersLocation();
                     positionTracker.scheduleAtFixedRate(Map.this::startTracking,0, 1, TimeUnit.SECONDS );
-                    otherUsersPositionTraker.scheduleAtFixedRate(Map.this::locateOthers, 0, 1,TimeUnit.SECONDS);
+                    otherUsersPositionTraker.scheduleAtFixedRate(Map.this::locateOthers, 1, 1,TimeUnit.SECONDS);
                 } else {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},ACCESS_FINE_LOCATION_CODE);
                 }
@@ -163,7 +163,7 @@ public class Map extends Fragment  {
                                 MainActivity.getServerRequests().updateMyPosition(code,addresses.get(0), currentUser.getId()).enqueue(new Callback<Void>() {
                                     @Override
                                     public void onResponse(Call<Void> call, Response<Void> response) {
-                                        Log.d("Position update", String.valueOf(response.code()));
+
                                     }
 
                                     @Override

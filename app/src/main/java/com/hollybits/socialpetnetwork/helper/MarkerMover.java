@@ -25,7 +25,7 @@ public class MarkerMover {
 
 
         final LatLng startPosition =  marker.getPosition();
-        final LatLng finalPosition = new LatLng(37.7801569,-122.4148528);
+        final LatLng finalPosition = new LatLng(destination.getLatitude(), destination.getLongitude());
         final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();
         final Interpolator interpolator = new AccelerateDecelerateInterpolator();
