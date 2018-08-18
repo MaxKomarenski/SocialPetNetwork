@@ -188,10 +188,19 @@ public class Map extends Fragment  {
                     if (location != null) {
                         try {
                             List<Address> addresses = locationInfoSupplier.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            Response<java.util.Map<Long,Coordinates>>  response = MainActivity.getServerRequests().getUsersNearMe(code, addresses.get(0), currentUser.getId()).execute();
-                            if(response.code() == 200){
-                                markersOnMapDisplayer.displayMarkers(response.body());
-                            }
+                            MainActivity.getServerRequests().getUsersNearMe(code, addresses.get(0), currentUser.getId()).enqueue(new Callback<java.util.Map<Long, Coordinates>>() {
+                                @Override
+                                public void onResponse(Call<java.util.Map<Long, Coordinates>> call, Response<java.util.Map<Long, Coordinates>> response) {
+                                    if(response.code() == 200){
+                                        markersOnMapDisplayer.displayMarkers(response.body());
+                                    }
+                                }
+                                @Override
+                                public void onFailure(Call<java.util.Map<Long, Coordinates>> call, Throwable t) {
+
+                                }
+                            });
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
