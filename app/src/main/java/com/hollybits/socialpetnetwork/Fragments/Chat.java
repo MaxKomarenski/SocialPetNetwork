@@ -234,7 +234,6 @@ public class Chat extends Fragment implements MessageObserver {
 
     @Override
     public void update() {
-        Log.d("USER FRIENDS", "UPDATE CALL");
         messageAdapter.add(MessageQueue.getInstance().poll());
         try {
             getActivity().runOnUiThread(() -> messageAdapter.notifyDataSetChanged());
