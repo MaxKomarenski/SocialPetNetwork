@@ -60,7 +60,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
     public void add(Message m){
         messages.add(m);
-        notifyDataSetChanged();
     }
 
 }
