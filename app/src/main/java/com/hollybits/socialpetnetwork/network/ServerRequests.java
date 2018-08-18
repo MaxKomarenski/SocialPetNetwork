@@ -96,4 +96,8 @@ public interface ServerRequests {
                              @Body Message message,
                              @Query("id") Long id,
                              @Query("time") Long time);
+
+    @POST("/makeLastMessageRead")
+    Call<String> makeLastMessageRead(@HeaderMap Map<String, String> headers,
+                                     @Query("friends_id") Long id);
 }

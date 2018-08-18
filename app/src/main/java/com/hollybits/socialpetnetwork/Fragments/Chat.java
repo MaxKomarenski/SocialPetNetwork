@@ -115,6 +115,8 @@ public class Chat extends Fragment implements MessageObserver {
             public void onClick(View v) {
                 if(!writeMessageEditText.getText().toString().equals("")){
                     sendMessageToTheServer(writeMessageEditText.getText().toString());
+                    writeMessageEditText.setText("");
+                    messageAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -235,13 +237,29 @@ public class Chat extends Fragment implements MessageObserver {
 
     @Override
     public void update() {
-
-        messageAdapter.add(MessageQueue.getInstance().get(friendId));
+        Message message = MessageQueue.getInstance().get(friendId);
+        messageAdapter.add(message);
         try {
             getActivity().runOnUiThread(() -> messageAdapter.notifyDataSetChanged());
         }catch (NullPointerException e){
             e.printStackTrace();
         }
+        makeThisMassageRead(message.getFriends_id());
+    }
+
+    private void makeThisMassageRead(Long friendsId){
+
+        MainActivity.getServerRequests().makeLastMessageRead(getAuthorizationCode(), friendsId).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
     }
 
     /**
