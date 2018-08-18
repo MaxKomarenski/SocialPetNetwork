@@ -69,6 +69,7 @@ public class Map extends Fragment  {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ScheduledExecutorService positionTracker = Executors.newScheduledThreadPool(1);
+    private ScheduledExecutorService otherUsersPositionTraker = Executors.newScheduledThreadPool(1);
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -140,6 +141,7 @@ public class Map extends Fragment  {
                     mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Map.this.getContext());
                     animateMapToUsersLocation();
                     positionTracker.scheduleAtFixedRate(Map.this::startTracking,0, 1, TimeUnit.SECONDS );
+                    otherUsersPositionTraker.scheduleAtFixedRate(Map.this::locateOthers, 0, 1,TimeUnit.SECONDS);
                 } else {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},ACCESS_FINE_LOCATION_CODE);
                 }
@@ -218,6 +220,7 @@ public class Map extends Fragment  {
                     googleMap.setMyLocationEnabled(true);
                     mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Map.this.getContext());
                     positionTracker.scheduleAtFixedRate(Map.this::startTracking,0, 5, TimeUnit.SECONDS );
+                    otherUsersPositionTraker.scheduleAtFixedRate(Map.this::locateOthers, 0, 1,TimeUnit.SECONDS);
                     animateMapToUsersLocation();
                 } catch (SecurityException e) {
                     Log.d("PERMISSION", "SecurityException");
