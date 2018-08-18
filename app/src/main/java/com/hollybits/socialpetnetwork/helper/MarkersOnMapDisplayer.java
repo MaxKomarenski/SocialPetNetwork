@@ -38,7 +38,7 @@ public class MarkersOnMapDisplayer {
         Log.d("DISPLAYER", "START");
         unupdated = displayedMarkers.keySet();
         for (Map.Entry<Long, Coordinates> entry:longCoordinatesMap.entrySet()) {
-            Log.d("DISPLAYER:", entry.getKey()+" "+entry.getValue().getLongitude()+ " "+ entry.getValue().getLongitude());
+            Log.d("DISPLAYER:", entry.getKey()+" "+entry.getValue().getLatitude()+ " "+ entry.getValue().getLongitude());
             if(currentUserId.equals(entry.getKey())){
                 Log.d("DISPLAYER:", "Current user not displayed");
             }

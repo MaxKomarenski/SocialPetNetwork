@@ -183,6 +183,7 @@ public class Map extends Fragment  {
 
     @SuppressLint("MissingPermission")
     private void locateOthers(){
+        markersOnMapDisplayer.setCurrentUserId(currentUser.getId());
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(location -> {
                     if (location != null) {
