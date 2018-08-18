@@ -41,6 +41,7 @@ public class MarkersOnMapDisplayer {
             Log.d("DISPLAYER:", entry.getKey()+" "+entry.getValue().getLatitude()+ " "+ entry.getValue().getLongitude());
             if(currentUserId.equals(entry.getKey())){
                 Log.d("DISPLAYER:", "Current user not displayed");
+                continue;
             }
             if(displayedMarkers.containsKey(entry.getKey())){
                 markerMover.MoveMarkerToPosition(displayedMarkers.get(entry.getKey()), entry.getValue());
