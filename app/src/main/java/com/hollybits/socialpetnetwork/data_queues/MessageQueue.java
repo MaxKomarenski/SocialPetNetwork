@@ -5,6 +5,7 @@ import com.hollybits.socialpetnetwork.helper.MessageObservable;
 import com.hollybits.socialpetnetwork.models.Message;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
@@ -13,10 +14,10 @@ import io.paperdb.Paper;
 public class MessageQueue implements MessageObservable{
     private static volatile MessageQueue instance;
 
-    private static Queue<Message> messages;
+    private static List<Message> messages;
 
     private MessageQueue() {
-        messages = new ArrayDeque<>();
+        messages = new ArrayList<>();
     }
 
 
@@ -50,6 +51,18 @@ public class MessageQueue implements MessageObservable{
         thread.start();
     }
 
+    public Message get(Long id){
+        Long userFromId = Paper.book().read(MainActivity.FROM_USER_ID);
+        for (int i = 0; i < messages.size(); i++) {
+            if (id.equals(userFromId)){
+                Message m = messages.get(i);
+                messages.remove(i);
+                return m;
+            }
+        }
+        return null;
+    }
+
     public int size(){
         return messages.size();
     }
@@ -60,7 +73,9 @@ public class MessageQueue implements MessageObservable{
 
 
     public Message poll(){
-        return messages.poll();
+        Message m = messages.get(0);
+        messages.remove(0);
+        return m;
     }
 
 

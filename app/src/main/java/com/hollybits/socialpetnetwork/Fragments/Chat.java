@@ -108,6 +108,7 @@ public class Chat extends Fragment implements MessageObserver {
         ButterKnife.bind(this, view);
 
         friendId = Paper.book().read(MainActivity.ID_OF_FRIEND);
+        MessageQueue.getInstance().addObserver(this);
 
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,7 +235,8 @@ public class Chat extends Fragment implements MessageObserver {
 
     @Override
     public void update() {
-        messageAdapter.add(MessageQueue.getInstance().poll());
+
+        messageAdapter.add(MessageQueue.getInstance().get(friendId));
         try {
             getActivity().runOnUiThread(() -> messageAdapter.notifyDataSetChanged());
         }catch (NullPointerException e){
