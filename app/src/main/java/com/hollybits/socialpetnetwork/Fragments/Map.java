@@ -259,9 +259,8 @@ public class Map extends Fragment  {
         super.onDetach();
         mListener = null;
         positionTracker.shutdown();
+        otherUsersPositionTraker.shutdown();
     }
-
-
 
     /**
      * This interface must be implemented by activities that contain this

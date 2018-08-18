@@ -35,6 +35,7 @@ public class MarkersOnMapDisplayer {
     }
 
     public void displayMarkers(Map<Long, Coordinates> longCoordinatesMap){
+        Log.d("DISPLAYER", "START");
         unupdated = displayedMarkers.keySet();
         for (Map.Entry<Long, Coordinates> entry:longCoordinatesMap.entrySet()) {
             Log.d("DISPLAYER:", entry.getKey()+" "+entry.getValue().getLongitude()+ " "+ entry.getValue().getLongitude());
