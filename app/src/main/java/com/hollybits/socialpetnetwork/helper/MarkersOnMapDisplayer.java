@@ -1,5 +1,7 @@
 package com.hollybits.socialpetnetwork.helper;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -20,6 +22,8 @@ public class MarkersOnMapDisplayer {
 
     private GoogleMap googleMap;
     private MarkerMover markerMover;
+    private Long currentUserId;
+
 
     private Map<Long, Marker> displayedMarkers;
     private Set<Long> unupdated;
@@ -33,6 +37,10 @@ public class MarkersOnMapDisplayer {
     public void displayMarkers(Map<Long, Coordinates> longCoordinatesMap){
         unupdated = displayedMarkers.keySet();
         for (Map.Entry<Long, Coordinates> entry:longCoordinatesMap.entrySet()) {
+            Log.d("DISPLAYER:", entry.getKey()+" "+entry.getValue().getLongitude()+ " "+ entry.getValue().getLongitude());
+            if(currentUserId.equals(entry.getKey())){
+                Log.d("DISPLAYER:", "Current user not displayed");
+            }
             if(displayedMarkers.containsKey(entry.getKey())){
                 markerMover.MoveMarkerToPosition(displayedMarkers.get(entry.getKey()), entry.getValue());
                 unupdated.remove(entry.getKey());
@@ -52,7 +60,13 @@ public class MarkersOnMapDisplayer {
     }
 
 
+    public Long getCurrentUserId() {
+        return currentUserId;
+    }
 
+    public void setCurrentUserId(Long currentUserId) {
+        this.currentUserId = currentUserId;
+    }
 
 
 
