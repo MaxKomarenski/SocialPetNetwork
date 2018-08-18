@@ -51,6 +51,8 @@ public class MarkersOnMapDisplayer {
                         .title("user"));
                 newMarker.setSnippet(entry.getKey().toString());
                 displayedMarkers.put(entry.getKey(), newMarker);
+                unupdated.remove(entry.getKey());
+
             }
             for (Long l: unupdated
                  ) {
