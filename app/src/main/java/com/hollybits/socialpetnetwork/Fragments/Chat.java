@@ -17,6 +17,8 @@ import android.widget.EditText;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.MessageAdapter;
+import com.hollybits.socialpetnetwork.data_queues.MessageQueue;
+import com.hollybits.socialpetnetwork.helper.MessageObserver;
 import com.hollybits.socialpetnetwork.models.Message;
 import com.hollybits.socialpetnetwork.models.User;
 
@@ -42,7 +44,7 @@ import retrofit2.Response;
  * Use the {@link Chat#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Chat extends Fragment {
+public class Chat extends Fragment implements MessageObserver {
 
     @BindView(R.id.message_chat_recycler_view)
     RecyclerView chatRecyclerView;
@@ -228,6 +230,17 @@ public class Chat extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void update() {
+        Log.d("USER FRIENDS", "UPDATE CALL");
+        messageAdapter.add(MessageQueue.getInstance().poll());
+        try {
+            getActivity().runOnUiThread(() -> messageAdapter.notifyDataSetChanged());
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
     /**

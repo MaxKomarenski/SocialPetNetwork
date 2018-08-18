@@ -4,11 +4,17 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.data_queues.FriendShipRequestQueue;
+import com.hollybits.socialpetnetwork.data_queues.MessageQueue;
 import com.hollybits.socialpetnetwork.enums.NotificationType;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
+import com.hollybits.socialpetnetwork.models.Message;
 
+import java.sql.Timestamp;
 import java.util.Map;
+
+import io.paperdb.Paper;
 
 /**
  * Created by Victor on 05.08.2018.
@@ -162,6 +168,19 @@ public class NotificationsAcceptor extends FirebaseMessagingService {
                 break;
             }
             case FRIENDSHIPACCEPTED:{
+                break;
+            }
+
+            case MESSAGESENT:{
+                Message message = new Message();
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                message.setTimestamp(timestamp);
+                message.setMessage(data.get("message_text"));
+                message.setRead(false);
+                message.setUser_to(Long.decode(data.get("user_to")));
+                message.setFriends_id(Long.decode(data.get("friends_id")));
+                Paper.book().write(MainActivity.FROM_USER_ID, Long.decode(data.get("user_from")));
+                MessageQueue.getInstance().add(message);
                 break;
             }
         }

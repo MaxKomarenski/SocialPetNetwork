@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String FRIEND_LIST = "FriendList";
     public static final String FRIENDSHIP_REQUEST_LIST = "FriendshipRequestList";
     public static final String ID_OF_FRIEND = "FriendId";
+    public static final String FROM_USER_ID = "From user id";
     public static final String MESSAGE_BOOK = "Messages";
 
     @BindView(R.id.move_to_login)
