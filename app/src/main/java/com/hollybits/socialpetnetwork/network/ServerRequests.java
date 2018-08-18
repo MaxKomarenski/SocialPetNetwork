@@ -11,6 +11,7 @@ import com.hollybits.socialpetnetwork.forms.RegistrationForm;
 import com.hollybits.socialpetnetwork.forms.UpdateTokenForm;
 import com.hollybits.socialpetnetwork.models.Breed;
 import com.hollybits.socialpetnetwork.models.Contact;
+import com.hollybits.socialpetnetwork.models.Coordinates;
 import com.hollybits.socialpetnetwork.models.Country;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
@@ -51,6 +52,7 @@ public interface ServerRequests {
     @POST("/registration")
     Call<String> sendRegistrationFormToTheServer(@Body RegistrationForm registrationForm);
 
+
     @POST("/updateUsersToken")
     Call<String> updateToken(@HeaderMap Map<String, String> headers, @Body UpdateTokenForm tokenForm);
 
@@ -60,6 +62,7 @@ public interface ServerRequests {
     @POST("/online")
     Call<String> online(@HeaderMap Map<String, String> headers, @Query("id") Long id);
 
+
     @POST("/login")
     Call<Void> login(@Body LoginActivity.Credentials credentials);
 
@@ -68,6 +71,7 @@ public interface ServerRequests {
 
     @POST("/getUsersFriends")
     Call<Set<FriendInfo>> getAllUserFriends(@HeaderMap Map<String, String> headers, @Query("id") Long id);
+
 
     @POST("/persist")
     Call<String> notifyPersistance(@HeaderMap Map<String, String> headers, @Query("requestId") Long id, @Query("userID")Long userId);
@@ -100,4 +104,8 @@ public interface ServerRequests {
     @POST("/makeLastMessageRead")
     Call<String> makeLastMessageRead(@HeaderMap Map<String, String> headers,
                                      @Query("friends_id") Long id);
+
+
+    @POST("/getUsersNearMe")
+    Call<Map<Long,Coordinates>> getUsersNearMe(@HeaderMap Map<String, String> headers, @Body Address address, @Query("id") Long id);
 }

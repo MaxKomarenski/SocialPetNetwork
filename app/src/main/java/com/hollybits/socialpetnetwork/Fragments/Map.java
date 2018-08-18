@@ -1,6 +1,7 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.android.volley.toolbox.HttpResponse;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -26,11 +28,15 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.helper.MarkerMover;
+import com.hollybits.socialpetnetwork.helper.MarkersOnMapDisplayer;
+import com.hollybits.socialpetnetwork.models.Coordinates;
 import com.hollybits.socialpetnetwork.models.User;
 
 import java.io.IOException;
@@ -43,6 +49,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.paperdb.Paper;
+import okhttp3.internal.http.HttpCodec;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,6 +84,9 @@ public class Map extends Fragment  {
     private GoogleMap googleMap;
     private Geocoder locationInfoSupplier = new Geocoder(FragmentDispatcher.getInstance());
 
+    private MarkersOnMapDisplayer markersOnMapDisplayer;
+    private User currentUser;
+    private java.util.Map<String, String> code;
 
     private FusedLocationProviderClient mFusedLocationClient;
 
@@ -103,6 +113,11 @@ public class Map extends Fragment  {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, view);
 
+        currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        code = new HashMap<>();
+        code.put("authorization", currentUser.getAuthorizationCode());
+
+
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
 
@@ -117,12 +132,13 @@ public class Map extends Fragment  {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
-
+                markersOnMapDisplayer = new MarkersOnMapDisplayer(googleMap);
                 // For showing a move to my location button
                 if (ContextCompat.checkSelfPermission(Map.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
                     googleMap.setMyLocationEnabled(true);
                     mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Map.this.getContext());
+                    animateMapToUsersLocation();
                     positionTracker.scheduleAtFixedRate(Map.this::startTracking,0, 1, TimeUnit.SECONDS );
                 } else {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},ACCESS_FINE_LOCATION_CODE);
@@ -139,19 +155,10 @@ public class Map extends Fragment  {
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(location -> {
                     if (location != null) {
-                        googleMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(location.getLatitude(), location.getLongitude()))
-                                .title("My Pos"));
-                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 10);
-                        googleMap.animateCamera(cameraUpdate);
-
                         try {
                             List<Address> addresses = locationInfoSupplier.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-                            java.util.Map<String, String> authorisationCode = new HashMap<>();
-                            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
                             if(addresses.size() == 1)
-                                MainActivity.getServerRequests().updateMyPosition(authorisationCode,addresses.get(0), currentUser.getId()).enqueue(new Callback<Void>() {
+                                MainActivity.getServerRequests().updateMyPosition(code,addresses.get(0), currentUser.getId()).enqueue(new Callback<Void>() {
                                     @Override
                                     public void onResponse(Call<Void> call, Response<Void> response) {
                                         Log.d("Position update", String.valueOf(response.code()));
@@ -171,6 +178,36 @@ public class Map extends Fragment  {
                 });
     }
 
+
+    @SuppressLint("MissingPermission")
+    private void locateOthers(){
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(location -> {
+                    if (location != null) {
+                        try {
+                            List<Address> addresses = locationInfoSupplier.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                            Response<java.util.Map<Long,Coordinates>>  response = MainActivity.getServerRequests().getUsersNearMe(code, addresses.get(0), currentUser.getId()).execute();
+                            if(response.code() == 200){
+                                markersOnMapDisplayer.displayMarkers(response.body());
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+            });
+    }
+
+
+    @SuppressLint("MissingPermission")
+    private void animateMapToUsersLocation(){
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(location -> {
+                    if (location != null) {
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 10);
+                        googleMap.animateCamera(cameraUpdate);
+                    }
+    });
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == ACCESS_FINE_LOCATION_CODE) {
@@ -181,6 +218,7 @@ public class Map extends Fragment  {
                     googleMap.setMyLocationEnabled(true);
                     mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Map.this.getContext());
                     positionTracker.scheduleAtFixedRate(Map.this::startTracking,0, 5, TimeUnit.SECONDS );
+                    animateMapToUsersLocation();
                 } catch (SecurityException e) {
                     Log.d("PERMISSION", "SecurityException");
                 }
