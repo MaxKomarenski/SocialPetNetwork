@@ -43,7 +43,6 @@ public class MarkersOnMapDisplayer {
                 continue;
             }
             if(displayedMarkers.containsKey(entry.getKey())){
-                unupdated.remove(entry.getKey());
                 Log.d("DISPLAYER", "Moving marker to pos");
                 markerMover.MoveMarkerToPosition(displayedMarkers.get(entry.getKey()), entry.getValue());
             }else {
@@ -53,8 +52,6 @@ public class MarkersOnMapDisplayer {
                         .title("user"));
                 newMarker.setSnippet(entry.getKey().toString());
                 displayedMarkers.put(entry.getKey(), newMarker);
-                unupdated.remove(entry.getKey());
-
             }
             for (Long l: unupdated
                  ) {
