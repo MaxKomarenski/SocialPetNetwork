@@ -40,13 +40,14 @@ public class MarkersOnMapDisplayer {
         for (Map.Entry<Long, Coordinates> entry:longCoordinatesMap.entrySet()) {
             Log.d("DISPLAYER:", entry.getKey()+" "+entry.getValue().getLatitude()+ " "+ entry.getValue().getLongitude());
             if(currentUserId.equals(entry.getKey())){
-                Log.d("DISPLAYER:", "Current user not displayed");
                 continue;
             }
             if(displayedMarkers.containsKey(entry.getKey())){
-                markerMover.MoveMarkerToPosition(displayedMarkers.get(entry.getKey()), entry.getValue());
                 unupdated.remove(entry.getKey());
+                Log.d("DISPLAYER", "Moving marker to pos");
+                markerMover.MoveMarkerToPosition(displayedMarkers.get(entry.getKey()), entry.getValue());
             }else {
+                Log.d("DISPLAYER", "Placing new Marker");
                 Marker newMarker = googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(entry.getValue().getLatitude(), entry.getValue().getLongitude()))
                         .title("user"));
