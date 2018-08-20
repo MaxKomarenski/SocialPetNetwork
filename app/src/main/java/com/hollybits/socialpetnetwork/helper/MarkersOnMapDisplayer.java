@@ -1,5 +1,7 @@
 package com.hollybits.socialpetnetwork.helper;
 
+import android.annotation.SuppressLint;
+import android.location.Location;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -10,6 +12,7 @@ import com.hollybits.socialpetnetwork.models.Coordinates;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,15 +31,17 @@ public class MarkersOnMapDisplayer {
     private Map<Long, Marker> displayedMarkers;
     private Set<Long> unupdated;
 
+    @SuppressLint("UseSparseArrays")
     public MarkersOnMapDisplayer(GoogleMap googleMap) {
         this.googleMap = googleMap;
         markerMover = new MarkerMover();
+        unupdated = new HashSet<>();
         displayedMarkers = new HashMap<>();
     }
 
     public void displayMarkers(Map<Long, Coordinates> longCoordinatesMap){
         Log.d("DISPLAYER", "START");
-        unupdated = displayedMarkers.keySet();
+        unupdated.addAll(displayedMarkers.keySet());
         for (Map.Entry<Long, Coordinates> entry:longCoordinatesMap.entrySet()) {
             Log.d("DISPLAYER:", entry.getKey()+" "+entry.getValue().getLatitude()+ " "+ entry.getValue().getLongitude());
             if(currentUserId.equals(entry.getKey())){
@@ -45,6 +50,7 @@ public class MarkersOnMapDisplayer {
             if(displayedMarkers.containsKey(entry.getKey())){
                 Log.d("DISPLAYER", "Moving marker to pos");
                 markerMover.MoveMarkerToPosition(displayedMarkers.get(entry.getKey()), entry.getValue());
+                unupdated.remove(entry.getKey());
             }else {
                 Log.d("DISPLAYER", "Placing new Marker");
                 Marker newMarker = googleMap.addMarker(new MarkerOptions()
@@ -52,8 +58,16 @@ public class MarkersOnMapDisplayer {
                         .title("user"));
                 newMarker.setSnippet(entry.getKey().toString());
                 displayedMarkers.put(entry.getKey(), newMarker);
+                unupdated.remove(entry.getKey());
             }
         }
+
+        for(Long l: unupdated){
+            displayedMarkers.get(l).remove();
+            displayedMarkers.remove(l);
+        }
+        unupdated.clear();
+
     }
 
 
