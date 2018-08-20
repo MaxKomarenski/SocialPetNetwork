@@ -57,7 +57,7 @@ public class MarkersOnMapDisplayer {
             }
             for (Long l: unupdated
                  ) {
-                displayedMarkers.get(l).remove();
+                displayedMarkers.get(l).setVisible(false);
                 displayedMarkers.remove(l);
             }
         }

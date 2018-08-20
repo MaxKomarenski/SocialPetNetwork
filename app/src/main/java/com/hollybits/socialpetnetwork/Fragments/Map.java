@@ -68,8 +68,7 @@ public class Map extends Fragment  {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private ScheduledExecutorService positionTracker = Executors.newScheduledThreadPool(1);
-    private ScheduledExecutorService otherUsersPositionTraker = Executors.newScheduledThreadPool(1);
+    private ScheduledExecutorService positionTracker;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -113,12 +112,6 @@ public class Map extends Fragment  {
 
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, view);
-
-        currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-        code = new HashMap<>();
-        code.put("authorization", currentUser.getAuthorizationCode());
-
-
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
 
@@ -134,14 +127,19 @@ public class Map extends Fragment  {
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
                 markersOnMapDisplayer = new MarkersOnMapDisplayer(googleMap);
+                currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+                code = new HashMap<>();
+                code.put("authorization", currentUser.getAuthorizationCode());
+
                 // For showing a move to my location button
                 if (ContextCompat.checkSelfPermission(Map.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
                     googleMap.setMyLocationEnabled(true);
                     mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Map.this.getContext());
                     animateMapToUsersLocation();
+                    positionTracker = Executors.newScheduledThreadPool(2);
                     positionTracker.scheduleAtFixedRate(Map.this::startTracking,0, 1, TimeUnit.SECONDS );
-                    otherUsersPositionTraker.scheduleAtFixedRate(Map.this::locateOthers, 1, 1,TimeUnit.SECONDS);
+                    positionTracker.scheduleAtFixedRate(Map.this::locateOthers, 1, 1,TimeUnit.SECONDS);
                 } else {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},ACCESS_FINE_LOCATION_CODE);
                 }
@@ -229,8 +227,9 @@ public class Map extends Fragment  {
                 try {
                     googleMap.setMyLocationEnabled(true);
                     mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Map.this.getContext());
+                    positionTracker = Executors.newScheduledThreadPool(2);
                     positionTracker.scheduleAtFixedRate(Map.this::startTracking,0, 5, TimeUnit.SECONDS );
-                    otherUsersPositionTraker.scheduleAtFixedRate(Map.this::locateOthers, 0, 1,TimeUnit.SECONDS);
+                    positionTracker.scheduleAtFixedRate(Map.this::locateOthers, 0, 1,TimeUnit.SECONDS);
                     animateMapToUsersLocation();
                 } catch (SecurityException e) {
                     Log.d("PERMISSION", "SecurityException");
@@ -260,7 +259,6 @@ public class Map extends Fragment  {
         super.onDetach();
         mListener = null;
         positionTracker.shutdown();
-        otherUsersPositionTraker.shutdown();
     }
 
     /**
