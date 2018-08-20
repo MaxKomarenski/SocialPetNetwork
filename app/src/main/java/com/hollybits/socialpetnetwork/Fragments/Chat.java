@@ -192,9 +192,13 @@ public class Chat extends Fragment implements MessageObserver {
                 }
             });
         }else {
+
+            User user = Paper.book().read(MainActivity.CURRENTUSER);
             messageAdapter = new MessageAdapter(messages);
             chatRecyclerView.setAdapter(messageAdapter);
+            getAllUnreadMessages(friendId, user.getId());
             messageAdapter.notifyDataSetChanged();
+
         }
 
 
@@ -237,14 +241,41 @@ public class Chat extends Fragment implements MessageObserver {
 
     @Override
     public void update() {
-        Message message = MessageQueue.getInstance().get(friendId);
-        messageAdapter.add(message);
+
         try {
+            Message message = MessageQueue.getInstance().get(friendId);
+            System.err.println(friendId);
+            messageAdapter.add(message);
             getActivity().runOnUiThread(() -> messageAdapter.notifyDataSetChanged());
+            makeThisMassageRead(message.getFriends_id());
         }catch (NullPointerException e){
             e.printStackTrace();
         }
-        makeThisMassageRead(message.getFriends_id());
+
+    }
+
+    private void getAllUnreadMessages(Long idFromUser, Long idFriends){
+        MainActivity.getServerRequests().getAllUnreadMessages(getAuthorizationCode(), idFromUser, idFriends).enqueue(new Callback<List<Message>>() {
+            @Override
+            public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
+
+                List<Message> m_s = response.body();
+                if( m_s != null && m_s.size() > 0){
+                    for (Message message: response.body()){
+                        messageAdapter.add(message);
+                        addMessageToPaperBook(message);
+                        messageAdapter.notifyDataSetChanged();
+                    }
+                    makeThisMassageRead(m_s.get(0).getFriends_id());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Message>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void makeThisMassageRead(Long friendsId){

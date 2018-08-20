@@ -44,7 +44,7 @@ public class MessageQueue implements MessageObservable{
                     Long id = Paper.book().read(MainActivity.FROM_USER_ID);
                     List<Message> list = Paper.book(MainActivity.MESSAGE_BOOK).read(id.toString());
                     list.add(message);
-                    Paper.book().write(MainActivity.FROM_USER_ID,list);
+                    Paper.book().write(MainActivity.FROM_USER_ID, list);
                 }
 
         );

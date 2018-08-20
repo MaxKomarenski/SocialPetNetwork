@@ -72,7 +72,6 @@ public interface ServerRequests {
     @POST("/getUsersFriends")
     Call<Set<FriendInfo>> getAllUserFriends(@HeaderMap Map<String, String> headers, @Query("id") Long id);
 
-
     @POST("/persist")
     Call<String> notifyPersistance(@HeaderMap Map<String, String> headers, @Query("requestId") Long id, @Query("userID")Long userId);
 
@@ -108,4 +107,9 @@ public interface ServerRequests {
 
     @POST("/getUsersNearMe")
     Call<Map<Long,Coordinates>> getUsersNearMe(@HeaderMap Map<String, String> headers, @Body Address address, @Query("id") Long id);
+
+    @POST("/getAllUnreadMessages")
+    Call<List<Message>> getAllUnreadMessages(@HeaderMap Map<String, String> headers,
+                                             @Query("user_1") Long user_1,
+                                             @Query("user_2") Long user_2);
 }

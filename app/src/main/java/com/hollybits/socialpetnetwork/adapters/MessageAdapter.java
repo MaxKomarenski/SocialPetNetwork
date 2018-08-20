@@ -49,7 +49,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
         Message message = messages.get(position);
         holder.text.setText(message.getMessage());
-//        holder.time.setText(message.getTimestamp().toString());
+        holder.time.setText(message.getTimestamp().toString());
 
     }
 

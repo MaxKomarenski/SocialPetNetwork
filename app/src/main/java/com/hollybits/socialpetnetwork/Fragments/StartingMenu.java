@@ -34,6 +34,9 @@ public class StartingMenu extends Fragment {
     @BindView(R.id.messages_card_view_in_starting_menu)
     CardView messagesCardView;
 
+    @BindView(R.id.map_card_view_in_starting_menu)
+    CardView mapCardView;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -105,6 +108,13 @@ public class StartingMenu extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentDispatcher.launchFragment(Messages.class);
+            }
+        });
+
+        mapCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(Map.class);
             }
         });
     }
