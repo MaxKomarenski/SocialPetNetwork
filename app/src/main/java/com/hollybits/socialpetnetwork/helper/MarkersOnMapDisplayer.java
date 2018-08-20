@@ -53,11 +53,6 @@ public class MarkersOnMapDisplayer {
                 newMarker.setSnippet(entry.getKey().toString());
                 displayedMarkers.put(entry.getKey(), newMarker);
             }
-            for (Long l: unupdated
-                 ) {
-                displayedMarkers.get(l).setVisible(false);
-                displayedMarkers.remove(l);
-            }
         }
     }
 
