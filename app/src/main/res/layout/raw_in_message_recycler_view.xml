@@ -2,22 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:id="@+id/one_message_linear_layout"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="start">
+    android:gravity="center">
 
     <TextView
         android:id="@+id/text_of_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="text"
+        android:text=""
         />
 
     <TextView
         android:id="@+id/time_of_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="12 00 "
+        android:text=""
         />
 
 </LinearLayout>

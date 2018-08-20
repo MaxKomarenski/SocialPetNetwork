@@ -122,7 +122,8 @@ public class Chat extends Fragment implements MessageObserver {
         });
 
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        layoutManager.setStackFromEnd(true);
         chatRecyclerView.setLayoutManager(layoutManager);
         SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
         chatRecyclerView.setItemAnimator(animator);
@@ -163,8 +164,7 @@ public class Chat extends Fragment implements MessageObserver {
             }
         });
 
-        Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
-        message.setTimestamp(timestamp1);
+        message.setTimestamp(new Timestamp(System.currentTimeMillis()));
         addMessageToPaperBook(message);
     }
 
@@ -200,7 +200,6 @@ public class Chat extends Fragment implements MessageObserver {
             messageAdapter.notifyDataSetChanged();
 
         }
-
 
     }
 

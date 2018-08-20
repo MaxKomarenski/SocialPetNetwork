@@ -10,8 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.models.Message;
 
+import java.util.Date;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHolder>{
@@ -48,8 +50,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     public void onBindViewHolder(@NonNull MessageAdapter.MyViewHolder holder, int position) {
 
         Message message = messages.get(position);
+        if(message.getUser_to().equals(MainActivity.getCurrentUser().getId())){
+            holder.messageLinearLayout.setGravity(Gravity.START);
+        }else {
+            holder.messageLinearLayout.setGravity(Gravity.END);
+        }
         holder.text.setText(message.getMessage());
-        holder.time.setText(message.getTimestamp().toString());
+        Date date = new Date(message.getTimestamp().getTime());
+        holder.time.setText(date.toString());
 
     }
 
