@@ -1,6 +1,7 @@
 package com.hollybits.socialpetnetwork.helper;
 
 
+import android.location.Location;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -31,6 +32,13 @@ public class MarkerMover {
         final Interpolator interpolator = new AccelerateDecelerateInterpolator();
         final float durationInMs = 3000;
         final boolean hideMarker = false;
+
+
+        float[] results = new float[1];
+        Location.distanceBetween(startPosition.latitude, startPosition.longitude,
+                finalPosition.latitude, finalPosition.longitude,
+                results);
+        if(results[0] < 5) return;
 
         handler.post(new Runnable() {
             long elapsed;
