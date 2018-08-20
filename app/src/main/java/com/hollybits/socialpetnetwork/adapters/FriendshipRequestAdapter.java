@@ -9,11 +9,19 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
+import com.hollybits.socialpetnetwork.models.User;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipRequestAdapter.MyViewHolder> {
 
@@ -56,6 +64,14 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
         holder.place.setText(request.getCity() + ", " + request.getCountry());
         holder.petName.setText(request.getPetName());
         holder.breed.setText(request.getPetBreed());
+
+        holder.accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                acceptFriendshipRequest(request);
+
+            }
+        });
     }
 
     @Override
@@ -65,5 +81,46 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
 
     public void addItem(InfoAboutUserFriendShipRequest request){
         friendShipRequests.add(request);
+    }
+
+    private void acceptFriendshipRequest(InfoAboutUserFriendShipRequest request){
+
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        MainActivity.getServerRequests().acceptFriendshipInvitation(authorisationCode,
+                                                                    currentUser.getId(),
+                                                                    request.getId(),
+                                                                    true).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+
+        deleteRequestFromPaperBook(request);
+        deleteItem(request);
+    }
+
+    private void deleteRequestFromPaperBook(InfoAboutUserFriendShipRequest info){
+        List<InfoAboutUserFriendShipRequest> list = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
+        for (int i = 0; i < list.size(); i++){
+            if(info.equals(list.get(i))){
+                list.remove(i);
+            }
+        }
+
+        Paper.book().write(MainActivity.FRIENDSHIP_REQUEST_LIST, list);
+        notifyDataSetChanged();
+
+    }
+
+    private void deleteItem(InfoAboutUserFriendShipRequest infoAboutUserFriendShipRequest){
+        friendShipRequests.remove(infoAboutUserFriendShipRequest);
     }
 }

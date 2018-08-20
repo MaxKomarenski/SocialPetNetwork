@@ -112,4 +112,10 @@ public interface ServerRequests {
     Call<List<Message>> getAllUnreadMessages(@HeaderMap Map<String, String> headers,
                                              @Query("user_1") Long user_1,
                                              @Query("user_2") Long user_2);
+
+    @POST("/acceptFriendshipInvitation")
+    Call<String> acceptFriendshipInvitation(@HeaderMap Map<String, String> headers,
+                                            @Query("acceptor") Long acceptorId,
+                                            @Query("requester") Long requesterId,
+                                            @Query("state") boolean state);
 }
