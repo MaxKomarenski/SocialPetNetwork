@@ -234,6 +234,7 @@ public class Chat extends Fragment implements MessageObserver {
     @Override
     public void onDetach() {
         super.onDetach();
+        MessageQueue.getInstance().removeObserver(this);
         mListener = null;
     }
 

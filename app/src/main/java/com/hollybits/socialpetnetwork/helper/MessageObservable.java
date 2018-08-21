@@ -16,4 +16,5 @@ public interface MessageObservable {
     default void addObserver(MessageObserver ob){
         observerList.add(ob);
     }
+    default void removeObserver(MessageObserver messageObserver){observerList.remove(messageObserver);}
 }
