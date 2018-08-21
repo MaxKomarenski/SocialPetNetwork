@@ -1,5 +1,7 @@
 package com.hollybits.socialpetnetwork.data_queues;
 
+import android.util.Log;
+
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.helper.MessageObservable;
 import com.hollybits.socialpetnetwork.models.Message;
@@ -52,6 +54,7 @@ public class MessageQueue implements MessageObservable{
     }
 
     public Message get(Long id){
+        Log.d("ACCEPTED ID FOR FINDIG:", id.toString());
         for (int i = 0; i < messages.size(); i++) {
             if (id.equals(messages.get(i).getUserFrom())){
                 Message m = messages.get(i);
