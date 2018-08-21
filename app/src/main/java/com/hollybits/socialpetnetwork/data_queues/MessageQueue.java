@@ -38,17 +38,17 @@ public class MessageQueue implements MessageObservable{
     public void add(Message message){
         messages.add(message);
         notifyObserver();
-        Thread thread = new Thread(
+        //Thread thread = new Thread(
 
-                () -> {
-                    Long id = Paper.book().read(MainActivity.FROM_USER_ID);
-                    List<Message> list = Paper.book(MainActivity.MESSAGE_BOOK).read(id.toString());
-                    list.add(message);
-                    Paper.book().write(MainActivity.FROM_USER_ID, list);
-                }
+                //() -> {
+//                    Long id = Paper.book().read(MainActivity.FROM_USER_ID);
+//                    List<Message> list = Paper.book(MainActivity.MESSAGE_BOOK).read(id.toString());
+//                    list.add(message);
+//                    Paper.book().write(MainActivity.FROM_USER_ID, list);
+                //}
 
-        );
-        thread.start();
+        //);
+        //thread.start();
     }
 
     public Message get(Long id){
