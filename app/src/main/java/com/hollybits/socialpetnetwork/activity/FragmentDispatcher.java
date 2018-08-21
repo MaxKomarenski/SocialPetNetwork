@@ -50,6 +50,8 @@ public class FragmentDispatcher extends AppCompatActivity
     private static FragmentDispatcher instance;
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
     private MenuItem previoust;
+    private  static MenuItem messagesMenuItem;
+    private static  int  counterOfNewMessages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,8 @@ public class FragmentDispatcher extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
+        messagesMenuItem = navigationView.getMenu().findItem(R.id.nav_messages);
+        getUnReadMessagesAmount();
         ImageButton logout = navigationView.getHeaderView(0).findViewById(R.id.logout_imagebutton_in_nav_header);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,8 +113,11 @@ public class FragmentDispatcher extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.fragment_dispatcher, menu);
+
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -160,6 +167,50 @@ public class FragmentDispatcher extends AppCompatActivity
         setTitle(item.getTitle());
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public static void incCounter(){
+        counterOfNewMessages++;
+        instance.runOnUiThread(()->{
+            TextView counter  = messagesMenuItem.getActionView().findViewById(R.id.message_counter_i);
+            counter.setText(String.valueOf(counterOfNewMessages));
+            counter.setVisibility(View.VISIBLE);
+        });
+    }
+
+    public static void decCounter(int amount){
+        counterOfNewMessages = counterOfNewMessages - amount;
+        instance.runOnUiThread(()->{
+            TextView counter  = messagesMenuItem.getActionView().findViewById(R.id.message_counter_i);
+            counter.setText(String.valueOf(counterOfNewMessages));
+            if(counterOfNewMessages <= 0){counter.setVisibility(View.GONE); counterOfNewMessages = 0;}
+        });
+    }
+
+    private void getUnReadMessagesAmount(){
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+
+        MainActivity.getServerRequests().getUnReadMessagesAmount(authorisationCode, currentUser.getId()).enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                TextView counter  = messagesMenuItem.getActionView().findViewById(R.id.message_counter_i);
+                if(response.body()!=null && response.body() > 0) {
+                    counter.setText(response.body().toString());
+                    counter.setVisibility(View.VISIBLE);
+                    counterOfNewMessages = response.body();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+
+            }
+        });
+
+
     }
 
     private void logOut(){
@@ -267,6 +318,8 @@ public class FragmentDispatcher extends AppCompatActivity
             }
         });
     }
+
+
 
     private void sayServerThatAllFriendshipRequestIsDeletedFromCache(){
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.data_queues.FriendShipRequestQueue;
 import com.hollybits.socialpetnetwork.data_queues.MessageQueue;
@@ -174,6 +175,7 @@ public class NotificationsAcceptor extends FirebaseMessagingService {
             case MESSAGESENT:{
                 Message message = new Message();
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                FragmentDispatcher.incCounter();
                 message.setTimestamp(timestamp);
                 message.setMessage(data.get("message_text"));
                 message.setRead(false);

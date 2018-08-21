@@ -17,6 +17,22 @@
         android:textStyle="bold"
         />
 
+    <TextView
+        android:id="@+id/message_counter_i"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:gravity="center"
+        android:layout_toEndOf="@+id/text_in_menu"
+        android:background="@drawable/badge_background"
+        android:clickable="false"
+        android:text="9"
+        android:visibility="gone"
+        android:textColor="#FFFFFF" />
+
 
     <ImageView
         android:layout_width="60dp"

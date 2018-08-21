@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.MessageAdapter;
 import com.hollybits.socialpetnetwork.data_queues.MessageQueue;
@@ -247,6 +248,7 @@ public class Chat extends Fragment implements MessageObserver {
             messageAdapter.add(message);
             addMessageToPaperBook(message);
             getActivity().runOnUiThread(() -> messageAdapter.notifyDataSetChanged());
+            FragmentDispatcher.decCounter(1);
             makeThisMassageRead(message.getFriendsId());
         }catch (NullPointerException e){
             e.printStackTrace();
@@ -261,6 +263,7 @@ public class Chat extends Fragment implements MessageObserver {
 
                 List<Message> m_s = response.body();
                 if( m_s != null && m_s.size() > 0){
+                    FragmentDispatcher.decCounter(m_s.size());
                     for (Message message: response.body()){
                         messageAdapter.add(message);
                         addMessageToPaperBook(message);

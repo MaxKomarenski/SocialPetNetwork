@@ -25,7 +25,7 @@ public class OnlineHandler implements Runnable {
         Map<String, String> authorisationCode = new HashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
         try {
-            Response<String> r = MainActivity.getServerRequests().online(authorisationCode, currentUser.getId()).execute();
+            Response<String> r = MainActivity.getServerRequests().online(authorisationCode, currentUser.getId(),  System.currentTimeMillis()).execute();
             Log.d("OnlineHandler", String.valueOf(r.code()));
         } catch (IOException e) {
             e.printStackTrace();

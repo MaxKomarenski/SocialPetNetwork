@@ -31,7 +31,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
         public MyViewHolder(View itemView) {
             super(itemView);
-
             messageLinearLayout = itemView.findViewById(R.id.one_message_linear_layout);
             text = itemView.findViewById(R.id.text_of_message);
             time = itemView.findViewById(R.id.time_of_message);

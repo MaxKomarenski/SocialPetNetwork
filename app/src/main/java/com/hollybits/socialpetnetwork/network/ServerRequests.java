@@ -60,7 +60,7 @@ public interface ServerRequests {
     Call<UserInfo> getInformationOfAnotherUser(@HeaderMap Map<String, String> headers, @Query("id") Long id);
 
     @POST("/online")
-    Call<String> online(@HeaderMap Map<String, String> headers, @Query("id") Long id);
+    Call<String> online(@HeaderMap Map<String, String> headers, @Query("id") Long id, @Query("time") Long time);
 
 
     @POST("/login")
@@ -118,4 +118,9 @@ public interface ServerRequests {
                                             @Query("acceptor") Long acceptorId,
                                             @Query("requester") Long requesterId,
                                             @Query("state") boolean state);
+
+
+    @POST("/getUnReadMessagesAmount")
+    Call<Integer> getUnReadMessagesAmount(@HeaderMap Map<String, String> headers,
+                                          @Query("id") Long id);
 }
