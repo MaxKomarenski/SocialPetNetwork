@@ -71,6 +71,7 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
             @Override
             public void onClick(View v) {
                 acceptFriendshipRequest(request);
+                Paper.book().delete(MainActivity.CONTACT_LIST);
 
             }
         });

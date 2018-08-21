@@ -13,6 +13,8 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.models.Message;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -69,5 +71,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     public void add(Message m){
         messages.add(m);
     }
+
+    private void sortByTimestamp( List<Message> messageList){
+        Collections.sort(messageList, new Comparator<Message>() {
+            public int compare(Message o1, Message o2) {
+                return o1.getTimestamp().compareTo(o2.getTimestamp());
+            }
+        });
+    }
+
+
 
 }
