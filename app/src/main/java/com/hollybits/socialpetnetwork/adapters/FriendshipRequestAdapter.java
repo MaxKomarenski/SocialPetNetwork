@@ -10,9 +10,11 @@ import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
 import com.hollybits.socialpetnetwork.models.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +107,15 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
 
         deleteRequestFromPaperBook(request);
         deleteItem(request);
+
+    }
+
+    private void getFromServerAllFriendsWhichAreNotOnClientSide(){
+        List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
+        List<Long> friend_ids = new ArrayList<>();
+        if (friends != null){
+
+        }
     }
 
     private void deleteRequestFromPaperBook(InfoAboutUserFriendShipRequest info){

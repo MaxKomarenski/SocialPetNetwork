@@ -52,9 +52,8 @@ public class MessageQueue implements MessageObservable{
     }
 
     public Message get(Long id){
-        Long userFromId = Paper.book().read(MainActivity.FROM_USER_ID);
         for (int i = 0; i < messages.size(); i++) {
-            if (id.equals(userFromId)){
+            if (id.equals(messages.get(i).getUserFrom())){
                 Message m = messages.get(i);
                 messages.remove(i);
                 return m;

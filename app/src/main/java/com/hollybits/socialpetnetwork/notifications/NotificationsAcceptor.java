@@ -177,10 +177,11 @@ public class NotificationsAcceptor extends FirebaseMessagingService {
                 message.setTimestamp(timestamp);
                 message.setMessage(data.get("message_text"));
                 message.setRead(false);
+                message.setUserFrom(Long.decode(data.get("user_from")));
                 message.setUser_to(Long.decode(data.get("user_to")));
                 message.setFriends_id(Long.decode(data.get("friends_id")));
                 Paper.book().write(MainActivity.FROM_USER_ID, Long.decode(data.get("user_from")));
-                System.err.println(Long.decode(data.get("user_from")));
+                System.err.println("user from --> " + Long.decode(data.get("user_from")));
                 MessageQueue.getInstance().add(message);
                 break;
             }

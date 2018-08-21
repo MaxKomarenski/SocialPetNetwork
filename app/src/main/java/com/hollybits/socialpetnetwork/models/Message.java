@@ -8,17 +8,21 @@ public class Message {
     private String message;
     private Timestamp timestamp;
     private Long friends_id;
-    private Long user_to;
+    private Long userTo;
+    private Long userFrom;
     private boolean read;
 
     public Message() {
     }
 
-    public Message(String message, Long user_to, boolean read) {
+    public Message(String message, Long userTo, Long userFrom, boolean read) {
         this.message = message;
-        this.user_to = user_to;
+        this.userTo = userTo;
+        this.userFrom = userFrom;
         this.read = read;
     }
+
+
 
     public Long getId() {
         return id;
@@ -26,6 +30,14 @@ public class Message {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserFrom() {
+        return userFrom;
+    }
+
+    public void setUserFrom(Long userFrom) {
+        this.userFrom = userFrom;
     }
 
     public String getMessage() {
@@ -45,11 +57,11 @@ public class Message {
     }
 
     public Long getUser_to() {
-        return user_to;
+        return userTo;
     }
 
     public void setUser_to(Long user_to) {
-        this.user_to = user_to;
+        this.userTo = user_to;
     }
 
     public boolean isRead() {
