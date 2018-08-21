@@ -244,6 +244,7 @@ public class Chat extends Fragment implements MessageObserver {
             Message message = MessageQueue.getInstance().get(friendId);
             System.err.println(friendId);
             messageAdapter.add(message);
+            addMessageToPaperBook(message);
             getActivity().runOnUiThread(() -> messageAdapter.notifyDataSetChanged());
             makeThisMassageRead(message.getFriendsId());
         }catch (NullPointerException e){
