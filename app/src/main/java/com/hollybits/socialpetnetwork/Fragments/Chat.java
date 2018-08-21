@@ -244,7 +244,7 @@ public class Chat extends Fragment implements MessageObserver {
 
         try {
             Message message = MessageQueue.getInstance().get(friendId);
-            System.err.println(friendId);
+            System.err.println("Updating message: "+ message.getMessage());
             messageAdapter.add(message);
             addMessageToPaperBook(message);
             getActivity().runOnUiThread(() -> messageAdapter.notifyDataSetChanged());
