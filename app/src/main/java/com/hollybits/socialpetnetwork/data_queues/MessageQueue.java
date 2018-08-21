@@ -49,6 +49,7 @@ public class MessageQueue implements MessageObservable{
                 Message m = messages.get(i);
                 System.err.println("message in queue --->  " + m.getMessage());
                 messages.remove(i);
+                System.err.println("message in queue --->  " + messages.size());
                 return m;
             }
         }
