@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 
 import io.paperdb.Paper;
 
@@ -21,7 +22,7 @@ public class MessageQueue implements MessageObservable{
     private static Map<Long,Message> messages;
 
     private MessageQueue() {
-        messages = new HashMap<>();
+        messages = new ConcurrentHashMap<>();
     }
 
 
@@ -67,11 +68,11 @@ public class MessageQueue implements MessageObservable{
     }
 
 
-    public Message poll(){
-        Message m = messages.get(0);
-        messages.remove(0);
-        return m;
-    }
+//    public Message poll(){
+//        Message m = messages.get(0);
+//        messages.remove(0);
+//        return m;
+//    }
 
 
 }
