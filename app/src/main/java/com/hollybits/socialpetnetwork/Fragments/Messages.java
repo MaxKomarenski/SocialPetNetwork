@@ -78,37 +78,41 @@ public class Messages extends Fragment {
         View view = inflater.inflate(R.layout.fragment_messages, container, false);
         ButterKnife.bind(this, view);
 
-        contacts = new ArrayList<>();
         getContacts();
-        contactAdapter = new ContactAdapter(contacts);
-        contactsRecyclerView.setAdapter(contactAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         contactsRecyclerView.setLayoutManager(layoutManager);
         SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
         contactsRecyclerView.setItemAnimator(animator);
-        contactAdapter.notifyDataSetChanged();
 
         return view;
     }
 
     private void getContacts(){
-        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-        Map<String, String> authorisationCode = new HashMap<>();
-        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-        MainActivity.getServerRequests().getAllContactsOfCurrentUser(authorisationCode ,MainActivity.getCurrentUser().getId()).enqueue(new Callback<List<Contact>>() {
-            @Override
-            public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
-                contacts.clear();
-                contacts.addAll(response.body());
-                contactAdapter.notifyDataSetChanged();
+        contacts = Paper.book().read(MainActivity.CONTACT_LIST);
+        if(contacts == null){
+            User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+            Map<String, String> authorisationCode = new HashMap<>();
+            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+            MainActivity.getServerRequests().getAllContactsOfCurrentUser(authorisationCode ,MainActivity.getCurrentUser().getId()).enqueue(new Callback<List<Contact>>() {
+                @Override
+                public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
+                    contacts = response.body();
+                    Paper.book().write(MainActivity.CONTACT_LIST, contacts);
+                    contactAdapter = new ContactAdapter(contacts);
+                    contactsRecyclerView.setAdapter(contactAdapter);
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<List<Contact>> call, Throwable t) {
+                @Override
+                public void onFailure(Call<List<Contact>> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        }else {
+            contactAdapter = new ContactAdapter(contacts);
+            contactsRecyclerView.setAdapter(contactAdapter);
+        }
+
     }
 
 
