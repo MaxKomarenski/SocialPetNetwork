@@ -50,7 +50,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     public void onBindViewHolder(@NonNull MessageAdapter.MyViewHolder holder, int position) {
 
         Message message = messages.get(position);
-        if(message.getUser_to().equals(MainActivity.getCurrentUser().getId())){
+        if(message.getUserTo().equals(MainActivity.getCurrentUser().getId())){
             holder.messageLinearLayout.setGravity(Gravity.START);
         }else {
             holder.messageLinearLayout.setGravity(Gravity.END);

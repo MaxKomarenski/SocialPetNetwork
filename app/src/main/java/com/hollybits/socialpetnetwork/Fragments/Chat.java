@@ -1,6 +1,5 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -246,7 +245,7 @@ public class Chat extends Fragment implements MessageObserver {
             System.err.println(friendId);
             messageAdapter.add(message);
             getActivity().runOnUiThread(() -> messageAdapter.notifyDataSetChanged());
-            makeThisMassageRead(message.getFriends_id());
+            makeThisMassageRead(message.getFriendsId());
         }catch (NullPointerException e){
             e.printStackTrace();
         }
@@ -265,7 +264,7 @@ public class Chat extends Fragment implements MessageObserver {
                         addMessageToPaperBook(message);
                         messageAdapter.notifyDataSetChanged();
                     }
-                    makeThisMassageRead(m_s.get(0).getFriends_id());
+                    makeThisMassageRead(m_s.get(0).getFriendsId());
                 }
 
             }

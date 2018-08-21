@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:text="Store"
+        android:text="Gallery"
         android:textColor="#f3732a"
         android:textStyle="bold"
         />
