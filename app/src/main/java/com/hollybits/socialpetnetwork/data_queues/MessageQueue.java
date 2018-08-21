@@ -8,7 +8,9 @@ import com.hollybits.socialpetnetwork.models.Message;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 import io.paperdb.Paper;
@@ -16,10 +18,10 @@ import io.paperdb.Paper;
 public class MessageQueue implements MessageObservable{
     private static volatile MessageQueue instance;
 
-    private static List<Message> messages;
+    private static Map<Long,Message> messages;
 
     private MessageQueue() {
-        messages = new ArrayList<>();
+        messages = new HashMap<>();
     }
 
 
@@ -38,22 +40,22 @@ public class MessageQueue implements MessageObservable{
     }
 
     public void add(Message message){
-        messages.add(message);
+        messages.put(message.getUserFrom(), message);
         notifyObserver();
     }
 
     public Message get(Long id){
         Log.d("ACCEPTED ID FOR FINDIG:", id.toString());
-        for (int i = 0; i < messages.size(); i++) {
-            if (id.equals(messages.get(i).getUserFrom())){
-                Message m = messages.get(i);
+        //for (int i = 0; i < messages.size(); i++) {
+            //if (id.equals(messages.get(i).getUserFrom())){
+                Message m = messages.get(id);
                 System.err.println("message in queue --->  " + m.getMessage());
-                messages.remove(i);
-                System.err.println("message in queue --->  " + messages.size());
+                messages.remove(id);
+                //System.err.println("message in queue --->  " + messages.size());
                 return m;
-            }
-        }
-        return null;
+            //}
+        //}
+        //return null;
     }
 
     public int size(){
