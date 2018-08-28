@@ -194,14 +194,23 @@ public class Chat extends Fragment implements MessageObserver {
                 long currentTime = System.currentTimeMillis();
 
                  if(currentTime - timestamp.getTime() < five_minutes){
-                     greenIndicator.setVisibility(View.VISIBLE);
-                     onlineOrNotOnlineText.setText("online");
-                     onlineOrNotOnlineText.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(R.color.online));
-                 }else {
-                     greenIndicator.setVisibility(View.INVISIBLE);
-                     onlineOrNotOnlineText.setText("not online");
-                     onlineOrNotOnlineText.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(R.color.not_online));
-                 }
+
+                     Chat.this.getActivity().runOnUiThread(() -> {
+                         greenIndicator.setVisibility(View.VISIBLE);
+                         onlineOrNotOnlineText.setText("online");
+                         onlineOrNotOnlineText.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(R.color.online));
+                     });
+
+                      }else {
+
+                     Chat.this.getActivity().runOnUiThread(() -> {
+
+                         greenIndicator.setVisibility(View.INVISIBLE);
+                         onlineOrNotOnlineText.setText("not online");
+                         onlineOrNotOnlineText.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(R.color.not_online));
+
+                     });
+                     }
             }
 
             @Override
