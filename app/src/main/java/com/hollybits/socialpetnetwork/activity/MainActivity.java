@@ -27,6 +27,11 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String ID_OF_FRIEND = "FriendId";
     public static final String CONTACT_LIST = "ContactList";
     public static final String MESSAGE_BOOK = "Messages";
+    public static final String NAME_OF_FRIEND = "NameOfFriend";
 
     @BindView(R.id.move_to_login)
     Button goToLogin;
@@ -84,6 +90,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         Paper.init(this);
+
+
+        //----
+
+        TimeZone tz = TimeZone.getDefault();
+        Calendar c = Calendar.getInstance(tz);
+        String time = String.format("%02d" , c.get(Calendar.HOUR_OF_DAY))+":"+
+                String.format("%02d" , c.get(Calendar.MINUTE))+":"+
+                String.format("%02d" , c.get(Calendar.SECOND))+":"+
+               String.format("%03d" , c.get(Calendar.MILLISECOND));
+        System.err.println(time);
+
+        //-----
 
 
         if(retrofitInit()){

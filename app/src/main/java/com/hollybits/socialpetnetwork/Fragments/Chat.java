@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,9 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
@@ -27,6 +31,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,12 +60,23 @@ public class Chat extends Fragment implements MessageObserver {
     EditText writeMessageEditText;
 
     @BindView(R.id.send_message_button)
-    Button sendMessageButton;
+    ImageButton sendMessageButton;
+
+    @BindView(R.id.name_in_chat_fragment)
+    TextView nameOfFriend;
+
+    @BindView(R.id.online_and_not_online)
+    TextView onlineOrNotOnlineText;
+
+    @BindView(R.id.indicator)
+    ImageView greenIndicator;
 
     MessageAdapter messageAdapter;
     List<Message> messages;
 
     private Long friendId;
+    private ScheduledExecutorService positionTracker;
+    private Typeface messageTextFont;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -110,6 +128,16 @@ public class Chat extends Fragment implements MessageObserver {
         friendId = Paper.book().read(MainActivity.ID_OF_FRIEND);
         MessageQueue.getInstance().addObserver(this);
 
+        messageTextFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr-Roman.otf");
+
+        Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        nameOfFriend.setText(Paper.book().read(MainActivity.NAME_OF_FRIEND));
+        nameOfFriend.setTypeface(mainFont);
+
+        positionTracker = Executors.newScheduledThreadPool(1);
+        positionTracker.scheduleAtFixedRate(Chat.this::checkIfUserIsOnline,0, 4, TimeUnit.MINUTES );
+
+
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,6 +161,38 @@ public class Chat extends Fragment implements MessageObserver {
 
 
         return view;
+    }
+
+    private void checkIfUserIsOnline(){
+
+
+        MainActivity.getServerRequests().getUserLastActiveTime(getAuthorizationCode(), friendId).enqueue(new Callback<Long>() {
+            @Override
+            public void onResponse(Call<Long> call, Response<Long> response) {
+
+                Timestamp timestamp = new Timestamp(response.body());
+                System.err.println("time  " + timestamp.toString());
+
+                long five_minutes = 5 * 60 * 1000;
+                long currentTime = System.currentTimeMillis();
+
+                 if(currentTime - timestamp.getTime() < five_minutes){
+                     greenIndicator.setVisibility(View.VISIBLE);
+                     onlineOrNotOnlineText.setText("online");
+                     onlineOrNotOnlineText.setTextColor(getResources().getColor(R.color.online));
+                 }else {
+                     greenIndicator.setVisibility(View.INVISIBLE);
+                     onlineOrNotOnlineText.setText("not online");
+                     onlineOrNotOnlineText.setTextColor(getResources().getColor(R.color.not_online));
+                 }
+            }
+
+            @Override
+            public void onFailure(Call<Long> call, Throwable t) {
+
+            }
+        });
+
     }
 
     private Map<String, String> getAuthorizationCode(){
@@ -180,7 +240,7 @@ public class Chat extends Fragment implements MessageObserver {
                 public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
                     messages = new ArrayList<>();
                     messages.addAll(response.body());
-                    messageAdapter = new MessageAdapter(messages);
+                    messageAdapter = new MessageAdapter(messages, messageTextFont);
                     chatRecyclerView.setAdapter(messageAdapter);
                     messageAdapter.notifyDataSetChanged();
                     createNewPaperBook();
@@ -195,7 +255,7 @@ public class Chat extends Fragment implements MessageObserver {
         }else {
 
             User user = Paper.book().read(MainActivity.CURRENTUSER);
-            messageAdapter = new MessageAdapter(messages);
+            messageAdapter = new MessageAdapter(messages, messageTextFont);
             chatRecyclerView.setAdapter(messageAdapter);
             getAllUnreadMessages(friendId, user.getId());
             messageAdapter.notifyDataSetChanged();
@@ -246,7 +306,7 @@ public class Chat extends Fragment implements MessageObserver {
         try {
             Message message = MessageQueue.getInstance().get(friendId);
 
-            if(message != null){
+            //if(message != null){
                 System.err.println("Updating message: "+ message.getMessage());
                 messageAdapter.add(message);
                 chatRecyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
@@ -254,7 +314,7 @@ public class Chat extends Fragment implements MessageObserver {
                 getActivity().runOnUiThread(() -> messageAdapter.notifyDataSetChanged());
                 FragmentDispatcher.decCounter(1);
                 makeThisMassageRead(message.getFriendsId());
-            }
+            //}
 
         }catch (NullPointerException e){
             e.printStackTrace();

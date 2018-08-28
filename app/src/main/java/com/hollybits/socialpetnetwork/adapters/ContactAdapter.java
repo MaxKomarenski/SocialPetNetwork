@@ -68,6 +68,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHo
             @Override
             public void onClick(View v) {
                 Paper.book().write(MainActivity.ID_OF_FRIEND, contact.getFriendId());
+                Paper.book().write(MainActivity.NAME_OF_FRIEND, contact.getName());
                 FragmentDispatcher.launchFragment(Chat.class);
             }
         });

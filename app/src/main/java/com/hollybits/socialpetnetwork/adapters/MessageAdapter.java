@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.adapters;
 
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -21,9 +22,11 @@ import java.util.List;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHolder>{
 
     private List<Message> messages;
+    private Typeface tf;
 
-    public MessageAdapter(List<Message> messages){
+    public MessageAdapter(List<Message> messages, Typeface tf){
         this.messages = messages;
+        this.tf = tf;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -36,7 +39,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             textAndDateLinearLayout = itemView.findViewById(R.id.text_and_date_linear_lay_out);
             messageLinearLayout = itemView.findViewById(R.id.one_message_linear_layout);
             text = itemView.findViewById(R.id.text_of_message);
-            time = itemView.findViewById(R.id.time_of_message);
+            //time = itemView.findViewById(R.id.time_of_message);
         }
     }
 
@@ -61,9 +64,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             holder.textAndDateLinearLayout.setBackgroundResource(R.drawable.message_background_user);
         }
         holder.text.setText(message.getMessage());
+        holder.text.setTypeface(tf);
         Date date = new Date(message.getTimestamp().getTime());
         //holder.time.setText(date.toString());
-        holder.time.setText("");
+        //holder.time.setText("");
 
     }
 

@@ -20,15 +20,20 @@
             android:id="@+id/text_of_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:textColor="#000"
+            android:paddingStart="20dp"
+            android:paddingEnd="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textSize="16sp"
+            android:text="Hi Vitia"
             />
 
-        <TextView
-            android:id="@+id/time_of_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            />
+        <!--<TextView-->
+            <!--android:id="@+id/time_of_message"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--/>-->
 
     </LinearLayout>
 

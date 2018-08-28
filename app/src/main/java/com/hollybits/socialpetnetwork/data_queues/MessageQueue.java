@@ -51,8 +51,8 @@ public class MessageQueue implements MessageObservable{
             //if (id.equals(messages.get(i).getUserFrom())){
                 Message m = messages.get(id);
                 System.err.println("message in queue --->  " + m.getMessage());
-                //messages.remove(id);
-                messages.put(id, null);
+                messages.remove(id);
+                //messages.put(id, null);
                 //System.err.println("message in queue --->  " + messages.size());
                 return m;
             //}
