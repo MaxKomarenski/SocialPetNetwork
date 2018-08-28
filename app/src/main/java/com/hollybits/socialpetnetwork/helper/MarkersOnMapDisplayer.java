@@ -5,6 +5,7 @@ import android.location.Location;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -52,31 +53,31 @@ public class MarkersOnMapDisplayer {
                 markerMover.MoveMarkerToPosition(displayedMarkers.get(entry.getKey()), entry.getValue());
                 unupdated.remove(entry.getKey());
             }else {
-                int color;
+                BitmapDescriptor color;
                 switch (entry.getValue().getAttitude()){
                     case 0:{
-                        color = R.color.green;
+                        color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
                         break;
                     }
                     case 1:{
-                        color = R.color.yellow;
+                        color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
                         break;
                     }
                     case 2:{
-                        color = R.color.yellow;
+                        color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
                         break;
                     }
                     case 3:{
-                        color = R.color.red;
+                        color =BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
                         break;
                     }
                     default:{
-                        color = R.color.yellow;
+                        color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
                     }
                 }
                 Marker newMarker = googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(entry.getValue().getLatitude(), entry.getValue().getLongitude()))
-                        .icon(BitmapDescriptorFactory.fromResource(color))
+                        .icon(color)
                         .title("user"));
                 newMarker.setSnippet("Attitude = "+ entry.getValue().getAttitude());
                 displayedMarkers.put(entry.getKey(), newMarker);
