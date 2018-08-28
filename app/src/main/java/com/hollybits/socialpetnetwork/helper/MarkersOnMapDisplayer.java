@@ -5,9 +5,11 @@ import android.location.Location;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.enums.Attitude;
 import com.hollybits.socialpetnetwork.models.Coordinates;
 
@@ -50,8 +52,31 @@ public class MarkersOnMapDisplayer {
                 markerMover.MoveMarkerToPosition(displayedMarkers.get(entry.getKey()), entry.getValue());
                 unupdated.remove(entry.getKey());
             }else {
+                int color;
+                switch (entry.getValue().getAttitude()){
+                    case 0:{
+                        color = R.color.green;
+                        break;
+                    }
+                    case 1:{
+                        color = R.color.yellow;
+                        break;
+                    }
+                    case 2:{
+                        color = R.color.yellow;
+                        break;
+                    }
+                    case 3:{
+                        color = R.color.red;
+                        break;
+                    }
+                    default:{
+                        color = R.color.yellow;
+                    }
+                }
                 Marker newMarker = googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(entry.getValue().getLatitude(), entry.getValue().getLongitude()))
+                        .icon(BitmapDescriptorFactory.fromResource(color))
                         .title("user"));
                 newMarker.setSnippet("Attitude = "+ entry.getValue().getAttitude());
                 displayedMarkers.put(entry.getKey(), newMarker);

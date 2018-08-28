@@ -14,4 +14,8 @@
     <color name="not_active_item">#f3732a</color>
     <color name="petInfoInAccount">#1a3665</color>
 
+    <color name="red">#ee2424</color>
+    <color name="yellow">#f27229</color>
+    <color name="green">#37d037</color>
+
 </resources>
