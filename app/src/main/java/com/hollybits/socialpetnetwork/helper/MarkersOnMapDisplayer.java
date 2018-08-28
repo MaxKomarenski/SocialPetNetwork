@@ -8,6 +8,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.hollybits.socialpetnetwork.enums.Attitude;
 import com.hollybits.socialpetnetwork.models.Coordinates;
 
 import java.util.ArrayList;
@@ -40,23 +41,19 @@ public class MarkersOnMapDisplayer {
     }
 
     public void displayMarkers(Map<Long, Coordinates> longCoordinatesMap){
-        Log.d("DISPLAYER", "START");
         unupdated.addAll(displayedMarkers.keySet());
         for (Map.Entry<Long, Coordinates> entry:longCoordinatesMap.entrySet()) {
-            Log.d("DISPLAYER:", entry.getKey()+" "+entry.getValue().getLatitude()+ " "+ entry.getValue().getLongitude());
             if(currentUserId.equals(entry.getKey())){
                 continue;
             }
             if(displayedMarkers.containsKey(entry.getKey())){
-                Log.d("DISPLAYER", "Moving marker to pos");
                 markerMover.MoveMarkerToPosition(displayedMarkers.get(entry.getKey()), entry.getValue());
                 unupdated.remove(entry.getKey());
             }else {
-                Log.d("DISPLAYER", "Placing new Marker");
                 Marker newMarker = googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(entry.getValue().getLatitude(), entry.getValue().getLongitude()))
                         .title("user"));
-                newMarker.setSnippet(entry.getKey().toString());
+                newMarker.setSnippet("Attitude = "+ entry.getValue().getAttitude());
                 displayedMarkers.put(entry.getKey(), newMarker);
                 unupdated.remove(entry.getKey());
             }

@@ -151,6 +151,7 @@ public class Map extends Fragment  {
 
 
 
+    //TODO Fetching current pet info
     private void startTracking() throws SecurityException {
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(location -> {
@@ -158,7 +159,7 @@ public class Map extends Fragment  {
                         try {
                             List<Address> addresses = locationInfoSupplier.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                             if(addresses.size() == 1)
-                                MainActivity.getServerRequests().updateMyPosition(code,addresses.get(0), currentUser.getId()).enqueue(new Callback<Void>() {
+                                MainActivity.getServerRequests().updateMyPosition(code,addresses.get(0), currentUser.getId(), (byte)currentUser.getPets().get(0).getAttitude().ordinal()).enqueue(new Callback<Void>() {
                                     @Override
                                     public void onResponse(Call<Void> call, Response<Void> response) {
 

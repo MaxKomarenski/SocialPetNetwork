@@ -92,7 +92,8 @@ public interface ServerRequests {
     @POST("/updateUserPosition")
     Call<Void> updateMyPosition(@HeaderMap Map<String, String> headers,
                                 @Body Address address,
-                                @Query("id") Long id);
+                                @Query("id") Long id,
+                                @Query("attitude") byte attitude);
 
     @POST("/sendMessage")
     Call<String> sendMessage(@HeaderMap Map<String, String> headers,
