@@ -168,6 +168,10 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
 
     }
 
+    public void addItem(FriendInfo friendInfo){
+        friends.add(friendInfo);
+    }
+
     @Override
     public Filter getFilter() {
         return new Filter() {

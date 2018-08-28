@@ -116,7 +116,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 
     private void getAllFriendshipRequests(){
         friendShipRequests = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
-        friendshipRequestAdapter = new FriendshipRequestAdapter(friendShipRequests);
+        friendshipRequestAdapter = new FriendshipRequestAdapter(friendShipRequests, userFriendsAdapter);
         friendshipRequestRecyclerView.setAdapter(friendshipRequestAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         friendshipRequestRecyclerView.setLayoutManager(layoutManager);

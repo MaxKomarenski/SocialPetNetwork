@@ -116,6 +116,7 @@ public class Chat extends Fragment implements MessageObserver {
                 if(!writeMessageEditText.getText().toString().equals("")){
                     sendMessageToTheServer(writeMessageEditText.getText().toString());
                     writeMessageEditText.setText("");
+                    chatRecyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
                     messageAdapter.notifyDataSetChanged();
                 }
             }
@@ -244,20 +245,25 @@ public class Chat extends Fragment implements MessageObserver {
 
         try {
             Message message = MessageQueue.getInstance().get(friendId);
-            System.err.println("Updating message: "+ message.getMessage());
-            messageAdapter.add(message);
-            addMessageToPaperBook(message);
-            getActivity().runOnUiThread(() -> messageAdapter.notifyDataSetChanged());
-            FragmentDispatcher.decCounter(1);
-            makeThisMassageRead(message.getFriendsId());
+
+            if(message != null){
+                System.err.println("Updating message: "+ message.getMessage());
+                messageAdapter.add(message);
+                chatRecyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+                addMessageToPaperBook(message);
+                getActivity().runOnUiThread(() -> messageAdapter.notifyDataSetChanged());
+                FragmentDispatcher.decCounter(1);
+                makeThisMassageRead(message.getFriendsId());
+            }
+
         }catch (NullPointerException e){
             e.printStackTrace();
         }
 
     }
 
-    private void getAllUnreadMessages(Long idFromUser, Long idFriends){
-        MainActivity.getServerRequests().getAllUnreadMessages(getAuthorizationCode(), idFromUser, idFriends).enqueue(new Callback<List<Message>>() {
+    private void getAllUnreadMessages(Long friend, Long user){
+        MainActivity.getServerRequests().getAllUnreadMessages(getAuthorizationCode(), friend, user).enqueue(new Callback<List<Message>>() {
             @Override
             public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
 
@@ -283,7 +289,7 @@ public class Chat extends Fragment implements MessageObserver {
 
     private void makeThisMassageRead(Long friendsId){
 
-        MainActivity.getServerRequests().makeLastMessageRead(getAuthorizationCode(), friendsId).enqueue(new Callback<String>() {
+        MainActivity.getServerRequests().makeLastMessageRead(getAuthorizationCode(), friendsId, MainActivity.getCurrentUser().getId()).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
 

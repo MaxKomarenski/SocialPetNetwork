@@ -28,9 +28,11 @@ import retrofit2.Response;
 public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipRequestAdapter.MyViewHolder> {
 
     private List<InfoAboutUserFriendShipRequest> friendShipRequests;
+    private UserFriendsAdapter userFriendsAdapter;
 
-    public FriendshipRequestAdapter(List<InfoAboutUserFriendShipRequest> friendShipRequests){
+    public FriendshipRequestAdapter(List<InfoAboutUserFriendShipRequest> friendShipRequests, UserFriendsAdapter userFriendsAdapter){
         this.friendShipRequests = friendShipRequests;
+        this.userFriendsAdapter = userFriendsAdapter;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -94,14 +96,16 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
         MainActivity.getServerRequests().acceptFriendshipInvitation(authorisationCode,
                                                                     currentUser.getId(),
                                                                     request.getId(),
-                                                                    true).enqueue(new Callback<String>() {
+                                                                    true).enqueue(new Callback<FriendInfo>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-
+            public void onResponse(Call<FriendInfo> call, Response<FriendInfo> response) {
+                FriendInfo newFriend = response.body();
+                userFriendsAdapter.addItem(newFriend);
+                userFriendsAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<FriendInfo> call, Throwable t) {
 
             }
         });
@@ -111,13 +115,7 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
 
     }
 
-    private void getFromServerAllFriendsWhichAreNotOnClientSide(){
-        List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
-        List<Long> friend_ids = new ArrayList<>();
-        if (friends != null){
 
-        }
-    }
 
     private void deleteRequestFromPaperBook(InfoAboutUserFriendShipRequest info){
         List<InfoAboutUserFriendShipRequest> list = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);

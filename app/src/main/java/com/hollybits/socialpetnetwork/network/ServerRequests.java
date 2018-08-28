@@ -40,7 +40,7 @@ public interface ServerRequests {
 
     String BASE_REMOTE_OUR = "https://206.189.61.135:8443/";
     String BASE_LOCAL = "https://10.0.2.2:8443/";
-    String CURRENT_ENDPIONT = BASE_REMOTE_OUR;
+    String CURRENT_ENDPIONT = BASE_LOCAL;
 
 
     @GET("/api/getBreedsForType")
@@ -102,7 +102,8 @@ public interface ServerRequests {
 
     @POST("/makeLastMessageRead")
     Call<String> makeLastMessageRead(@HeaderMap Map<String, String> headers,
-                                     @Query("friends_id") Long id);
+                                     @Query("friends_id") Long id,
+                                     @Query("user_id") Long userID);
 
 
     @POST("/getUsersNearMe")
@@ -114,7 +115,7 @@ public interface ServerRequests {
                                              @Query("user_2") Long user_2);
 
     @POST("/acceptFriendshipInvitation")
-    Call<String> acceptFriendshipInvitation(@HeaderMap Map<String, String> headers,
+    Call<FriendInfo> acceptFriendshipInvitation(@HeaderMap Map<String, String> headers,
                                             @Query("acceptor") Long acceptorId,
                                             @Query("requester") Long requesterId,
                                             @Query("state") boolean state);

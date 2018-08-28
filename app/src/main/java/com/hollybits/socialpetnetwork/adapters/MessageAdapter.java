@@ -28,11 +28,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private LinearLayout messageLinearLayout;
+        private LinearLayout messageLinearLayout, textAndDateLinearLayout;
         private TextView text, time;
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            textAndDateLinearLayout = itemView.findViewById(R.id.text_and_date_linear_lay_out);
             messageLinearLayout = itemView.findViewById(R.id.one_message_linear_layout);
             text = itemView.findViewById(R.id.text_of_message);
             time = itemView.findViewById(R.id.time_of_message);
@@ -53,12 +54,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         Message message = messages.get(position);
         if(message.getUserTo().equals(MainActivity.getCurrentUser().getId())){
             holder.messageLinearLayout.setGravity(Gravity.START);
+            holder.textAndDateLinearLayout.setBackgroundResource(R.drawable.message_background_friend);
+
         }else {
             holder.messageLinearLayout.setGravity(Gravity.END);
+            holder.textAndDateLinearLayout.setBackgroundResource(R.drawable.message_background_user);
         }
         holder.text.setText(message.getMessage());
         Date date = new Date(message.getTimestamp().getTime());
-        holder.time.setText(date.toString());
+        //holder.time.setText(date.toString());
+        holder.time.setText("");
 
     }
 

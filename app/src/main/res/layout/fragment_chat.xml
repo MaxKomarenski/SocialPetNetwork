@@ -22,16 +22,22 @@
     <EditText
         android:id="@+id/write_a_message_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="2dp"
         android:layout_marginEnd="60dp"
+        android:background="@drawable/rounded_corners_for_chat_edit_text"
         android:hint="Write a message"
-        app:layout_constraintEnd_toStartOf="@+id/send_message_button"
-        app:layout_constraintTop_toTopOf="@+id/send_message_button" />
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/send_message_button" />
 
     <Button
         android:id="@+id/send_message_button"
         android:layout_width="60dp"
         android:layout_height="50dp"
+        android:layout_marginBottom="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
