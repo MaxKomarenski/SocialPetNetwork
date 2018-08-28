@@ -309,9 +309,10 @@ public class Chat extends Fragment implements MessageObserver {
             //if(message != null){
                 System.err.println("Updating message: "+ message.getMessage());
                 messageAdapter.add(message);
-                chatRecyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+
                 addMessageToPaperBook(message);
-                getActivity().runOnUiThread(() -> messageAdapter.notifyDataSetChanged());
+                getActivity().runOnUiThread(() -> {messageAdapter.notifyDataSetChanged();
+                chatRecyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);});
                 FragmentDispatcher.decCounter(1);
                 makeThisMassageRead(message.getFriendsId());
             //}
