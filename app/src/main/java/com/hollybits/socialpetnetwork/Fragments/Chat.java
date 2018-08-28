@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -59,6 +60,9 @@ public class Chat extends Fragment implements MessageObserver {
     @BindView(R.id.write_a_message_edit_text)
     EditText writeMessageEditText;
 
+    @BindView(R.id.back_to_contacts_button)
+    Button backToContact;
+
     @BindView(R.id.send_message_button)
     ImageButton sendMessageButton;
 
@@ -77,6 +81,7 @@ public class Chat extends Fragment implements MessageObserver {
     private Long friendId;
     private ScheduledExecutorService positionTracker;
     private Typeface messageTextFont;
+    private Typeface mainFont;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -128,15 +133,32 @@ public class Chat extends Fragment implements MessageObserver {
         friendId = Paper.book().read(MainActivity.ID_OF_FRIEND);
         MessageQueue.getInstance().addObserver(this);
 
-        messageTextFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr-Roman.otf");
-
-        Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
-        nameOfFriend.setText(Paper.book().read(MainActivity.NAME_OF_FRIEND));
-        nameOfFriend.setTypeface(mainFont);
+        textEdition();
 
         positionTracker = Executors.newScheduledThreadPool(1);
-        positionTracker.scheduleAtFixedRate(Chat.this::checkIfUserIsOnline,0, 4, TimeUnit.MINUTES );
+        positionTracker.scheduleAtFixedRate(Chat.this::checkIfUserIsOnline,0, 1, TimeUnit.MINUTES);
 
+        listeners();
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        layoutManager.setStackFromEnd(true);
+        chatRecyclerView.setLayoutManager(layoutManager);
+        SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
+        chatRecyclerView.setItemAnimator(animator);
+
+        getAllMessages();
+
+        return view;
+    }
+
+    private void textEdition(){
+        messageTextFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr-Roman.otf");
+        mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        nameOfFriend.setText(Paper.book().read(MainActivity.NAME_OF_FRIEND));
+        nameOfFriend.setTypeface(mainFont);
+    }
+
+    private void listeners(){
 
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,28 +172,23 @@ public class Chat extends Fragment implements MessageObserver {
             }
         });
 
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
-        layoutManager.setStackFromEnd(true);
-        chatRecyclerView.setLayoutManager(layoutManager);
-        SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
-        chatRecyclerView.setItemAnimator(animator);
-
-        getAllMessages();
-
-
-        return view;
+        backToContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(Messages.class);
+            }
+        });
     }
 
     private void checkIfUserIsOnline(){
 
 
-        MainActivity.getServerRequests().getUserLastActiveTime(getAuthorizationCode(), friendId).enqueue(new Callback<Long>() {
+        MainActivity.getServerRequests().getUserLastActiveTime(getAuthorizationCode(), friendId).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Long> call, Response<Long> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
 
-                Timestamp timestamp = new Timestamp(response.body());
-                System.err.println("time  " + timestamp.toString());
+                String time = response.body().replaceAll("%", " ");
+                Timestamp timestamp = Timestamp.valueOf(time.replaceAll("\\^", ":"));
 
                 long five_minutes = 5 * 60 * 1000;
                 long currentTime = System.currentTimeMillis();
@@ -179,16 +196,16 @@ public class Chat extends Fragment implements MessageObserver {
                  if(currentTime - timestamp.getTime() < five_minutes){
                      greenIndicator.setVisibility(View.VISIBLE);
                      onlineOrNotOnlineText.setText("online");
-                     onlineOrNotOnlineText.setTextColor(getResources().getColor(R.color.online));
+                     onlineOrNotOnlineText.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(R.color.online));
                  }else {
                      greenIndicator.setVisibility(View.INVISIBLE);
                      onlineOrNotOnlineText.setText("not online");
-                     onlineOrNotOnlineText.setTextColor(getResources().getColor(R.color.not_online));
+                     onlineOrNotOnlineText.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(R.color.not_online));
                  }
             }
 
             @Override
-            public void onFailure(Call<Long> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
 
             }
         });
@@ -312,7 +329,7 @@ public class Chat extends Fragment implements MessageObserver {
 
                 addMessageToPaperBook(message);
                 getActivity().runOnUiThread(() -> {messageAdapter.notifyDataSetChanged();
-                chatRecyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);});
+                chatRecyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);   });
                 FragmentDispatcher.decCounter(1);
                 makeThisMassageRead(message.getFriendsId());
             //}

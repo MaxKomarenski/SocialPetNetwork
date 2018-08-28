@@ -60,7 +60,7 @@ public interface ServerRequests {
     Call<UserInfo> getInformationOfAnotherUser(@HeaderMap Map<String, String> headers, @Query("id") Long id);
 
     @POST("/online")
-    Call<String> online(@HeaderMap Map<String, String> headers, @Query("id") Long id, @Query("time") Long time);
+    Call<String> online(@HeaderMap Map<String, String> headers, @Query("id") Long id, @Query("time") String time);
 
 
     @POST("/login")
@@ -127,6 +127,6 @@ public interface ServerRequests {
                                           @Query("id") Long id);
 
     @POST("/checkIfUserIsOnline")
-    Call<Long> getUserLastActiveTime(@HeaderMap Map<String, String> headers,
+    Call<String> getUserLastActiveTime(@HeaderMap Map<String, String> headers,
                                      @Query("id") Long id);
 }

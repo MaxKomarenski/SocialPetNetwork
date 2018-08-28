@@ -92,19 +92,6 @@ public class MainActivity extends AppCompatActivity {
         Paper.init(this);
 
 
-        //----
-
-        TimeZone tz = TimeZone.getDefault();
-        Calendar c = Calendar.getInstance(tz);
-        String time = String.format("%02d" , c.get(Calendar.HOUR_OF_DAY))+":"+
-                String.format("%02d" , c.get(Calendar.MINUTE))+":"+
-                String.format("%02d" , c.get(Calendar.SECOND))+":"+
-               String.format("%03d" , c.get(Calendar.MILLISECOND));
-        System.err.println(time);
-
-        //-----
-
-
         if(retrofitInit()){
             Log.d("RETROFIT INIT", "OK");
             checkLogin();

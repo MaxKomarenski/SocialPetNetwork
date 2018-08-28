@@ -1,11 +1,13 @@
 package com.hollybits.socialpetnetwork.helper;
 
+import android.graphics.Typeface;
 import android.util.Log;
 
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.models.User;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +27,8 @@ public class OnlineHandler implements Runnable {
         Map<String, String> authorisationCode = new HashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
         try {
-            Response<String> r = MainActivity.getServerRequests().online(authorisationCode, currentUser.getId(),  System.currentTimeMillis()).execute();
+            Timestamp time = new Timestamp(System.currentTimeMillis());
+            Response<String> r = MainActivity.getServerRequests().online(authorisationCode, currentUser.getId(), time.toString()).execute();
             Log.d("OnlineHandler", String.valueOf(r.code()));
         } catch (IOException e) {
             e.printStackTrace();
