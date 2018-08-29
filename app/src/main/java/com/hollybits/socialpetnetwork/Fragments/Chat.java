@@ -79,7 +79,7 @@ public class Chat extends Fragment implements MessageObserver {
     List<Message> messages;
 
     private Long friendId;
-    private ScheduledExecutorService positionTracker;
+    private ScheduledExecutorService onlineTracker;
     private Typeface messageTextFont;
     private Typeface mainFont;
 
@@ -135,8 +135,8 @@ public class Chat extends Fragment implements MessageObserver {
 
         textEdition();
 
-        positionTracker = Executors.newScheduledThreadPool(1);
-        positionTracker.scheduleAtFixedRate(Chat.this::checkIfUserIsOnline,0, 1, TimeUnit.MINUTES);
+        onlineTracker = Executors.newScheduledThreadPool(1);
+        onlineTracker.scheduleAtFixedRate(Chat.this::checkIfUserIsOnline,0, 1, TimeUnit.MINUTES);
 
         listeners();
 
@@ -314,6 +314,7 @@ public class Chat extends Fragment implements MessageObserver {
     public void onDetach() {
         super.onDetach();
         MessageQueue.getInstance().removeObserver(this);
+        onlineTracker.shutdown();
         mListener = null;
     }
 
@@ -370,12 +371,9 @@ public class Chat extends Fragment implements MessageObserver {
         MainActivity.getServerRequests().makeLastMessageRead(getAuthorizationCode(), friendsId, MainActivity.getCurrentUser().getId()).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-
             }
-
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
             }
         });
     }
