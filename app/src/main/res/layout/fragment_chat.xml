@@ -7,24 +7,10 @@
     android:background="#fff"
     tools:context=".Fragments.Chat">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/message_chat_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/write_a_message_edit_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff">
+    <!--<android.support.constraint.ConstraintLayout-->
+        <!--android:id="@+id/constraintLayout2"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
         <TextView
             android:id="@+id/name_in_chat_fragment"
@@ -68,9 +54,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Chats"
-            android:drawableStart="@drawable/background_for_button"
             android:background="@null"
+            android:drawableStart="@drawable/background_for_button"
+            android:text="Chats"
             android:textColor="#37bef6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -111,15 +97,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/online_and_not_online" />
 
-    </android.support.constraint.ConstraintLayout>
+    <!--</android.support.constraint.ConstraintLayout>-->
 
     <EditText
         android:id="@+id/write_a_message_edit_text"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginStart="10dp"
         android:layout_marginBottom="5dp"
         android:layout_marginEnd="60dp"
+        android:layout_marginStart="10dp"
         android:background="@drawable/rounded_corners_for_chat_edit_text"
         android:hint=""
         android:paddingEnd="15dp"
@@ -139,6 +125,16 @@
         app:layout_constraintBottom_toBottomOf="@+id/write_a_message_edit_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/write_a_message_edit_text" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/message_chat_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/send_message_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
 
 
 </android.support.constraint.ConstraintLayout>

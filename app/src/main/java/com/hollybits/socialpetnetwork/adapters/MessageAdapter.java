@@ -69,6 +69,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         //holder.time.setText(date.toString());
         //holder.time.setText("");
 
+        System.err.println("size ----->    "+getItemCount());
+
     }
 
     @Override

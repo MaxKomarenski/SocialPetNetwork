@@ -6,13 +6,12 @@
     android:background="@drawable/background_for_raw_of_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
-    android:layout_marginEnd="30dp"
-    android:layout_marginStart="30dp">
+    >
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:id="@+id/small_constraintLayout_in_item"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,16 +74,11 @@
 
         <ImageView
             android:id="@+id/indicator_in_user_friend_recycler_view"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
             android:src="@drawable/green_dot"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout4"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/user_photo_in_user_friend_recycler_view"
+            app:layout_constraintEnd_toEndOf="@+id/user_photo_in_user_friend_recycler_view" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -114,23 +108,24 @@
 
         <ImageView
             android:id="@+id/pressed_indicator_in_user_friend_recycler_view"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginTop="4dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="8dp"
             android:src="@drawable/green_dot"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout7"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/pressed_user_photo_in_user_friend_recycler_view"
+            app:layout_constraintEnd_toEndOf="@+id/pressed_user_photo_in_user_friend_recycler_view" />
 
 
         <LinearLayout
             android:id="@+id/linearLayout7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="24dp"
             android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.056"
             app:layout_constraintStart_toEndOf="@+id/pressed_user_photo_in_user_friend_recycler_view"
             app:layout_constraintTop_toTopOf="@+id/pressed_user_photo_in_user_friend_recycler_view">
 
@@ -188,7 +183,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="message"
                     android:textSize="15sp"
-                    android:textColor="#fff"/>
+                    android:textColor="#000"/>
 
             </RelativeLayout>
 
@@ -211,7 +206,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="map"
                     android:textSize="15sp"
-                    android:textColor="#fff"/>
+                    android:textColor="#000"/>
 
             </RelativeLayout>
 
@@ -234,7 +229,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="info"
                     android:textSize="15sp"
-                    android:textColor="#fff"/>
+                    android:textColor="#000"/>
 
             </RelativeLayout>
 

@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_for_friend_page"
+    android:background="#fff"
     tools:context=".Fragments.UserFriends">
 
 
     <com.hollybits.socialpetnetwork.widgets.ExpandableSearchView
         android:id="@+id/search_in_friends"
+        android:background="@color/green"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="8dp"
@@ -22,7 +23,7 @@
         android:id="@+id/friendship_request_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

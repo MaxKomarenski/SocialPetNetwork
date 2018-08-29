@@ -23,6 +23,7 @@ import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.MessageAdapter;
 import com.hollybits.socialpetnetwork.data_queues.MessageQueue;
 import com.hollybits.socialpetnetwork.helper.MessageObserver;
+import com.hollybits.socialpetnetwork.models.Contact;
 import com.hollybits.socialpetnetwork.models.Message;
 import com.hollybits.socialpetnetwork.models.User;
 
@@ -325,6 +326,8 @@ public class Chat extends Fragment implements MessageObserver {
         MessageQueue.getInstance().removeObserver(this);
         onlineTracker.shutdown();
         mListener = null;
+
+        changeLastMessageInContactFragment();
     }
 
     @Override
@@ -347,6 +350,23 @@ public class Chat extends Fragment implements MessageObserver {
         }catch (NullPointerException e){
             e.printStackTrace();
         }
+
+    }
+
+    private void changeLastMessageInContactFragment(){
+
+        if(messages.size() != 0){
+            List<Contact> contactList = Paper.book().read(MainActivity.CONTACT_LIST);
+
+            for (int i = 0; i < contactList.size(); i++){
+                if (contactList.get(i).getFriendId().equals(friendId)){
+                    contactList.get(i).setLastMessage(messages.get(messages.size() - 1).getMessage());
+                }
+            }
+
+            Paper.book().write(MainActivity.CONTACT_LIST, contactList);
+        }
+
 
     }
 
