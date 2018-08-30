@@ -7,4 +7,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="padding_of_edit_text">10dp</dimen>
     <dimen name="size_of_text_in_account">19sp</dimen>
+    <dimen name="radius_corner_of_table">12dp</dimen>
 </resources>

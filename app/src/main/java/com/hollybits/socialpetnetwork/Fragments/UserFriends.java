@@ -1,9 +1,11 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
-import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
@@ -43,6 +45,9 @@ import retrofit2.Response;
 
 public class UserFriends extends Fragment implements FriendShipRequestObserver {
 
+    @BindView(R.id.tableCardView)
+    CardView tableCardView;
+
     @BindView(R.id.friendship_request_recycler_view)
     RecyclerView friendshipRequestRecyclerView;
 
@@ -55,13 +60,22 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
     @BindView(R.id.back_move_button)
     ImageButton backButton;
 
+    @BindView(R.id.open_friend_list_in_user_friends_page)
+    TextView friendsTextView;
+
+    @BindView(R.id.open_requests_list_in_user_friends_page)
+    TextView requestsTextView;
+
+    @BindView(R.id.open_people_list_in_user_friends_page)
+    TextView peopleTextView;
+
     private List<FriendInfo> friends;
     private List<InfoAboutUserFriendShipRequest> friendShipRequests;
 
     private UserFriendsAdapter userFriendsAdapter;
     private FriendshipRequestAdapter friendshipRequestAdapter;
 
-    private Typeface nameFont, breedFont;
+    private Typeface nameFont, breedFont, mainFont;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -102,16 +116,12 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 
         nameFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/GOTHIC.TTF");
         breedFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr.ttf");
+        mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentDispatcher.launchFragment(Account.class);
-            }
-        });
+        changeTypeface();
+        listeners();
 
         searchView.setColor(getResources().getColor(R.color.online));
-        //searchView.setDrawingCacheBackgroundColor(getResources().getColor(R.color.online));
 
         getAllFriendshipRequests();
         getAllUserFriends();
@@ -124,6 +134,66 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 
 
         return view;
+    }
+
+    private void changeTypeface(){
+        friendsTextView.setTypeface(mainFont);
+        requestsTextView.setTypeface(mainFont);
+        peopleTextView.setTypeface(mainFont);
+    }
+
+    private void listeners(){
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(Account.class);
+            }
+        });
+
+        friendsTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeColorsAndVisibility(View.VISIBLE, View.GONE,
+                        R.drawable.background_for_table_friends_pressed,
+                        getResources().getDrawable(R.color.blue_for_table),
+                        R.drawable.background_for_table_people);
+
+            }
+        });
+
+        requestsTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeColorsAndVisibility(View.GONE, View.VISIBLE,
+                        R.drawable.background_for_table_friends,
+                        getResources().getDrawable(R.color.blue_for_table_pressed),
+                        R.drawable.background_for_table_people);
+
+            }
+        });
+
+        peopleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeColorsAndVisibility(View.GONE, View.GONE,
+                        R.drawable.background_for_table_friends,
+                        getResources().getDrawable(R.color.blue_for_table),
+                        R.drawable.background_for_table_people_pressed);
+            }
+        });
+    }
+
+    private void changeColorsAndVisibility(int friendVisibility,
+                                           int requestVisibility,
+                                           int friendTextBackground,
+                                           Drawable requestTextBackground,
+                                           int peopleTextBackground){
+        userFriendsRecyclerView.setVisibility(friendVisibility);
+        friendshipRequestRecyclerView.setVisibility(requestVisibility);
+        peopleTextView.setBackgroundResource(peopleTextBackground);
+        requestsTextView.setBackground(requestTextBackground);
+        friendsTextView.setBackgroundResource(friendTextBackground);
     }
 
     private void getAllFriendshipRequests(){
