@@ -3,6 +3,6 @@
     android:shape="rectangle" android:padding="10dp">
     <solid android:color="@color/blue_for_table"/>
     <corners
-        android:topLeftRadius="@dimen/radius_corner_of_table"
-        android:topRightRadius="@dimen/radius_corner_of_table"/>
+        android:bottomRightRadius="@dimen/radius_corner_of_table"
+        android:bottomLeftRadius="@dimen/radius_corner_of_table"/>
 </shape>
