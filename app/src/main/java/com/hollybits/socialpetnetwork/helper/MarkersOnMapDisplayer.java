@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.github.javiersantos.bottomdialogs.BottomDialog;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -23,6 +22,7 @@ import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.enums.Attitude;
 import com.hollybits.socialpetnetwork.models.Coordinates;
 import com.hollybits.socialpetnetwork.models.User;
+import com.kennyc.bottomsheet.BottomSheet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -141,11 +141,11 @@ public class MarkersOnMapDisplayer {
                                 petAge.setText(map.get("petAge"));
                                 petBreed.setText(map.get("petBreed"));
                                 Integer attitude = Integer.valueOf(marker.getSnippet());
-                                linearLayout.setBackgroundColor(context.getResources().getColor(possibleColors.get(attitude).first));
                                 int color = possibleColors.get(attitude).first;
+                                linearLayout.setBackgroundTintList(context.getResources().getColorStateList(color));
                                 info.setBackgroundTintList(context.getResources().getColorStateList(color));
-                                new BottomDialog.Builder(context)
-                                        .setCustomView(view)
+                                new BottomSheet.Builder(context)
+                                        .setView(view)
                                         // You can also show the custom view with some padding in DP (left, top, right, bottom)
                                         //.setCustomView(customView, 20, 20, 20, 0)
                                         .show();
