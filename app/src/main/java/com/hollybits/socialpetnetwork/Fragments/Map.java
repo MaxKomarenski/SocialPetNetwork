@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.adapters.UserInfoOnMapAdapter;
 import com.hollybits.socialpetnetwork.helper.MarkerMover;
 import com.hollybits.socialpetnetwork.helper.MarkersOnMapDisplayer;
 import com.hollybits.socialpetnetwork.models.Coordinates;
@@ -126,7 +127,7 @@ public class Map extends Fragment  {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
-                markersOnMapDisplayer = new MarkersOnMapDisplayer(googleMap);
+                markersOnMapDisplayer = new MarkersOnMapDisplayer(googleMap, Map.this.getActivity());
                 currentUser = Paper.book().read(MainActivity.CURRENTUSER);
                 code = new HashMap<>();
                 code.put("authorization", currentUser.getAuthorizationCode());

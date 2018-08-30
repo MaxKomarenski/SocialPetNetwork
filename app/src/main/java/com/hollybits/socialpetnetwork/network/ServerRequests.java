@@ -9,6 +9,7 @@ import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
 import com.hollybits.socialpetnetwork.forms.RegistrationForm;
 import com.hollybits.socialpetnetwork.forms.UpdateTokenForm;
+import com.hollybits.socialpetnetwork.helper.Test;
 import com.hollybits.socialpetnetwork.models.Breed;
 import com.hollybits.socialpetnetwork.models.Contact;
 import com.hollybits.socialpetnetwork.models.Coordinates;
@@ -68,6 +69,9 @@ public interface ServerRequests {
 
     @POST("/getAllInformationAboutUserAndPets")
     Call<InformationOfUserAndHisPet> getAllInformationAboutUserAndPets(@HeaderMap Map<String, String> headers, @Body Long id);
+
+    @POST("/loadMapInfo")
+    Call<Map<String, String>> getUserInfoMap(@HeaderMap Map<String, String> headers, @Query("id") Long id);
 
     @POST("/getUsersFriends")
     Call<Set<FriendInfo>> getAllUserFriends(@HeaderMap Map<String, String> headers, @Query("id") Long id);

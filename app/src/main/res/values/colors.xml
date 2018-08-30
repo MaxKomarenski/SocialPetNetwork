@@ -17,8 +17,9 @@
     <color name="online">#34b22a</color>
     <color name="not_online">#cccccc</color>
 
-    <color name="red">#ee2424</color>
-    <color name="yellow">#f27229</color>
-    <color name="green">#37d037</color>
+    <color name="red">#ec2323</color>
+    <color name="blue">#7cc2eb</color>
+    <color name="yellow">#f1712a</color>
+    <color name="green">#37d137</color>
 
 </resources>

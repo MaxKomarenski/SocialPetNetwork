@@ -79,6 +79,9 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'io.paperdb:paperdb:2.6' //  Paper DB
 
+
+    compile 'com.github.javiersantos:BottomDialogs:1.2.1' // Bottom sheet
+
     compile 'com.android.volley:volley:1.1.1'
 
     // switch with multiple tabs
