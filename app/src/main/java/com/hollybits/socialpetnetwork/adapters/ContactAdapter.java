@@ -56,7 +56,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Contact contact = contacts.get(position);
-        holder.userName.setText(contact.getName() + " " + contact.getSurname());
+        String nameAndSurname = contact.getName() + " " + contact.getSurname();
+        holder.userName.setText(nameAndSurname);
         holder.lastMessage.setText(contact.getLastMessage());
         if(contact.getTimestamp() == null){
             holder.time.setText("");

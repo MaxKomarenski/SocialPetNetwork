@@ -125,6 +125,14 @@ public class RegistrationActivity extends AppCompatActivity {
             R.id.rabbit_rat_pet_type_image_button, R.id.raccoon_pet_type_image_button})
     List<ImageButton> listOfPetTypes;
 
+    @BindViews({
+            R.id.cat_text,
+            R.id.dog_text,
+            R.id.rabbit_text,
+            R.id.bird_text,
+    })
+    List<TextView> names_of_pets;
+
     @BindView(R.id.sex_jelly_toggle_button)
     JellyToggleButton sexOfPetJelly;
 
@@ -180,6 +188,10 @@ public class RegistrationActivity extends AppCompatActivity {
         textView1.setTypeface(mainFont);
         textView2.setTypeface(mainFont);
         accessButtonInRegistration.setTypeface(mainFont);
+
+        for( TextView textView: names_of_pets){
+            textView.setTypeface(mainFont);
+        }
     }
 
     private void dismissLoadingDialog(int time) {
@@ -305,7 +317,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 } else {
                     s = Sex.MALE;
                 }
-                System.err.println("-------------->   " + s);
 
                 MassUnit massUnit;
 
@@ -377,7 +388,6 @@ public class RegistrationActivity extends AppCompatActivity {
                             progressDialog.setMessage("Something wrong with registration :( Message from server: "+response.body());
                             dismissLoadingDialog(4000);
                         }
-                        System.err.println("Response from registration -->   " + response.body());
                     }
 
                     @Override

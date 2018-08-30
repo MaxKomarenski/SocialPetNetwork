@@ -42,6 +42,7 @@ public class ExpandableSearchView extends FrameLayout {
     private Paint searchHandlePathPaint;
     private int clearViewWidth;
     private int textColor;
+    private int color;
     @Nullable
     private Path searchHandlePath;
     private ObjectAnimator searchHandlePathAnimator;
@@ -76,10 +77,15 @@ public class ExpandableSearchView extends FrameLayout {
         init(context, attrs);
     }
 
+    public void setColor(int color){
+        this.color = color;
+    }
+
     private void init(@NonNull Context context, AttributeSet attrs) {
         int transparentColor = ContextCompat.getColor(context, android.R.color.transparent);
         textColor = ContextCompat.getColor(context, android.R.color.holo_blue_light);
         maxWidth = getResources().getDisplayMetrics().widthPixels / 2;
+        color = getResources().getColor(R.color.yellow);
 
         float textSize = 18;
 
@@ -116,7 +122,7 @@ public class ExpandableSearchView extends FrameLayout {
         addView(searchEditText, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER_VERTICAL));
 
         clearViewPathPaint1.setStyle(Style.STROKE);
-        clearViewPathPaint1.setColor(textColor);
+        clearViewPathPaint1.setColor(color);
         clearViewPathPaint1.setStrokeCap(Cap.ROUND);
         clearViewPathPaint1.setAntiAlias(true);
         clearViewPathPaint1.setStrokeWidth(10);

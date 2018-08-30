@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hollybits.socialpetnetwork.Fragments.Chat;
 import com.hollybits.socialpetnetwork.Fragments.FriendAccount;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
@@ -87,7 +88,7 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
             img_bg = view.findViewById(R.id.pressed_user_photo_in_user_friend_recycler_view);
             indicator_bg = view.findViewById(R.id.pressed_indicator_in_user_friend_recycler_view);
             infoButton = view.findViewById(R.id.info_button_in_pressed_item);
-            //messageButton
+            messageButton = view.findViewById(R.id.message_button_in_pressed_item);
             //mapButton
         }
     }
@@ -149,6 +150,15 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
                     previousHolder.primeConstraintLayout.setBackgroundResource(R.drawable.background_for_raw_of_recycler_view);
                     previousHolder = holder;
                 }
+            }
+        });
+
+        holder.messageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Paper.book().write(MainActivity.ID_OF_FRIEND, friend.getId());
+                Paper.book().write(MainActivity.NAME_OF_FRIEND, friend.getName());
+                FragmentDispatcher.launchFragment(Chat.class);
             }
         });
 

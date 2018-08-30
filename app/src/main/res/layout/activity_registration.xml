@@ -199,60 +199,130 @@
                 >
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center"
                     android:padding="10dp">
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center">
+
+                        <ImageButton
+                            android:id="@+id/cat_pet_type_image_button"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/ic_cat"
+                            android:scaleType="fitCenter"
+                            android:background="@drawable/circle_background"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/cat_text"
+                            android:layout_marginTop="5dp"
+                            android:text="cat"
+                            android:textColor="#fff"/>
+
+                    </LinearLayout>
+
                     <ImageButton
                         android:id="@+id/rat_pet_type_image_button"
+                        android:visibility="gone"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:src="@drawable/ic_rabbit"
                         android:scaleType="fitCenter"
                         android:background="@drawable/circle_background"/>
 
-                    <ImageButton
-                        android:id="@+id/cat_pet_type_image_button"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/ic_cat"
-                        android:layout_marginStart="10dp"
-                        android:scaleType="fitCenter"
-                        android:background="@drawable/circle_background"/>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center">
 
                     <ImageButton
                         android:id="@+id/bird_pet_type_image_button"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:src="@drawable/ic_bird"
-                        android:layout_marginStart="10dp"
                         android:scaleType="fitCenter"
                         android:background="@drawable/circle_background"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/bird_text"
+                        android:text="bird"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#fff"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center">
 
                     <ImageButton
                         android:id="@+id/dog_pet_type_image_button"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:src="@drawable/ic_dog"
-                        android:layout_marginStart="10dp"
                         android:scaleType="fitCenter"
                         android:background="@drawable/circle_background"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="dog"
+                        android:id="@+id/dog_text"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#fff"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center">
 
                     <ImageButton
                         android:id="@+id/rabbit_rat_pet_type_image_button"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:src="@drawable/ic_rabbit"
-                        android:layout_marginStart="10dp"
                         android:scaleType="fitCenter"
                         android:background="@drawable/circle_background"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="rabbit"
+                        android:id="@+id/rabbit_text"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#fff"/>
+
+
+                </LinearLayout>
+
 
                     <ImageButton
                         android:id="@+id/raccoon_pet_type_image_button"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
+                        android:visibility="gone"
                         android:src="@drawable/ic_rabbit"
                         android:layout_marginStart="10dp"
                         android:scaleType="fitCenter"

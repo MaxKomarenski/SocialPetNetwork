@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageButton;
 
 import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.FriendshipRequestAdapter;
 import com.hollybits.socialpetnetwork.adapters.UserFriendsAdapter;
@@ -50,8 +52,8 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
     @BindView(R.id.search_in_friends)
     ExpandableSearchView searchView;
 
-    @BindView(R.id.whiteLine)
-    View whiteLine;
+    @BindView(R.id.back_move_button)
+    ImageButton backButton;
 
     private List<FriendInfo> friends;
     private List<InfoAboutUserFriendShipRequest> friendShipRequests;
@@ -101,6 +103,16 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
         nameFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/GOTHIC.TTF");
         breedFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr.ttf");
 
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(Account.class);
+            }
+        });
+
+        searchView.setColor(getResources().getColor(R.color.online));
+        //searchView.setDrawingCacheBackgroundColor(getResources().getColor(R.color.online));
+
         getAllFriendshipRequests();
         getAllUserFriends();
         FriendShipRequestQueue.getInstance().addObserver(this);
@@ -123,10 +135,6 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
         SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
         friendshipRequestRecyclerView.setItemAnimator(animator);
         friendshipRequestAdapter.notifyDataSetChanged();
-
-        if(friendShipRequests.size() == 0){
-            whiteLine.setVisibility(View.INVISIBLE);
-        }
     }
 
     private void getAllUserFriends(){
