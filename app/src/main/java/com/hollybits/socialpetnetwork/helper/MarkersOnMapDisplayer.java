@@ -2,6 +2,7 @@ package com.hollybits.socialpetnetwork.helper;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -124,6 +125,11 @@ public class MarkersOnMapDisplayer {
                         ConstraintLayout linearLayout = view.findViewById(R.id.user_info_on_map_layout);
                         ImageButton info = view.findViewById(R.id.info_button_in_map_info_window);
                         Long userId = Long.decode(marker.getTitle());
+
+
+                        Typeface allWordFont = Typeface.createFromAsset(context.getAssets(), "fonts/HelveticaNeueCyr.ttf");
+                        Typeface nameFont = Typeface.createFromAsset( context.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+
                         MainActivity.getServerRequests().getUserInfoMap(code,userId).enqueue(new Callback<Map<String, String>>() {
                             @Override
                             public void onResponse(Call<Map<String, String>> call, @NonNull Response<Map<String, String>> response) {
@@ -140,6 +146,14 @@ public class MarkersOnMapDisplayer {
                                 petSex.setText(map.get("petSex"));
                                 petAge.setText(map.get("petAge"));
                                 petBreed.setText(map.get("petBreed"));
+
+                                petName.setTypeface(nameFont);
+                                owner.setTypeface(allWordFont);
+                                petSex.setTypeface(allWordFont);
+                                petAge.setTypeface(allWordFont);
+                                petBreed.setTypeface(allWordFont);
+
+
                                 Integer attitude = Integer.valueOf(marker.getSnippet());
                                 int color = possibleColors.get(attitude).first;
                                 linearLayout.setBackgroundTintList(context.getResources().getColorStateList(color));

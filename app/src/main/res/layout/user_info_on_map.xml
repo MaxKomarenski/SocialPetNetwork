@@ -12,50 +12,58 @@
     <TextView
         android:id="@+id/pet_name_in_map_info_window"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="16dp"
         android:text="Sam"
-        android:textColor="@color/google"
+        android:textColor="#000"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/flag_img_in_map_info_window"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/flag_blue"
+        app:layout_constraintBottom_toBottomOf="@+id/pet_name_in_map_info_window"
+        app:layout_constraintStart_toEndOf="@+id/pet_name_in_map_info_window"
+        app:layout_constraintTop_toTopOf="@+id/pet_name_in_map_info_window"
+        app:layout_constraintVertical_bias="1.0" />
 
 
     <TextView
         android:id="@+id/owner_name_in_map_info_window"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Owner Name"
-        android:textColor="@color/google"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#000"
+        app:layout_constraintStart_toStartOf="@+id/breed_name_in_map_info_window"
         app:layout_constraintTop_toBottomOf="@+id/breed_name_in_map_info_window" />
 
     <TextView
         android:id="@+id/breed_name_in_map_info_window"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="8dp"
         android:text="Breed Name"
-        android:textColor="@color/google"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="#000"
+        app:layout_constraintStart_toStartOf="@+id/pet_name_in_map_info_window"
+        app:layout_constraintTop_toBottomOf="@+id/pet_name_in_map_info_window" />
 
 
     <TextView
         android:id="@+id/age_in_map_info_window"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:text="Age"
-        android:textColor="@color/google"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#000"
+        app:layout_constraintStart_toStartOf="@+id/sex_in_map_info_window"
         app:layout_constraintTop_toBottomOf="@+id/sex_in_map_info_window" />
 
 
@@ -64,11 +72,10 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
 
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="12dp"
-        android:textColor="@color/google"
+        android:layout_marginTop="8dp"
         android:text="Sex"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#000"
+        app:layout_constraintStart_toStartOf="@+id/owner_name_in_map_info_window"
         app:layout_constraintTop_toBottomOf="@+id/owner_name_in_map_info_window" />
 
 
@@ -76,30 +83,97 @@
         android:id="@+id/linearLayout5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/owner_name_in_map_info_window"
-        app:layout_constraintTop_toTopOf="parent">
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout6"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
 
         <ImageButton
             android:id="@+id/info_button_in_map_info_window"
-            android:layout_width="90dp"
-            android:layout_height="95dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@null"
             android:scaleType="fitCenter"
             android:src="@drawable/info_icon_on_map_window" />
 
         <TextView
-            android:id="@+id/info_icon_in_map_info_window"
+            android:id="@+id/info_text_in_map_info_window"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Info"
-            android:textColor="@color/google" />
+            android:textColor="#000" />
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@drawable/green_dot" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout7"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
+
+        <ImageButton
+            android:id="@+id/message_button_in_map_info_window"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/chat_icon_on_map_window" />
+
+        <TextView
+            android:id="@+id/chat_text_in_map_info_window"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="chat"
+            android:textColor="#000" />
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@drawable/green_dot" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/walk_button_in_map_info_window"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/walk_icon_on_map_window" />
+
+        <TextView
+            android:id="@+id/walk_text_in_map_info_window"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="walk"
+            android:textColor="#000" />
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@drawable/green_dot" />
     </LinearLayout>
 
 

@@ -17,26 +17,23 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:gravity="center"
-                    >
+                    android:orientation="vertical">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
                             android:layout_marginEnd="30dp"
-                            >
+                            android:layout_marginStart="30dp">
 
                                 <ImageButton
                                     android:id="@+id/open_navigation_drawer_image_button"
                                     android:layout_width="wrap_content"
                                     android:layout_height="30dp"
-                                    android:src="@drawable/ic_menu"
                                     android:background="#fff"
                                     android:scaleType="fitCenter"
-                                    android:tint="@color/petInfoInAccount"
-                                    />
+                                    android:src="@drawable/ic_menu"
+                                    android:tint="@color/petInfoInAccount" />
 
                                 <ImageButton
                                     android:id="@+id/settings_account_img_button"
@@ -47,7 +44,7 @@
                                     android:background="#fff"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_settings"
-                                    android:tint="@color/petInfoInAccount"/>
+                                    android:tint="@color/petInfoInAccount" />
 
                         </RelativeLayout>
 
@@ -55,19 +52,19 @@
                             android:id="@+id/user_photo_in_account_fragment"
                             android:layout_width="140dp"
                             android:layout_height="140dp"
+                            android:layout_marginTop="5dp"
                             android:src="@drawable/test_photo"
                             app:civ_border_color="#43b748"
-                            app:civ_border_width="6dp"
-                            android:layout_marginTop="5dp"/>
+                            app:civ_border_width="6dp" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:background="@drawable/background_for_name_of_pet"
                             android:layout_marginTop="20dp"
-                            android:paddingStart="22dp"
-                            android:paddingEnd="22dp">
+                            android:background="@drawable/background_for_name_of_pet"
+                            android:orientation="horizontal"
+                            android:paddingEnd="22dp"
+                            android:paddingStart="22dp">
 
                                 <TextView
                                     android:id="@+id/name_of_pet_text_view"
@@ -75,19 +72,18 @@
                                     android:layout_height="wrap_content"
                                     android:text="Name"
                                     android:textColor="#fff"
-                                    android:textSize="25sp"/>
+                                    android:textSize="25sp" />
 
                                 <TextView
                                     android:id="@+id/sex_of_pet_text_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="male"
-                                    android:layout_marginStart="10dp"
-                                    android:textSize="18sp"
-                                    android:textColor="@color/petInfoInAccount"
                                     android:layout_gravity="center"
+                                    android:layout_marginStart="10dp"
                                     android:layout_marginTop="2dp"
-                                    />
+                                    android:text="male"
+                                    android:textColor="@color/petInfoInAccount"
+                                    android:textSize="18sp" />
 
                         </LinearLayout>
 
@@ -222,92 +218,86 @@
                                     app:layout_constraintTop_toBottomOf="@+id/amount_of_weight_text_view" />
 
 
-
-
                         </android.support.constraint.ConstraintLayout>
 
-                        <include
-                            layout="@layout/expansion_panel_for_user_information_in_account_fragment"
-                            />
+                        <include layout="@layout/expansion_panel_for_user_information_in_account_fragment" />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center|bottom"
-            android:orientation="horizontal"
-            >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginStart="5dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                        <ImageButton
-                            android:layout_width="104dp"
-                            android:layout_height="104dp"
-                            android:background="@null"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/img_gallery" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Gallery" />
+                            android:gravity="center|bottom"
+                            android:orientation="horizontal">
 
-                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="5dp"
+                                    android:layout_marginStart="5dp"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginStart="5dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                                        <ImageButton
+                                            android:layout_width="104dp"
+                                            android:layout_height="104dp"
+                                            android:background="@null"
+                                            android:scaleType="fitCenter"
+                                            android:src="@drawable/img_gallery" />
 
-                        <ImageButton
-                            android:layout_width="110dp"
-                            android:layout_height="110dp"
-                            android:background="@null"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/img_map_2" />
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Gallery" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Map" />
+                                </LinearLayout>
 
-                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="5dp"
+                                    android:layout_marginStart="5dp"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
 
+                                        <ImageButton
+                                            android:layout_width="110dp"
+                                            android:layout_height="110dp"
+                                            android:background="@null"
+                                            android:scaleType="fitCenter"
+                                            android:src="@drawable/img_map_2" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginStart="5dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Map" />
 
-                        <ImageButton
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:background="@null"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/img_store" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Store" />
-
-                </LinearLayout>
+                                </LinearLayout>
 
 
-        </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="5dp"
+                                    android:layout_marginStart="5dp"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
 
+                                        <ImageButton
+                                            android:layout_width="100dp"
+                                            android:layout_height="100dp"
+                                            android:background="@null"
+                                            android:scaleType="fitCenter"
+                                            android:src="@drawable/img_store" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Store" />
+
+                                </LinearLayout>
+
+
+                        </LinearLayout>
 
 
                 </LinearLayout>
