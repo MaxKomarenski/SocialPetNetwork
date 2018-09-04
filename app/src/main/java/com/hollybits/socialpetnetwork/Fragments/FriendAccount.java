@@ -17,15 +17,22 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.Pet;
+import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.models.UserInfo;
-import com.hollybits.socialpetnetwork.activity.MainActivity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class FriendAccount extends Fragment {
@@ -67,6 +74,8 @@ public class FriendAccount extends Fragment {
 
     DrawerLayout drawer;
     UserInfo userInfo;
+    List<FriendInfo> friends;
+    boolean friendOrNot;
 
     // TODO: Rename parameter arguments, choose names that match
     private static final String ARG_PARAM1 = "param1";
@@ -101,13 +110,10 @@ public class FriendAccount extends Fragment {
         ButterKnife.bind(this, view);
 
         userInfo = Paper.book().read(MainActivity.CURRENT_CHOICE);
-        fillAllInformation();
 
-        if(isThisUserAFriend()){
-            deleteFriendButton.setVisibility(View.VISIBLE);
-            becomeFriendText.setText("Delete friend");
-            becomeFriendButton.setVisibility(View.GONE);
-        }
+        fillAllInformation();
+        isThisUserAFriend();
+
 
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         for (TextView textView:
@@ -130,16 +136,59 @@ public class FriendAccount extends Fragment {
         return view;
     }
 
-    private boolean isThisUserAFriend(){
-        List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
-        for (FriendInfo friend:
-             friends) {
-            if(friend.getId().equals(userInfo.getId())){
-                return true;
-            }
-        }
+    private void isThisUserAFriend(){
+        friends = Paper.book().read(MainActivity.FRIEND_LIST);
 
-        return false;
+        if(friends == null){
+            User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+            Map<String, String> authorisationCode = new HashMap<>();
+            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+            MainActivity.getServerRequests().getAllUserFriends(authorisationCode, currentUser.getId()).enqueue(new Callback<Set<FriendInfo>>() {
+                @Override
+                    public void onResponse(Call<Set<FriendInfo>> call, Response<Set<FriendInfo>> response) {
+                        friends = new ArrayList<>();
+                        friends.addAll(response.body());
+                        Paper.book().write(MainActivity.FRIEND_LIST, friends);
+
+                        for (FriendInfo friend:
+                                friends) {
+                            if(friend.getId().equals(userInfo.getId())){
+                                friendOrNot = true;
+                                helperInIsThisAFriend(friendOrNot);
+                                return;
+                            }
+                        }
+
+                        friendOrNot = false;
+                        helperInIsThisAFriend(friendOrNot);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Set<FriendInfo>> call, Throwable t) {
+
+                    }
+                });
+            }else{
+                for (FriendInfo friend:
+                        friends) {
+                    if(friend.getId().equals(userInfo.getId())){
+                        friendOrNot = true;
+                        helperInIsThisAFriend(friendOrNot);
+                        return;
+                    }
+            }
+
+            friendOrNot = false;
+            helperInIsThisAFriend(friendOrNot);
+        }
+    }
+
+    private void helperInIsThisAFriend(boolean isFriend){
+        if(isFriend){
+            deleteFriendButton.setVisibility(View.VISIBLE);
+            becomeFriendText.setText("Delete friend");
+            becomeFriendButton.setVisibility(View.GONE);
+        }
     }
 
     private void fillAllInformation(){

@@ -7,22 +7,35 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_photo_in_contact_recycler_view"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/test_photo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/is_online_in_message_page"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="2dp"
+        android:src="@drawable/green_dot"
+        app:layout_constraintBottom_toBottomOf="@+id/user_photo_in_contact_recycler_view"
+        app:layout_constraintEnd_toEndOf="@+id/user_photo_in_contact_recycler_view" />
 
     <TextView
         android:id="@+id/user_name_in_contact_recycler_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="20dp"
         android:text="Max Komarenski"
+        android:textColor="#000"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/user_photo_in_contact_recycler_view"
         app:layout_constraintTop_toTopOf="@+id/user_photo_in_contact_recycler_view" />
@@ -33,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="ty dolbaeb"
-        android:textSize="15sp"
+        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="@+id/user_name_in_contact_recycler_view"
         app:layout_constraintTop_toBottomOf="@+id/user_name_in_contact_recycler_view" />
 
@@ -45,7 +58,18 @@
         android:layout_marginTop="8dp"
         android:text="20.14.2018"
         android:textSize="15sp"
+        android:textColor="#7dc2eb"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="99dp"
+        android:layout_marginTop="12dp"
+        android:background="#7dc2eb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_photo_in_contact_recycler_view" />
 
 </android.support.constraint.ConstraintLayout>

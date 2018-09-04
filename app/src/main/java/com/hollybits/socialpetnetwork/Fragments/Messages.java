@@ -1,6 +1,7 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,8 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.ContactAdapter;
 import com.hollybits.socialpetnetwork.models.Contact;
@@ -36,8 +40,16 @@ public class Messages extends Fragment {
     @BindView(R.id.contacts_recycler_view)
     RecyclerView contactsRecyclerView;
 
+    @BindView(R.id.chat_text_in_message_page)
+    TextView chatText;
+
+    @BindView(R.id.to_profile_in_message_page)
+    Button backToProfile;
+
     private List<Contact> contacts;
     private ContactAdapter contactAdapter;
+    private Typeface nameFont;
+    private Typeface anotherFont;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -78,6 +90,19 @@ public class Messages extends Fragment {
         View view = inflater.inflate(R.layout.fragment_messages, container, false);
         ButterKnife.bind(this, view);
 
+        nameFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        anotherFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr.ttf");
+
+        chatText.setTypeface(nameFont);
+        backToProfile.setTypeface(nameFont);
+
+        backToProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(Account.class);
+            }
+        });
+
         getContacts();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         contactsRecyclerView.setLayoutManager(layoutManager);
@@ -98,7 +123,7 @@ public class Messages extends Fragment {
                 public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
                     contacts = response.body();
                     Paper.book().write(MainActivity.CONTACT_LIST, contacts);
-                    contactAdapter = new ContactAdapter(contacts);
+                    contactAdapter = new ContactAdapter(contacts, nameFont, anotherFont);
                     contactsRecyclerView.setAdapter(contactAdapter);
 
                 }
@@ -109,7 +134,7 @@ public class Messages extends Fragment {
                 }
             });
         }else {
-            contactAdapter = new ContactAdapter(contacts);
+            contactAdapter = new ContactAdapter(contacts, nameFont, anotherFont);
             contactsRecyclerView.setAdapter(contactAdapter);
         }
 

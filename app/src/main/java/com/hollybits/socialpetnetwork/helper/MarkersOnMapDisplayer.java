@@ -3,10 +3,8 @@ package com.hollybits.socialpetnetwork.helper;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Typeface;
-import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ImageButton;
@@ -25,10 +23,8 @@ import com.hollybits.socialpetnetwork.models.Coordinates;
 import com.hollybits.socialpetnetwork.models.User;
 import com.kennyc.bottomsheet.BottomSheet;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

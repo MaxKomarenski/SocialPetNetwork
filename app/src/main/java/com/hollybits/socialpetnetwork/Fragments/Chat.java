@@ -3,6 +3,8 @@ package com.hollybits.socialpetnetwork.Fragments;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +28,7 @@ import com.hollybits.socialpetnetwork.helper.MessageObserver;
 import com.hollybits.socialpetnetwork.models.Contact;
 import com.hollybits.socialpetnetwork.models.Message;
 import com.hollybits.socialpetnetwork.models.User;
+import com.hollybits.socialpetnetwork.models.UserInfo;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -173,10 +176,36 @@ public class Chat extends Fragment implements MessageObserver {
             }
         });
 
+        nameOfFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAllInformationOfChosenUser(friendId);
+            }
+        });
+
         backToContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentDispatcher.launchFragment(Messages.class);
+            }
+        });
+    }
+
+    private void getAllInformationOfChosenUser(Long id){
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        MainActivity.getServerRequests().getInformationOfAnotherUser(authorisationCode, id).enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                Paper.book().write(MainActivity.CURRENT_CHOICE, response.body());
+                FragmentDispatcher.launchFragment(FriendAccount.class);
+
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+
             }
         });
     }
@@ -194,24 +223,30 @@ public class Chat extends Fragment implements MessageObserver {
                 long five_minutes = 5 * 60 * 1000;
                 long currentTime = System.currentTimeMillis();
 
-                 if(currentTime - timestamp.getTime() < five_minutes){
+                try{
+                    if(currentTime - timestamp.getTime() < five_minutes){
 
-                     Chat.this.getActivity().runOnUiThread(() -> {
-                         greenIndicator.setVisibility(View.VISIBLE);
-                         onlineOrNotOnlineText.setText("online");
-                         onlineOrNotOnlineText.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(R.color.online));
-                     });
+                        Chat.this.getActivity().runOnUiThread(() -> {
+                            greenIndicator.setVisibility(View.VISIBLE);
+                            onlineOrNotOnlineText.setText("online");
+                            onlineOrNotOnlineText.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(R.color.online));
+                        });
 
-                      }else {
+                    }else {
 
-                     Chat.this.getActivity().runOnUiThread(() -> {
+                        Chat.this.getActivity().runOnUiThread(() -> {
 
-                         greenIndicator.setVisibility(View.INVISIBLE);
-                         onlineOrNotOnlineText.setText("not online");
-                         onlineOrNotOnlineText.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(R.color.not_online));
+                            greenIndicator.setVisibility(View.INVISIBLE);
+                            onlineOrNotOnlineText.setText("not online");
+                            onlineOrNotOnlineText.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(R.color.not_online));
 
-                     });
-                     }
+                        });
+                    }
+                }catch (NullPointerException e){
+
+                }
+
+
             }
 
             @Override

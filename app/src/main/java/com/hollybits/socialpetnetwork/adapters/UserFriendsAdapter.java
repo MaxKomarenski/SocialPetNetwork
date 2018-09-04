@@ -77,7 +77,7 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
             user_name_sm = view.findViewById(R.id.name_of_user_in_user_friend_recycler_view);
             pet_name_sm = view.findViewById(R.id.name_of_pet_in_user_friend_recycler_view);
             breed_sm = view.findViewById(R.id.breed_of_pet_in_user_friend_recycler_view);
-            img_sm = view.findViewById(R.id.user_photo_in_user_friend_recycler_view);
+            img_sm = view.findViewById(R.id.user_photo_in_lost_pets_recycler_view);
             indicator_sm = view.findViewById(R.id.indicator_in_user_friend_recycler_view);
 
             //----------------big------------------------------------------------------------------
