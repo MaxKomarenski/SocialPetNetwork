@@ -147,6 +147,7 @@ public class LostPets extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        instance = null;
 
     }
 
