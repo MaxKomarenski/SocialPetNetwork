@@ -87,12 +87,21 @@ public class LostPets extends Fragment {
         SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
         lostPetsRecyclerView.setItemAnimator(animator);
 
+        Double longitude = Paper.book().read(com.hollybits.socialpetnetwork.Fragments.Map.LONGITUDE);
+        Double latitude = Paper.book().read(com.hollybits.socialpetnetwork.Fragments.Map.LATITUDE);
+
+        try {
+            getAllLostPetsFromUserDistrict(longitude, latitude);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         return view;
     }
 
-    private void getAllLostPetsFromUserDistrict(Location location) throws IOException {
-        List<Address> addresses = locationInfoSupplier.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+    private void getAllLostPetsFromUserDistrict(Double longitude, Double latitude) throws IOException {
+        List<Address> addresses = locationInfoSupplier.getFromLocation(latitude, longitude, 1);
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         Map<String, String> authorisationCode = new HashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
