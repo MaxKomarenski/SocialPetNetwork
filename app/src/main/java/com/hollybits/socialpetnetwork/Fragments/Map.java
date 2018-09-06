@@ -76,6 +76,8 @@ public class Map extends Fragment  {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final String LATITUDE = "latitude";
+    public static final String LONGITUDE = "longitude";
     private ScheduledExecutorService positionTracker;
 
     // TODO: Rename and change types of parameters
@@ -319,7 +321,7 @@ public class Map extends Fragment  {
                                                     Log.d("SOS", "OK");
                                                 }
                                                 else {
-                                                    Log.d("SOS", "FAIL");
+                                                    Log.d("SOS", "FAIL: "+ response.code());
                                                 }
                                             }
 
@@ -338,6 +340,20 @@ public class Map extends Fragment  {
                                     e.printStackTrace();
                                 }
 
+                            }
+                        });
+                    }
+                });
+
+                help.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("MissingPermission")
+                    @Override
+                    public void onClick(View v) {
+                        mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                Paper.book().write(LATITUDE, location.getLatitude());
+                                Paper.book().write(LONGITUDE, location.getLongitude());
                             }
                         });
                     }
