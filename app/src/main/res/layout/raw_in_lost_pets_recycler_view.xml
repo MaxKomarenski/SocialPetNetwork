@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:text="Max Komarenskii"
             android:textSize="15sp"
-            android:layout_gravity="end"/>
+            />
 
     </LinearLayout>
 
@@ -76,5 +76,32 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/linearLayout4"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/i_found_my_pet_button_in_lost_pets"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/green_dot"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#7dc2eb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+        android:layout_marginStart="110dp"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -260,6 +260,7 @@
                                     android:orientation="vertical">
 
                                         <ImageButton
+                                            android:id="@+id/open_map_from_account"
                                             android:layout_width="110dp"
                                             android:layout_height="110dp"
                                             android:background="@null"

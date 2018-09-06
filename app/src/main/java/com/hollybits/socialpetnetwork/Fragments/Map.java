@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -78,7 +79,8 @@ public class Map extends Fragment  {
     private static final String ARG_PARAM2 = "param2";
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longitude";
-    private BottomSheet bottomSheet;
+    //
+    // private BottomSheet bottomSheet;
     private ScheduledExecutorService positionTracker;
 
     // TODO: Rename and change types of parameters
@@ -92,14 +94,22 @@ public class Map extends Fragment  {
 
     @BindView(R.id.mapView)
     MapView mMapView;
+
+    @BindView(R.id.sos)
+    ImageButton sos;
+
+    @BindView(R.id.help)
+    ImageButton help;
+
+
     private GoogleMap googleMap;
     private Geocoder locationInfoSupplier = new Geocoder(FragmentDispatcher.getInstance());
 
     private MarkersOnMapDisplayer markersOnMapDisplayer;
     private User currentUser;
     private java.util.Map<String, String> code;
-    @BindView(R.id.open_sos_menu_button)
-     Button openSosMenuButton;
+//    @BindView(R.id.open_sos_menu_button)
+//     Button openSosMenuButton;
 
     private FusedLocationProviderClient mFusedLocationClient;
 
@@ -296,17 +306,18 @@ public class Map extends Fragment  {
 
     private void attachListeners(){
 
-        openSosMenuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        openSosMenuButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
                 View view = Map.this.getLayoutInflater().inflate(R.layout.sos_layout, null);
-                ImageButton sos = view.findViewById(R.id.sos);
-                ImageButton help = view.findViewById(R.id.help);
+                AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
+
 
                 sos.setOnClickListener(new View.OnClickListener() {
                     @SuppressLint("MissingPermission")
                     @Override
                     public void onClick(View v) {
+                        sos.startAnimation(buttonClick);
                         mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
                             @Override
                             public void onSuccess(Location location) {
@@ -320,11 +331,11 @@ public class Map extends Fragment  {
                                             public void onResponse(Call<Void> call, Response<Void> response) {
                                                 if(response.code() == 202){
                                                     Log.d("SOS", "OK");
-                                                    bottomSheet.dismiss();
+                                                    //bottomSheet.dismiss();
                                                 }
                                                 else {
                                                     Log.d("SOS", "FAIL: "+ response.code());
-                                                    bottomSheet.dismiss();
+                                                    //bottomSheet.dismiss();
                                                 }
                                             }
 
@@ -352,26 +363,27 @@ public class Map extends Fragment  {
                     @SuppressLint("MissingPermission")
                     @Override
                     public void onClick(View v) {
+                        help.startAnimation(buttonClick);
                         mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
                             @Override
                             public void onSuccess(Location location) {
                                 Paper.book().write(LATITUDE, location.getLatitude());
                                 Paper.book().write(LONGITUDE, location.getLongitude());
-                                bottomSheet.dismiss();
+                                //bottomSheet.dismiss();
                                 FragmentDispatcher.launchFragment(LostPets.class);
                             }
                         });
                     }
                 });
-                bottomSheet = new BottomSheet.Builder(Map.this.getActivity())
-                        .setView(view).create();
-                        // You can also show the custom view with some padding in DP (left, top, right, bottom)
-                        //.setCustomView(customView, 20, 20, 20, 0)
+//                bottomSheet = new BottomSheet.Builder(Map.this.getActivity())
+//                        .setView(view).create();
+//                        // You can also show the custom view with some padding in DP (left, top, right, bottom)
+//                        //.setCustomView(customView, 20, 20, 20, 0)
+//
+//                bottomSheet.show();
 
-                bottomSheet.show();
-
-            }
-        });
+//            }
+//        });
     }
 
     /**

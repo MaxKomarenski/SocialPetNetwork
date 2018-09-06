@@ -1,6 +1,7 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -13,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
@@ -43,9 +46,16 @@ public class LostPets extends Fragment {
     @BindView(R.id.lost_pets_recycler_view)
     RecyclerView lostPetsRecyclerView;
 
+    @BindView(R.id.lost_pets_text_in_lost_pets_fragment)
+    TextView topicText;
+
+    @BindView(R.id.back_to_map_button)
+    Button backToMap;
+
     LostPetAdapter lostPetAdapter;
     List<LostPet> lostPetList;
     private Geocoder locationInfoSupplier = new Geocoder(FragmentDispatcher.getInstance());
+    private Typeface breedFont, mainFont;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -88,6 +98,20 @@ public class LostPets extends Fragment {
         View view = inflater.inflate(R.layout.fragment_lost_pets, container, false);
         ButterKnife.bind(this, view);
 
+        breedFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr.ttf");
+        mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+
+
+        backToMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(com.hollybits.socialpetnetwork.Fragments.Map.class);
+            }
+        });
+
+        Typeface topicFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        topicText.setTypeface(topicFont);
+
         lostPetList = new ArrayList<>();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         lostPetsRecyclerView.setLayoutManager(layoutManager);
@@ -120,7 +144,7 @@ public class LostPets extends Fragment {
                     lostPetList.clear();
 
                     lostPetList.addAll(response.body());
-                    lostPetAdapter = new LostPetAdapter(lostPetList);
+                    lostPetAdapter = new LostPetAdapter(lostPetList, mainFont, breedFont);
                     lostPetsRecyclerView.setAdapter(lostPetAdapter);
                     lostPetAdapter.notifyDataSetChanged();
                 }

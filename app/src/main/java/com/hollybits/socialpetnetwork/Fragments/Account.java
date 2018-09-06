@@ -1,8 +1,10 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
@@ -13,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
@@ -22,7 +25,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,9 +56,14 @@ public class Account extends Fragment {
 //
 //    private PhotoGridAdapter photoGridAdapter;
 
+    @BindView(R.id.user_photo_in_account_fragment)
+    CircleImageView userMainPhoto;
 
     @BindView(R.id.open_navigation_drawer_image_button)
     ImageButton openDrawerButton;
+
+    @BindView(R.id.open_map_from_account)
+    ImageButton openMap;
 
     @BindViews({R.id.name_of_pet_text_view, R.id.sex_of_pet_text_view,
                 R.id.breed_word_text_view, R.id.name_of_breed_text_view, R.id.address_word_text_view,
@@ -67,8 +78,9 @@ public class Account extends Fragment {
             R.id.owner_email_in_expansion_panel})
     List<TextView> informationAboutUser;
 
-
+    private static final int PICK_IMAGE = 100;
     DrawerLayout drawer;
+    private Uri imageUri;
 
     private OnFragmentInteractionListener mListener;
 
@@ -126,6 +138,28 @@ public class Account extends Fragment {
             textView.setTypeface(mainFont);
         }
 
+        listeners();
+
+
+        return view;
+    }
+
+    private void openGallery(){
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+            imageUri = data.getData();
+            userMainPhoto.setImageURI(imageUri);
+        }
+    }
+
+    private void listeners(){
         openDrawerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,8 +168,19 @@ public class Account extends Fragment {
             }
         });
 
+        userMainPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
 
-        return view;
+        openMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(Map.class);
+            }
+        });
     }
 
     private void showAllInformationOnTheScreen(){

@@ -145,7 +145,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private BreedAdapter breedAdapter;
 
     private static final int PICK_IMAGE = 100;
-    Uri imageUri;
+    private Uri imageUri;
 
     private ProgressDialog progressDialog;
     private AutoCompleteCountryAdapter autoCompleteCountryAdapter;
