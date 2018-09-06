@@ -97,6 +97,7 @@ public class LostPets extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lost_pets, container, false);
         ButterKnife.bind(this, view);
+        instance = this;
 
         breedFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr.ttf");
         mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
@@ -146,7 +147,14 @@ public class LostPets extends Fragment {
                     lostPetList.addAll(response.body());
                     lostPetAdapter = new LostPetAdapter(lostPetList, mainFont, breedFont);
                     lostPetsRecyclerView.setAdapter(lostPetAdapter);
-                    lostPetAdapter.notifyDataSetChanged();
+                    try{
+                    LostPets.this.getActivity().runOnUiThread(()->{
+                        lostPetAdapter.notifyDataSetChanged();
+                    });
+                    }catch (NullPointerException e ){
+                        e.printStackTrace();
+                    }
+
                 }
 
                 @Override
