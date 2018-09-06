@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.helper.FriendDownloader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,8 +86,13 @@ public class StartingMenu extends Fragment {
         ButterKnife.bind(this, view);
 
         allListeners();
+        getFriendsWhoAreNotInCache();
 
         return view;
+    }
+
+    private void getFriendsWhoAreNotInCache(){
+        FriendDownloader.downloadAllFriendWhoAreNotInTheCache();
     }
 
     private void allListeners(){
