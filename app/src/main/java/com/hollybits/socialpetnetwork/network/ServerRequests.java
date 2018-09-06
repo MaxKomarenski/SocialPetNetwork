@@ -41,7 +41,7 @@ public interface ServerRequests {
 
     String BASE_REMOTE_OUR = "https://206.189.61.135:8443/";
     String BASE_LOCAL = "https://10.0.2.2:8443/";
-    String CURRENT_ENDPIONT = BASE_LOCAL;
+    String CURRENT_ENDPIONT = BASE_REMOTE_OUR;
 
 
     @GET("/api/getBreedsForType")
@@ -133,4 +133,15 @@ public interface ServerRequests {
     @POST("/checkIfUserIsOnline")
     Call<String> getUserLastActiveTime(@HeaderMap Map<String, String> headers,
                                      @Query("id") Long id);
+
+
+
+    @POST("/sos")
+    Call<Void> sos(@HeaderMap Map<String, String> headers,
+                   @Query("id")Long userId,
+                   @Query("petId") Long petId,
+                   @Body Address address);
+
+
+
 }

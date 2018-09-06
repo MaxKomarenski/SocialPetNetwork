@@ -16,9 +16,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 
+import com.android.volley.toolbox.HttpClientStack;
 import com.android.volley.toolbox.HttpResponse;
+import com.google.android.gms.common.util.HttpUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -28,6 +32,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,6 +44,7 @@ import com.hollybits.socialpetnetwork.helper.MarkerMover;
 import com.hollybits.socialpetnetwork.helper.MarkersOnMapDisplayer;
 import com.hollybits.socialpetnetwork.models.Coordinates;
 import com.hollybits.socialpetnetwork.models.User;
+import com.kennyc.bottomsheet.BottomSheet;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -51,6 +57,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.paperdb.Paper;
 import okhttp3.internal.http.HttpCodec;
+import okhttp3.internal.http1.Http1Codec;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -88,6 +95,8 @@ public class Map extends Fragment  {
     private MarkersOnMapDisplayer markersOnMapDisplayer;
     private User currentUser;
     private java.util.Map<String, String> code;
+    @BindView(R.id.open_sos_menu_button)
+     Button openSosMenuButton;
 
     private FusedLocationProviderClient mFusedLocationClient;
 
@@ -127,10 +136,19 @@ public class Map extends Fragment  {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
+                attachListeners();
                 markersOnMapDisplayer = new MarkersOnMapDisplayer(googleMap, Map.this.getActivity());
                 currentUser = Paper.book().read(MainActivity.CURRENTUSER);
                 code = new HashMap<>();
                 code.put("authorization", currentUser.getAuthorizationCode());
+
+                boolean success = googleMap.setMapStyle(
+                        MapStyleOptions.loadRawResourceStyle(
+                                Map.this.getActivity(), R.raw.map_style));
+
+                if (!success) {
+                    Log.e("MAP FRAGMENT", "Style parsing failed.");
+                }
 
                 // For showing a move to my location button
                 if (ContextCompat.checkSelfPermission(Map.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -152,7 +170,6 @@ public class Map extends Fragment  {
 
 
 
-    //TODO Fetching current pet info
     private void startTracking() throws SecurityException {
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(location -> {
@@ -249,12 +266,7 @@ public class Map extends Fragment  {
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+
 
     @Override
     public void onDetach() {
@@ -278,6 +290,67 @@ public class Map extends Fragment  {
         void onFragmentInteraction(Uri uri);
     }
 
+
+    private void attachListeners(){
+
+        openSosMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view = Map.this.getLayoutInflater().inflate(R.layout.sos_layout, null);
+                ImageButton sos = view.findViewById(R.id.sos);
+                ImageButton help = view.findViewById(R.id.help);
+
+                sos.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("MissingPermission")
+                    @Override
+                    public void onClick(View v) {
+                        mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                try {
+                                    List<Address> addresses = locationInfoSupplier.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                    if(addresses.size()==1){
+                                        MainActivity.getServerRequests().sos(code, currentUser.getId(),
+                                                currentUser.getPets().get(0).getId(),
+                                                addresses.get(0)).enqueue(new Callback<Void>() {
+                                            @Override
+                                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                                if(response.code() == 202){
+                                                    Log.d("SOS", "OK");
+                                                }
+                                                else {
+                                                    Log.d("SOS", "FAIL");
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<Void> call, Throwable t) {
+
+                                                t.printStackTrace();
+                                            }
+                                        });
+
+
+
+
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+                    }
+                });
+                new BottomSheet.Builder(Map.this.getActivity())
+                        .setView(view)
+                        // You can also show the custom view with some padding in DP (left, top, right, bottom)
+                        //.setCustomView(customView, 20, 20, 20, 0)
+                        .show();
+
+            }
+        });
+    }
 
     /**
      * Use this factory method to create a new instance of

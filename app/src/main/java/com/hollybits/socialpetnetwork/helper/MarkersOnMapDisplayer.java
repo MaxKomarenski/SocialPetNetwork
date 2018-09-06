@@ -8,6 +8,7 @@ import android.support.constraint.ConstraintLayout;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -46,11 +47,18 @@ public class MarkersOnMapDisplayer {
 
     private User currentUser;
     private java.util.Map<String, String> code;
+    BottomSheet bottomSheet;
     private TextView petName ;
     private TextView owner ;
     private TextView petSex ;
     private TextView petAge ;
     private TextView petBreed;
+    ConstraintLayout constraintLayout ;
+    ImageButton info ;
+    ImageButton walk;
+    ImageButton chat ;
+    ImageView flag;
+    Long userId;
     private java.util.Map<Integer, Pair<Integer, Integer>> possibleColors;
 
 
@@ -118,51 +126,17 @@ public class MarkersOnMapDisplayer {
                     public boolean onMarkerClick(Marker marker) {
 
                         View view = context.getLayoutInflater().inflate(R.layout.user_info_on_map, null);
-                        ConstraintLayout linearLayout = view.findViewById(R.id.user_info_on_map_layout);
-                        ImageButton info = view.findViewById(R.id.info_button_in_map_info_window);
-                        Long userId = Long.decode(marker.getTitle());
-
-
-                        Typeface allWordFont = Typeface.createFromAsset(context.getAssets(), "fonts/HelveticaNeueCyr.ttf");
-                        Typeface nameFont = Typeface.createFromAsset( context.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
-
+                        userId = Long.decode(marker.getTitle());
                         MainActivity.getServerRequests().getUserInfoMap(code,userId).enqueue(new Callback<Map<String, String>>() {
                             @Override
                             public void onResponse(Call<Map<String, String>> call, @NonNull Response<Map<String, String>> response) {
 
                                 java.util.Map<String, String> map = response.body();
-                                petName = view.findViewById(R.id.pet_name_in_map_info_window);
-                                owner = view.findViewById(R.id.owner_name_in_map_info_window);
-                                petSex = view.findViewById(R.id.sex_in_map_info_window);
-                                petAge = view.findViewById(R.id.age_in_map_info_window);
-                                petBreed = view.findViewById(R.id.breed_name_in_map_info_window);
-
-                                petName.setText(map.get("petName"));
-                                owner.setText(map.get("owner"));
-                                petSex.setText(map.get("petSex"));
-                                petAge.setText(map.get("petAge"));
-                                petBreed.setText(map.get("petBreed"));
-
-                                petName.setTypeface(nameFont);
-                                owner.setTypeface(allWordFont);
-                                petSex.setTypeface(allWordFont);
-                                petAge.setTypeface(allWordFont);
-                                petBreed.setTypeface(allWordFont);
-
-
-                                Integer attitude = Integer.valueOf(marker.getSnippet());
-                                int color = possibleColors.get(attitude).first;
-                                linearLayout.setBackgroundTintList(context.getResources().getColorStateList(color));
-                                info.setBackgroundTintList(context.getResources().getColorStateList(color));
-                                new BottomSheet.Builder(context)
-                                        .setView(view)
-                                        // You can also show the custom view with some padding in DP (left, top, right, bottom)
-                                        //.setCustomView(customView, 20, 20, 20, 0)
-                                        .show();
-
-
+                                attacListenersToBottomView(view, map, marker);
+                                bottomSheet = new BottomSheet.Builder(context)
+                                        .setView(view).create();
+                                bottomSheet.show();
                             }
-
                             @Override
                             public void onFailure(Call<java.util.Map<String, String>> call, Throwable t) {
                                 t.printStackTrace();
@@ -185,6 +159,60 @@ public class MarkersOnMapDisplayer {
 
     }
 
+
+    private void attacListenersToBottomView(View view, java.util.Map<String, String> map, Marker  marker) {
+        Typeface allWordFont = Typeface.createFromAsset(context.getAssets(), "fonts/HelveticaNeueCyr.ttf");
+        Typeface nameFont = Typeface.createFromAsset( context.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        constraintLayout = view.findViewById(R.id.user_info_on_map_layout);
+        info = view.findViewById(R.id.info_button_in_map_info_window);
+        walk = view.findViewById(R.id.walk_button_in_map_info_window);
+        chat = view.findViewById(R.id.message_button_in_map_info_window);
+        flag = view.findViewById(R.id.flag_img_in_map_info_window);
+        petName = view.findViewById(R.id.pet_name_in_map_info_window);
+        owner = view.findViewById(R.id.owner_name_in_map_info_window);
+        petSex = view.findViewById(R.id.sex_in_map_info_window);
+        petAge = view.findViewById(R.id.age_in_map_info_window);
+        petBreed = view.findViewById(R.id.breed_name_in_map_info_window);
+        petName.setText(map.get("petName"));
+        owner.setText(map.get("owner"));
+        petSex.setText(map.get("petSex"));
+        petAge.setText(map.get("petAge"));
+        petBreed.setText(map.get("petBreed"));
+        petName.setTypeface(nameFont);
+        owner.setTypeface(allWordFont);
+        petSex.setTypeface(allWordFont);
+        petAge.setTypeface(allWordFont);
+        petBreed.setTypeface(allWordFont);
+
+
+        Integer attitude = Integer.valueOf(marker.getSnippet());
+        int color = possibleColors.get(attitude).first;
+        constraintLayout.setBackgroundTintList(context.getResources().getColorStateList(R.color.google));
+        info.setImageTintList(context.getResources().getColorStateList(color));
+        walk.setImageTintList(context.getResources().getColorStateList(color));
+        chat.setImageTintList(context.getResources().getColorStateList(color));
+        flag.setImageTintList(context.getResources().getColorStateList(color));
+
+        walk.setOnClickListener(v -> {
+            MapInfoWindowFunctions.walkFunction(userId);
+            MapInfoWindowFunctions.chatFunction(userId, map.get("owner"));
+            bottomSheet.dismiss();
+        });
+
+        chat.setOnClickListener(v -> {
+            MapInfoWindowFunctions.chatFunction(userId, map.get("owner"));
+            bottomSheet.dismiss();
+        });
+        info.setOnClickListener(v -> {
+            MapInfoWindowFunctions.infoFunction(userId);
+            bottomSheet.dismiss();
+        });
+
+
+
+
+
+    }
 
     public Long getCurrentUserId() {
         return currentUserId;
