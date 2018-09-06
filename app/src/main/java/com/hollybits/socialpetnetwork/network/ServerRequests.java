@@ -2,6 +2,7 @@ package com.hollybits.socialpetnetwork.network;
 
 import android.location.Address;
 import android.util.Log;
+import android.widget.Adapter;
 
 import com.android.volley.toolbox.StringRequest;
 import com.hollybits.socialpetnetwork.activity.LoginActivity;
@@ -16,6 +17,7 @@ import com.hollybits.socialpetnetwork.models.Coordinates;
 import com.hollybits.socialpetnetwork.models.Country;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
+import com.hollybits.socialpetnetwork.models.LostPet;
 import com.hollybits.socialpetnetwork.models.Message;
 import com.hollybits.socialpetnetwork.models.UserInfo;
 
@@ -133,6 +135,19 @@ public interface ServerRequests {
     @POST("/checkIfUserIsOnline")
     Call<String> getUserLastActiveTime(@HeaderMap Map<String, String> headers,
                                      @Query("id") Long id);
+
+    @POST("/getInfoAboutNewFriend")
+    Call<FriendInfo> getInfoAboutNewFriend(@HeaderMap Map<String, String> headers,
+                                           @Query("new_friend_id") Long id);
+
+    @POST("/getFriendWhoAreNotInPhoneCache")
+    Call<List<FriendInfo>> getFriendWhoAreNotInPhoneCache(@HeaderMap Map<String, String> headers,
+                                                          @Query("list_friend_ids") List<Long> listOfIds,
+                                                          @Query("user_id") Long id);
+
+    @POST("/getLostDogs")
+    Call<List<LostPet>> getAllLostPetsFromUserDistrict(@HeaderMap Map<String, String> headers,
+                                                 Address address);
 
 
 

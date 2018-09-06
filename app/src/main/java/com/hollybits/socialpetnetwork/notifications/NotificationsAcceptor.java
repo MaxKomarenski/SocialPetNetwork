@@ -9,6 +9,7 @@ import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.data_queues.FriendShipRequestQueue;
 import com.hollybits.socialpetnetwork.data_queues.MessageQueue;
 import com.hollybits.socialpetnetwork.enums.NotificationType;
+import com.hollybits.socialpetnetwork.helper.FriendDownloader;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
 import com.hollybits.socialpetnetwork.models.Message;
 
@@ -169,6 +170,7 @@ public class NotificationsAcceptor extends FirebaseMessagingService {
                 break;
             }
             case FRIENDSHIPACCEPTED:{
+                FriendDownloader.downloadNewFriendAndAddHimToPaperBook(Long.decode(data.get("new_friend_id")));
                 break;
             }
 
