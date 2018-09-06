@@ -4,13 +4,16 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.hollybits.socialpetnetwork.Fragments.LostPets;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.data_queues.FriendShipRequestQueue;
 import com.hollybits.socialpetnetwork.data_queues.MessageQueue;
 import com.hollybits.socialpetnetwork.enums.NotificationType;
 import com.hollybits.socialpetnetwork.helper.FriendDownloader;
+import com.hollybits.socialpetnetwork.helper.MessageObservable;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
+import com.hollybits.socialpetnetwork.models.LostPet;
 import com.hollybits.socialpetnetwork.models.Message;
 
 import java.sql.Timestamp;
@@ -22,15 +25,19 @@ import io.paperdb.Paper;
  * Created by Victor on 05.08.2018.
  */
 
-public class NotificationsAcceptor extends FirebaseMessagingService {
+public class NotificationsAcceptor extends FirebaseMessagingService  {
 
 
     private static final String TAG = "MyFirebaseMsgService";
 
+
+
     /**
      * Called when message is received.
-     *
      * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
+     *
+     *
+
      */
     // [START receive_message]
     @Override
@@ -186,6 +193,11 @@ public class NotificationsAcceptor extends FirebaseMessagingService {
                 message.setFriendsId(Long.decode(data.get("friends_id")));
                 System.err.println("user from --> " + Long.decode(data.get("user_from")));
                 MessageQueue.getInstance().add(message);
+                break;
+            }
+            case SOS:{
+                if(LostPets.getInstance()!=null)
+                    LostPets.getInstance().update();
                 break;
             }
         }

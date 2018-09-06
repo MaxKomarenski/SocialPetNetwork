@@ -78,6 +78,7 @@ public class Map extends Fragment  {
     private static final String ARG_PARAM2 = "param2";
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longitude";
+    private BottomSheet bottomSheet;
     private ScheduledExecutorService positionTracker;
 
     // TODO: Rename and change types of parameters
@@ -319,9 +320,11 @@ public class Map extends Fragment  {
                                             public void onResponse(Call<Void> call, Response<Void> response) {
                                                 if(response.code() == 202){
                                                     Log.d("SOS", "OK");
+                                                    bottomSheet.dismiss();
                                                 }
                                                 else {
                                                     Log.d("SOS", "FAIL: "+ response.code());
+                                                    bottomSheet.dismiss();
                                                 }
                                             }
 
@@ -354,15 +357,18 @@ public class Map extends Fragment  {
                             public void onSuccess(Location location) {
                                 Paper.book().write(LATITUDE, location.getLatitude());
                                 Paper.book().write(LONGITUDE, location.getLongitude());
+                                bottomSheet.dismiss();
+                                FragmentDispatcher.launchFragment(LostPets.class);
                             }
                         });
                     }
                 });
-                new BottomSheet.Builder(Map.this.getActivity())
-                        .setView(view)
+                bottomSheet = new BottomSheet.Builder(Map.this.getActivity())
+                        .setView(view).create();
                         // You can also show the custom view with some padding in DP (left, top, right, bottom)
                         //.setCustomView(customView, 20, 20, 20, 0)
-                        .show();
+
+                bottomSheet.show();
 
             }
         });

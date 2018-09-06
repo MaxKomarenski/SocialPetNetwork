@@ -18,8 +18,10 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.LostPetAdapter;
+import com.hollybits.socialpetnetwork.helper.MessageObserver;
 import com.hollybits.socialpetnetwork.models.LostPet;
 import com.hollybits.socialpetnetwork.models.User;
+import com.hollybits.socialpetnetwork.notifications.NotificationsAcceptor;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,6 +49,11 @@ public class LostPets extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static LostPets instance;
+
+    public static LostPets getInstance() {
+        return instance;
+    }
 
     private String mParam1;
     private String mParam2;
@@ -87,11 +94,9 @@ public class LostPets extends Fragment {
         SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
         lostPetsRecyclerView.setItemAnimator(animator);
 
-        Double longitude = Paper.book().read(com.hollybits.socialpetnetwork.Fragments.Map.LONGITUDE);
-        Double latitude = Paper.book().read(com.hollybits.socialpetnetwork.Fragments.Map.LATITUDE);
 
         try {
-            getAllLostPetsFromUserDistrict(longitude, latitude);
+            getAllLostPetsFromUserDistrict();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,7 +105,9 @@ public class LostPets extends Fragment {
         return view;
     }
 
-    private void getAllLostPetsFromUserDistrict(Double longitude, Double latitude) throws IOException {
+    private void getAllLostPetsFromUserDistrict() throws IOException {
+        double longitude = Paper.book().read(com.hollybits.socialpetnetwork.Fragments.Map.LONGITUDE);
+        double latitude = Paper.book().read(com.hollybits.socialpetnetwork.Fragments.Map.LATITUDE);
         List<Address> addresses = locationInfoSupplier.getFromLocation(latitude, longitude, 1);
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         Map<String, String> authorisationCode = new HashMap<>();
@@ -140,8 +147,18 @@ public class LostPets extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+
     }
 
+
+
+    public void update(){
+        try {
+            getAllLostPetsFromUserDistrict();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

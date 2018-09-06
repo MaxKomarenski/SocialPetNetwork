@@ -147,7 +147,7 @@ public interface ServerRequests {
 
     @POST("/getLostDogs")
     Call<List<LostPet>> getAllLostPetsFromUserDistrict(@HeaderMap Map<String, String> headers,
-                                                 Address address);
+                                                 @Body Address address);
 
 
 

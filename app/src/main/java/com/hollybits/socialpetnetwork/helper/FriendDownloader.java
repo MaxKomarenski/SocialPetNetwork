@@ -45,6 +45,8 @@ public class FriendDownloader {
         List<Long> listOfFriendIds = new ArrayList<>();
         List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
 
+        if(friends == null)
+            return;
         for (FriendInfo info:
              friends) {
             listOfFriendIds.add(info.getId());
@@ -58,6 +60,8 @@ public class FriendDownloader {
             @Override
             public void onResponse(Call<List<FriendInfo>> call, Response<List<FriendInfo>> response) {
                 List<FriendInfo> newFriends = response.body();
+                if(newFriends == null)
+                    return;
                 friends.addAll(newFriends);
                 Paper.book().write(MainActivity.FRIEND_LIST, friends);
                 Paper.book().delete(MainActivity.CONTACT_LIST);

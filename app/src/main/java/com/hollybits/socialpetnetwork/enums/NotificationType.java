@@ -5,7 +5,7 @@ package com.hollybits.socialpetnetwork.enums;
  */
 public enum  NotificationType {
 
-    PERSONALMESSAGE, FRIEDSHIPREQUEST, FRIENDSHIPACCEPTED, MESSAGESENT;
+    PERSONALMESSAGE, FRIEDSHIPREQUEST, FRIENDSHIPACCEPTED, MESSAGESENT, SOS
 
 
 }
