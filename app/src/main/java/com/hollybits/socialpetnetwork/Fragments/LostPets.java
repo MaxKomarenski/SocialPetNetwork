@@ -87,6 +87,7 @@ public class LostPets extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lost_pets, container, false);
         ButterKnife.bind(this, view);
+        instance = this;
 
         lostPetList = new ArrayList<>();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
@@ -122,7 +123,14 @@ public class LostPets extends Fragment {
                     lostPetList.addAll(response.body());
                     lostPetAdapter = new LostPetAdapter(lostPetList);
                     lostPetsRecyclerView.setAdapter(lostPetAdapter);
-                    lostPetAdapter.notifyDataSetChanged();
+                    try{
+                    LostPets.this.getActivity().runOnUiThread(()->{
+                        lostPetAdapter.notifyDataSetChanged();
+                    });
+                    }catch (NullPointerException e ){
+                        e.printStackTrace();
+                    }
+
                 }
 
                 @Override
