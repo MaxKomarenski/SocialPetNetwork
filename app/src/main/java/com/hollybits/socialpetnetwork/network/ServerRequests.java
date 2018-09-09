@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -32,7 +33,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -157,6 +161,9 @@ public interface ServerRequests {
                    @Query("petId") Long petId,
                    @Body Address address);
 
-
-
+    @Multipart
+    @POST("/updateMainPhoto")
+    Call<Void> updateMainPhoto(@HeaderMap Map<String, String> headers,
+                               @Part MultipartBody.Part img,
+                               @Query("id") Long id);
 }

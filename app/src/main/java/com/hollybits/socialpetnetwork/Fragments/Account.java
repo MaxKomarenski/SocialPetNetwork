@@ -1,6 +1,7 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,13 +21,21 @@ import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -78,7 +87,7 @@ public class Account extends Fragment {
             R.id.owner_email_in_expansion_panel})
     List<TextView> informationAboutUser;
 
-    private static final int PICK_IMAGE = 100;
+    private static final int PICK_IMAGE = 200;
     DrawerLayout drawer;
     private Uri imageUri;
 
@@ -155,6 +164,42 @@ public class Account extends Fragment {
 
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
             imageUri = data.getData();
+
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getActivity().getContentResolver().query(imageUri, filePathColumn, null, null, null);
+            assert cursor != null;
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String mediaPath = cursor.getString(columnIndex);
+            File file = new File(mediaPath);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("img", file.getName(), requestBody);
+
+            Paper.book().write("PATH_TO_PHOTO", mediaPath);
+            RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+
+
+            System.err.println("ATTENTION");
+            System.err.println(mediaPath);
+
+
+            User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+            java.util.Map<String, String> authorisationCode = new HashMap<>();
+            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+
+            MainActivity.getServerRequests().updateMainPhoto(authorisationCode, fileToUpload,
+                    MainActivity.getCurrentUser().getId()).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+
+                }
+            });
+
             userMainPhoto.setImageURI(imageUri);
         }
     }
