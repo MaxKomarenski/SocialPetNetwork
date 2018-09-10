@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.adapters;
 
+import android.app.Fragment;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -14,6 +15,7 @@ import com.hollybits.socialpetnetwork.Fragments.Chat;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.Contact;
 
 import java.util.List;
@@ -26,11 +28,17 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHo
 
     private List<Contact> contacts;
     private Typeface nameFont, anotherFont;
+    private PhotoManager photoManager;
 
-    public ContactAdapter(List<Contact> contacts, Typeface nameFont, Typeface anotherFont) {
+    public ContactAdapter(List<Contact> contacts,
+                          Typeface nameFont,
+                          Typeface anotherFont,
+                          android.support.v4.app.Fragment fragment) {
         this.contacts = contacts;
         this.nameFont = nameFont;
         this.anotherFont = anotherFont;
+        photoManager = new PhotoManager(fragment);
+
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -77,6 +85,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHo
             holder.time.setText(contact.getTimestamp().toString());
         }
         holder.time.setTypeface(anotherFont);
+        photoManager.loadFriendsMainPhoto(holder.userPhoto, contact.getFriendId());
 
         long five_minutes = 5 * 60 * 1000;
         long currentTime = System.currentTimeMillis();

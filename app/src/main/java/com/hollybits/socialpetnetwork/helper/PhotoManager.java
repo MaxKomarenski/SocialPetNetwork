@@ -84,6 +84,61 @@ public class PhotoManager {
             }
         });
     }
+    public void loadFriendPhoto(ImageView target, Long id){
+        MainActivity.getServerRequests().getPhoto(authorisationCode, currentUser.getId(),id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                byte[] content;
+                if(response.body() != null){
+                    try {
+                        content = response.body().bytes();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
+                        loadBitmapToImageView(target, bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+
+
+    public void loadUsersPhoto(ImageView target, Long id){
+        byte[] photoBytes = Paper.book(PAPER_BOOK_NAME).read(REGULAR_PHOTO+id);
+        if(photoBytes!=null){
+            Bitmap photo = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
+            loadBitmapToImageView(target, photo);
+            return;
+        }
+        MainActivity.getServerRequests().getPhoto(authorisationCode, currentUser.getId(), id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                byte[] content;
+                if(response.body() != null){
+                    try {
+                        content = response.body().bytes();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
+                        loadBitmapToImageView(target, bitmap);
+                        Paper.book(PAPER_BOOK_NAME).write(REGULAR_PHOTO+id, content);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
 
 
 
@@ -150,6 +205,31 @@ public class PhotoManager {
        });
 
    }
+    public void loadFriendsMainPhoto(ImageView target,  Long id){
+
+        MainActivity.getServerRequests().getMainPhoto(authorisationCode, id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                byte[] content;
+                if(response.body() != null){
+                    try {
+                        content = response.body().bytes();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
+                        loadBitmapToImageView(target, bitmap);
+                    } catch (IOException e) {
+                        Log.d("PHOTOMANAGER", "ERROR");
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+    }
+
 
    private void loadBitmapToImageView(ImageView  imageView, Bitmap bitmap, ProgressBar progressBar){
        GlideApp.with(fragment)
