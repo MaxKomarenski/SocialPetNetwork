@@ -3,6 +3,7 @@ package com.hollybits.socialpetnetwork.adapters;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.hollybits.socialpetnetwork.Fragments.FriendAccount;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.models.UserInfo;
@@ -41,10 +43,12 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
     private List<FriendInfo> filtredFriends;
     private MyViewHolder previousHolder;
     private Typeface nameFont, breedFont;
+    private PhotoManager photoManager;
 
-    public UserFriendsAdapter(List<FriendInfo> friends, Typeface nameFont, Typeface breedFont){
+    public UserFriendsAdapter(List<FriendInfo> friends, Typeface nameFont, Typeface breedFont, Fragment fragment){
 
         this.friends = friends;
+        photoManager = new PhotoManager(fragment);
         filtredFriends = friends;
         notifyDataSetChanged();
         this.nameFont = nameFont;
@@ -112,6 +116,7 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
         holder.pet_name_sm.setTypeface(nameFont);
         holder.breed_sm.setText(friend.getPetBreedName());
         holder.breed_sm.setTypeface(breedFont);
+        photoManager.loadFriendsMainPhoto(holder.img_sm, friend.getId());
         //----------------------------------
         holder.user_name_bg.setText(friend.getName() + " " + friend.getSurname());
         holder.user_name_bg.setTypeface(nameFont);
@@ -150,6 +155,7 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
                     previousHolder.primeConstraintLayout.setBackgroundResource(R.drawable.background_for_raw_of_recycler_view);
                     previousHolder = holder;
                 }
+                photoManager.loadFriendsMainPhoto(holder.img_bg, friend.getId());
             }
         });
 

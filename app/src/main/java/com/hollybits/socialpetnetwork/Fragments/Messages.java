@@ -123,7 +123,7 @@ public class Messages extends Fragment {
                 public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
                     contacts = response.body();
                     Paper.book().write(MainActivity.CONTACT_LIST, contacts);
-                    contactAdapter = new ContactAdapter(contacts, nameFont, anotherFont);
+                    contactAdapter = new ContactAdapter(contacts, nameFont, anotherFont, Messages.this);
                     contactsRecyclerView.setAdapter(contactAdapter);
 
                 }
@@ -134,7 +134,7 @@ public class Messages extends Fragment {
                 }
             });
         }else {
-            contactAdapter = new ContactAdapter(contacts, nameFont, anotherFont);
+            contactAdapter = new ContactAdapter(contacts, nameFont, anotherFont,Messages.this);
             contactsRecyclerView.setAdapter(contactAdapter);
         }
 
