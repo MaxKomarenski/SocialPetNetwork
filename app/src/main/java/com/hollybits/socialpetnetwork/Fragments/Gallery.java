@@ -14,10 +14,20 @@ import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.PhotoGridAdapter;
+import com.hollybits.socialpetnetwork.models.User;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +55,7 @@ public class Gallery extends Fragment {
 
     @BindView(R.id.photo_grid_view)
     GridView photoGridView;
-    Integer[] images = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
+    //Integer[] images = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
 
     private PhotoGridAdapter photoGridAdapter;
 
@@ -83,14 +93,29 @@ public class Gallery extends Fragment {
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         galleryText.setTypeface(mainFont);
 
-        photoGridAdapter = new PhotoGridAdapter(this.getContext(), images);
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        MainActivity.getServerRequests().getIdsOfUserPhoto(authorisationCode, currentUser.getId(), currentUser.getId()).enqueue(new Callback<List<Long>>() {
+            @Override
+            public void onResponse(Call<List<Long>> call, Response<List<Long>> response) {
+                photoGridAdapter = new PhotoGridAdapter(Gallery.this.getContext(), response.body(), Gallery.this);
 
-        int gridWidth = getResources().getDisplayMetrics().widthPixels;
-        int imageWidth = gridWidth/3;
+                int gridWidth = getResources().getDisplayMetrics().widthPixels;
+                int imageWidth = gridWidth/3;
 
-        photoGridView.setColumnWidth(imageWidth);
+                photoGridView.setColumnWidth(imageWidth);
 
-        photoGridView.setAdapter(photoGridAdapter);
+                photoGridView.setAdapter(photoGridAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<Long>> call, Throwable t) {
+
+            }
+        });
+
+
 
 
         toProfileButton.setOnClickListener(new View.OnClickListener() {

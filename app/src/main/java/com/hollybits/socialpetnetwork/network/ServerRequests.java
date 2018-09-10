@@ -176,4 +176,11 @@ public interface ServerRequests {
     @POST("/getUsersMainPhoto")
     Call<ResponseBody> getMainPhoto(@HeaderMap Map<String, String> headers,
                                 @Query("id") Long id);
+
+    @POST("/getUsersPhotoIds")
+    Call<List<Long>> getIdsOfUserPhoto(@HeaderMap Map<String, String> headers,
+                                       @Query("requesterId") Long id,
+                                       @Query("targetId") Long targetId);
+
+
 }

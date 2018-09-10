@@ -1,5 +1,7 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
+import com.hollybits.socialpetnetwork.helper.GlideApp;
+import com.hollybits.socialpetnetwork.helper.PhotoManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,10 +99,22 @@ public class PhotoPage extends Fragment{
             }
         });
 
-        int img = Paper.book().read("Current choice");
-        photoPageImage.setImageResource(img);
+        Long id = Paper.book().read("Current choice");
+
+        System.err.println("id------------------>    " + id);
+
+        byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME).read(PhotoManager.REGULAR_PHOTO+id);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(photoBytes, 0,photoBytes.length);
+        loadBitmapToImageView(photoPageImage, bitmap);
 
         return view;
+    }
+
+    private void loadBitmapToImageView(ImageView  imageView, Bitmap bitmap){
+        GlideApp.with(this)
+                .load(bitmap)
+                .placeholder(R.drawable.test_photo)
+                .into(imageView);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

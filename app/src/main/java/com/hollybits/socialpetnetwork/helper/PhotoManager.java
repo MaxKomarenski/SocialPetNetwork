@@ -3,11 +3,18 @@ package com.hollybits.socialpetnetwork.helper;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.models.User;
@@ -55,7 +62,7 @@ public class PhotoManager {
 
 
 
-    public void loadFriendPhoto(ImageView target, Long id){
+    public void loadFriendPhoto(ImageView target, Long id, ProgressBar progressBar){
         MainActivity.getServerRequests().getPhoto(authorisationCode, currentUser.getId(),id).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -64,7 +71,7 @@ public class PhotoManager {
                     try {
                         content = response.body().bytes();
                         Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
-                        loadBitmapToImageView(target, bitmap);
+                        loadBitmapToImageView(target, bitmap, progressBar);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -81,11 +88,11 @@ public class PhotoManager {
 
 
 
-    public void loadUsersPhoto(ImageView target, Long id){
+    public void loadUsersPhoto(ImageView target, Long id, ProgressBar progressBar){
         byte[] photoBytes = Paper.book(PAPER_BOOK_NAME).read(REGULAR_PHOTO+id);
         if(photoBytes!=null){
             Bitmap photo = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
-            loadBitmapToImageView(target, photo);
+            loadBitmapToImageView(target, photo, progressBar);
             return;
         }
         MainActivity.getServerRequests().getPhoto(authorisationCode, currentUser.getId(), id).enqueue(new Callback<ResponseBody>() {
@@ -96,7 +103,7 @@ public class PhotoManager {
                     try {
                         content = response.body().bytes();
                         Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
-                        loadBitmapToImageView(target, bitmap);
+                        loadBitmapToImageView(target, bitmap, progressBar);
                         Paper.book(PAPER_BOOK_NAME).write(REGULAR_PHOTO+id, content);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -144,12 +151,31 @@ public class PhotoManager {
 
    }
 
-   private void loadBitmapToImageView(ImageView  imageView, Bitmap bitmap){
+   private void loadBitmapToImageView(ImageView  imageView, Bitmap bitmap, ProgressBar progressBar){
        GlideApp.with(fragment)
                .load(bitmap)
-               .placeholder(R.drawable.test_photo)
+               .listener(new RequestListener<Drawable>() {
+                   @Override
+                   public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                       progressBar.setVisibility(View.GONE);
+                       return false;
+                   }
+
+                   @Override
+                   public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                       progressBar.setVisibility(View.GONE);
+                       return false;
+                   }
+               })
                .into(imageView);
    }
+
+    private void loadBitmapToImageView(ImageView  imageView, Bitmap bitmap){
+        GlideApp.with(fragment)
+                .load(bitmap)
+                .placeholder(R.drawable.test_photo)
+                .into(imageView);
+    }
 
 
 }
