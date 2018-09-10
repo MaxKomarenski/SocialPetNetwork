@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.activity.SettingsActivity;
 import com.hollybits.socialpetnetwork.helper.GlideApp;
 import com.hollybits.socialpetnetwork.helper.PermissionManeger;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
@@ -68,12 +69,6 @@ public class Account extends Fragment {
     private String mParam1;
     private String mParam2;
 
-//    @BindView(R.id.photo_grid_view)
-//    GridView photoGridView;
-//    Integer[] images = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
-//
-//    private PhotoGridAdapter photoGridAdapter;
-
     @BindView(R.id.user_photo_in_account_fragment)
     CircleImageView userMainPhoto;
 
@@ -95,6 +90,9 @@ public class Account extends Fragment {
             R.id.owner_phone_in_expansion_panel,
             R.id.owner_email_in_expansion_panel})
     List<TextView> informationAboutUser;
+
+    @BindView(R.id.settings_account_img_button)
+    ImageButton settings;
 
     private static final int PICK_IMAGE = 200;
     DrawerLayout drawer;
@@ -148,14 +146,7 @@ public class Account extends Fragment {
 
 
         photoManager.loadUsersMainPhoto(userMainPhoto);
-//        photoGridAdapter = new PhotoGridAdapter(this.getContext(), images);
-//
-//        int gridWidth = getResources().getDisplayMetrics().widthPixels;
-//        int imageWidth = gridWidth/3;
-//
-//        photoGridView.setColumnWidth(imageWidth);
-//
-//        photoGridView.setAdapter(photoGridAdapter);
+
 
         showAllInformationOnTheScreen();
 
@@ -222,7 +213,7 @@ public class Account extends Fragment {
             });
 
             GlideApp.with(this)
-                    .load("https://10.0.2.2:8443/getUsersPhotoIds?id=1&photoId=6")
+                    .load(imageUri)
                     .placeholder(R.drawable.test_photo)
                     .into(userMainPhoto);
             //userMainPhoto.setImageURI(imageUri);
@@ -249,6 +240,14 @@ public class Account extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentDispatcher.launchFragment(Map.class);
+            }
+        });
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
             }
         });
     }

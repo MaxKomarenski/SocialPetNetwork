@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.Fragments.Account;
+import com.hollybits.socialpetnetwork.Fragments.Gallery;
 import com.hollybits.socialpetnetwork.Fragments.Messages;
 import com.hollybits.socialpetnetwork.Fragments.StartingMenu;
 import com.hollybits.socialpetnetwork.Fragments.UserFriends;
@@ -278,6 +279,7 @@ public class FragmentDispatcher extends AppCompatActivity
         options.put(R.id.nav_map, com.hollybits.socialpetnetwork.Fragments.Map.class);
         options.put(R.id.nav_friends, UserFriends.class);
         options.put(R.id.nav_messages, Messages.class);
+        options.put(R.id.nav_gallery, Gallery.class);
         prepareFriendShipRequestsList();
         getAllUnPersistentFriendShipRequests();
     }

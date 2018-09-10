@@ -305,20 +305,5 @@
 
         </ScrollView>
 
-        
-        <!--<GridView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/photo_grid_view"-->
-            <!--android:layout_marginTop="20dp"-->
-            <!--android:numColumns="3"-->
-            <!--android:verticalSpacing="1dp"-->
-            <!--android:horizontalSpacing="1dp"-->
-            <!--android:gravity="center"-->
-            <!--android:stretchMode="columnWidth"-->
-
-            <!--/>-->
-
-
 
 </LinearLayout>

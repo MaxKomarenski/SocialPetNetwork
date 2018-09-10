@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
-import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.helper.FriendDownloader;
 
 import butterknife.BindView;
@@ -37,6 +36,9 @@ public class StartingMenu extends Fragment {
 
     @BindView(R.id.map_card_view_in_starting_menu)
     CardView mapCardView;
+
+    @BindView(R.id.gallery_card_view_in_starting_menu)
+    CardView galleryCardView;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -121,6 +123,13 @@ public class StartingMenu extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentDispatcher.launchFragment(Map.class);
+            }
+        });
+
+        galleryCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(Gallery.class);
             }
         });
     }
