@@ -70,6 +70,14 @@ dependencies {
     //google play services
 
 
+
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    compile ('com.github.bumptech.glide:okhttp3-integration:1.4.0'){
+        exclude group: 'glide-parent'
+    }
+
+
     implementation 'com.shaishavgandhi:login-buttons:1.0.0' // Nice Login buttons
 
     implementation 'com.squareup.retrofit2:retrofit:2.4.0' // Retrofit (http client)

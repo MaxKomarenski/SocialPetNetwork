@@ -1,13 +1,16 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +21,14 @@ import android.widget.TextView;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.helper.GlideApp;
+import com.hollybits.socialpetnetwork.helper.PermissionManeger;
+import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,6 +40,7 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,6 +62,7 @@ public class Account extends Fragment {
     private static final String ARG_PARAM1 = "param1";
 
     private static final String ARG_PARAM2 = "param2";
+    private PhotoManager photoManager;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -95,6 +104,7 @@ public class Account extends Fragment {
 
     public Account() {
         // Required empty public constructor
+        photoManager = new PhotoManager(this);
     }
 
     /**
@@ -129,7 +139,15 @@ public class Account extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         ButterKnife.bind(this, view);
+        PermissionManeger.checkForPermission(this.getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+        PermissionManeger.checkForPermission(this.getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        java.util.Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+
+
+        photoManager.loadUsersMainPhoto(userMainPhoto);
 //        photoGridAdapter = new PhotoGridAdapter(this.getContext(), images);
 //
 //        int gridWidth = getResources().getDisplayMetrics().widthPixels;
@@ -148,6 +166,7 @@ public class Account extends Fragment {
         }
 
         listeners();
+
 
 
         return view;
@@ -192,15 +211,21 @@ public class Account extends Fragment {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
 
+                    Log.d("UPDATE PHOTO RESPONSE:", String.valueOf(response.code()));
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
 
+                    Log.d("FAIL:", t.getMessage());
                 }
             });
 
-            userMainPhoto.setImageURI(imageUri);
+            GlideApp.with(this)
+                    .load("https://10.0.2.2:8443/getUsersPhotoIds?id=1&photoId=6")
+                    .placeholder(R.drawable.test_photo)
+                    .into(userMainPhoto);
+            //userMainPhoto.setImageURI(imageUri);
         }
     }
 
@@ -259,6 +284,8 @@ public class Account extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this

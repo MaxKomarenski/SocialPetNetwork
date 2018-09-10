@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -166,4 +167,13 @@ public interface ServerRequests {
     Call<Void> updateMainPhoto(@HeaderMap Map<String, String> headers,
                                @Part MultipartBody.Part img,
                                @Query("id") Long id);
+
+
+    @POST("/getUsersPhoto")
+    Call<ResponseBody> getPhoto(@HeaderMap Map<String, String> headers,
+                                @Query("id") Long id,
+                                @Query("photoId") Long photoId);
+    @POST("/getUsersMainPhoto")
+    Call<ResponseBody> getMainPhoto(@HeaderMap Map<String, String> headers,
+                                @Query("id") Long id);
 }

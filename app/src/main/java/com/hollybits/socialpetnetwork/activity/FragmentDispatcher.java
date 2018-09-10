@@ -25,6 +25,7 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.data_queues.FriendShipRequestQueue;
 import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
 import com.hollybits.socialpetnetwork.helper.OnlineHandler;
+import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
@@ -222,6 +223,9 @@ public class FragmentDispatcher extends AppCompatActivity
         }
         for (String s: Paper.book(MainActivity.MESSAGE_BOOK).getAllKeys()){
             Paper.book(MainActivity.MESSAGE_BOOK).delete(s);
+        }
+        for (String s: Paper.book(PhotoManager.PAPER_BOOK_NAME).getAllKeys()){
+            Paper.book(PhotoManager.PAPER_BOOK_NAME).delete(s);
         }
         finish();
         Intent intent = new Intent(this, LoginActivity.class);
