@@ -1,8 +1,11 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
@@ -18,6 +22,7 @@ import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.PhotoGridAdapter;
 import com.hollybits.socialpetnetwork.models.User;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +30,14 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.paperdb.Paper;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,13 +63,19 @@ public class Gallery extends Fragment {
     @BindView(R.id.to_profile_in_gallery_page)
     Button toProfileButton;
 
+    @BindView(R.id.add_photo_to_gallery_in_gallery_page)
+    ImageButton addNewPhoto;
+
     @BindView(R.id.photo_grid_view)
     GridView photoGridView;
-    //Integer[] images = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
 
     private PhotoGridAdapter photoGridAdapter;
 
     private OnFragmentInteractionListener mListener;
+
+    private static final int PICK_IMAGE = 200;
+
+    private Uri imageUri;
 
     public Gallery() {
         // Required empty public constructor
@@ -93,9 +109,66 @@ public class Gallery extends Fragment {
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         galleryText.setTypeface(mainFont);
 
+        getIdsOfUserPhoto();
+
+        listeners();
+
+        return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+            imageUri = data.getData();
+
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getActivity().getContentResolver().query(imageUri, filePathColumn, null, null, null);
+            assert cursor != null;
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String mediaPath = cursor.getString(columnIndex);
+            File file = new File(mediaPath);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("img", file.getName(), requestBody);
+
+            Paper.book().write("PATH_TO_PHOTO", mediaPath);
+            RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+
+
+            System.err.println("ATTENTION");
+            System.err.println(mediaPath);
+
+
+            User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+            java.util.Map<String, String> authorisationCode = new HashMap<>();
+            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+
+            MainActivity.getServerRequests().addNewPhoto(authorisationCode, fileToUpload, currentUser.getId()).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+
+                }
+            });
+        }
+    }
+
+    private void openGallery(){
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+
+    private void getIdsOfUserPhoto(){
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         Map<String, String> authorisationCode = new HashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+
         MainActivity.getServerRequests().getIdsOfUserPhoto(authorisationCode, currentUser.getId(), currentUser.getId()).enqueue(new Callback<List<Long>>() {
             @Override
             public void onResponse(Call<List<Long>> call, Response<List<Long>> response) {
@@ -114,10 +187,9 @@ public class Gallery extends Fragment {
 
             }
         });
+    }
 
-
-
-
+    private void listeners(){
         toProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,7 +197,12 @@ public class Gallery extends Fragment {
             }
         });
 
-        return view;
+        addNewPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

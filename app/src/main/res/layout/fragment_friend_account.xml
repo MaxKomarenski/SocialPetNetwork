@@ -8,7 +8,8 @@
     android:background="@drawable/background_for_account"
     tools:context=".Fragments.FriendAccount"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:paddingTop="10dp">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -302,42 +303,23 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="105dp"
+                        android:layout_height="105dp"
                         android:background="@null"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/img_map" />
+                        android:src="@drawable/img_gallery" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="See on map" />
+                        android:text="Gallery" />
 
                 </LinearLayout>
 
-
             </LinearLayout>
-
-
 
         </LinearLayout>
 
     </ScrollView>
-
-
-    <!--<GridView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:id="@+id/photo_grid_view"-->
-    <!--android:layout_marginTop="20dp"-->
-    <!--android:numColumns="3"-->
-    <!--android:verticalSpacing="1dp"-->
-    <!--android:horizontalSpacing="1dp"-->
-    <!--android:gravity="center"-->
-    <!--android:stretchMode="columnWidth"-->
-
-    <!--/>-->
-
-
 
 </LinearLayout>
