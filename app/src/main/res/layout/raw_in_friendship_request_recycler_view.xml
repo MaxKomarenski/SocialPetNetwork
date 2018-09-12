@@ -17,35 +17,76 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/owner_text_in_friendship_raw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:text="owner:"
+        app:layout_constraintBottom_toBottomOf="@+id/name_of_user_in_friendship_recycler_view"
+        app:layout_constraintStart_toEndOf="@+id/user_photo_in_friendship_recycler_view"
+        app:layout_constraintTop_toTopOf="@+id/name_of_user_in_friendship_recycler_view" />
+
+    <TextView
         android:id="@+id/name_of_user_in_friendship_recycler_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Max Komarenskii"
-        android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@+id/user_photo_in_friendship_recycler_view"
-        app:layout_constraintTop_toTopOf="@+id/user_photo_in_friendship_recycler_view" />
+        android:textSize="17sp"
+        android:textColor="#000"
+        app:layout_constraintStart_toEndOf="@+id/owner_text_in_friendship_raw"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/address_text_in_friendship_raw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="address:"
+        app:layout_constraintBottom_toBottomOf="@+id/place_of_user_in_friendship_recycler_view"
+        app:layout_constraintStart_toStartOf="@+id/breed_text_in_friendship_raw"
+        app:layout_constraintTop_toTopOf="@+id/place_of_user_in_friendship_recycler_view" />
 
     <TextView
         android:id="@+id/place_of_user_in_friendship_recycler_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Lviv, Ukraine"
-        android:textSize="15sp"
-        app:layout_constraintStart_toStartOf="@+id/name_of_user_in_friendship_recycler_view"
-        app:layout_constraintTop_toBottomOf="@+id/name_of_user_in_friendship_recycler_view" />
+        android:textStyle="italic"
+        android:textColor="#000"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@+id/pet_breed_in_friendship_recycler_view"
+        app:layout_constraintTop_toBottomOf="@+id/pet_breed_in_friendship_recycler_view" />
+
+    <TextView
+        android:id="@+id/pet_text_in_friendship_raw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="pet:"
+        app:layout_constraintBottom_toBottomOf="@+id/pet_name_in_friendship_recycler_view"
+        app:layout_constraintStart_toStartOf="@+id/owner_text_in_friendship_raw"
+        app:layout_constraintTop_toTopOf="@+id/pet_name_in_friendship_recycler_view" />
 
     <TextView
         android:id="@+id/pet_name_in_friendship_recycler_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="71dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="bobik"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="#000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/name_of_user_in_friendship_recycler_view"
+        app:layout_constraintTop_toBottomOf="@+id/name_of_user_in_friendship_recycler_view" />
+
+    <TextView
+        android:id="@+id/breed_text_in_friendship_raw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="breed:"
+        app:layout_constraintBottom_toBottomOf="@+id/pet_breed_in_friendship_recycler_view"
+        app:layout_constraintStart_toStartOf="@+id/pet_text_in_friendship_raw"
+        app:layout_constraintTop_toTopOf="@+id/pet_breed_in_friendship_recycler_view" />
 
     <TextView
         android:id="@+id/pet_breed_in_friendship_recycler_view"
@@ -53,6 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="dolboeb"
+        android:textColor="#000"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="@+id/pet_name_in_friendship_recycler_view"
         app:layout_constraintTop_toBottomOf="@+id/pet_name_in_friendship_recycler_view" />
@@ -61,14 +103,11 @@
         android:id="@+id/accept_button_in_friendship_recycler_view"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="84dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
         android:background="#080"
-        app:layout_constraintEnd_toStartOf="@+id/reject_button_in_friendship_recycler_view"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_photo_in_friendship_recycler_view" />
+        app:layout_constraintTop_toBottomOf="@+id/place_of_user_in_friendship_recycler_view" />
 
     <Button
         android:id="@+id/reject_button_in_friendship_recycler_view"
@@ -77,6 +116,8 @@
         android:layout_marginEnd="64dp"
         android:background="#d50c16"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/accept_button_in_friendship_recycler_view" />
 
 </android.support.constraint.ConstraintLayout>

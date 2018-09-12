@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
+import com.nightonke.jellytogglebutton.JellyToggleButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +29,12 @@ public class SettingsActivity extends AppCompatActivity {
     @BindView(R.id.my_location_text_in_settings)
     TextView myLocationTextView;
 
+    @BindView(R.id.sos_switch_compat_in_settings_activity)
+    JellyToggleButton sosToggleButton;
+
+    @BindView(R.id.my_location_switch_compat_in_settings_activity)
+    JellyToggleButton myLocationToggleButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +50,10 @@ public class SettingsActivity extends AppCompatActivity {
         privacyText.setTypeface(mainFont);
         myLocationTextView.setTypeface(anotherFont);
 
+        sosToggleButton.setRightBackgroundColor("#b6d9f5");
+        sosToggleButton.setLeftBackgroundColor("#45b549");
 
-
-
-
+        myLocationToggleButton.setRightBackgroundColor("#b6d9f5");
+        myLocationToggleButton.setLeftBackgroundColor("#45b549");
     }
 }

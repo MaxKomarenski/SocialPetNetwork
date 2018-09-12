@@ -86,6 +86,17 @@
 
     <android.support.v7.widget.RecyclerView
         android:visibility="gone"
+        android:id="@+id/search_people_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableCardView"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:visibility="gone"
         android:id="@+id/friendship_request_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -93,10 +104,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableCardView">
-
-    </android.support.v7.widget.RecyclerView>
-
+        app:layout_constraintTop_toBottomOf="@+id/tableCardView"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/user_friends_recycler_view"

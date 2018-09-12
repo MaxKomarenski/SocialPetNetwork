@@ -54,6 +54,9 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
     @BindView(R.id.user_friends_recycler_view)
     RecyclerView userFriendsRecyclerView;
 
+    @BindView(R.id.search_people_recycler_view)
+    RecyclerView searchPeopleRecyclerView;
+
     @BindView(R.id.search_in_friends)
     ExpandableSearchView searchView;
 
@@ -157,7 +160,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                 changeColorsAndVisibility(View.VISIBLE, View.GONE,
                         R.drawable.background_for_table_friends_pressed,
                         getResources().getDrawable(R.color.blue_for_table),
-                        R.drawable.background_for_table_people);
+                        R.drawable.background_for_table_people, View.GONE);
 
             }
         });
@@ -168,7 +171,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                 changeColorsAndVisibility(View.GONE, View.VISIBLE,
                         R.drawable.background_for_table_friends,
                         getResources().getDrawable(R.color.blue_for_table_pressed),
-                        R.drawable.background_for_table_people);
+                        R.drawable.background_for_table_people, View.GONE);
 
             }
         });
@@ -179,7 +182,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                 changeColorsAndVisibility(View.GONE, View.GONE,
                         R.drawable.background_for_table_friends,
                         getResources().getDrawable(R.color.blue_for_table),
-                        R.drawable.background_for_table_people_pressed);
+                        R.drawable.background_for_table_people_pressed, View.VISIBLE);
             }
         });
     }
@@ -188,9 +191,10 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                                            int requestVisibility,
                                            int friendTextBackground,
                                            Drawable requestTextBackground,
-                                           int peopleTextBackground){
+                                           int peopleTextBackground, int peopleVisibility){
         userFriendsRecyclerView.setVisibility(friendVisibility);
         friendshipRequestRecyclerView.setVisibility(requestVisibility);
+        searchPeopleRecyclerView.setVisibility(peopleVisibility);
         peopleTextView.setBackgroundResource(peopleTextBackground);
         requestsTextView.setBackground(requestTextBackground);
         friendsTextView.setBackgroundResource(friendTextBackground);
@@ -198,7 +202,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 
     private void getAllFriendshipRequests(){
         friendShipRequests = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
-        friendshipRequestAdapter = new FriendshipRequestAdapter(friendShipRequests, userFriendsAdapter);
+        friendshipRequestAdapter = new FriendshipRequestAdapter(friendShipRequests, userFriendsAdapter, mainFont, breedFont);
         friendshipRequestRecyclerView.setAdapter(friendshipRequestAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         friendshipRequestRecyclerView.setLayoutManager(layoutManager);

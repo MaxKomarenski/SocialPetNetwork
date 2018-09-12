@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.adapters;
 
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,17 +30,26 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
 
     private List<InfoAboutUserFriendShipRequest> friendShipRequests;
     private UserFriendsAdapter userFriendsAdapter;
+    private Typeface first;
+    private Typeface second;
 
-    public FriendshipRequestAdapter(List<InfoAboutUserFriendShipRequest> friendShipRequests, UserFriendsAdapter userFriendsAdapter){
+    public FriendshipRequestAdapter(List<InfoAboutUserFriendShipRequest> friendShipRequests,
+                                    UserFriendsAdapter userFriendsAdapter,
+                                    Typeface first,
+                                    Typeface second){
         this.friendShipRequests = friendShipRequests;
         this.userFriendsAdapter = userFriendsAdapter;
+        this.first = first;
+        this.second = second;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        public CircleImageView userPhoto;
-        public TextView userName, place, petName, breed;
-        public Button accept, reject;
+        CircleImageView userPhoto;
+        TextView userName, place, petName, breed;
+        TextView ownerText, petText, breedText, addressText;
+
+        Button accept, reject;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -50,6 +60,11 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
             accept = itemView.findViewById(R.id.accept_button_in_friendship_recycler_view);
             reject = itemView.findViewById(R.id.reject_button_in_friendship_recycler_view);
             breed = itemView.findViewById(R.id.pet_breed_in_friendship_recycler_view);
+
+            ownerText = itemView.findViewById(R.id.owner_text_in_friendship_raw);
+            petText = itemView.findViewById(R.id.pet_text_in_friendship_raw);
+            breedText = itemView.findViewById(R.id.breed_text_in_friendship_raw);
+            addressText = itemView.findViewById(R.id.address_text_in_friendship_raw);
         }
     }
 
@@ -65,18 +80,36 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
     public void onBindViewHolder(@NonNull FriendshipRequestAdapter.MyViewHolder holder, int position) {
         InfoAboutUserFriendShipRequest request = friendShipRequests.get(position);
         holder.userName.setText(request.getName() + " " + request.getSurname());
+        holder.userName.setTypeface(first);
         holder.place.setText(request.getCity() + ", " + request.getCountry());
+        holder.place.setTypeface(second);
+        holder.petName.setTypeface(first);
         holder.petName.setText(request.getPetName());
         holder.breed.setText(request.getPetBreed());
+        holder.breed.setTypeface(second);
+
+        holder.ownerText.setTypeface(first);
+        holder.breedText.setTypeface(first);
+        holder.addressText.setTypeface(first);
+        holder.petText.setTypeface(first);
 
         holder.accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                acceptFriendshipRequest(request);
+                acceptFriendshipRequest(request, true);
                 Paper.book().delete(MainActivity.CONTACT_LIST);
 
             }
         });
+
+        holder.reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                acceptFriendshipRequest(request, false);
+            }
+        });
+
+
     }
 
     @Override
@@ -88,7 +121,7 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
         friendShipRequests.add(request);
     }
 
-    private void acceptFriendshipRequest(InfoAboutUserFriendShipRequest request){
+    private void acceptFriendshipRequest(InfoAboutUserFriendShipRequest request, boolean state){
 
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         Map<String, String> authorisationCode = new HashMap<>();
@@ -96,12 +129,15 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
         MainActivity.getServerRequests().acceptFriendshipInvitation(authorisationCode,
                                                                     currentUser.getId(),
                                                                     request.getId(),
-                                                                    true).enqueue(new Callback<FriendInfo>() {
+                                                                    state).enqueue(new Callback<FriendInfo>() {
             @Override
             public void onResponse(Call<FriendInfo> call, Response<FriendInfo> response) {
-                FriendInfo newFriend = response.body();
-                userFriendsAdapter.addItem(newFriend);
-                userFriendsAdapter.notifyDataSetChanged();
+                if(state){
+                    FriendInfo newFriend = response.body();
+                    userFriendsAdapter.addItem(newFriend);
+                    userFriendsAdapter.notifyDataSetChanged();
+                }
+
             }
 
             @Override

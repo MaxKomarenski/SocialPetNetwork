@@ -239,6 +239,7 @@
                                     android:orientation="vertical">
 
                                         <ImageButton
+                                            android:id="@+id/open_gallery_from_account"
                                             android:layout_width="104dp"
                                             android:layout_height="104dp"
                                             android:background="@null"
@@ -246,6 +247,7 @@
                                             android:src="@drawable/img_gallery" />
 
                                         <TextView
+                                            android:id="@+id/gallery_text_in_account"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="Gallery" />
@@ -269,6 +271,7 @@
                                             android:src="@drawable/img_map_2" />
 
                                         <TextView
+                                            android:id="@+id/map_text_in_account"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="Map" />
@@ -292,6 +295,7 @@
                                             android:src="@drawable/img_store" />
 
                                         <TextView
+                                            android:id="@+id/store_text_in_account"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="Store" />

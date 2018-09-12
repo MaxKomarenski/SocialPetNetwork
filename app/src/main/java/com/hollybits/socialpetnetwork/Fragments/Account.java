@@ -78,18 +78,23 @@ public class Account extends Fragment {
     @BindView(R.id.open_map_from_account)
     ImageButton openMap;
 
+    @BindView(R.id.open_gallery_from_account)
+    ImageButton openGallery;
+
     @BindViews({R.id.name_of_pet_text_view, R.id.sex_of_pet_text_view,
                 R.id.breed_word_text_view, R.id.name_of_breed_text_view, R.id.address_word_text_view,
                 R.id.place_of_user_text_view, R.id.age_word_text_view, R.id.number_of_age_word_text_view,
                 R.id.weight_word_text_view, R.id.amount_of_weight_text_view, R.id.attitude_word_text_view,
-                R.id.attitude_state_text_view
-    })
+                R.id.attitude_state_text_view})
     List<TextView> informationAboutPet;
 
     @BindViews({R.id.owner_name_and_surname_in_expansion_panel,
             R.id.owner_phone_in_expansion_panel,
             R.id.owner_email_in_expansion_panel})
     List<TextView> informationAboutUser;
+
+    @BindViews({R.id.map_text_in_account, R.id.gallery_text_in_account, R.id.store_text_in_account})
+    List<TextView> wordUnderButtins;
 
     @BindView(R.id.settings_account_img_button)
     ImageButton settings;
@@ -151,16 +156,18 @@ public class Account extends Fragment {
         showAllInformationOnTheScreen();
 
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
-        for (TextView textView:
-             informationAboutPet) {
-            textView.setTypeface(mainFont);
-        }
-
+        changeFontForAllWordInList(informationAboutPet, mainFont);
+        changeFontForAllWordInList(wordUnderButtins, mainFont);
         listeners();
 
-
-
         return view;
+    }
+
+    void changeFontForAllWordInList(List<TextView> words, Typeface font){
+        for (TextView textView:
+                words) {
+            textView.setTypeface(font);
+        }
     }
 
     private void openGallery(){
@@ -226,6 +233,13 @@ public class Account extends Fragment {
             public void onClick(View v) {
                 drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
                 drawer.openDrawer(Gravity.START);
+            }
+        });
+
+        openGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(Gallery.class);
             }
         });
 

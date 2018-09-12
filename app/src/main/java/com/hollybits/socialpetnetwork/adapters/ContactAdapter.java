@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.flags.impl.DataUtils;
 import com.hollybits.socialpetnetwork.Fragments.Chat;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
@@ -75,9 +76,17 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHo
         String nameAndSurname = contact.getName() + " " + contact.getSurname();
 
         holder.userName.setText(nameAndSurname);
-        holder.lastMessage.setText(contact.getLastMessage());
+        if(contact.getLastMessage().length() < 27){
+            holder.lastMessage.setText(contact.getLastMessage());
+        }else {
+            //contact.getLastMessage();
+            String message = String.format("%.26s", contact.getLastMessage()) + "...";
+            holder.lastMessage.setText(message);
+        }
+
         holder.userName.setTypeface(nameFont);
         holder.lastMessage.setTypeface(anotherFont);
+
 
         if(contact.getTimestamp() == null){
             holder.time.setText("");
