@@ -62,6 +62,8 @@ public class PhotoManager {
 
 
 
+
+
     public void loadFriendPhoto(ImageView target, Long id, ProgressBar progressBar){
         MainActivity.getServerRequests().getPhoto(authorisationCode, currentUser.getId(),id).enqueue(new Callback<ResponseBody>() {
             @Override
