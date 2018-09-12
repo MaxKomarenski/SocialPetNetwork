@@ -181,6 +181,10 @@ public interface ServerRequests {
     Call<List<Long>> getIdsOfUserPhoto(@HeaderMap Map<String, String> headers,
                                        @Query("requesterId") Long id,
                                        @Query("targetId") Long targetId);
-
+    @Multipart
+    @POST("/addNewPhoto")
+    Call<Void> addNewPhoto(@HeaderMap Map<String, String> headers,
+                               @Part MultipartBody.Part img,
+                               @Query("id") Long id);
 
 }

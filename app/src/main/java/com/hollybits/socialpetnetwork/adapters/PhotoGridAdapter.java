@@ -1,8 +1,6 @@
 package com.hollybits.socialpetnetwork.adapters;
 
-import android.app.Fragment;
 import android.content.Context;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +10,12 @@ import android.widget.ProgressBar;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.Fragments.PhotoPage;
 import com.hollybits.socialpetnetwork.R;
-import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.helper.SquareImageView;
 
 import java.util.List;
-import java.util.Map;
 
 import io.paperdb.Paper;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class PhotoGridAdapter extends BaseAdapter {
@@ -66,14 +59,9 @@ public class PhotoGridAdapter extends BaseAdapter {
             Long id = images.get(position);
             photoManager.loadUsersPhoto(imageView, id, progressBar);
 
-
-
-
-
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.err.println("id------------------>    " + images.get(position));
                     Paper.book().write("Current choice", images.get(position));
                     FragmentDispatcher.launchFragment(PhotoPage.class);
                 }
