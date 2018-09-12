@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.helper;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -227,7 +228,43 @@ public class PhotoManager {
                 t.printStackTrace();
             }
         });
+    }
 
+    public static void loadDirectlyUserMainPhoto(ImageView imageView, Activity activity){
+        byte[] photoBytes = Paper.book(PAPER_BOOK_NAME).read(MAIN_PHOTO);
+        if(photoBytes!=null){
+            Bitmap photo = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
+            GlideApp.with(activity)
+                    .load(photo)
+                    .placeholder(R.drawable.test_photo)
+                    .into(imageView);
+            return;
+        }
+
+        MainActivity.getServerRequests().getMainPhoto(authorisationCode, currentUser.getId()).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                byte[] content;
+                if(response.body() != null){
+                    try {
+                        content = response.body().bytes();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
+                        GlideApp.with(activity)
+                                .load(bitmap)
+                                .placeholder(R.drawable.test_photo)
+                                .into(imageView);
+                        Paper.book(PAPER_BOOK_NAME).write(MAIN_PHOTO, content);
+                    } catch (IOException e) {
+                        Log.d("PHOTOMANAGER", "ERROR");
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
 

@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.Fragments.Account;
@@ -78,7 +79,9 @@ public class FragmentDispatcher extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        ImageView imageView = navigationView.getHeaderView(0).findViewById(R.id.image_in_header_fragment_dispatcher);
 
+        PhotoManager.loadDirectlyUserMainPhoto(imageView, this);
         messagesMenuItem = navigationView.getMenu().findItem(R.id.nav_messages);
         getUnReadMessagesAmount();
         ImageButton logout = navigationView.getHeaderView(0).findViewById(R.id.logout_imagebutton_in_nav_header);

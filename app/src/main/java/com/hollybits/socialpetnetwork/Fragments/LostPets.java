@@ -146,7 +146,7 @@ public class LostPets extends Fragment {
                     lostPetList.clear();
 
                     lostPetList.addAll(response.body());
-                    lostPetAdapter = new LostPetAdapter(lostPetList, mainFont, breedFont);
+                    lostPetAdapter = new LostPetAdapter(lostPetList, mainFont, breedFont, LostPets.this);
                     lostPetsRecyclerView.setAdapter(lostPetAdapter);
                     try{
                     LostPets.this.getActivity().runOnUiThread(()->{

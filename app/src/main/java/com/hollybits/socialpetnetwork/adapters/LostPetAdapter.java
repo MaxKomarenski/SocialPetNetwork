@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.adapters;
 
+import android.app.Fragment;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.LostPet;
 
 import java.util.List;
@@ -22,11 +24,13 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.MyViewHo
     private List<LostPet> lostPets;
     private Typeface nameTypeface;
     private Typeface another;
+    private PhotoManager photoManager;
 
-    public LostPetAdapter(List<LostPet> lostPets, Typeface nameTypeface, Typeface another) {
+    public LostPetAdapter(List<LostPet> lostPets, Typeface nameTypeface, Typeface another, android.support.v4.app.Fragment fragment) {
         this.lostPets = lostPets;
         this.nameTypeface = nameTypeface;
         this.another = another;
+        photoManager = new PhotoManager(fragment);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -64,6 +68,7 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.MyViewHo
         holder.petBreed.setTypeface(another);
         holder.ownerName.setText(lostPet.getUserName() + " " + lostPet.getUserSurname());
         holder.ownerName.setTypeface(another);
+        photoManager.loadFriendsMainPhoto(holder.petImg, lostPet.getUserId());
 
         if (!lostPet.getUserId().equals(MainActivity.getCurrentUser().getId())){
             holder.foundMyPet.setVisibility(View.GONE);
