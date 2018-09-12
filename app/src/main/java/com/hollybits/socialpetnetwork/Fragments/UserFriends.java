@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -74,6 +76,21 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 
     @BindView(R.id.open_people_list_in_user_friends_page)
     TextView peopleTextView;
+
+    @BindView(R.id.owner_name_edit_text_in_people_search)
+    EditText ownerNameEditText;
+
+    @BindView(R.id.animal_edit_text_in_people_search)
+    EditText animalEditText;
+
+    @BindView(R.id.breed_edit_text_in_people_search)
+    EditText breedEditText;
+
+    @BindView(R.id.pet_name_edit_text_in_people_search)
+    EditText petNameEditText;
+
+    @BindView(R.id.search_people_button)
+    Button searchPeopleButton;
 
     private List<FriendInfo> friends;
     private List<InfoAboutUserFriendShipRequest> friendShipRequests;
