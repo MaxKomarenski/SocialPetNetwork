@@ -48,15 +48,21 @@ public class PhotoManager {
 
     private static Map<String, String> photoPathes;
 
+    static {
+        currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        authorisationCode = new ConcurrentHashMap<>();
+        photoPathes = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+    }
+
+
+
+
+
+
 
     public PhotoManager(Fragment fragment) {
         this.fragment = fragment;
-        if(currentUser == null) {
-            currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-            authorisationCode = new ConcurrentHashMap<>();
-            photoPathes = new HashMap<>();
-            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-        }
     }
 
 
