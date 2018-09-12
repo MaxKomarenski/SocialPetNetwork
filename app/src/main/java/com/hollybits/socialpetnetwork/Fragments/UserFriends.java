@@ -48,6 +48,9 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
     @BindView(R.id.tableCardView)
     CardView tableCardView;
 
+    @BindView(R.id.edit_texts_for_filter_search)
+    CardView filterCardView;
+
     @BindView(R.id.friendship_request_recycler_view)
     RecyclerView friendshipRequestRecyclerView;
 
@@ -160,7 +163,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                 changeColorsAndVisibility(View.VISIBLE, View.GONE,
                         R.drawable.background_for_table_friends_pressed,
                         getResources().getDrawable(R.color.blue_for_table),
-                        R.drawable.background_for_table_people, View.GONE);
+                        R.drawable.background_for_table_people, View.GONE , View.GONE  );
 
             }
         });
@@ -171,7 +174,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                 changeColorsAndVisibility(View.GONE, View.VISIBLE,
                         R.drawable.background_for_table_friends,
                         getResources().getDrawable(R.color.blue_for_table_pressed),
-                        R.drawable.background_for_table_people, View.GONE);
+                        R.drawable.background_for_table_people, View.GONE , View.GONE);
 
             }
         });
@@ -182,7 +185,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                 changeColorsAndVisibility(View.GONE, View.GONE,
                         R.drawable.background_for_table_friends,
                         getResources().getDrawable(R.color.blue_for_table),
-                        R.drawable.background_for_table_people_pressed, View.VISIBLE);
+                        R.drawable.background_for_table_people_pressed, View.VISIBLE, View.VISIBLE);
             }
         });
     }
@@ -191,13 +194,16 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                                            int requestVisibility,
                                            int friendTextBackground,
                                            Drawable requestTextBackground,
-                                           int peopleTextBackground, int peopleVisibility){
+                                           int peopleTextBackground,
+                                           int peopleVisibility,
+                                           int filterVisibility){
         userFriendsRecyclerView.setVisibility(friendVisibility);
         friendshipRequestRecyclerView.setVisibility(requestVisibility);
         searchPeopleRecyclerView.setVisibility(peopleVisibility);
         peopleTextView.setBackgroundResource(peopleTextBackground);
         requestsTextView.setBackground(requestTextBackground);
         friendsTextView.setBackgroundResource(friendTextBackground);
+        filterCardView.setVisibility(filterVisibility);
     }
 
     private void getAllFriendshipRequests(){
