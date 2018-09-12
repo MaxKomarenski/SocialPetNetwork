@@ -187,4 +187,8 @@ public interface ServerRequests {
                                @Part MultipartBody.Part img,
                                @Query("id") Long id);
 
+    @POST("/userFoundHisPet")
+    Call<String> userFoundHisPet(@HeaderMap Map<String, String> headers,
+                                 @Query("pet_id") Long petID);
+
 }

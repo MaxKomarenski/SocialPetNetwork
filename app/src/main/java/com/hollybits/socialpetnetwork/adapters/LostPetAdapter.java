@@ -14,10 +14,17 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.LostPet;
+import com.hollybits.socialpetnetwork.models.User;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.MyViewHolder> {
 
@@ -84,6 +91,21 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.MyViewHo
                 @Override
                 public void onClick(View v) {
 
+                    User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+                    Map<String, String> authorisationCode = new HashMap<>();
+                    authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+                    MainActivity.getServerRequests().userFoundHisPet(authorisationCode, lostPet.getPetId()).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            deleteItem(lostPet);
+                            notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
                 }
             });
         }
@@ -95,6 +117,10 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.MyViewHo
     @Override
     public int getItemCount() {
         return lostPets.size();
+    }
+
+    public void deleteItem(LostPet lostPet){
+        lostPets.remove(lostPet);
     }
 
 
