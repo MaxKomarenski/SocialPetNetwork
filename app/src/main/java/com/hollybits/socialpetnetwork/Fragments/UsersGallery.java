@@ -42,12 +42,12 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Gallery.OnFragmentInteractionListener} interface
+ * {@link UsersGallery.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Gallery#newInstance} factory method to
+ * Use the {@link UsersGallery#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Gallery extends Fragment {
+public class UsersGallery extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -77,12 +77,12 @@ public class Gallery extends Fragment {
 
     private Uri imageUri;
 
-    public Gallery() {
+    public UsersGallery() {
         // Required empty public constructor
     }
 
-    public static Gallery newInstance(String param1, String param2) {
-        Gallery fragment = new Gallery();
+    public static UsersGallery newInstance(String param1, String param2) {
+        UsersGallery fragment = new UsersGallery();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -108,11 +108,8 @@ public class Gallery extends Fragment {
 
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         galleryText.setTypeface(mainFont);
-
         getIdsOfUserPhoto();
-
         listeners();
-
         return view;
     }
 
@@ -172,7 +169,7 @@ public class Gallery extends Fragment {
         MainActivity.getServerRequests().getIdsOfUserPhoto(authorisationCode, currentUser.getId(), currentUser.getId()).enqueue(new Callback<List<Long>>() {
             @Override
             public void onResponse(Call<List<Long>> call, Response<List<Long>> response) {
-                photoGridAdapter = new PhotoGridAdapter(Gallery.this.getContext(), response.body(), Gallery.this);
+                photoGridAdapter = new PhotoGridAdapter(UsersGallery.this.getContext(), response.body(), UsersGallery.this);
 
                 int gridWidth = getResources().getDisplayMetrics().widthPixels;
                 int imageWidth = gridWidth/3;

@@ -45,6 +45,9 @@ public class PeopleSearchAdapter extends RecyclerView.Adapter<PeopleSearchAdapte
     private PeopleSearchAdapter.MyViewHolder previousHolder;
     private Typeface nameFont, breedFont;
     private PhotoManager photoManager;
+    private User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+    private Map<String, String> authorisationCode = new HashMap<>();
+
 
 
 
@@ -60,6 +63,7 @@ public class PeopleSearchAdapter extends RecyclerView.Adapter<PeopleSearchAdapte
     public PeopleSearchAdapter(Fragment fragment, Typeface nameFont, Typeface breedFont) {
         friends = new ArrayList<>();
 
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
         photoManager = new PhotoManager(fragment);
         this.nameFont = nameFont;
         this.breedFont = breedFont;
@@ -83,12 +87,8 @@ public class PeopleSearchAdapter extends RecyclerView.Adapter<PeopleSearchAdapte
         public CircleImageView img_sm;
         public ImageView indicator_sm;
         //-------------big----------------
-        public ConstraintLayout bigConstraintLayout;
-        public TextView user_name_bg, pet_name_bg, breed_bg;
-        public CircleImageView img_bg;
-        public ImageButton becomeFriends;
-        public ImageView indicator_bg;
-        public ImageButton infoButton, messageButton, mapButton;
+        public ImageButton addTofriendsButton;
+        public TextView textView;
 
 
         public MyViewHolder(View view){
@@ -102,17 +102,9 @@ public class PeopleSearchAdapter extends RecyclerView.Adapter<PeopleSearchAdapte
             breed_sm = view.findViewById(R.id.breed_of_pet_in_user_friend_recycler_view);
             img_sm = view.findViewById(R.id.user_photo_in_lost_pets_recycler_view);
             indicator_sm = view.findViewById(R.id.indicator_in_user_friend_recycler_view);
+            addTofriendsButton = view.findViewById(R.id.add_to_friends_button);
+            textView = view.findViewById(R.id.add_to_friends_text);
 
-            //----------------big------------------------------------------------------------------
-            bigConstraintLayout = view.findViewById(R.id.big_constraintLayout_in_item);
-            user_name_bg = view.findViewById(R.id.pressed_name_of_user_in_user_friend_recycler_view);
-            pet_name_bg = view.findViewById(R.id.pressed_name_of_pet_in_user_friend_recycler_view);
-            breed_bg = view.findViewById(R.id.pressed_breed_of_pet_in_user_friend_recycler_view);
-            img_bg = view.findViewById(R.id.pressed_user_photo_in_user_friend_recycler_view);
-            indicator_bg = view.findViewById(R.id.pressed_indicator_in_user_friend_recycler_view);
-            infoButton = view.findViewById(R.id.info_button_in_pressed_item);
-            messageButton = view.findViewById(R.id.message_button_in_pressed_item);
-            //mapButton
         }
     }
 
@@ -138,54 +130,24 @@ public class PeopleSearchAdapter extends RecyclerView.Adapter<PeopleSearchAdapte
         holder.img_sm.setImageResource(R.drawable.test_photo);
         photoManager.loadFriendsMainPhoto(holder.img_sm, friend.getId());
         //----------------------------------
-        holder.user_name_bg.setText(friend.getName() + " " + friend.getSurname());
-        holder.user_name_bg.setTypeface(nameFont);
-        holder.pet_name_bg.setText(friend.getPetName());
-        holder.pet_name_bg.setTypeface(nameFont);
-        holder.breed_bg.setText(friend.getPetBreedName());
-        holder.breed_bg.setTypeface(breedFont);
 
         if(isUserOnline(friend.getLastActiveTime())){
             holder.indicator_sm.setImageResource(R.drawable.green_dot);
-            holder.indicator_bg.setImageResource(R.drawable.green_dot);
         }else {
-
             holder.indicator_sm.setImageResource(R.drawable.red_lock);
-            holder.indicator_bg.setImageResource(R.drawable.red_lock);
         }
 
-        holder.infoButton.setOnClickListener(new View.OnClickListener() {
+        holder.img_sm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getAllInformationOfChosenUser(friend.getId());
             }
         });
 
-        holder.smallConstraintLayout.setOnClickListener(new View.OnClickListener() {
+        holder.addTofriendsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.smallConstraintLayout.setVisibility(View.GONE);
-                holder.bigConstraintLayout.setVisibility(View.VISIBLE);
-                holder.primeConstraintLayout.setBackgroundResource(R.drawable.background_for_raw_of_recycler_view_big);
-
-                if(previousHolder == null){
-                    previousHolder = holder;
-                }else {
-                    previousHolder.bigConstraintLayout.setVisibility(View.GONE);
-                    previousHolder.smallConstraintLayout.setVisibility(View.VISIBLE);
-                    previousHolder.primeConstraintLayout.setBackgroundResource(R.drawable.background_for_raw_of_recycler_view);
-                    previousHolder = holder;
-                }
-                photoManager.loadFriendsMainPhoto(holder.img_bg, friend.getId());
-            }
-        });
-
-        holder.messageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Paper.book().write(MainActivity.ID_OF_FRIEND, friend.getId());
-                Paper.book().write(MainActivity.NAME_OF_FRIEND, friend.getName());
-                FragmentDispatcher.launchFragment(Chat.class);
+                addToFriendRequest(friend.getId(), holder);
             }
         });
 
@@ -205,15 +167,8 @@ public class PeopleSearchAdapter extends RecyclerView.Adapter<PeopleSearchAdapte
 
     }
 
-    public void addItem(FriendInfo friendInfo){
-        friends.add(friendInfo);
-    }
-
 
     private void getAllInformationOfChosenUser(Long id){
-        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-        Map<String, String> authorisationCode = new HashMap<>();
-        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
         MainActivity.getServerRequests().getInformationOfAnotherUser(authorisationCode, id).enqueue(new Callback<UserInfo>() {
             @Override
             public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
@@ -221,11 +176,31 @@ public class PeopleSearchAdapter extends RecyclerView.Adapter<PeopleSearchAdapte
                 FragmentDispatcher.launchFragment(FriendAccount.class);
 
             }
-
             @Override
             public void onFailure(Call<UserInfo> call, Throwable t) {
 
             }
         });
+    }
+
+    private void addToFriendRequest(Long target,PeopleSearchAdapter.MyViewHolder holder){
+
+        MainActivity.getServerRequests().newFriendshipRequest(authorisationCode, currentUser.getId(), target).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.code() == 202){
+                    holder.textView.setText("Request Sent");
+                }else {
+                    holder.textView.setText("You already done this;)");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+
+
     }
 }

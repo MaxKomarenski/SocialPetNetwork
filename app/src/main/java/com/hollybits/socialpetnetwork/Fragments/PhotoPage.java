@@ -95,7 +95,7 @@ public class PhotoPage extends Fragment{
         toGalleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentDispatcher.launchFragment(Gallery.class);
+                FragmentDispatcher.launchFragment(UsersGallery.class);
             }
         });
 

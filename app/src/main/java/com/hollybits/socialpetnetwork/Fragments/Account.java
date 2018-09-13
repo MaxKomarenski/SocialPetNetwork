@@ -3,7 +3,6 @@ package com.hollybits.socialpetnetwork.Fragments;
 import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,7 +28,6 @@ import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,7 +39,6 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -239,7 +236,7 @@ public class Account extends Fragment {
         openGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentDispatcher.launchFragment(Gallery.class);
+                FragmentDispatcher.launchFragment(UsersGallery.class);
             }
         });
 

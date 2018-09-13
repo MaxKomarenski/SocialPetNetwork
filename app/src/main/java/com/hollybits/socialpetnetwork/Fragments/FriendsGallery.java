@@ -1,45 +1,26 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.hollybits.socialpetnetwork.R;
-import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
-import com.hollybits.socialpetnetwork.helper.FriendDownloader;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link StartingMenu.OnFragmentInteractionListener} interface
+ * {@link FriendsGallery.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link StartingMenu#newInstance} factory method to
+ * Use the {@link FriendsGallery#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StartingMenu extends Fragment {
-
-    @BindView(R.id.friends_card_view_in_starting_menu)
-    CardView friendsCardView;
-
-    @BindView(R.id.profile_card_view_in_starting_menu)
-    CardView profileCardView;
-
-    @BindView(R.id.messages_card_view_in_starting_menu)
-    CardView messagesCardView;
-
-    @BindView(R.id.map_card_view_in_starting_menu)
-    CardView mapCardView;
-
-    @BindView(R.id.gallery_card_view_in_starting_menu)
-    CardView galleryCardView;
-
+public class FriendsGallery extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -49,7 +30,7 @@ public class StartingMenu extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public StartingMenu() {
+    public FriendsGallery() {
         // Required empty public constructor
     }
 
@@ -59,11 +40,11 @@ public class StartingMenu extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment StartingMenu.
+     * @return A new instance of fragment FriendsGallery.
      */
     // TODO: Rename and change types and number of parameters
-    public static StartingMenu newInstance(String param1, String param2) {
-        StartingMenu fragment = new StartingMenu();
+    public static FriendsGallery newInstance(String param1, String param2) {
+        FriendsGallery fragment = new FriendsGallery();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -84,54 +65,7 @@ public class StartingMenu extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_starting_menu, container, false);
-        ButterKnife.bind(this, view);
-
-        allListeners();
-        getFriendsWhoAreNotInCache();
-
-        return view;
-    }
-
-    private void getFriendsWhoAreNotInCache(){
-        FriendDownloader.downloadAllFriendWhoAreNotInTheCache();
-    }
-
-    private void allListeners(){
-        friendsCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentDispatcher.launchFragment(UserFriends.class);
-            }
-        });
-
-        profileCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentDispatcher.launchFragment(Account.class);
-            }
-        });
-
-        messagesCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentDispatcher.launchFragment(Messages.class);
-            }
-        });
-
-        mapCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentDispatcher.launchFragment(Map.class);
-            }
-        });
-
-        galleryCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentDispatcher.launchFragment(UsersGallery.class);
-            }
-        });
+        return inflater.inflate(R.layout.fragment_friends_gallery, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -141,7 +75,16 @@ public class StartingMenu extends Fragment {
         }
     }
 
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
 
     @Override
     public void onDetach() {

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
@@ -29,6 +30,7 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,6 +65,9 @@ public class FriendAccount extends Fragment {
     @BindView(R.id.open_navigation_drawer_image_button)
     ImageView openNavigationDrawer;
 
+    @BindView(R.id.user_photo_in_friend_account_fragment)
+    CircleImageView circleImageView;
+
     @BindView(R.id.become_friend_button)
     ImageButton becomeFriendButton;
 
@@ -80,6 +85,11 @@ public class FriendAccount extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private PhotoManager photoManager;
+
+    private User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+    private Map<String, String> authorisationCode = new HashMap<>();
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -110,6 +120,9 @@ public class FriendAccount extends Fragment {
         ButterKnife.bind(this, view);
 
         userInfo = Paper.book().read(MainActivity.CURRENT_CHOICE);
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        photoManager = new PhotoManager(this);
+        photoManager.loadFriendsMainPhoto(circleImageView, userInfo.getId());
 
         fillAllInformation();
         isThisUserAFriend();
@@ -156,9 +169,6 @@ public class FriendAccount extends Fragment {
     }
 
     private void deleteFriendFromDB(){
-        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-        Map<String, String> authorisationCode = new HashMap<>();
-        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
         MainActivity.getServerRequests().deleteUserFromFriendList(authorisationCode, currentUser.getId(), userInfo.getId()).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -176,9 +186,6 @@ public class FriendAccount extends Fragment {
         friends = Paper.book().read(MainActivity.FRIEND_LIST);
 
         if(friends == null){
-            User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-            Map<String, String> authorisationCode = new HashMap<>();
-            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
             MainActivity.getServerRequests().getAllUserFriends(authorisationCode, currentUser.getId()).enqueue(new Callback<Set<FriendInfo>>() {
                 @Override
                     public void onResponse(Call<Set<FriendInfo>> call, Response<Set<FriendInfo>> response) {
@@ -254,15 +261,34 @@ public class FriendAccount extends Fragment {
         }
 
     }
+    private void addToFriendRequest(Long target) {
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FriendAccount.
-     */
+        MainActivity.getServerRequests().newFriendshipRequest(authorisationCode, currentUser.getId(), target).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.code() == 202) {
+
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment FriendAccount.
+         */
     // TODO: Rename and change types and number of parameters
     public static FriendAccount newInstance(String param1, String param2) {
         FriendAccount fragment = new FriendAccount();

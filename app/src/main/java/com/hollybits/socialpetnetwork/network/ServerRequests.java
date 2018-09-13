@@ -201,4 +201,9 @@ public interface ServerRequests {
                                           @Query("userId") Long userId,
                                           @Query("friendId") Long friendId);
 
+
+    @POST("/newFriendShipRequest")
+    Call<String> newFriendshipRequest(@HeaderMap Map<String, String> headers, @Query("from") Long idFrom,
+                                      @Query("to") Long idTo);
+
 }
