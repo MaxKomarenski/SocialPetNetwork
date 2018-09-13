@@ -77,7 +77,6 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
 
             //---------------small-----------------------------------------------------------------
             smallConstraintLayout = view.findViewById(R.id.small_constraintLayout_in_item);
-
             user_name_sm = view.findViewById(R.id.name_of_user_in_user_friend_recycler_view);
             pet_name_sm = view.findViewById(R.id.name_of_pet_in_user_friend_recycler_view);
             breed_sm = view.findViewById(R.id.breed_of_pet_in_user_friend_recycler_view);
