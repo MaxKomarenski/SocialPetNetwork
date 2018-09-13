@@ -192,4 +192,8 @@ public interface ServerRequests {
     @POST("/search")
     Call<List<FriendInfo>> search(@HeaderMap Map<String, String> headers, @Body SearchForm searchForm);
 
+    @POST("/userFoundHisPet")
+    Call<String> userFoundHisPet(@HeaderMap Map<String, String> headers,
+                                 @Query("pet_id") Long petID);
+
 }
