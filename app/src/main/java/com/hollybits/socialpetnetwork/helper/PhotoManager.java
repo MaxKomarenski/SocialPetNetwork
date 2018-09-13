@@ -39,22 +39,11 @@ public class PhotoManager {
 
 
     private Fragment fragment;
-    private static PhotoCasheManager photoCasheManager;
     private static User currentUser;
     private static java.util.Map<String, String> authorisationCode;
     public static final String MAIN_PHOTO = "mainPhoto";
     public static final String REGULAR_PHOTO = "regularPhoto";
     public static final String PAPER_BOOK_NAME = "photos";
-
-    private static Map<String, String> photoPathes;
-
-    static {
-        currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-        authorisationCode = new ConcurrentHashMap<>();
-        photoPathes = new HashMap<>();
-        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-    }
-
 
 
 
@@ -63,8 +52,21 @@ public class PhotoManager {
 
     public PhotoManager(Fragment fragment) {
         this.fragment = fragment;
+        if(currentUser == null){
+            init();
+        }
     }
 
+    private void init(){
+        currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        authorisationCode = new ConcurrentHashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+    }
+
+    public static void destroy(){
+        currentUser = null;
+        authorisationCode = null;
+    }
 
 
 

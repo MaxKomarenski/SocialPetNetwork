@@ -219,18 +219,20 @@ public class FragmentDispatcher extends AppCompatActivity
     }
 
     private void logOut(){
-
         sayServerThatAllFriendshipRequestIsDeletedFromCache();
-
         for(String s: Paper.book().getAllKeys()){
+            Log.d("DELETING KEY: ", s);
             Paper.book().delete(s);
         }
         for (String s: Paper.book(MainActivity.MESSAGE_BOOK).getAllKeys()){
+            Log.d("DELETING KEY: ", s);
             Paper.book(MainActivity.MESSAGE_BOOK).delete(s);
         }
         for (String s: Paper.book(PhotoManager.PAPER_BOOK_NAME).getAllKeys()){
+            Log.d("DELETING KEY: ", s);
             Paper.book(PhotoManager.PAPER_BOOK_NAME).delete(s);
         }
+        PhotoManager.destroy();
         finish();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

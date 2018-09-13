@@ -188,11 +188,7 @@ public class Account extends Fragment {
             File file = new File(mediaPath);
             RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
             MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("img", file.getName(), requestBody);
-
-            Paper.book().write("PATH_TO_PHOTO", mediaPath);
             RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-
-
             System.err.println("ATTENTION");
             System.err.println(mediaPath);
 
