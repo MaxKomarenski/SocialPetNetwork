@@ -19,6 +19,7 @@ import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
 import com.hollybits.socialpetnetwork.models.LostPet;
 import com.hollybits.socialpetnetwork.models.Message;
+import com.hollybits.socialpetnetwork.models.SearchForm;
 import com.hollybits.socialpetnetwork.models.UserInfo;
 
 import java.util.List;
@@ -186,6 +187,10 @@ public interface ServerRequests {
     Call<Void> addNewPhoto(@HeaderMap Map<String, String> headers,
                                @Part MultipartBody.Part img,
                                @Query("id") Long id);
+
+
+    @POST("/search")
+    Call<List<FriendInfo>> search(@HeaderMap Map<String, String> headers, @Body SearchForm searchForm);
 
     @POST("/userFoundHisPet")
     Call<String> userFoundHisPet(@HeaderMap Map<String, String> headers,

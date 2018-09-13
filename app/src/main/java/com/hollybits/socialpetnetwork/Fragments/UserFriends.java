@@ -22,11 +22,14 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.FriendshipRequestAdapter;
+import com.hollybits.socialpetnetwork.adapters.PeopleSearchAdapter;
 import com.hollybits.socialpetnetwork.adapters.UserFriendsAdapter;
 import com.hollybits.socialpetnetwork.data_queues.FriendShipRequestQueue;
+import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.helper.FriendShipRequestObserver;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
+import com.hollybits.socialpetnetwork.models.SearchForm;
 import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.widgets.ExpandableSearchView;
 
@@ -97,6 +100,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 
     private UserFriendsAdapter userFriendsAdapter;
     private FriendshipRequestAdapter friendshipRequestAdapter;
+    private PeopleSearchAdapter peopleSearchAdapter;
 
     private Typeface nameFont, breedFont, mainFont;
 
@@ -154,6 +158,15 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
         attachListeners();
         SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
         userFriendsRecyclerView.setItemAnimator(animator);
+        peopleSearchAdapter = new PeopleSearchAdapter(this, nameFont, breedFont);
+        RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(this.getContext());
+        searchPeopleRecyclerView.setLayoutManager(layoutManager2);
+        SlideInUpAnimator animator2 = new SlideInUpAnimator(new OvershootInterpolator(1f));
+        searchPeopleRecyclerView.setItemAnimator(animator2);
+        searchPeopleRecyclerView.setAdapter(peopleSearchAdapter);
+
+
+
 
 
         return view;
@@ -203,6 +216,52 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                         R.drawable.background_for_table_friends,
                         getResources().getDrawable(R.color.blue_for_table),
                         R.drawable.background_for_table_people_pressed, View.VISIBLE, View.VISIBLE);
+            }
+        });
+
+        searchPeopleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+                Map<String, String> authorisationCode = new HashMap<>();
+                authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+                SearchForm searchForm = new SearchForm();
+                searchForm.setUserCountry(currentUser.getCity().getCountry().getName());
+                searchForm.setUserCity(currentUser.getCity().getName());
+                if(ownerNameEditText.getText().toString().equals(""))
+                    searchForm.setOwnersName(null);
+                else {
+                    searchForm.setOwnersName(ownerNameEditText.getText().toString());
+                }
+                if(breedEditText.getText().toString().equals(""))
+                    searchForm.setBreed(null);
+                else {
+                    searchForm.setBreed(breedEditText.getText().toString());
+                }
+                if(petNameEditText.getText().toString().equals(""))
+                    searchForm.setName(null);
+                else {
+                    searchForm.setName(petNameEditText.getText().toString());
+                }
+                if(animalEditText.getText().toString().toUpperCase().equals(""))
+                    searchForm.setPetType(null);
+                else {
+                    searchForm.setPetType(PetType.valueOf(animalEditText.getText().toString().toUpperCase()));
+                }
+                MainActivity.getServerRequests().search(authorisationCode, searchForm).enqueue(new Callback<List<FriendInfo>>() {
+                    @Override
+                    public void onResponse(Call<List<FriendInfo>> call, Response<List<FriendInfo>> response) {
+                        if(response.body()!=null){
+                            peopleSearchAdapter.setFriends(response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<FriendInfo>> call, Throwable t) {
+
+                    }
+                });
+
             }
         });
     }

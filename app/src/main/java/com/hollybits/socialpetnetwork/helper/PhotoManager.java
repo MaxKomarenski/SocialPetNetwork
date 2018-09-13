@@ -295,6 +295,11 @@ public class PhotoManager {
    }
 
     private void loadBitmapToImageView(ImageView  imageView, Bitmap bitmap){
+       if(bitmap == null){
+           GlideApp.with(fragment)
+                   .load(R.drawable.test_photo)
+                   .into(imageView);
+       }
         GlideApp.with(fragment)
                 .load(bitmap)
                 .placeholder(R.drawable.test_photo)
