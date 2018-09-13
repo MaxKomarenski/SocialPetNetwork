@@ -191,4 +191,9 @@ public interface ServerRequests {
     Call<String> userFoundHisPet(@HeaderMap Map<String, String> headers,
                                  @Query("pet_id") Long petID);
 
+    @POST("/deleteUserFromFriendList")
+    Call<String> deleteUserFromFriendList(@HeaderMap Map<String, String> headers,
+                                          @Query("userId") Long userId,
+                                          @Query("friendId") Long friendId);
+
 }

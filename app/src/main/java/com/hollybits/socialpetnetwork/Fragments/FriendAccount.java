@@ -116,12 +116,10 @@ public class FriendAccount extends Fragment {
 
 
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
-        for (TextView textView:
-                words) {
+        for (TextView textView: words) {
             textView.setTypeface(mainFont);
         }
-        for (TextView textView:
-                allChangedInformation) {
+        for (TextView textView: allChangedInformation) {
             textView.setTypeface(mainFont);
         }
 
@@ -133,7 +131,45 @@ public class FriendAccount extends Fragment {
             }
         });
 
+        deleteFriendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteFriendFromFriendListInPaperBook();
+            }
+        });
+
         return view;
+    }
+
+    private void deleteFriendFromFriendListInPaperBook(){
+
+        deleteFriendFromDB();
+
+        List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
+        for (int i = 0; i < friends.size(); i++){
+            if(userInfo.getId().equals(friends.get(i).getId())){
+                friends.remove(i);
+            }
+        }
+
+        Paper.book().write(MainActivity.FRIEND_LIST, friends);
+    }
+
+    private void deleteFriendFromDB(){
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        MainActivity.getServerRequests().deleteUserFromFriendList(authorisationCode, currentUser.getId(), userInfo.getId()).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
     }
 
     private void isThisUserAFriend(){

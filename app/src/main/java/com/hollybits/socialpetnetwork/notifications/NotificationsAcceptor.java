@@ -12,11 +12,13 @@ import com.hollybits.socialpetnetwork.data_queues.MessageQueue;
 import com.hollybits.socialpetnetwork.enums.NotificationType;
 import com.hollybits.socialpetnetwork.helper.FriendDownloader;
 import com.hollybits.socialpetnetwork.helper.MessageObservable;
+import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
 import com.hollybits.socialpetnetwork.models.LostPet;
 import com.hollybits.socialpetnetwork.models.Message;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 
 import io.paperdb.Paper;
@@ -200,6 +202,21 @@ public class NotificationsAcceptor extends FirebaseMessagingService  {
                     LostPets.getInstance().update();
                 break;
             }
+
+            case DELETEFRIEND:{
+                deleteFriendFromPaperBook(Long.decode(data.get("user_from")));
+            }
         }
+    }
+
+    private void deleteFriendFromPaperBook(Long friendID){
+        List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
+        for(int i = 0; i < friends.size(); i++){
+            if(friends.get(i).getId().equals(friendID)){
+                friends.remove(i);
+            }
+        }
+
+        Paper.book().write(MainActivity.FRIEND_LIST, friends);
     }
 }
