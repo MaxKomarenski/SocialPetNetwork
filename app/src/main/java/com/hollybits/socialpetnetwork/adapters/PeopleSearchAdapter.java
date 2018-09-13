@@ -149,6 +149,7 @@ public class PeopleSearchAdapter extends RecyclerView.Adapter<PeopleSearchAdapte
             holder.indicator_sm.setImageResource(R.drawable.green_dot);
             holder.indicator_bg.setImageResource(R.drawable.green_dot);
         }else {
+
             holder.indicator_sm.setImageResource(R.drawable.red_lock);
             holder.indicator_bg.setImageResource(R.drawable.red_lock);
         }
