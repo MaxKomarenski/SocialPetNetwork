@@ -2,6 +2,7 @@ package com.hollybits.socialpetnetwork.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -35,6 +36,7 @@ import com.hollybits.socialpetnetwork.forms.RegistrationForm;
 import com.hollybits.socialpetnetwork.models.City;
 import com.hollybits.socialpetnetwork.models.Country;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import com.hollybits.socialpetnetwork.adapters.BreedAdapter;
@@ -54,6 +56,9 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lib.kingja.switchbutton.SwitchMultiButton;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -155,8 +160,9 @@ public class RegistrationActivity extends AppCompatActivity {
     private PetType petType;
     private PetType[] allPetTypes;
     private RegistrationActivity instance;
-
     private Validator validator;
+    private  MultipartBody.Part fileToUpload;
+
 
 
 
@@ -244,6 +250,15 @@ public class RegistrationActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
             imageUri = data.getData();
             chosenPhoto.setImageURI(imageUri);
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = this.getContentResolver().query(imageUri, filePathColumn, null, null, null);
+            assert cursor != null;
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String mediaPath = cursor.getString(columnIndex);
+            File file = new File(mediaPath);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+            fileToUpload = MultipartBody.Part.createFormData("img", file.getName(), requestBody);
         }
     }
 
@@ -377,6 +392,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                                     encodedPassword,
                                                     newPet);
 
+                if(fileToUpload==null){
                 MainActivity.getServerRequests().sendRegistrationFormToTheServer(registrationForm).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
@@ -396,6 +412,27 @@ public class RegistrationActivity extends AppCompatActivity {
                         dismissLoadingDialog(4000);
                     }
                 });
+                }else {
+                    MainActivity.getServerRequests().sendRegistrationFormToTheServer(registrationForm, fileToUpload).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            if(response.code()== HttpsURLConnection.HTTP_ACCEPTED){
+                                dismissLoadingDialog(500);
+                                Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                            }else {
+                                progressDialog.setMessage("Something wrong with registration :( Message from server: "+response.body());
+                                dismissLoadingDialog(4000);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            progressDialog.setMessage("Can`t connect to server. Please check your connection and try again");
+                            dismissLoadingDialog(4000);
+                        }
+                    });
+                }
 
             }
         });

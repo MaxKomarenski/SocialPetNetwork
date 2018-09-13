@@ -61,6 +61,9 @@ public interface ServerRequests {
     @POST("/registration")
     Call<String> sendRegistrationFormToTheServer(@Body RegistrationForm registrationForm);
 
+    @POST("/registrationWithPhoto")
+    Call<String> sendRegistrationFormToTheServer(@Body RegistrationForm registrationForm, @Part MultipartBody.Part img);
+
 
     @POST("/updateUsersToken")
     Call<String> updateToken(@HeaderMap Map<String, String> headers, @Body UpdateTokenForm tokenForm);
