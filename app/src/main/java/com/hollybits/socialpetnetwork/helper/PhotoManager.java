@@ -57,7 +57,7 @@ public class PhotoManager {
         }
     }
 
-    private void init(){
+    private static void init(){
         currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         authorisationCode = new ConcurrentHashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
@@ -240,6 +240,9 @@ public class PhotoManager {
     }
 
     public static void loadDirectlyUserMainPhoto(ImageView imageView, Activity activity){
+        if(currentUser == null){
+            init();
+        }
         byte[] photoBytes = Paper.book(PAPER_BOOK_NAME).read(MAIN_PHOTO);
         if(photoBytes!=null){
             Bitmap photo = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
