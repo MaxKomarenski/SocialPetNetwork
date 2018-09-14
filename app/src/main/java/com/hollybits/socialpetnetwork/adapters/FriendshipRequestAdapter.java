@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
@@ -78,38 +79,42 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
 
     @Override
     public void onBindViewHolder(@NonNull FriendshipRequestAdapter.MyViewHolder holder, int position) {
-        InfoAboutUserFriendShipRequest request = friendShipRequests.get(position);
-        holder.userName.setText(request.getName() + " " + request.getSurname());
-        holder.userName.setTypeface(first);
-        holder.place.setText(request.getCity() + ", " + request.getCountry());
-        holder.place.setTypeface(second);
-        holder.petName.setTypeface(first);
-        holder.petName.setText(request.getPetName());
-        holder.breed.setText(request.getPetBreed());
-        holder.breed.setTypeface(second);
-
-        holder.ownerText.setTypeface(first);
-        holder.breedText.setTypeface(first);
-        holder.addressText.setTypeface(first);
-        holder.petText.setTypeface(first);
-
-        holder.accept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                acceptFriendshipRequest(request, true);
-                Paper.book().delete(MainActivity.CONTACT_LIST);
-
-            }
-        });
-
-        holder.reject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                acceptFriendshipRequest(request, false);
-            }
-        });
+        try {
 
 
+            InfoAboutUserFriendShipRequest request = friendShipRequests.get(position);
+            holder.userName.setText(request.getName() + " " + request.getSurname());
+            holder.userName.setTypeface(first);
+            holder.place.setText(request.getCity() + ", " + request.getCountry());
+            holder.place.setTypeface(second);
+            holder.petName.setTypeface(first);
+            holder.petName.setText(request.getPetName());
+            holder.breed.setText(request.getPetBreed());
+            holder.breed.setTypeface(second);
+
+            holder.ownerText.setTypeface(first);
+            holder.breedText.setTypeface(first);
+            holder.addressText.setTypeface(first);
+            holder.petText.setTypeface(first);
+
+            holder.accept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    acceptFriendshipRequest(request, true);
+                    Paper.book().delete(MainActivity.CONTACT_LIST);
+
+                }
+            });
+
+            holder.reject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    acceptFriendshipRequest(request, false);
+                }
+            });
+        }catch (Exception e){
+            return;
+        }
     }
 
     @Override
