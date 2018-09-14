@@ -45,14 +45,19 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
     private Typeface nameFont, breedFont;
     private PhotoManager photoManager;
 
-    public UserFriendsAdapter(List<FriendInfo> friends, Typeface nameFont, Typeface breedFont, Fragment fragment){
+    public UserFriendsAdapter(Typeface nameFont, Typeface breedFont, Fragment fragment){
 
-        this.friends = friends;
+        this.friends = new ArrayList<>();
         photoManager = new PhotoManager(fragment);
         filtredFriends = friends;
         notifyDataSetChanged();
         this.nameFont = nameFont;
         this.breedFont = breedFont;
+    }
+
+    public void setFriends(List<FriendInfo> friends) {
+        this.friends.clear();
+        this.friends.addAll(friends);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

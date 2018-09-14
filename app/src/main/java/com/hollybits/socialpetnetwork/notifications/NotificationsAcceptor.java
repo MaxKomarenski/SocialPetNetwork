@@ -159,16 +159,16 @@ public class NotificationsAcceptor extends FirebaseMessagingService  {
         if(Paper.book().read(MainActivity.CURRENTUSER) == null){
             return;
         }
-
-        Log.d("NOTIFICATION ACCEPTOR", "HANDLE NOTIFICATION");
         Map<String, String> data = remoteMessage.getData();
         NotificationType type = NotificationType.valueOf(data.get("type"));
+        Log.d("NOTIFICATION ACCEPTOR", type.name());
         switch (type){
 
             case PERSONALMESSAGE:{
                 break;
             }
             case FRIEDSHIPREQUEST:{
+                System.err.println("----------- i got friendship request --------------------");
                 InfoAboutUserFriendShipRequest info = new InfoAboutUserFriendShipRequest();
                 info.setId(Long.decode(data.get("id")));
                 info.setName(data.get("name"));
@@ -213,6 +213,7 @@ public class NotificationsAcceptor extends FirebaseMessagingService  {
     }
 
     private void deleteFriendFromPaperBook(Long friendID){
+        System.err.println("id friend who deleted you ---->    " + friendID);
         List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
         for(int i = 0; i < friends.size(); i++){
             if(friends.get(i).getId().equals(friendID)){

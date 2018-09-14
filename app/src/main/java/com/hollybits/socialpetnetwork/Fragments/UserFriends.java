@@ -294,6 +294,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
     }
 
     private void getAllUserFriends(){
+        userFriendsAdapter = new UserFriendsAdapter(nameFont, breedFont, UserFriends.this);
         friends = Paper.book().read(MainActivity.FRIEND_LIST);
         if(friends == null){
             User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
@@ -304,7 +305,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                 public void onResponse(Call<Set<FriendInfo>> call, Response<Set<FriendInfo>> response) {
                     friends = new ArrayList<>();
                     friends.addAll(response.body());
-                    userFriendsAdapter = new UserFriendsAdapter(friends, nameFont, breedFont, UserFriends.this);
+                    userFriendsAdapter.setFriends(friends);
                     userFriendsRecyclerView.setAdapter(userFriendsAdapter);
                     userFriendsAdapter.notifyDataSetChanged();
                     Paper.book().write(MainActivity.FRIEND_LIST, friends);
@@ -316,7 +317,8 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                 }
             });
         }else {
-            userFriendsAdapter = new UserFriendsAdapter(friends, nameFont, breedFont,UserFriends.this);
+            userFriendsAdapter = new UserFriendsAdapter(nameFont, breedFont,UserFriends.this);
+            userFriendsAdapter.setFriends(friends);
             userFriendsRecyclerView.setAdapter(userFriendsAdapter);
             userFriendsAdapter.notifyDataSetChanged();
         }
