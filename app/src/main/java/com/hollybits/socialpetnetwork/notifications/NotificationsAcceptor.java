@@ -156,6 +156,9 @@ public class NotificationsAcceptor extends FirebaseMessagingService  {
 
 
     private void handleNotification(RemoteMessage remoteMessage){
+        if(Paper.book().read(MainActivity.CURRENTUSER) == null){
+            return;
+        }
 
         Log.d("NOTIFICATION ACCEPTOR", "HANDLE NOTIFICATION");
         Map<String, String> data = remoteMessage.getData();
