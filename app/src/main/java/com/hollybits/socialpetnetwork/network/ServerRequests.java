@@ -51,7 +51,6 @@ public interface ServerRequests {
     String BASE_LOCAL = "https://10.0.2.2:8443/";
     String CURRENT_ENDPIONT = BASE_REMOTE_OUR;
 
-
     @GET("/api/getBreedsForType")
     Call<List<Breed>> getBreedsForType(@Query("petType")PetType petType);
 
@@ -209,4 +208,8 @@ public interface ServerRequests {
     Call<String> newFriendshipRequest(@HeaderMap Map<String, String> headers, @Query("from") Long idFrom,
                                       @Query("to") Long idTo);
 
+    @POST("/getListOfFriendIDsWhoDeleteUserFromFriends")
+    Call<List<Long>> getListOfFriendIDsWhoDeleteUserFromFriends(@HeaderMap Map<String, String> headers,
+                                                                @Query("list_friend_ids") List<Long> listOfIds,
+                                                                @Query("user_id") Long id);
 }

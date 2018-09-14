@@ -150,8 +150,8 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 
         searchView.setColor(getResources().getColor(R.color.online));
 
-        getAllFriendshipRequests();
         getAllUserFriends();
+        getAllFriendshipRequests();
         FriendShipRequestQueue.getInstance().addObserver(this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         userFriendsRecyclerView.setLayoutManager(layoutManager);

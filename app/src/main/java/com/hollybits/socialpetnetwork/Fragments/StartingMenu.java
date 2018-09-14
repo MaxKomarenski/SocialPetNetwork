@@ -94,7 +94,7 @@ public class StartingMenu extends Fragment {
     }
 
     private void getFriendsWhoAreNotInCache(){
-        FriendDownloader.downloadAllFriendWhoAreNotInTheCache();
+        FriendDownloader.getFriendIDsWhichDeletedUserFromFriendList();
     }
 
     private void allListeners(){

@@ -20,7 +20,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:background="@null"
-            android:drawableStart="@drawable/background_for_button_to_profile"
+            android:drawableStart="@drawable/background_for_back_button_in_settings"
             android:text="Back"
             android:textColor="#000"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,12 +51,19 @@
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="44dp"
+        android:padding="4dp"
         android:background="@drawable/background_for_text_in_settings"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@drawable/hui_zna_sho"
+            android:layout_marginStart="20dp"/>
 
         <TextView
             android:id="@+id/set_notifications_text"
@@ -103,11 +110,19 @@
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="40dp"
+        android:padding="4dp"
         android:background="@drawable/background_for_text_in_settings"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sos_text_in_settings">
+
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@drawable/hand"
+            android:layout_marginStart="20dp"/>
 
         <TextView
             android:id="@+id/privacy_text"
@@ -144,5 +159,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout11"
         app:showText="true" />
+
+    <ImageButton
+        android:id="@+id/logout_button_in_settings"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="40dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/log_out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_location_switch_compat_in_settings_activity" />
 
 </android.support.constraint.ConstraintLayout>

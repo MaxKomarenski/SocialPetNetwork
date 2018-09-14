@@ -40,6 +40,46 @@ public class FriendDownloader {
         });
     }
 
+    public static void getFriendIDsWhichDeletedUserFromFriendList(){
+        List<Long> listOfFriendIds = new ArrayList<>();
+        List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
+
+        if(friends == null)
+            return;
+
+        for (FriendInfo info:
+                friends) {
+            listOfFriendIds.add(info.getId());
+        }
+
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+
+        MainActivity.getServerRequests().getListOfFriendIDsWhoDeleteUserFromFriends(authorisationCode, listOfFriendIds, currentUser.getId()).enqueue(new Callback<List<Long>>() {
+            @Override
+            public void onResponse(Call<List<Long>> call, Response<List<Long>> response) {
+                if(response.body() != null){
+
+                    for(int i = 0; i < friends.size(); i++){
+                        if(response.body().contains(friends.get(i).getId())){
+                            friends.remove(i);
+                        }
+
+                    }
+                    Paper.book().write(MainActivity.FRIEND_LIST, friends);
+                }
+
+                downloadAllFriendWhoAreNotInTheCache();
+            }
+
+            @Override
+            public void onFailure(Call<List<Long>> call, Throwable t) {
+
+            }
+        });
+    }
+
     public static void downloadAllFriendWhoAreNotInTheCache(){
 
         List<Long> listOfFriendIds = new ArrayList<>();
