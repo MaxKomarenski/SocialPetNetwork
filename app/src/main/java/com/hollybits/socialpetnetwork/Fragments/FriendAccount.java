@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.models.UserInfo;
+import com.kennyc.bottomsheet.BottomSheet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -136,6 +138,8 @@ public class FriendAccount extends Fragment {
             textView.setTypeface(mainFont);
         }
 
+        AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
+
         openNavigationDrawer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,12 +148,39 @@ public class FriendAccount extends Fragment {
             }
         });
 
+        View acceptDeletingFriend = FriendAccount.this.getLayoutInflater().inflate(R.layout.accept_deleting_friend, null);
+
+        ImageButton accept = acceptDeletingFriend.findViewById(R.id.acceptDeletingFriend);
+        ImageButton reject = acceptDeletingFriend.findViewById(R.id.rejectDeletingFriends);
+        BottomSheet bottomSheet = new BottomSheet.Builder(FriendAccount.this.getActivity())
+                .setView(acceptDeletingFriend).create();
+
         deleteFriendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteFriendFromFriendListInPaperBook();
+                deleteFriendButton.startAnimation(buttonClick);
+                bottomSheet.show();
+
+
             }
         });
+
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteFriendFromFriendListInPaperBook();
+                bottomSheet.dismiss();
+            }
+        });
+
+        reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheet.dismiss();
+            }
+        });
+
+
 
         return view;
     }

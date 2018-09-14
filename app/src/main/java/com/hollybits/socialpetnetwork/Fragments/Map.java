@@ -17,13 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 
-import com.android.volley.toolbox.HttpClientStack;
-import com.android.volley.toolbox.HttpResponse;
-import com.google.android.gms.common.util.HttpUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -34,18 +30,13 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
-import com.hollybits.socialpetnetwork.adapters.UserInfoOnMapAdapter;
-import com.hollybits.socialpetnetwork.helper.MarkerMover;
 import com.hollybits.socialpetnetwork.helper.MarkersOnMapDisplayer;
 import com.hollybits.socialpetnetwork.models.Coordinates;
 import com.hollybits.socialpetnetwork.models.User;
-import com.kennyc.bottomsheet.BottomSheet;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -57,8 +48,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.paperdb.Paper;
-import okhttp3.internal.http.HttpCodec;
-import okhttp3.internal.http1.Http1Codec;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -309,7 +298,6 @@ public class Map extends Fragment  {
 //        openSosMenuButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-                View view = Map.this.getLayoutInflater().inflate(R.layout.sos_layout, null);
                 AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
 
 
