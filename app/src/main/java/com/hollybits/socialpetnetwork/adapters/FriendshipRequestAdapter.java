@@ -136,6 +136,8 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
                     FriendInfo newFriend = response.body();
                     userFriendsAdapter.addItem(newFriend);
                     userFriendsAdapter.notifyDataSetChanged();
+                    addNewFriendToPaperBook(newFriend);
+
                 }
 
             }
@@ -151,7 +153,11 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
 
     }
 
-
+    private void addNewFriendToPaperBook(FriendInfo newFriend){
+        List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
+        friends.add(newFriend);
+        Paper.book().write(MainActivity.FRIEND_LIST, friends);
+    }
 
     private void deleteRequestFromPaperBook(InfoAboutUserFriendShipRequest info){
         List<InfoAboutUserFriendShipRequest> list = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
