@@ -21,6 +21,7 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.activity.SettingsActivity;
+import com.hollybits.socialpetnetwork.enums.GalleryMode;
 import com.hollybits.socialpetnetwork.helper.GlideApp;
 import com.hollybits.socialpetnetwork.helper.PermissionManeger;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
@@ -232,6 +233,7 @@ public class Account extends Fragment {
         openGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Paper.book().write(MainActivity.GALLERY_MODE, GalleryMode.USERS_MODE);
                 FragmentDispatcher.launchFragment(UsersGallery.class);
             }
         });
