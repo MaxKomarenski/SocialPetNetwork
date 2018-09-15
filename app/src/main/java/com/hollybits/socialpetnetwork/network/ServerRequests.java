@@ -212,4 +212,9 @@ public interface ServerRequests {
     Call<List<Long>> getListOfFriendIDsWhoDeleteUserFromFriends(@HeaderMap Map<String, String> headers,
                                                                 @Query("list_friend_ids") List<Long> listOfIds,
                                                                 @Query("user_id") Long id);
+
+    @POST("/addToFriendsWhenOneUserFoundPetOfAnotherUser")
+    Call<FriendInfo> addToFriendsWhenOneUserFoundPetOfAnotherUser(@HeaderMap Map<String, String> headers,
+                                                                  @Query("user_who_found_pet") Long userWhoFoundPet,
+                                                                  @Query("user_who_lost_pet") Long userWhoLostPet);
 }

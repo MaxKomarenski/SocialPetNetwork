@@ -42,11 +42,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="44dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/image_in_header_fragment_dispatcher"
         app:layout_constraintEnd_toStartOf="@+id/image_in_header_fragment_dispatcher"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/image_in_header_fragment_dispatcher"
         app:layout_constraintVertical_bias="0.0">
 
@@ -54,7 +57,7 @@
             android:id="@+id/name_surname_nav_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name Surname"
+            android:text="Name"
             android:textColor="#1b3665"
             android:textSize="20sp"
             android:textStyle="bold" />

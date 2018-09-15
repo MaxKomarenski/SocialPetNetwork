@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
+import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.LostPet;
 import com.hollybits.socialpetnetwork.models.User;
 
@@ -82,7 +83,21 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.MyViewHo
             holder.chatButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+                    Map<String, String> authorisationCode = new HashMap<>();
+                    authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+                    MainActivity.getServerRequests().addToFriendsWhenOneUserFoundPetOfAnotherUser(authorisationCode,
+                            currentUser.getId(), lostPet.getUserId()).enqueue(new Callback<FriendInfo>() {
+                        @Override
+                        public void onResponse(Call<FriendInfo> call, Response<FriendInfo> response) {
 
+                        }
+
+                        @Override
+                        public void onFailure(Call<FriendInfo> call, Throwable t) {
+
+                        }
+                    });
                 }
             });
         }else {
