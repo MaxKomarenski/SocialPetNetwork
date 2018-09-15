@@ -64,19 +64,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
-        <android.support.v4.widget.CircleImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/gallery_avatar"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/test_photo"
-            app:civ_border_color="#43b748"
-            app:civ_border_width="6dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/test_photo"/>
 
         <TextView
             android:id="@+id/textView3"
@@ -118,28 +110,34 @@
         android:id="@+id/info_in_blue_stuff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="24dp"
         android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="213dp">
+        app:layout_constraintTop_toBottomOf="@+id/gallery_header">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:background="@drawable/background_for_info_in_gallery"
             android:gravity="center"
-            android:background="@drawable/background_for_info_in_gallery">
+            android:orientation="horizontal"
+            android:padding="12dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:src="@drawable/pet_hand" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="n friends"/>
+                android:layout_marginStart="10dp"
+                android:text="n friends"
+                android:textColor="#fff"
+                android:textSize="17sp" />
 
         </LinearLayout>
 
@@ -147,17 +145,24 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/background_for_info_in_gallery"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:padding="12dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:src="@drawable/photo" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="n photo"/>
+                android:layout_marginStart="10dp"
+                android:text="n photo"
+                android:textColor="#fff"
+                android:textSize="17sp" />
 
         </LinearLayout>
 

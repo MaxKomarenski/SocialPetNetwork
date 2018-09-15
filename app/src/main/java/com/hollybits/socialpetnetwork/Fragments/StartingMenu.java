@@ -10,10 +10,13 @@ import android.view.ViewGroup;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.enums.GalleryMode;
 import com.hollybits.socialpetnetwork.helper.FriendDownloader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.paperdb.Paper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -129,6 +132,7 @@ public class StartingMenu extends Fragment {
         galleryCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Paper.book().write(MainActivity.GALLERY_MODE, GalleryMode.USERS_MODE);
                 FragmentDispatcher.launchFragment(UsersGallery.class);
             }
         });
