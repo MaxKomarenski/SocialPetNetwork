@@ -25,6 +25,7 @@ import com.hollybits.socialpetnetwork.Fragments.StartingMenu;
 import com.hollybits.socialpetnetwork.Fragments.UserFriends;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.data_queues.FriendShipRequestQueue;
+import com.hollybits.socialpetnetwork.enums.GalleryMode;
 import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
 import com.hollybits.socialpetnetwork.helper.OnlineHandler;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
@@ -158,7 +159,9 @@ public class FragmentDispatcher extends AppCompatActivity
         }else {
             fragmentClass = Account.class;
         }
-
+        if(fragmentClass == UsersGallery.class){
+            Paper.book().write(MainActivity.GALLERY_MODE, GalleryMode.USERS_MODE);
+        }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (InstantiationException e) {

@@ -247,9 +247,13 @@
                     android:orientation="vertical">
 
                     <ImageButton
+                        android:id="@+id/start_chat_with_friend"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:background="@null"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:elevation="10dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/img_dialog" />
 
@@ -281,6 +285,9 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:visibility="gone"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:elevation="10dp"
                         android:background="@null"
                         android:scaleType="fitCenter"
                         android:src="@drawable/img_dog"/>
@@ -303,8 +310,12 @@
                     android:orientation="vertical">
 
                     <ImageButton
+                        android:id="@+id/open_friend_gallery"
                         android:layout_width="105dp"
                         android:layout_height="105dp"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:elevation="10dp"
                         android:background="@null"
                         android:scaleType="fitCenter"
                         android:src="@drawable/img_gallery" />

@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String CONTACT_LIST = "ContactList";
     public static final String MESSAGE_BOOK = "Messages";
     public static final String NAME_OF_FRIEND = "NameOfFriend";
+    public static final String GALLERY_MODE = "galleryMode";
 
     @BindView(R.id.move_to_login)
     Button goToLogin;

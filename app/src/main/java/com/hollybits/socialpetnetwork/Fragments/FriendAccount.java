@@ -15,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.enums.GalleryMode;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.Pet;
@@ -75,6 +77,12 @@ public class FriendAccount extends Fragment {
 
     @BindView(R.id.delete_friend_button)
     ImageButton deleteFriendButton;
+
+    @BindView(R.id.open_friend_gallery)
+    ImageButton openFrinedGallery;
+
+    @BindView(R.id.start_chat_with_friend)
+    ImageButton startChatWithFriend;
 
     @BindView(R.id.become_friend_text)
     TextView becomeFriendText;
@@ -181,6 +189,23 @@ public class FriendAccount extends Fragment {
         });
 
 
+
+        startChatWithFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Paper.book().write(MainActivity.ID_OF_FRIEND, userInfo.getId());
+                Paper.book().write(MainActivity.NAME_OF_FRIEND, userInfo.getName());
+                FragmentDispatcher.launchFragment(Chat.class);
+            }
+        });
+
+        openFrinedGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Paper.book().write(MainActivity.GALLERY_MODE, GalleryMode.FRIENDS_MODE);
+                FragmentDispatcher.launchFragment(UsersGallery.class);
+            }
+        });
 
         return view;
     }

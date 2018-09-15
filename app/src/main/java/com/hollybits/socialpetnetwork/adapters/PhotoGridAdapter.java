@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.Fragments.PhotoPage;
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.enums.GalleryMode;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.helper.SquareImageView;
 
@@ -23,12 +24,14 @@ public class PhotoGridAdapter extends BaseAdapter {
     private Context context;
     private final List<Long> images;
     private PhotoManager photoManager;
+    private GalleryMode galleryMode;
     View view;
     LayoutInflater layoutInflater;
 
-    public PhotoGridAdapter(Context context, List<Long> images, android.support.v4.app.Fragment fragment) {
+    public PhotoGridAdapter(Context context, List<Long> images, android.support.v4.app.Fragment fragment, GalleryMode galleryMode) {
         this.context = context;
         this.images = images;
+        this.galleryMode = galleryMode;
         photoManager = new PhotoManager(fragment);
     }
 
@@ -57,7 +60,11 @@ public class PhotoGridAdapter extends BaseAdapter {
             SquareImageView imageView = (SquareImageView) view.findViewById(R.id.single_photo_in_photo_grid);
             ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.imageProgressBar);
             Long id = images.get(position);
-            photoManager.loadUsersPhoto(imageView, id, progressBar);
+
+            if(galleryMode == GalleryMode.USERS_MODE)
+                photoManager.loadUsersPhoto(imageView, id, progressBar);
+            else if(galleryMode == GalleryMode.FRIENDS_MODE)
+                photoManager.loadFriendPhoto(imageView, id,progressBar);
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
