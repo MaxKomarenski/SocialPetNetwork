@@ -67,8 +67,6 @@ public class UsersGallery extends Fragment {
     @BindView(R.id.to_profile_in_gallery_page)
     Button toProfileButton;
 
-    @BindView(R.id.add_photo_to_gallery_in_gallery_page)
-    ImageButton addNewPhoto;
 
     @BindView(R.id.photo_grid_view)
     GridView photoGridView;
@@ -127,6 +125,11 @@ public class UsersGallery extends Fragment {
         ButterKnife.bind(this, view);
 
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        Typeface petNameFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr-Medium.ttf");
+        Typeface petBreedFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/AvenirNextCyr-Regular.ttf");
+
+        petBreedText.setTypeface(petBreedFont);
+        petNameText.setTypeface(petNameFont);
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         mode = Paper.book().read(MainActivity.GALLERY_MODE);
         PhotoManager photoManager = new PhotoManager(this);
@@ -142,6 +145,7 @@ public class UsersGallery extends Fragment {
             petBreedText.setText(userInfo.getPets().get(0).getBreed().getName());
             petNameText.setText(userInfo.getPets().get(0).getName());
             photoManager.loadFriendsMainPhoto(avatar, userInfo.getId());
+            uploadPhoto.setVisibility(View.GONE);
         }
 
 
@@ -233,7 +237,7 @@ public class UsersGallery extends Fragment {
             }
         });
 
-        addNewPhoto.setOnClickListener(new View.OnClickListener() {
+        uploadPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openGallery();
