@@ -21,6 +21,7 @@ import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.PhotoGridAdapter;
 import com.hollybits.socialpetnetwork.enums.GalleryMode;
+import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.models.UserInfo;
 
@@ -31,6 +32,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -71,6 +73,22 @@ public class UsersGallery extends Fragment {
     @BindView(R.id.photo_grid_view)
     GridView photoGridView;
 
+
+
+    @BindView(R.id.pet_breed)
+    TextView petBreedText;
+    @BindView(R.id.pet_name)
+    TextView petNameText;
+    @BindView(R.id.uploadPhoto)
+    TextView uploadPhoto;
+    @BindView(R.id.gallery_avatar)
+    CircleImageView avatar;
+
+    private UserInfo userInfo;
+    private Long target;
+    private GalleryMode mode;
+
+
     private PhotoGridAdapter photoGridAdapter;
 
     private OnFragmentInteractionListener mListener;
@@ -109,6 +127,24 @@ public class UsersGallery extends Fragment {
         ButterKnife.bind(this, view);
 
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        mode = Paper.book().read(MainActivity.GALLERY_MODE);
+        PhotoManager photoManager = new PhotoManager(this);
+        if(mode == GalleryMode.USERS_MODE) {
+            target = currentUser.getId();
+            petBreedText.setText(currentUser.getPets().get(0).getBreed().getName());
+            petNameText.setText(currentUser.getPets().get(0).getName());
+            photoManager.loadUsersMainPhoto(avatar);
+        }
+        else {
+            userInfo = Paper.book().read(MainActivity.CURRENT_CHOICE);
+            target = userInfo.getId();
+            petBreedText.setText(userInfo.getPets().get(0).getBreed().getName());
+            petNameText.setText(userInfo.getPets().get(0).getName());
+            photoManager.loadFriendsMainPhoto(avatar, userInfo.getId());
+        }
+
+
         galleryText.setTypeface(mainFont);
         getIdsOfUserPhoto();
         listeners();
@@ -168,15 +204,6 @@ public class UsersGallery extends Fragment {
         Map<String, String> authorisationCode = new HashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
 
-        GalleryMode mode = Paper.book().read(MainActivity.GALLERY_MODE);
-        UserInfo userInfo;
-        Long target;
-        if(mode == GalleryMode.USERS_MODE)
-            target = currentUser.getId();
-        else {
-            userInfo = Paper.book().read(MainActivity.CURRENT_CHOICE);
-            target = userInfo.getId();
-        }
         MainActivity.getServerRequests().getIdsOfUserPhoto(authorisationCode, currentUser.getId(), target).enqueue(new Callback<List<Long>>() {
             @Override
             public void onResponse(Call<List<Long>> call, Response<List<Long>> response) {
