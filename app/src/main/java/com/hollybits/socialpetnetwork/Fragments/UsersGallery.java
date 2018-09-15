@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
@@ -74,18 +73,18 @@ public class UsersGallery extends Fragment {
     @BindView(R.id.to_profile_in_gallery_page)
     Button toProfileButton;
 
-
     @BindView(R.id.photo_grid_view)
     GridView photoGridView;
 
-
-
     @BindView(R.id.pet_breed)
     TextView petBreedText;
+
     @BindView(R.id.pet_name)
     TextView petNameText;
+
     @BindView(R.id.uploadPhoto)
     TextView uploadPhoto;
+
     @BindView(R.id.gallery_avatar)
     CircleImageView avatar;
 
@@ -140,14 +139,39 @@ public class UsersGallery extends Fragment {
         Typeface petBreedFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/AvenirNextCyr-Regular.ttf");
 
         petBreedText.setTypeface(petBreedFont);
+        uploadPhoto.setTypeface(petBreedFont);
         petNameText.setTypeface(petNameFont);
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        java.util.Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
         mode = Paper.book().read(MainActivity.GALLERY_MODE);
         PhotoManager photoManager = new PhotoManager(this);
         if(mode == GalleryMode.USERS_MODE) {
 
             List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
-            numberOfFriends.setText(friends.size() + " friends");
+
+            if(friends == null){
+                MainActivity.getServerRequests().getNumberOfFriendsOfAnotherUser(authorisationCode, currentUser.getId()).enqueue(new Callback<Integer>() {
+                    @Override
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        String countOfFriends = response.body() + " friends";
+                        numberOfFriends.setText(countOfFriends);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Integer> call, Throwable t) {
+
+                    }
+                });
+
+                photoManager.loadFriendsMainPhoto(avatar, userInfo.getId());
+                uploadPhoto.setVisibility(View.GONE);
+
+            } else {
+                String countOfFriends = friends.size() + " friends";
+                numberOfFriends.setText(countOfFriends);
+            }
+
 
             target = currentUser.getId();
             petBreedText.setText(currentUser.getPets().get(0).getBreed().getName());
@@ -160,13 +184,12 @@ public class UsersGallery extends Fragment {
             petBreedText.setText(userInfo.getPets().get(0).getBreed().getName());
             petNameText.setText(userInfo.getPets().get(0).getName());
 
-            java.util.Map<String, String> authorisationCode = new HashMap<>();
-            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
 
             MainActivity.getServerRequests().getNumberOfFriendsOfAnotherUser(authorisationCode, target).enqueue(new Callback<Integer>() {
                 @Override
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
-                    numberOfFriends.setText(response.body() + " friends");
+                    String countOfFriends = response.body() + " friends";
+                    numberOfFriends.setText(countOfFriends);
                 }
 
                 @Override
@@ -253,7 +276,8 @@ public class UsersGallery extends Fragment {
 
                 photoGridView.setAdapter(photoGridAdapter);
 
-                numberOfPhoto.setText(photoGridAdapter.getCount() + " photos");
+                String amountOfPhotos = photoGridAdapter.getCount() + " photos";
+                numberOfPhoto.setText(amountOfPhotos);
             }
 
             @Override

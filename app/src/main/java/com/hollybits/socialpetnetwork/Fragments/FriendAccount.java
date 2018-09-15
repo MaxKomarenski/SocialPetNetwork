@@ -160,6 +160,8 @@ public class FriendAccount extends Fragment {
 
         ImageButton accept = acceptDeletingFriend.findViewById(R.id.acceptDeletingFriend);
         ImageButton reject = acceptDeletingFriend.findViewById(R.id.rejectDeletingFriends);
+        TextView warning = acceptDeletingFriend.findViewById(R.id.warningTextView);
+        warning.setTypeface(mainFont);
         BottomSheet bottomSheet = new BottomSheet.Builder(FriendAccount.this.getActivity())
                 .setView(acceptDeletingFriend).create();
 
@@ -168,8 +170,6 @@ public class FriendAccount extends Fragment {
             public void onClick(View v) {
                 deleteFriendButton.startAnimation(buttonClick);
                 bottomSheet.show();
-
-
             }
         });
 
@@ -178,6 +178,7 @@ public class FriendAccount extends Fragment {
             public void onClick(View v) {
                 deleteFriendFromFriendListInPaperBook();
                 bottomSheet.dismiss();
+                FragmentDispatcher.launchFragment(Account.class);
             }
         });
 
