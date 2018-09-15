@@ -186,7 +186,7 @@ public interface ServerRequests {
                                        @Query("targetId") Long targetId);
     @Multipart
     @POST("/addNewPhoto")
-    Call<Void> addNewPhoto(@HeaderMap Map<String, String> headers,
+    Call<Long> addNewPhoto(@HeaderMap Map<String, String> headers,
                                @Part MultipartBody.Part img,
                                @Query("id") Long id);
 

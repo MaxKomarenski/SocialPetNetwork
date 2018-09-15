@@ -216,14 +216,15 @@ public class UsersGallery extends Fragment {
             java.util.Map<String, String> authorisationCode = new HashMap<>();
             authorisationCode.put("authorization", currentUser.getAuthorizationCode());
 
-            MainActivity.getServerRequests().addNewPhoto(authorisationCode, fileToUpload, currentUser.getId()).enqueue(new Callback<Void>() {
+            MainActivity.getServerRequests().addNewPhoto(authorisationCode, fileToUpload, currentUser.getId()).enqueue(new Callback<Long>() {
                 @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
+                public void onResponse(Call<Long> call, Response<Long> response) {
 
+                    FragmentDispatcher.launchFragment(UsersGallery.class);
                 }
 
                 @Override
-                public void onFailure(Call<Void> call, Throwable t) {
+                public void onFailure(Call<Long> call, Throwable t) {
 
                 }
             });
