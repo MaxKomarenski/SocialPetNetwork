@@ -22,6 +22,7 @@ import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.PhotoGridAdapter;
 import com.hollybits.socialpetnetwork.enums.GalleryMode;
 import com.hollybits.socialpetnetwork.models.User;
+import com.hollybits.socialpetnetwork.models.UserInfo;
 
 import java.io.File;
 import java.util.HashMap;
@@ -167,10 +168,19 @@ public class UsersGallery extends Fragment {
         Map<String, String> authorisationCode = new HashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
 
-        MainActivity.getServerRequests().getIdsOfUserPhoto(authorisationCode, currentUser.getId(), currentUser.getId()).enqueue(new Callback<List<Long>>() {
+        GalleryMode mode = Paper.book().read(MainActivity.GALLERY_MODE);
+        UserInfo userInfo;
+        Long target;
+        if(mode == GalleryMode.USERS_MODE)
+            target = currentUser.getId();
+        else {
+            userInfo = Paper.book().read(MainActivity.CURRENT_CHOICE);
+            target = userInfo.getId();
+        }
+        MainActivity.getServerRequests().getIdsOfUserPhoto(authorisationCode, currentUser.getId(), target).enqueue(new Callback<List<Long>>() {
             @Override
             public void onResponse(Call<List<Long>> call, Response<List<Long>> response) {
-                GalleryMode mode = Paper.book().read(MainActivity.GALLERY_MODE);
+
                 photoGridAdapter = new PhotoGridAdapter(UsersGallery.this.getContext(), response.body(), UsersGallery.this, mode);
 
                 int gridWidth = getResources().getDisplayMetrics().widthPixels;
