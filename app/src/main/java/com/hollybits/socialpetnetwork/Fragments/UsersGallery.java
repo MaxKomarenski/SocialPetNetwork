@@ -22,6 +22,7 @@ import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.PhotoGridAdapter;
 import com.hollybits.socialpetnetwork.enums.GalleryMode;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
+import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.models.UserInfo;
 
@@ -63,6 +64,12 @@ public class UsersGallery extends Fragment {
 
     @BindView(R.id.gallery_text_in_gallery_page)
     TextView galleryText;
+
+    @BindView(R.id.number_of_photo_in_gallery)
+    TextView numberOfPhoto;
+
+    @BindView(R.id.number_of_friends_in_gallery)
+    TextView numberOfFriends;
 
     @BindView(R.id.to_profile_in_gallery_page)
     Button toProfileButton;
@@ -127,21 +134,48 @@ public class UsersGallery extends Fragment {
         ButterKnife.bind(this, view);
 
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+
+        numberOfFriends.setTypeface(mainFont);
+        numberOfPhoto.setTypeface(mainFont);
+
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         mode = Paper.book().read(MainActivity.GALLERY_MODE);
         PhotoManager photoManager = new PhotoManager(this);
         if(mode == GalleryMode.USERS_MODE) {
+
+            List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
+            numberOfFriends.setText(friends.size() + " friends");
+
             target = currentUser.getId();
             petBreedText.setText(currentUser.getPets().get(0).getBreed().getName());
             petNameText.setText(currentUser.getPets().get(0).getName());
             photoManager.loadUsersMainPhoto(avatar);
         }
         else {
+
+
             userInfo = Paper.book().read(MainActivity.CURRENT_CHOICE);
             target = userInfo.getId();
             petBreedText.setText(userInfo.getPets().get(0).getBreed().getName());
             petNameText.setText(userInfo.getPets().get(0).getName());
+
+            java.util.Map<String, String> authorisationCode = new HashMap<>();
+            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+
+            MainActivity.getServerRequests().getNumberOfFriendsOfAnotherUser(authorisationCode, target).enqueue(new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                    numberOfFriends.setText(response.body() + " friends");
+                }
+
+                @Override
+                public void onFailure(Call<Integer> call, Throwable t) {
+
+                }
+            });
+
             photoManager.loadFriendsMainPhoto(avatar, userInfo.getId());
+
         }
 
 
@@ -216,6 +250,8 @@ public class UsersGallery extends Fragment {
                 photoGridView.setColumnWidth(imageWidth);
 
                 photoGridView.setAdapter(photoGridAdapter);
+
+                numberOfPhoto.setText(photoGridAdapter.getCount() + " photos");
             }
 
             @Override

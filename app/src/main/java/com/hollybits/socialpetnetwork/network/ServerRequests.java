@@ -217,4 +217,8 @@ public interface ServerRequests {
     Call<FriendInfo> addToFriendsWhenOneUserFoundPetOfAnotherUser(@HeaderMap Map<String, String> headers,
                                                                   @Query("user_who_found_pet") Long userWhoFoundPet,
                                                                   @Query("user_who_lost_pet") Long userWhoLostPet);
+
+    @POST("/getNumberOfFriendsOfAnotherUser")
+    Call<Integer> getNumberOfFriendsOfAnotherUser(@HeaderMap Map<String, String> headers,
+                                                  @Query("user") Long userWhoFoundPet);
 }

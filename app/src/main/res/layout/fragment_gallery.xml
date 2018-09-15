@@ -140,7 +140,9 @@
             android:background="@drawable/background_for_info_in_gallery"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="12dp">
+            android:padding="11dp"
+            android:paddingStart="17dp"
+            android:paddingEnd="17dp">
 
             <ImageView
                 android:layout_width="27dp"
@@ -148,10 +150,11 @@
                 android:src="@drawable/pet_hand" />
 
             <TextView
+                android:id="@+id/number_of_friends_in_gallery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="n friends"
+                android:text="friends"
                 android:textColor="#fff"
                 android:textSize="17sp" />
 
@@ -165,7 +168,9 @@
             android:background="@drawable/background_for_info_in_gallery"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="12dp">
+            android:padding="11dp"
+            android:paddingStart="17dp"
+            android:paddingEnd="17dp">
 
             <ImageView
                 android:layout_width="27dp"
@@ -173,10 +178,11 @@
                 android:src="@drawable/photo" />
 
             <TextView
+                android:id="@+id/number_of_photo_in_gallery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="n photo"
+                android:text="photos"
                 android:textColor="#fff"
                 android:textSize="17sp" />
 
