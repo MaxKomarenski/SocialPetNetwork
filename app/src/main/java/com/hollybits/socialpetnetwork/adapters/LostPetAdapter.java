@@ -83,6 +83,11 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.MyViewHo
             holder.chatButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                        //TODO if man who lost pet is your friend just open chat
+//                    if(lostPet.getUserId()){
+//
+//                    }
+
                     User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
                     Map<String, String> authorisationCode = new HashMap<>();
                     authorisationCode.put("authorization", currentUser.getAuthorizationCode());
