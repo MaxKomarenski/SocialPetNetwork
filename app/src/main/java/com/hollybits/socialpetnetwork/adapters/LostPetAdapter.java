@@ -90,7 +90,10 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.MyViewHo
                             currentUser.getId(), lostPet.getUserId()).enqueue(new Callback<FriendInfo>() {
                         @Override
                         public void onResponse(Call<FriendInfo> call, Response<FriendInfo> response) {
-
+                            if(response.body() != null){
+                                addNewFriendToPaperBook(response.body());
+                                Paper.book().delete(MainActivity.CONTACT_LIST);
+                            }
                         }
 
                         @Override
@@ -136,6 +139,12 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.MyViewHo
 
     public void deleteItem(LostPet lostPet){
         lostPets.remove(lostPet);
+    }
+
+    private void addNewFriendToPaperBook(FriendInfo newFriend){
+        List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
+        friends.add(newFriend);
+        Paper.book().write(MainActivity.FRIEND_LIST, friends);
     }
 
 

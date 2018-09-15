@@ -168,7 +168,6 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
         List<InfoAboutUserFriendShipRequest> list = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
         for (int i = 0; i < list.size(); i++){
             if(info.equals(list.get(i))){
-                System.err.println("--------------remove friendship request from paper book----------------");
                 list.remove(i);
             }
         }
