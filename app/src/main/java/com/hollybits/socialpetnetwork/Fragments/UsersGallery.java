@@ -155,8 +155,6 @@ public class UsersGallery extends Fragment {
             photoManager.loadUsersMainPhoto(avatar);
         }
         else {
-
-
             userInfo = Paper.book().read(MainActivity.CURRENT_CHOICE);
             target = userInfo.getId();
             petBreedText.setText(userInfo.getPets().get(0).getBreed().getName());
