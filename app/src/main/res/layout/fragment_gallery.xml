@@ -65,8 +65,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/gallery_avatar"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
@@ -84,17 +84,21 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
+            android:textStyle="bold"
+            android:textSize="22sp"
             android:text="TextView"
             app:layout_constraintStart_toEndOf="@+id/gallery_avatar"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/pet_breed"
+            android:textSize="22sp"
             android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:layout_marginStart="16dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:text="TextView"
+            android:textColor="#8cdcfb"
             app:layout_constraintStart_toEndOf="@+id/pet_name"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -103,6 +107,9 @@
             android:id="@+id/uploadPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:textSize="18sp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
