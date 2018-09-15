@@ -14,6 +14,7 @@ import com.hollybits.socialpetnetwork.enums.GalleryMode;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.helper.SquareImageView;
 
+import java.util.Collections;
 import java.util.List;
 
 import io.paperdb.Paper;
@@ -31,6 +32,7 @@ public class PhotoGridAdapter extends BaseAdapter {
     public PhotoGridAdapter(Context context, List<Long> images, android.support.v4.app.Fragment fragment, GalleryMode galleryMode) {
         this.context = context;
         this.images = images;
+        Collections.reverse(images);
         this.galleryMode = galleryMode;
         photoManager = new PhotoManager(fragment);
     }
@@ -78,4 +80,13 @@ public class PhotoGridAdapter extends BaseAdapter {
 
         return view;
     }
+
+
+
+    public void addItem(Long id){
+        images.add(id);
+        Collections.reverse(images);
+    }
+
+
 }
