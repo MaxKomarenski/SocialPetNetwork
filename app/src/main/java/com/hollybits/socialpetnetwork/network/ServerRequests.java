@@ -12,6 +12,7 @@ import com.hollybits.socialpetnetwork.forms.RegistrationForm;
 import com.hollybits.socialpetnetwork.forms.UpdateTokenForm;
 import com.hollybits.socialpetnetwork.helper.Test;
 import com.hollybits.socialpetnetwork.models.Breed;
+import com.hollybits.socialpetnetwork.models.Comment;
 import com.hollybits.socialpetnetwork.models.Contact;
 import com.hollybits.socialpetnetwork.models.Coordinates;
 import com.hollybits.socialpetnetwork.models.Country;
@@ -49,7 +50,7 @@ public interface ServerRequests {
 
     String BASE_REMOTE_OUR = "https://206.189.61.135:8443/";
     String BASE_LOCAL = "https://10.0.2.2:8443/";
-    String CURRENT_ENDPIONT = BASE_REMOTE_OUR;
+    String CURRENT_ENDPIONT = BASE_LOCAL;
 
     @GET("/api/getBreedsForType")
     Call<List<Breed>> getBreedsForType(@Query("petType")PetType petType);
@@ -221,4 +222,7 @@ public interface ServerRequests {
     @POST("/getNumberOfFriendsOfAnotherUser")
     Call<Integer> getNumberOfFriendsOfAnotherUser(@HeaderMap Map<String, String> headers,
                                                   @Query("user") Long userWhoFoundPet);
+
+    @POST("/getAllCommentOfCurrentPhoto")
+    Call<List<Comment>> getAllCommentOfCurrentPhoto(@HeaderMap Map<String, String> headers, @Query("photo_id") Long photoID);
 }

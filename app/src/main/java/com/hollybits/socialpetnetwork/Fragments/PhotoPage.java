@@ -6,21 +6,38 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.adapters.CommentAdapter;
+import com.hollybits.socialpetnetwork.adapters.FriendshipRequestAdapter;
 import com.hollybits.socialpetnetwork.helper.GlideApp;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
+import com.hollybits.socialpetnetwork.models.Comment;
+import com.hollybits.socialpetnetwork.models.User;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.paperdb.Paper;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,8 +48,7 @@ import io.paperdb.Paper;
  * create an instance of this fragment.
  */
 public class PhotoPage extends Fragment{
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -49,7 +65,12 @@ public class PhotoPage extends Fragment{
     @BindView(R.id.image_in_photo_page)
     ImageView photoPageImage;
 
+    @BindView(R.id.commentRecyclerViewInPhotoPage)
+    RecyclerView commentRecyclerView;
+
+    private CommentAdapter commentAdapter;
     private OnFragmentInteractionListener mListener;
+    private List<Comment> comments;
 
     public PhotoPage() {
         // Required empty public constructor
@@ -92,6 +113,8 @@ public class PhotoPage extends Fragment{
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         photoTextView.setTypeface(mainFont);
 
+        comments = new ArrayList<>();
+
         toGalleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,11 +124,37 @@ public class PhotoPage extends Fragment{
 
         Long id = Paper.book().read("Current choice");
 
-        System.err.println("id------------------>    " + id);
-
         byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME).read(PhotoManager.REGULAR_PHOTO+id);
         Bitmap bitmap = BitmapFactory.decodeByteArray(photoBytes, 0,photoBytes.length);
         loadBitmapToImageView(photoPageImage, bitmap);
+
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+
+        MainActivity.getServerRequests().getAllCommentOfCurrentPhoto(authorisationCode, id).enqueue(new Callback<List<Comment>>() {
+            @Override
+            public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+
+                if (response.body() != null){
+                    comments.addAll(response.body());
+                    commentAdapter = new CommentAdapter(comments);
+                    commentRecyclerView.setAdapter(commentAdapter);
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PhotoPage.this.getContext());
+                    commentRecyclerView.setLayoutManager(layoutManager);
+                    SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
+                    commentRecyclerView.setItemAnimator(animator);
+                    commentAdapter.notifyDataSetChanged();
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Comment>> call, Throwable t) {
+
+            }
+        });
 
         return view;
     }
