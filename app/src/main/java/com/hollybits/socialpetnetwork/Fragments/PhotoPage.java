@@ -22,6 +22,7 @@ import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.CommentAdapter;
 import com.hollybits.socialpetnetwork.adapters.FriendshipRequestAdapter;
+import com.hollybits.socialpetnetwork.enums.GalleryMode;
 import com.hollybits.socialpetnetwork.helper.GlideApp;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.Comment;
@@ -57,6 +58,12 @@ public class PhotoPage extends Fragment{
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    @BindView(R.id.user_photo_in_photo_page)
+    ImageView userPhoto;
+
+    @BindView(R.id.name_in_photo_page)
+    TextView nameAndSurnameTextView;
 
     @BindView(R.id.to_gallery_in_photo_page)
     Button toGalleryButton;
@@ -126,13 +133,23 @@ public class PhotoPage extends Fragment{
 
         listeners();
 
+        GalleryMode galleryMode = Paper.book().read(MainActivity.GALLERY_MODE);
+        PhotoManager photoManager = new PhotoManager(PhotoPage.this);
         id = Paper.book().read("Current choice");
-
-        byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME).read(PhotoManager.REGULAR_PHOTO+id);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(photoBytes, 0,photoBytes.length);
-        loadBitmapToImageView(photoPageImage, bitmap);
-
         getComments(id);
+        if (galleryMode == GalleryMode.FRIENDS_MODE){
+            Long friendID = Paper.book().read(MainActivity.ID_OF_FRIEND);
+            photoManager.loadFriendsMainPhoto(userPhoto, friendID);
+            photoManager.loadFriendPhoto(photoPageImage, id);
+
+        }else {
+            photoManager.loadUsersMainPhoto(userPhoto);
+            byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME).read(PhotoManager.REGULAR_PHOTO+id);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(photoBytes, 0,photoBytes.length);
+            loadBitmapToImageView(photoPageImage, bitmap);
+        }
+
+
 
         return view;
     }

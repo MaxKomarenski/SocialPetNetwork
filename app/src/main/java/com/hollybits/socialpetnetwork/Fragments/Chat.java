@@ -269,9 +269,6 @@ public class Chat extends Fragment implements MessageObserver {
         Long timestamp = System.currentTimeMillis();
         Message message = new Message(text, friendId, MainActivity.getCurrentUser().getId(),false);
 
-        messageAdapter.add(message);
-
-
         MainActivity.getServerRequests().sendMessage(getAuthorizationCode(),
                                                      message,
                                                      currentUser.getId(),
@@ -279,6 +276,7 @@ public class Chat extends Fragment implements MessageObserver {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 Log.d("response", String.valueOf(response.code()));
+                addMessageToPaperBook(message);
             }
 
             @Override
@@ -287,8 +285,9 @@ public class Chat extends Fragment implements MessageObserver {
             }
         });
 
-        message.setTimestamp(new Timestamp(System.currentTimeMillis()));
-        addMessageToPaperBook(message);
+        message.setTimestamp(new Timestamp(timestamp));
+        messageAdapter.add(message);
+
     }
 
     private void getAllMessages(){
