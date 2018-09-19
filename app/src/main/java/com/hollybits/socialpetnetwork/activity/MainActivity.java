@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String MESSAGE_BOOK = "Messages";
     public static final String NAME_OF_FRIEND = "NameOfFriend";
     public static final String GALLERY_MODE = "galleryMode";
+    public static String PACKAGE_NAME;
 
     @BindView(R.id.move_to_login)
     Button goToLogin;
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         Paper.init(this);
+        PACKAGE_NAME = getPackageName();
 
 
         if(retrofitInit()){

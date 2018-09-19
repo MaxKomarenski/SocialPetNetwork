@@ -1,10 +1,23 @@
 package com.hollybits.socialpetnetwork.notifications;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.hollybits.socialpetnetwork.Fragments.Account;
 import com.hollybits.socialpetnetwork.Fragments.LostPets;
+import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.data_queues.FriendShipRequestQueue;
@@ -31,6 +44,9 @@ public class NotificationsAcceptor extends FirebaseMessagingService  {
 
 
     private static final String TAG = "MyFirebaseMsgService";
+
+
+
 
 
 
@@ -156,12 +172,15 @@ public class NotificationsAcceptor extends FirebaseMessagingService  {
 
 
     private void handleNotification(RemoteMessage remoteMessage){
+
+
         if(Paper.book().read(MainActivity.CURRENTUSER) == null){
             return;
         }
         Map<String, String> data = remoteMessage.getData();
         NotificationType type = NotificationType.valueOf(data.get("type"));
         Log.d("NOTIFICATION ACCEPTOR", type.name());
+        showNotification(type, remoteMessage);
         switch (type){
 
             case PERSONALMESSAGE:{
@@ -209,7 +228,40 @@ public class NotificationsAcceptor extends FirebaseMessagingService  {
             case DELETEFRIEND:{
                 deleteFriendFromPaperBook(Long.decode(data.get("user_from")));
             }
+
+            default:{
+                break;
+            }
         }
+    }
+
+    private void showNotification(NotificationType type, RemoteMessage remoteMessage){
+        Boolean state = Paper.book().read("CHANEL");
+
+        if(state == null){
+            createNotificationChannel();
+        }
+        Log.d(TAG, "SHOWING NOTIFICATION");
+        NotificationViewer viewer = NotificationViewer.getInstance();
+        viewer.showNotification(type, remoteMessage, this);
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.chanel_name);
+            String description = getString(R.string.chanel_discription);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("SOCIAL PET NET ID", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        Paper.book().write("CHANEL", true);
     }
 
     private void deleteFriendFromPaperBook(Long friendID){
