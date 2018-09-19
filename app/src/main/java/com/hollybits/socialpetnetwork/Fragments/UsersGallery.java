@@ -164,7 +164,7 @@ public class UsersGallery extends Fragment {
                     }
                 });
 
-                photoManager.loadFriendsMainPhoto(avatar, userInfo.getId());
+                photoManager.loadFriendsMainPhoto(avatar, currentUser.getId());
                 uploadPhoto.setVisibility(View.GONE);
 
             } else {
