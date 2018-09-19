@@ -225,4 +225,11 @@ public interface ServerRequests {
 
     @POST("/getAllCommentOfCurrentPhoto")
     Call<List<Comment>> getAllCommentOfCurrentPhoto(@HeaderMap Map<String, String> headers, @Query("photo_id") Long photoID);
+
+    @POST("/sendNewComment")
+    Call<String> sendNewComment (@HeaderMap Map<String, String> headers,
+                                 @Query("time") String time,
+                                 @Query("user_id_who_left_a_comment") Long id,
+                                 @Query("text") String text,
+                                 @Query("photoID") Long photoID);
 }

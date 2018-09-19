@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.Comment;
 import com.hollybits.socialpetnetwork.models.User;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,9 +70,16 @@ public class PhotoPage extends Fragment{
     @BindView(R.id.commentRecyclerViewInPhotoPage)
     RecyclerView commentRecyclerView;
 
+    @BindView(R.id.writeNewCommentEditText)
+    EditText writeNewCommentEditText;
+
+    @BindView(R.id.sendNewCommentButton)
+    Button sendNewCommentButton;
+
     private CommentAdapter commentAdapter;
     private OnFragmentInteractionListener mListener;
     private List<Comment> comments;
+    private Long id;
 
     public PhotoPage() {
         // Required empty public constructor
@@ -115,19 +124,20 @@ public class PhotoPage extends Fragment{
 
         comments = new ArrayList<>();
 
-        toGalleryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentDispatcher.launchFragment(UsersGallery.class);
-            }
-        });
+        listeners();
 
-        Long id = Paper.book().read("Current choice");
+        id = Paper.book().read("Current choice");
 
         byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME).read(PhotoManager.REGULAR_PHOTO+id);
         Bitmap bitmap = BitmapFactory.decodeByteArray(photoBytes, 0,photoBytes.length);
         loadBitmapToImageView(photoPageImage, bitmap);
 
+        getComments(id);
+
+        return view;
+    }
+
+    private void getComments(Long id){
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         Map<String, String> authorisationCode = new HashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
@@ -155,8 +165,43 @@ public class PhotoPage extends Fragment{
 
             }
         });
+    }
 
-        return view;
+    private void listeners(){
+        toGalleryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(UsersGallery.class);
+            }
+        });
+
+        sendNewCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String commentText = writeNewCommentEditText.getText().toString();
+                if(!commentText.equals("")){
+                    sendNewComment(commentText, id);
+                }
+            }
+        });
+    }
+
+    private void sendNewComment(String text, Long photoID){
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        MainActivity.getServerRequests().sendNewComment(authorisationCode, time.toString(), currentUser.getId(), text, photoID).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
     }
 
     private void loadBitmapToImageView(ImageView  imageView, Bitmap bitmap){
