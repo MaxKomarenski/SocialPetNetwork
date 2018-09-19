@@ -50,7 +50,7 @@ public interface ServerRequests {
 
     String BASE_REMOTE_OUR = "https://206.189.61.135:8443/";
     String BASE_LOCAL = "https://10.0.2.2:8443/";
-    String CURRENT_ENDPOINT = BASE_REMOTE_OUR;
+    String CURRENT_ENDPOINT = BASE_LOCAL;
 
     @GET("/api/getBreedsForType")
     Call<List<Breed>> getBreedsForType(@Query("petType")PetType petType);
@@ -225,4 +225,11 @@ public interface ServerRequests {
 
     @POST("/getAllCommentOfCurrentPhoto")
     Call<List<Comment>> getAllCommentOfCurrentPhoto(@HeaderMap Map<String, String> headers, @Query("photo_id") Long photoID);
+
+    @POST("/sendNewComment")
+    Call<String> sendNewComment (@HeaderMap Map<String, String> headers,
+                                 @Query("time") String time,
+                                 @Query("user_id_who_left_a_comment") Long id,
+                                 @Query("text") String text,
+                                 @Query("photoID") Long photoID);
 }
