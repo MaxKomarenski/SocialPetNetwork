@@ -20,6 +20,7 @@ public class NewMessageNotifier implements NotificationInfoShower {
     public void show(Context context, RemoteMessage remoteMessage) {
         RemoteViews notificationLayout = new RemoteViews(MainActivity.PACKAGE_NAME, R.layout.notification_small);
         String text = remoteMessage.getData().get("message_text");
+        String fromName = remoteMessage.getData().get("name_from");
         if(text.length() < 27){
             notificationLayout.setTextViewText(R.id.notification_description, text);
         }else {
@@ -27,7 +28,7 @@ public class NewMessageNotifier implements NotificationInfoShower {
             String message = String.format("%.26s", text + "...");
             notificationLayout.setTextViewText(R.id.notification_description, message);
         }
-        notificationLayout.setTextViewText(R.id.notification_type_text_view, "New message for you");
+        notificationLayout.setTextViewText(R.id.notification_type_text_view, "New message for you from "+fromName);
         // RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large);
         Notification customNotification = new NotificationCompat.Builder(context, "SOCIAL PET NET ID")
                 .setSmallIcon(R.drawable.ic_dog)
