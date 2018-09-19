@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,11 +27,6 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -138,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 .setLenient()
                 .create();
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(ServerRequests.CURRENT_ENDPIONT)
+                .baseUrl(ServerRequests.CURRENT_ENDPOINT)
                 .addConverterFactory(GsonConverterFactory.create(gson));
 
         OkHttpClient okHttp;
