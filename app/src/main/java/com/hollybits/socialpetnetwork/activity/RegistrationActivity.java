@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.esotericsoftware.kryo.Registration;
+import com.hollybits.socialpetnetwork.Fragments.Account;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.adapters.AutoCompleteCountryAdapter;
 import com.hollybits.socialpetnetwork.enums.Attitude;
@@ -304,7 +305,11 @@ public class RegistrationActivity extends AppCompatActivity {
         chosenPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openGallery();
+                try {
+                    openGallery();
+                }catch (Exception e){
+                    Toast.makeText(RegistrationActivity.this, "SORRY IMAGE IS TOO LARGE", Toast.LENGTH_LONG).show();
+                }
             }
         });
 

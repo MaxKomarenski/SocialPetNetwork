@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
@@ -299,7 +300,11 @@ public class UsersGallery extends Fragment {
         uploadPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openGallery();
+                try {
+                    openGallery();
+                }catch (Exception e){
+                    Toast.makeText(UsersGallery.this.getActivity(), "SORRY IMAGE IS TOO LARGE", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
