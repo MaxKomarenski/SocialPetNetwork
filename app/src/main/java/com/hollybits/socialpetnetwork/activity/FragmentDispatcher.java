@@ -29,6 +29,7 @@ import com.hollybits.socialpetnetwork.enums.GalleryMode;
 import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
 import com.hollybits.socialpetnetwork.helper.OnlineHandler;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
+import com.hollybits.socialpetnetwork.models.Exception;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
@@ -42,6 +43,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import io.paperdb.Paper;
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,6 +65,43 @@ public class FragmentDispatcher extends AppCompatActivity
         setContentView(R.layout.activity_menu_dispatcher);
         fragmentManager = getSupportFragmentManager();
         instance  = this;
+
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
+                //Catch your exception
+                // Without System.exit() this will not work.
+                User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+                Map<String, String> authorisationCode = new HashMap<>();
+                authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+                Exception exception = new Exception();
+                StringBuilder stringBuilder = new StringBuilder();
+                for (StackTraceElement element:
+                     paramThrowable.getStackTrace()) {
+                    stringBuilder.append(element.toString());
+                    stringBuilder.append("\n");
+                }
+
+
+                exception.setError(stringBuilder.toString());
+                exception.setIdFrom(currentUser.getId());
+                MainActivity.getServerRequests().recordException(authorisationCode, exception).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
+                System.exit(2);
+            }
+        });
+
+
+
         setContentView(R.layout.activity_fragment_dispatcher);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,8 +118,10 @@ public class FragmentDispatcher extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         ImageView imageView = navigationView.getHeaderView(0).findViewById(R.id.image_in_header_fragment_dispatcher);
+
 
         PhotoManager.loadDirectlyUserMainPhoto(imageView, this);
         messagesMenuItem = navigationView.getMenu().findItem(R.id.nav_messages);
@@ -297,7 +338,7 @@ public class FragmentDispatcher extends AppCompatActivity
         Fragment fragment = null;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
-        }catch (Exception e){
+        }catch (java.lang.Exception e){
             e.printStackTrace();
         }
 

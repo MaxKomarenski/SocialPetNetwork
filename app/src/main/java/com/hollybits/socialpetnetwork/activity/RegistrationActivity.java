@@ -33,12 +33,16 @@ import com.hollybits.socialpetnetwork.enums.Attitude;
 import com.hollybits.socialpetnetwork.enums.MassUnit;
 import com.hollybits.socialpetnetwork.enums.Sex;
 import com.hollybits.socialpetnetwork.forms.RegistrationForm;
+import com.hollybits.socialpetnetwork.helper.Pair;
 import com.hollybits.socialpetnetwork.models.City;
 import com.hollybits.socialpetnetwork.models.Country;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.hollybits.socialpetnetwork.adapters.BreedAdapter;
 import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.models.Breed;
@@ -55,6 +59,7 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.paperdb.Paper;
 import lib.kingja.switchbutton.SwitchMultiButton;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -361,12 +366,12 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 showDialogProgress("Validating");
-                if(!validator.validate(instance, 1)){
-                    Log.d("Validation","Fail");
+                if (!validator.validate(instance, 1)) {
+                    Log.d("Validation", "Fail");
                     dismissLoadingDialog(1500);
                     return;
                 }
-                Log.d("Validation","OK");
+                Log.d("Validation", "OK");
                 progressDialog.setMessage("Signing you up!");
 
                 Toast toast = Toast.makeText(getApplicationContext(),
@@ -374,7 +379,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 toast.show();
 
                 Country country = getChosenCountry(chosenCountry.getText().toString());
-                City city = new City(cityEdit.getText().toString() , country);
+                City city = new City(cityEdit.getText().toString(), country);
 
                 String emailStr = email.getText().toString();
                 String passwordStr = password.getText().toString();
@@ -385,56 +390,49 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
                 final RegistrationForm registrationForm = new RegistrationForm(ownerName.getText().toString(),
-                                                    ownerSurname.getText().toString(),
-                                                    phoneNumber.getText().toString(),
-                                                    city,
-                                                    encodedEmail,
-                                                    encodedPassword,
-                                                    newPet);
+                        ownerSurname.getText().toString(),
+                        phoneNumber.getText().toString(),
+                        city,
+                        encodedEmail,
+                        encodedPassword,
+                        newPet);
 
-                if(fileToUpload==null){
-                MainActivity.getServerRequests().sendRegistrationFormToTheServer(registrationForm).enqueue(new Callback<String>() {
+
+                MainActivity.getServerRequests().sendRegistrationFormToTheServer(registrationForm).enqueue(new Callback<Pair<String, String>>() {
                     @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if(response.code()== HttpsURLConnection.HTTP_ACCEPTED){
+                    public void onResponse(Call<Pair<String, String>> call, Response<Pair<String, String>> response) {
+                        if (response.code() == HttpsURLConnection.HTTP_ACCEPTED) {
                             dismissLoadingDialog(500);
+                            Map<String, String> authorisationCode = new HashMap<>();
+                            authorisationCode.put("authorization", response.body().getKey());
+                            MainActivity.getServerRequests().updateMainPhoto(authorisationCode,fileToUpload, Long.decode(response.body().getValue()))
+                                    .enqueue(new Callback<Void>() {
+                                        @Override
+                                        public void onResponse(Call<Void> call, Response<Void> response) {
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Void> call, Throwable t) {
+
+                                        }
+                                    });
                             Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
                             startActivity(intent);
-                        }else {
-                            progressDialog.setMessage("Something wrong with registration :( Message from server: "+response.body());
+                        } else {
+                            progressDialog.setMessage("Something wrong with registration :( Message from server: " + response.body());
                             dismissLoadingDialog(4000);
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        progressDialog.setMessage("Can`t connect to server. Please check your connection and try again");
+                    public void onFailure(Call<Pair<String, String>> call, Throwable t) {
+                        progressDialog.setMessage("Server connect error");
                         dismissLoadingDialog(4000);
                     }
                 });
-                }else {
-                    MainActivity.getServerRequests().sendRegistrationFormToTheServer(registrationForm, fileToUpload).enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            if(response.code()== HttpsURLConnection.HTTP_ACCEPTED){
-                                dismissLoadingDialog(500);
-                                Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                            }else {
-                                progressDialog.setMessage("Something wrong with registration :( Message from server: "+response.body());
-                                dismissLoadingDialog(4000);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-                            progressDialog.setMessage("Can`t connect to server. Please check your connection and try again");
-                            dismissLoadingDialog(4000);
-                        }
-                    });
-                }
-
             }
+
         });
     }
 

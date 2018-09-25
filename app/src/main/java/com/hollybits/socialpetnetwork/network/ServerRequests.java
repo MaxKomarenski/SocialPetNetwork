@@ -10,12 +10,14 @@ import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
 import com.hollybits.socialpetnetwork.forms.RegistrationForm;
 import com.hollybits.socialpetnetwork.forms.UpdateTokenForm;
+import com.hollybits.socialpetnetwork.helper.Pair;
 import com.hollybits.socialpetnetwork.helper.Test;
 import com.hollybits.socialpetnetwork.models.Breed;
 import com.hollybits.socialpetnetwork.models.Comment;
 import com.hollybits.socialpetnetwork.models.Contact;
 import com.hollybits.socialpetnetwork.models.Coordinates;
 import com.hollybits.socialpetnetwork.models.Country;
+import com.hollybits.socialpetnetwork.models.Exception;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
 import com.hollybits.socialpetnetwork.models.LostPet;
@@ -59,8 +61,10 @@ public interface ServerRequests {
     Call<List<Country>> getAllCountries();
 
     @POST("/registration")
-    Call<String> sendRegistrationFormToTheServer(@Body RegistrationForm registrationForm);
+    Call<Pair<String, String>> sendRegistrationFormToTheServer(@Body RegistrationForm registrationForm);
 
+
+    @Multipart
     @POST("/registrationWithPhoto")
     Call<String> sendRegistrationFormToTheServer(@Body RegistrationForm registrationForm, @Part MultipartBody.Part img);
 
@@ -232,4 +236,9 @@ public interface ServerRequests {
                                  @Query("user_id_who_left_a_comment") Long id,
                                  @Query("text") String text,
                                  @Query("photoID") Long photoID);
+
+
+
+    @POST("/recordExeptionInfo")
+    Call<Void> recordException(@HeaderMap Map<String, String> headers, @Body Exception e);
 }
