@@ -445,9 +445,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 if(response.body() != null){
                     countries.clear();
                     countries.addAll(response.body());
-                    ((RegistrationValidator) validator).setCountries(countries);
-
                     autoCompleteCountryAdapter = new AutoCompleteCountryAdapter(RegistrationActivity.this,countries);
+                    ((RegistrationValidator) validator).setCountries(countries);
                     chosenCountry.setAdapter(autoCompleteCountryAdapter);
                 }
 
