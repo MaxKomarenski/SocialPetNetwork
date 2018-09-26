@@ -50,9 +50,9 @@ import retrofit2.http.Query;
 
 public interface ServerRequests {
 
-    String BASE_REMOTE_OUR = "https://206.189.61.135:8443/";
+    String BASE_REMOTE_OUR = "https:/178.128.225.124:8443/";
     String BASE_LOCAL = "https://10.0.2.2:8443/";
-    String CURRENT_ENDPOINT = BASE_LOCAL;
+    String CURRENT_ENDPOINT = BASE_REMOTE_OUR;
 
     @GET("/api/getBreedsForType")
     Call<List<Breed>> getBreedsForType(@Query("petType")PetType petType);
