@@ -204,6 +204,7 @@ public class Account extends Fragment {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
 
+                    Paper.book(PhotoManager.PAPER_BOOK_NAME).delete(PhotoManager.MAIN_PHOTO);
                     Log.d("UPDATE PHOTO RESPONSE:", String.valueOf(response.code()));
                 }
 

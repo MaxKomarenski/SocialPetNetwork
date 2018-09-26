@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.hollybits.socialpetnetwork.Fragments.UserFriends;
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
@@ -80,8 +82,6 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
     @Override
     public void onBindViewHolder(@NonNull FriendshipRequestAdapter.MyViewHolder holder, int position) {
         try {
-
-
             InfoAboutUserFriendShipRequest request = friendShipRequests.get(position);
             holder.userName.setText(request.getName() + " " + request.getSurname());
             holder.userName.setTypeface(first);
@@ -113,7 +113,7 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
                 }
             });
         }catch (Exception e){
-            return;
+            FragmentDispatcher.launchFragment(UserFriends.class);
         }
     }
 
