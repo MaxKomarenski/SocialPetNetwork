@@ -325,6 +325,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 dismissLoadingDialog(1500);
 
                 Breed breedOfPet = getChosenBreed(breedInput.getText().toString());
+                breedOfPet.setType(petType);
+
 
                 Attitude attitude;
                 if (attitudeSwitchMultiButton.getSelectedTab() == 0)

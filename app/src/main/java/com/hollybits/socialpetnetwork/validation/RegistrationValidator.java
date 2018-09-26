@@ -259,8 +259,8 @@ public class RegistrationValidator implements Validator {
                 return this;
             }
         }
-        errorType = ErrorType.INPUT_ERROR;
-        breedInput.setError("Please choose breed from list");
+        validationState = true;
+        errorType = ErrorType.NO_ERROR;
         return this;
     }
 
