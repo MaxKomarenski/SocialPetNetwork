@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -169,8 +170,8 @@ public class FriendAccount extends Fragment {
 
         View acceptDeletingFriend = FriendAccount.this.getLayoutInflater().inflate(R.layout.accept_deleting_friend, null);
 
-        ImageButton accept = acceptDeletingFriend.findViewById(R.id.acceptDeletingFriend);
-        ImageButton reject = acceptDeletingFriend.findViewById(R.id.rejectDeletingFriends);
+        Button accept = acceptDeletingFriend.findViewById(R.id.acceptDeletingFriend);
+        Button reject = acceptDeletingFriend.findViewById(R.id.rejectDeletingFriends);
         TextView warning = acceptDeletingFriend.findViewById(R.id.warningTextView);
         warning.setTypeface(mainFont);
         BottomSheet bottomSheet = new BottomSheet.Builder(FriendAccount.this.getActivity())
