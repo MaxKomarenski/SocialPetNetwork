@@ -187,6 +187,7 @@ public class RegistrationActivity extends AppCompatActivity {
         loadCountriesList();
 
         sexOfPetJelly.setRightBackgroundColor("#f81894");
+        sexOfPetJelly.setLeftBackgroundColor("#0392cf");
         sexOfPetJelly.setLeftText("Male");
         sexOfPetJelly.setRightText("Female");
         sexOfPetJelly.setRightTextColor("#000000");

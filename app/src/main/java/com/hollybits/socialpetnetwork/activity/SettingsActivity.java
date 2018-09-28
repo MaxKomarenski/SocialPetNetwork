@@ -37,6 +37,9 @@ public class SettingsActivity extends AppCompatActivity {
     @BindView(R.id.settings_text_in_settings_page)
     TextView settingsTextView;
 
+    @BindView(R.id.set_notifications_text)
+    TextView setNotificationText;
+
     @BindView(R.id.sos_text_in_settings)
     TextView sosTextView;
 
@@ -66,6 +69,7 @@ public class SettingsActivity extends AppCompatActivity {
         sosTextView.setTypeface(anotherFont);
         privacyText.setTypeface(mainFont);
         myLocationTextView.setTypeface(anotherFont);
+        setNotificationText.setTypeface(mainFont);
 
         sosToggleButton.setRightBackgroundColor("#b6d9f5");
         sosToggleButton.setLeftBackgroundColor("#45b549");

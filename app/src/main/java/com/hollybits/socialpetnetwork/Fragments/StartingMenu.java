@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,10 +8,12 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.activity.SettingsActivity;
 import com.hollybits.socialpetnetwork.enums.GalleryMode;
 import com.hollybits.socialpetnetwork.helper.FriendDownloader;
 
@@ -27,6 +30,9 @@ import io.paperdb.Paper;
  * create an instance of this fragment.
  */
 public class StartingMenu extends Fragment {
+
+    @BindView(R.id.settings_starting_menu_img_button)
+    ImageButton settingsButton;
 
     @BindView(R.id.friends_card_view_in_starting_menu)
     CardView friendsCardView;
@@ -101,6 +107,14 @@ public class StartingMenu extends Fragment {
     }
 
     private void allListeners(){
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         friendsCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

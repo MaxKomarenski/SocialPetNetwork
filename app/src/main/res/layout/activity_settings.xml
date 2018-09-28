@@ -62,7 +62,7 @@
         <ImageView
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/hz_sho"
             android:layout_marginStart="20dp"/>
 
         <TextView
