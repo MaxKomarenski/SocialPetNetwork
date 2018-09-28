@@ -156,6 +156,22 @@
                 android:textCursorDrawable="@drawable/color_cursor"
                 />
 
+            <EditText
+                android:id="@+id/confirm_password_edit_text_in_registration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:backgroundTint="#fff"
+                android:textColor="#fff"
+                android:textColorHint="#fff"
+                android:paddingStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:textCursorDrawable="@drawable/color_cursor"
+                />
+
             <ImageButton
                 android:id="@+id/registration_button"
                 android:layout_width="wrap_content"

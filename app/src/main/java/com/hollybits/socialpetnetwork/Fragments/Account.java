@@ -280,7 +280,7 @@ public class Account extends Fragment {
         informationAboutPet.get(5).setText(currentUser.getCity().getName() + ", " + currentUser.getCity().getCountry().getName());// city and country
         informationAboutPet.get(7).setText(currentPet.getAge().toString()); // age
         informationAboutPet.get(9).setText(currentPet.getWeight().getMass().toString() + " " + currentPet.getWeight().getMassUnit().getName().toLowerCase());
-        informationAboutPet.get(11).setText(currentPet.getAttitude().toString());
+        informationAboutPet.get(11).setText(currentPet.getAttitude().getName());
 
         informationAboutUser.get(0).setText(currentUser.getName() + " " + currentUser.getSurname());
         informationAboutUser.get(1).setText(currentUser.getPhone());

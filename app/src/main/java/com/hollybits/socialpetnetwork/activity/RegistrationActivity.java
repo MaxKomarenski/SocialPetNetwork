@@ -131,6 +131,9 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.password_edit_text_in_registration)
     EditText password;
 
+    @BindView(R.id.confirm_password_edit_text_in_registration)
+    EditText retypePassword;
+
     @BindViews({R.id.rat_pet_type_image_button, R.id.cat_pet_type_image_button,
             R.id.bird_pet_type_image_button, R.id.dog_pet_type_image_button,
             R.id.rabbit_rat_pet_type_image_button, R.id.raccoon_pet_type_image_button})
@@ -488,6 +491,13 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        if(informationScrollView.getVisibility() == View.VISIBLE)
+            super.onBackPressed();
+        else {
+            informationScrollView.setVisibility(View.VISIBLE);
+            emailAndPasswordLinearLayout.setVisibility(View.GONE);
+        }
+    }
 }
