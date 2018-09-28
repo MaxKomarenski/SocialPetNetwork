@@ -143,17 +143,18 @@ public class LostPets extends Fragment {
             MainActivity.getServerRequests().getAllLostPetsFromUserDistrict(authorisationCode, addresses.get(0)).enqueue(new Callback<List<LostPet>>() {
                 @Override
                 public void onResponse(Call<List<LostPet>> call, Response<List<LostPet>> response) {
-                    lostPetList.clear();
-
-                    lostPetList.addAll(response.body());
-                    lostPetAdapter = new LostPetAdapter(lostPetList, mainFont, breedFont, LostPets.this);
-                    lostPetsRecyclerView.setAdapter(lostPetAdapter);
-                    try{
-                    LostPets.this.getActivity().runOnUiThread(()->{
-                        lostPetAdapter.notifyDataSetChanged();
-                    });
-                    }catch (NullPointerException e ){
-                        e.printStackTrace();
+                    if (response.body() != null){
+                        lostPetList.clear();
+                        lostPetList.addAll(response.body());
+                        lostPetAdapter = new LostPetAdapter(lostPetList, mainFont, breedFont, LostPets.this);
+                        lostPetsRecyclerView.setAdapter(lostPetAdapter);
+                        try{
+                            LostPets.this.getActivity().runOnUiThread(()->{
+                                lostPetAdapter.notifyDataSetChanged();
+                            });
+                        }catch (NullPointerException e ){
+                            e.printStackTrace();
+                        }
                     }
 
                 }

@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -34,6 +35,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.dialogs.AcceptThatYourPetIsLostDialog;
 import com.hollybits.socialpetnetwork.helper.MarkersOnMapDisplayer;
 import com.hollybits.socialpetnetwork.models.Coordinates;
 import com.hollybits.socialpetnetwork.models.User;
@@ -306,44 +308,9 @@ public class Map extends Fragment  {
                     @Override
                     public void onClick(View v) {
                         sos.startAnimation(buttonClick);
-                        mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location) {
-                                try {
-                                    List<Address> addresses = locationInfoSupplier.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                                    if(addresses.size()==1){
-                                        MainActivity.getServerRequests().sos(code, currentUser.getId(),
-                                                currentUser.getPets().get(0).getId(),
-                                                addresses.get(0)).enqueue(new Callback<Void>() {
-                                            @Override
-                                            public void onResponse(Call<Void> call, Response<Void> response) {
-                                                if(response.code() == 202){
-                                                    Log.d("SOS", "OK");
-                                                    //bottomSheet.dismiss();
-                                                }
-                                                else {
-                                                    Log.d("SOS", "FAIL: "+ response.code());
-                                                    //bottomSheet.dismiss();
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onFailure(Call<Void> call, Throwable t) {
-
-                                                t.printStackTrace();
-                                            }
-                                        });
-
-
-
-
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        });
+                        DialogFragment lostDialog = new AcceptThatYourPetIsLostDialog();
+                        ((AcceptThatYourPetIsLostDialog) lostDialog).initialise(locationInfoSupplier, currentUser, code, mFusedLocationClient);
+                        lostDialog.show(getFragmentManager(), "dialof");
                     }
                 });
 
@@ -363,15 +330,7 @@ public class Map extends Fragment  {
                         });
                     }
                 });
-//                bottomSheet = new BottomSheet.Builder(Map.this.getActivity())
-//                        .setView(view).create();
-//                        // You can also show the custom view with some padding in DP (left, top, right, bottom)
-//                        //.setCustomView(customView, 20, 20, 20, 0)
-//
-//                bottomSheet.show();
 
-//            }
-//        });
     }
 
     /**
