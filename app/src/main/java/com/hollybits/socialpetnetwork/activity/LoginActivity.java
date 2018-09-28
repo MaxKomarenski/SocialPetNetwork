@@ -217,7 +217,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkLogin(){
-        User current = Paper.book().read(MainActivity.CURRENTUSER);
+        User current;
+        try {
+            current = Paper.book().read(MainActivity.CURRENTUSER);
+        }catch (Exception e){
+            return;
+        }
+
         if(current != null){
             Log.d("checkLogin ","Current is not null");
             Timestamp lastLoginDate = Paper.book().read(DATE);

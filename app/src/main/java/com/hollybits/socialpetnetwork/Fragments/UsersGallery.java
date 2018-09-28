@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -146,6 +147,7 @@ public class UsersGallery extends Fragment {
         java.util.Map<String, String> authorisationCode = new HashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
         mode = Paper.book().read(MainActivity.GALLERY_MODE);
+        Log.d("MODE: ", mode.name());
         PhotoManager photoManager = new PhotoManager(this);
         if(mode == GalleryMode.USERS_MODE) {
 
@@ -166,7 +168,7 @@ public class UsersGallery extends Fragment {
                 });
 
                 photoManager.loadFriendsMainPhoto(avatar, currentUser.getId());
-                uploadPhoto.setVisibility(View.GONE);
+                uploadPhoto.setVisibility(View.VISIBLE);
 
             } else {
                 String countOfFriends = friends.size() + " friends";
