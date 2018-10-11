@@ -29,6 +29,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAByyMjSbLLwYtynCMhUIFNTi3FBU1c2jI" />
         <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="3c34258e4cd9625647fa942ea219d458eccfc8c5"
+            />
+        <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 

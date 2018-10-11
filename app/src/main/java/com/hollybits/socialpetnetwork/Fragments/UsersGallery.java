@@ -17,6 +17,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
@@ -35,6 +36,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.fabric.sdk.android.Fabric;
 import io.paperdb.Paper;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -131,6 +133,24 @@ public class UsersGallery extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         ButterKnife.bind(this, view);
+        try {
+
+
+        if(this.getActivity() != null){
+            Fabric.with(this.getActivity(), new Crashlytics());
+            Log.d("GALLERY", "FABRIC CRASH REPORT INITIALIZED");
+        }
+
+
+
+
+
+
+
+
+
+
+
 
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
 
@@ -210,6 +230,10 @@ public class UsersGallery extends Fragment {
         galleryText.setTypeface(mainFont);
         getIdsOfUserPhoto();
         listeners();
+        return view;
+            }catch (Exception e){
+            Crashlytics.logException(e);
+        }
         return view;
     }
 
