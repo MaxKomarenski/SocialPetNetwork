@@ -88,13 +88,10 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Paper.init(this);
         PACKAGE_NAME = getPackageName();
-
-
         if(retrofitInit()){
             Log.d("RETROFIT INIT", "OK");
             checkLogin();
-        }
-        else {
+        } else {
             //TODO Error!!!!!!!!!!!!!
             Log.d("RETROFIT INIT", "FAIL");
         }
