@@ -3,6 +3,8 @@ package com.hollybits.socialpetnetwork.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -39,6 +41,7 @@ import com.hollybits.socialpetnetwork.models.City;
 import com.hollybits.socialpetnetwork.models.Country;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -267,6 +270,15 @@ public class RegistrationActivity extends AppCompatActivity {
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String mediaPath = cursor.getString(columnIndex);
             File file = new File(mediaPath);
+            int compressionRatio = 4; //1 == originalImage, 2 = 50% compression, 4=25% compress
+            try {
+                Bitmap bitmap = BitmapFactory.decodeFile (file.getPath ());
+                bitmap.compress (Bitmap.CompressFormat.JPEG, compressionRatio, new FileOutputStream(file));
+            }
+            catch (Throwable t) {
+                Log.e("ERROR", "Error compressing file." + t.toString ());
+                t.printStackTrace ();
+            }
             RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
             fileToUpload = MultipartBody.Part.createFormData("img", file.getName(), requestBody);
         }

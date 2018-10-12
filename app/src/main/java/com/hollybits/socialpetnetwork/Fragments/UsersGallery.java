@@ -2,6 +2,8 @@ package com.hollybits.socialpetnetwork.Fragments;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.models.UserInfo;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,18 +143,6 @@ public class UsersGallery extends Fragment {
             Fabric.with(this.getActivity(), new Crashlytics());
             Log.d("GALLERY", "FABRIC CRASH REPORT INITIALIZED");
         }
-
-
-
-
-
-
-
-
-
-
-
-
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
 
         numberOfFriends.setTypeface(mainFont);
@@ -251,12 +242,22 @@ public class UsersGallery extends Fragment {
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String mediaPath = cursor.getString(columnIndex);
             File file = new File(mediaPath);
+
+
+            int compressionRatio = 4; //1 == originalImage, 2 = 50% compression, 4=25% compress
+            try {
+                Bitmap bitmap = BitmapFactory.decodeFile (file.getPath ());
+                bitmap.compress (Bitmap.CompressFormat.JPEG, compressionRatio, new FileOutputStream(file));
+            }
+            catch (Throwable t) {
+                Log.e("ERROR", "Error compressing file." + t.toString ());
+                t.printStackTrace ();
+            }
             RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
             MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("img", file.getName(), requestBody);
 
-            Paper.book().write("PATH_TO_PHOTO", mediaPath);
-            RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
 
+            Paper.book().write("PATH_TO_PHOTO", mediaPath);
 
             System.err.println("ATTENTION");
             System.err.println(mediaPath);
