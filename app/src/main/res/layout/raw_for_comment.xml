@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:textStyle="bold"
         android:text="name surname"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,14 +21,11 @@
         android:id="@+id/text_comment_in_comment_raw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:text="text comment comment"
-        app:layout_constraintStart_toStartOf="@+id/name_and_surname_in_comment_raw"
-        app:layout_constraintTop_toBottomOf="@+id/name_and_surname_in_comment_raw" />
+        app:layout_constraintBottom_toBottomOf="@+id/name_and_surname_in_comment_raw"
+        app:layout_constraintStart_toEndOf="@+id/name_and_surname_in_comment_raw"
+        app:layout_constraintTop_toTopOf="@+id/name_and_surname_in_comment_raw" />
 
-    <!--<TextView-->
-        <!--android:id="@+id/time_in_comment_raw"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content" />-->
 
 </android.support.constraint.ConstraintLayout>

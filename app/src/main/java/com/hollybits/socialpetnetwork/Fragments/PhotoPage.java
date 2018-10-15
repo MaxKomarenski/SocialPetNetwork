@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -66,7 +67,7 @@ public class PhotoPage extends Fragment{
     TextView nameAndSurnameTextView;
 
     @BindView(R.id.to_gallery_in_photo_page)
-    Button toGalleryButton;
+    ImageButton toGalleryButton;
 
     @BindView(R.id.photo_text_in_photo_page)
     TextView photoTextView;
@@ -81,7 +82,7 @@ public class PhotoPage extends Fragment{
     EditText writeNewCommentEditText;
 
     @BindView(R.id.sendNewCommentButton)
-    Button sendNewCommentButton;
+    ImageButton sendNewCommentButton;
 
     private CommentAdapter commentAdapter;
     private OnFragmentInteractionListener mListener;
@@ -198,6 +199,8 @@ public class PhotoPage extends Fragment{
                 String commentText = writeNewCommentEditText.getText().toString();
                 if(!commentText.equals("")){
                     sendNewComment(commentText, id);
+
+
                 }
             }
         });
@@ -211,7 +214,8 @@ public class PhotoPage extends Fragment{
         MainActivity.getServerRequests().sendNewComment(authorisationCode, time.toString(), currentUser.getId(), text, photoID).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-
+                commentAdapter.addItem(new Comment(text ,currentUser.getName(), currentUser.getSurname()));
+                commentAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -219,6 +223,8 @@ public class PhotoPage extends Fragment{
 
             }
         });
+
+        writeNewCommentEditText.setText("");
     }
 
     private void loadBitmapToImageView(ImageView  imageView, Bitmap bitmap){

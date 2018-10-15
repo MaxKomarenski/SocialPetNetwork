@@ -53,5 +53,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         return comments.size();
     }
 
+    public void addItem(Comment comment){
+        comments.add(comment);
+    }
+
 
 }

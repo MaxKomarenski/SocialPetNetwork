@@ -14,6 +14,12 @@ public class Comment{
     public Comment() {
     }
 
+    public Comment(String text, String name, String surname) {
+        this.text = text;
+        this.name = name;
+        this.surname = surname;
+    }
+
     public Long getId() {
         return id;
     }
