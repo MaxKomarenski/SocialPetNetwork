@@ -20,6 +20,7 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.models.User;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -119,35 +120,7 @@ public class PhotoManager {
 
 
 
-    public void loadUsersPhoto(ImageView target, Long id){
-        byte[] photoBytes = Paper.book(PAPER_BOOK_NAME).read(REGULAR_PHOTO+id);
-        if(photoBytes!=null){
-            Bitmap photo = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
-            loadBitmapToImageView(target, photo);
-            return;
-        }
-        MainActivity.getServerRequests().getPhoto(authorisationCode, currentUser.getId(), id).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                byte[] content;
-                if(response.body() != null){
-                    try {
-                        content = response.body().bytes();
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
-                        loadBitmapToImageView(target, bitmap);
-                        Paper.book(PAPER_BOOK_NAME).write(REGULAR_PHOTO+id, content);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
 
 
 
@@ -155,6 +128,7 @@ public class PhotoManager {
 
     public void loadUsersPhoto(ImageView target, Long id, ProgressBar progressBar){
         byte[] photoBytes = Paper.book(PAPER_BOOK_NAME).read(REGULAR_PHOTO+id);
+
         if(photoBytes!=null){
             Bitmap photo = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
             loadBitmapToImageView(target, photo, progressBar);
@@ -169,6 +143,8 @@ public class PhotoManager {
                         content = response.body().bytes();
                         Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
                         loadBitmapToImageView(target, bitmap, progressBar);
+                        //ByteArrayOutputStream out = new ByteArrayOutputStream();
+//                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
                         Paper.book(PAPER_BOOK_NAME).write(REGULAR_PHOTO+id, content);
                     } catch (IOException e) {
                         e.printStackTrace();

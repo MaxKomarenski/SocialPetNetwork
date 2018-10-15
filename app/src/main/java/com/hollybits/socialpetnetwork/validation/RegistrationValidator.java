@@ -55,7 +55,6 @@ public class RegistrationValidator implements Validator {
         AutoCompleteTextView countryInput = activity.findViewById(R.id.country_auto_complete_text_in_registration);
         EditText nameOfPet = activity.findViewById(R.id.name_edit_text_in_registration);
         EditText ageOfPet = activity.findViewById(R.id.age_edit_text_in_registration);
-        EditText tagNumberOfPet = activity.findViewById(R.id.tag_number_edit_text_in_registration);
         EditText weightOfPet = activity.findViewById(R.id.weight_edit_text_in_registration);
         EditText ownerName = activity.findViewById(R.id.owner_name_edit_text_in_registration);
         EditText ownerSurname = activity.findViewById(R.id.owner_surname_edit_text_in_registration);
@@ -63,11 +62,11 @@ public class RegistrationValidator implements Validator {
         EditText cityEdit = activity.findViewById(R.id.city_edit_text_in_registration);
         EditText email = activity.findViewById(R.id.email_edit_text_in_registration);
         EditText password = activity.findViewById(R.id.password_edit_text_in_registration);
+        EditText confrmPass = activity.findViewById(R.id.confirm_password_edit_text_in_registration);
 
         if(flag == 0){
                validateNameOfPet(nameOfPet)
                     .than().validateBreedInput(breedInput)
-                    .than().validateTagNumber(tagNumberOfPet)
                     .than().validateAgeOfPet(ageOfPet)
                     .than().validateWeightOfPet(weightOfPet);
         }
@@ -78,7 +77,7 @@ public class RegistrationValidator implements Validator {
                     .than().validateCountyInput(countryInput)
                     .than().validateCity(cityEdit)
                     .than().validateEmail(email)
-                    .than().validatePassword(password);
+                    .than().validatePassword(password, confrmPass);
         }
         return validationState;
     }
@@ -135,13 +134,18 @@ public class RegistrationValidator implements Validator {
 
         return this;
     }
-    private RegistrationValidator validatePassword(EditText passwordEditText){
+    private RegistrationValidator validatePassword(EditText passwordEditText, EditText confirm){
         if(!validationState)
-
             return this;
         String password = passwordEditText.getText().toString();
+        String pass2 =  confirm.getText().toString();
 
-
+        if(!password.equals(pass2)){
+            validationState = false;
+            errorType = ErrorType.INPUT_ERROR;
+            actualProblem = owerInfoProblem;
+            confirm.setError("Passwords must match");
+        }
         if(password.length() < 6){
             validationState = false;
             errorType = ErrorType.INPUT_ERROR;
@@ -264,17 +268,6 @@ public class RegistrationValidator implements Validator {
         return this;
     }
 
-    private RegistrationValidator validateTagNumber(EditText tagNumberOfPet){
-        if(!validationState)
-            return this;
-        if(tagNumberOfPet.getText().toString().isEmpty()){
-            validationState = false;
-            actualProblem = petInfoProblem;
-            errorType = ErrorType.INPUT_ERROR;
-            tagNumberOfPet.setError("Please enter Tag Number");
-        }
-        return this;
-    }
 
 
     private RegistrationValidator validateNameOfPet(EditText editText){

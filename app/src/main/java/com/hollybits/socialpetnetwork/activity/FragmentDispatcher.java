@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.Fragments.Account;
+import com.hollybits.socialpetnetwork.Fragments.Store;
 import com.hollybits.socialpetnetwork.Fragments.UsersGallery;
 import com.hollybits.socialpetnetwork.Fragments.Messages;
 import com.hollybits.socialpetnetwork.Fragments.StartingMenu;
@@ -329,6 +330,7 @@ public class FragmentDispatcher extends AppCompatActivity
         options.put(R.id.nav_friends, UserFriends.class);
         options.put(R.id.nav_messages, Messages.class);
         options.put(R.id.nav_gallery, UsersGallery.class);
+        options.put(R.id.nav_store, Store.class);
         prepareFriendShipRequestsList();
         getAllUnPersistentFriendShipRequests();
     }

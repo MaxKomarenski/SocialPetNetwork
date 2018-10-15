@@ -319,7 +319,7 @@ public class FriendAccount extends Fragment {
                 userInfo.getCity().getName() + ", " + userInfo.getCity().getCountry().getName(),
                 pet.getAge().toString(),
                 pet.getWeight().getMass().toString() + " " + pet.getWeight().getMassUnit().name().toLowerCase(),
-                pet.getAttitude().name(),
+                pet.getAttitude().getName(),
                 userInfo.getName() + " " + userInfo.getSurname(),
                 userInfo.getPhone(),
                 userInfo.getEmail()

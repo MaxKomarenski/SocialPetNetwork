@@ -140,7 +140,7 @@ public class Map extends Fragment  {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
-                attachListeners();
+
                 markersOnMapDisplayer = new MarkersOnMapDisplayer(googleMap, Map.this.getActivity());
                 currentUser = Paper.book().read(MainActivity.CURRENTUSER);
                 code = new HashMap<>();
@@ -163,6 +163,7 @@ public class Map extends Fragment  {
                     positionTracker = Executors.newScheduledThreadPool(2);
                     positionTracker.scheduleAtFixedRate(Map.this::startTracking,0, 1, TimeUnit.SECONDS );
                     positionTracker.scheduleAtFixedRate(Map.this::locateOthers, 1, 1,TimeUnit.SECONDS);
+                    attachListeners();
                 } else {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},ACCESS_FINE_LOCATION_CODE);
                 }
@@ -254,6 +255,7 @@ public class Map extends Fragment  {
                     positionTracker.scheduleAtFixedRate(Map.this::startTracking,0, 5, TimeUnit.SECONDS );
                     positionTracker.scheduleAtFixedRate(Map.this::locateOthers, 0, 1,TimeUnit.SECONDS);
                     animateMapToUsersLocation();
+                    attachListeners();
                 } catch (SecurityException e) {
                     Log.d("PERMISSION", "SecurityException");
                 }
@@ -303,6 +305,7 @@ public class Map extends Fragment  {
                 AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
 
 
+                sos.setVisibility(View.VISIBLE);
                 sos.setOnClickListener(new View.OnClickListener() {
                     @SuppressLint("MissingPermission")
                     @Override
@@ -314,6 +317,7 @@ public class Map extends Fragment  {
                     }
                 });
 
+                help.setVisibility(View.VISIBLE);
                 help.setOnClickListener(new View.OnClickListener() {
                     @SuppressLint("MissingPermission")
                     @Override

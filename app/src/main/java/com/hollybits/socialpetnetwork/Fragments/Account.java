@@ -3,6 +3,8 @@ package com.hollybits.socialpetnetwork.Fragments;
 import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +32,7 @@ import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
 
@@ -188,11 +191,18 @@ public class Account extends Fragment {
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String mediaPath = cursor.getString(columnIndex);
             File file = new File(mediaPath);
+
+            int compressionRatio = 4; //1 == originalImage, 2 = 50% compression, 4=25% compress
+            try {
+                Bitmap bitmap = BitmapFactory.decodeFile (file.getPath ());
+                bitmap.compress (Bitmap.CompressFormat.JPEG, compressionRatio, new FileOutputStream(file));
+            }
+            catch (Throwable t) {
+                Log.e("ERROR", "Error compressing file." + t.toString ());
+                t.printStackTrace ();
+            }
             RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
             MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("img", file.getName(), requestBody);
-            RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-            System.err.println("ATTENTION");
-            System.err.println(mediaPath);
 
 
             User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
@@ -280,7 +290,7 @@ public class Account extends Fragment {
         informationAboutPet.get(5).setText(currentUser.getCity().getName() + ", " + currentUser.getCity().getCountry().getName());// city and country
         informationAboutPet.get(7).setText(currentPet.getAge().toString()); // age
         informationAboutPet.get(9).setText(currentPet.getWeight().getMass().toString() + " " + currentPet.getWeight().getMassUnit().getName().toLowerCase());
-        informationAboutPet.get(11).setText(currentPet.getAttitude().toString());
+        informationAboutPet.get(11).setText(currentPet.getAttitude().getName());
 
         informationAboutUser.get(0).setText(currentUser.getName() + " " + currentUser.getSurname());
         informationAboutUser.get(1).setText(currentUser.getPhone());
