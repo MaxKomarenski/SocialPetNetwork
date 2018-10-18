@@ -460,23 +460,10 @@
                     android:layout_height="wrap_content"
                     android:text="I am friendly to"/>
 
+                <include layout="@layout/attitute_table"/>
+
 
             </LinearLayout>
-
-            <lib.kingja.switchbutton.SwitchMultiButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/attitude_switch_multi_button"
-                android:background="#fff"
-                android:layout_marginTop="20dp"
-                android:padding="15dp"
-                app:strokeWidth="1dp"
-                app:selectedTab="0"
-                app:selectedColor="#ef8144"
-                app:switchTabs="@array/switch_tabs"
-                app:textSize="12sp" />
-
-            <include layout="@layout/attitute_table"/>
 
 
             <Button
