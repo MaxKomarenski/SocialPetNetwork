@@ -2,9 +2,11 @@ package com.hollybits.socialpetnetwork.helper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -21,7 +23,10 @@ import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.models.User;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,6 +50,7 @@ public class PhotoManager {
     public static final String MAIN_PHOTO = "mainPhoto";
     public static final String REGULAR_PHOTO = "regularPhoto";
     public static final String PAPER_BOOK_NAME = "photos";
+    public static final String PAPER_BOOK_NAME_FRIENDS = "photos";
 
 
 
@@ -72,8 +78,14 @@ public class PhotoManager {
 
 
 
-
     public void loadFriendPhoto(ImageView target, Long id, ProgressBar progressBar){
+
+        byte[]  photoPath = Paper.book(PAPER_BOOK_NAME_FRIENDS).read(REGULAR_PHOTO+id);
+        if(photoPath!=null){
+            loadBitmapToImageView(target, photoPath, progressBar);
+            return;
+        }
+
         MainActivity.getServerRequests().getPhoto(authorisationCode, currentUser.getId(),id).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -81,8 +93,8 @@ public class PhotoManager {
                 if(response.body() != null){
                     try {
                         content = response.body().bytes();
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
-                        loadBitmapToImageView(target, bitmap, progressBar);
+                        loadBitmapToImageView(target, content, progressBar);
+                        Paper.book(PAPER_BOOK_NAME_FRIENDS).write(REGULAR_PHOTO+id, content);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -103,8 +115,7 @@ public class PhotoManager {
                 if(response.body() != null){
                     try {
                         content = response.body().bytes();
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
-                        loadBitmapToImageView(target, bitmap);
+                        loadBitmapToImageView(target, content);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -118,20 +129,10 @@ public class PhotoManager {
         });
     }
 
-
-
-
-
-
-
-
-
     public void loadUsersPhoto(ImageView target, Long id, ProgressBar progressBar){
-        byte[] photoBytes = Paper.book(PAPER_BOOK_NAME).read(REGULAR_PHOTO+id);
-
-        if(photoBytes!=null){
-            Bitmap photo = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
-            loadBitmapToImageView(target, photo, progressBar);
+        byte[]  photoPath = Paper.book(PAPER_BOOK_NAME).read(REGULAR_PHOTO+id);
+        if(photoPath!=null){
+            loadBitmapToImageView(target, photoPath, progressBar);
             return;
         }
         MainActivity.getServerRequests().getPhoto(authorisationCode, currentUser.getId(), id).enqueue(new Callback<ResponseBody>() {
@@ -141,10 +142,11 @@ public class PhotoManager {
                 if(response.body() != null){
                     try {
                         content = response.body().bytes();
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
-                        loadBitmapToImageView(target, bitmap, progressBar);
+                        loadBitmapToImageView(target, content, progressBar);
                         //ByteArrayOutputStream out = new ByteArrayOutputStream();
 //                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                        //Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
+                       // String path = saveToInternalStorage(bitmap);
                         Paper.book(PAPER_BOOK_NAME).write(REGULAR_PHOTO+id, content);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -161,13 +163,11 @@ public class PhotoManager {
 
    public void loadUsersMainPhoto(ImageView target){
 
-       byte[] photoBytes = Paper.book(PAPER_BOOK_NAME).read(MAIN_PHOTO);
-       if(photoBytes!=null){
-           Bitmap photo = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
-           loadBitmapToImageView(target, photo);
+       byte[]  photoPath  = Paper.book(PAPER_BOOK_NAME).read(MAIN_PHOTO);
+       if(photoPath !=null){
+           loadBitmapToImageView(target, photoPath);
            return;
        }
-
        MainActivity.getServerRequests().getMainPhoto(authorisationCode, currentUser.getId()).enqueue(new Callback<ResponseBody>() {
            @Override
            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -175,8 +175,9 @@ public class PhotoManager {
                if(response.body() != null){
                    try {
                        content = response.body().bytes();
-                       Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
-                       loadBitmapToImageView(target, bitmap);
+                      // Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
+                       loadBitmapToImageView(target, content);
+                      // String path = saveToInternalStorage(bitmap);
                        Paper.book(PAPER_BOOK_NAME).write(MAIN_PHOTO, content);
                    } catch (IOException e) {
                        Log.d("PHOTOMANAGER", "ERROR");
@@ -200,8 +201,8 @@ public class PhotoManager {
                 if(response.body() != null){
                     try {
                         content = response.body().bytes();
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
-                        loadBitmapToImageView(target, bitmap);
+                       // Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
+                        loadBitmapToImageView(target, content);
                     } catch (IOException e) {
                         Log.d("PHOTOMANAGER", "ERROR");
                         e.printStackTrace();
@@ -219,11 +220,10 @@ public class PhotoManager {
         if(currentUser == null){
             init();
         }
-        byte[] photoBytes = Paper.book(PAPER_BOOK_NAME).read(MAIN_PHOTO);
-        if(photoBytes!=null){
-            Bitmap photo = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
+        byte[] path  = Paper.book(PAPER_BOOK_NAME).read(MAIN_PHOTO);
+        if(path!=null){
             GlideApp.with(activity)
-                    .load(photo)
+                    .load(path)
                     .placeholder(R.drawable.test_photo)
                     .into(imageView);
             return;
@@ -236,12 +236,10 @@ public class PhotoManager {
                 if(response.body() != null){
                     try {
                         content = response.body().bytes();
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
                         GlideApp.with(activity)
-                                .load(bitmap)
+                                .load(content)
                                 .placeholder(R.drawable.test_photo)
                                 .into(imageView);
-                        Paper.book(PAPER_BOOK_NAME).write(MAIN_PHOTO, content);
                     } catch (IOException e) {
                         Log.d("PHOTOMANAGER", "ERROR");
                         e.printStackTrace();
@@ -256,7 +254,7 @@ public class PhotoManager {
     }
 
 
-   private void loadBitmapToImageView(ImageView  imageView, Bitmap bitmap, ProgressBar progressBar){
+   private void loadBitmapToImageView(ImageView  imageView, byte[] bitmap, ProgressBar progressBar){
        GlideApp.with(fragment)
                .load(bitmap)
                .listener(new RequestListener<Drawable>() {
@@ -275,7 +273,8 @@ public class PhotoManager {
                .into(imageView);
    }
 
-    private void loadBitmapToImageView(ImageView  imageView, Bitmap bitmap) {
+
+    private void loadBitmapToImageView(ImageView  imageView, byte[] bitmap) {
         try {
 
 
@@ -292,6 +291,8 @@ public class PhotoManager {
             return;
         }
     }
+
+
 
 
 

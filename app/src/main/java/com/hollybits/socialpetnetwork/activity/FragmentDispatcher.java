@@ -277,6 +277,10 @@ public class FragmentDispatcher extends AppCompatActivity
             Log.d("DELETING KEY: ", s);
             Paper.book(PhotoManager.PAPER_BOOK_NAME).delete(s);
         }
+        for (String s: Paper.book(PhotoManager.PAPER_BOOK_NAME_FRIENDS).getAllKeys()){
+            Log.d("DELETING KEY: ", s);
+            Paper.book(PhotoManager.PAPER_BOOK_NAME_FRIENDS).delete(s);
+        }
         PhotoManager.destroy();
         finish();
         Intent intent = new Intent(this, LoginActivity.class);
