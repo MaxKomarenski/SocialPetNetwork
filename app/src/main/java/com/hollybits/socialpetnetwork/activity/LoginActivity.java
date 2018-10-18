@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -73,19 +74,19 @@ public class LoginActivity extends AppCompatActivity {
     EditText passwordInput;
 
     @BindView(R.id.login_button)
-    ImageButton loginButton;
+    Button loginButton;
 
-    @BindView(R.id.emailText)
-    TextView emailTextView;
 
-    @BindView(R.id.passwordText)
-    TextView passwordView;
+    @BindView(R.id.text_welcome)
+    TextView welcome;
 
-    @BindView(R.id.thank_text_1)
-    TextView thankText1;
+    @BindView(R.id.text_social_pet_net)
+    TextView socialPetNetText;
 
-    @BindView(R.id.thank_text_2)
-    TextView thankText2;
+    @BindView(R.id.sing_up_link)
+    TextView singUp;
+
+
 
     public static class Credentials{
         public String email;
@@ -109,10 +110,8 @@ public class LoginActivity extends AppCompatActivity {
         credentials = new Credentials();
 
         Typeface mainFont = Typeface.createFromAsset(this.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
-        passwordView.setTypeface(mainFont);
-        emailTextView.setTypeface(mainFont);
-        thankText1.setTypeface(mainFont);
-        thankText2.setTypeface(mainFont);
+        welcome.setTypeface(mainFont);
+        socialPetNetText.setTypeface(mainFont);
 
     }
 
@@ -128,9 +127,17 @@ public class LoginActivity extends AppCompatActivity {
                 credentials.password = passwordInput.getText().toString();
                 login(credentials, false);
             }
-
-
         });
+
+        singUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegistrationActivity
+                        .class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 

@@ -61,18 +61,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String GALLERY_MODE = "galleryMode";
     public static String PACKAGE_NAME;
 
-    @BindView(R.id.move_to_login)
-    Button goToLogin;
-    @BindView(R.id.move_to_sing_up)
-    Button goToRegistration;
 
-
-    @BindView(R.id.text_welcome)
-    TextView welcome;
-    @BindView(R.id.text_social_pet_net)
-    TextView socialPetNetText;
-    @BindView(R.id.text_havent_account)
-    TextView haventAccount;
     public MainActivity(){
         instance = this;
     }
@@ -97,32 +86,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
-        Typeface nameFont = Typeface.createFromAsset(this.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
-        welcome.setTypeface(nameFont);
-        socialPetNetText.setTypeface(nameFont);
-        haventAccount.setTypeface(nameFont);
-        goToLogin.setTypeface(nameFont);
-        goToRegistration.setTypeface(nameFont);
-
-
-        goToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity
-                        .class);
-                startActivity(intent);
-            }
-        });
-
-        goToRegistration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RegistrationActivity
-                        .class);
-                startActivity(intent);
-            }
-        });
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
 
     }
 

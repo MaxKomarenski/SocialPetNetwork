@@ -9,151 +9,154 @@
     tools:context="com.hollybits.socialpetnetwork.activity.LoginActivity"
     tools:layout_editor_absoluteY="81dp">
 
+
+    <TextView
+        android:id="@+id/text_welcome"
+        android:layout_width="280dp"
+        android:layout_height="59dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="164dp"
+        android:text="   Welcome To"
+        android:textColor="#FFFFFF"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_social_pet_net"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Social Pet Network"
+        android:textColor="#000000"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_welcome" />
+
+
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/text_social_pet_net">
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/emailText"
-            android:text="Email"
-            android:textColor="#000"
-            android:layout_gravity="start"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"/>
 
         <EditText
             android:id="@+id/email_input_login"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="3dp"
-            android:background="@drawable/rounded_corners_edittext"
-            android:hint="example@gmail.com"
+            android:background="@drawable/rounded_corners_login_top_edittext"
+            android:hint="Email"
             android:inputType="textEmailAddress"
             android:padding="10dp"
-            android:textColor="#ffffff"
-            android:textColorHint="#ffffff"
+            android:paddingStart="40dp"
+            android:textColor="#a0a0a0"
+            android:textColorHint="#a0a0a0"
             android:textCursorDrawable="@drawable/color_cursor"
             android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Password"
-            android:id="@+id/passwordText"
-            android:textColor="#000"
-            android:layout_gravity="start"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"/>
 
         <EditText
             android:id="@+id/password_input_login"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="3dp"
-            android:background="@drawable/rounded_corners_edittext"
-            android:hint="· · · · · · · · "
+            android:layout_marginTop="0dp"
+            android:background="@drawable/rounded_corners_login_bottom_edditext"
+            android:hint="Password"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColor="#ffffff"
-            android:textColorHint="#ffffff"
+            android:paddingStart="40dp"
+
+            android:textAlignment="textStart"
+            android:textColor="#a0a0a0"
+            android:textColorHint="#a0a0a0"
             android:textCursorDrawable="@drawable/color_cursor"
             android:textSize="16sp" />
 
 
     </LinearLayout>
 
-    <ImageButton
+    <Button
         android:id="@+id/login_button"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:src="@drawable/login_button"
-        android:background="@color/primeBackground"
+        android:background="@drawable/rounded_corners_login_button"
+        android:elevation="10dp"
+        android:text="Login"
+        android:textColor="#ffebd8"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
-    <TextView
-        android:id="@+id/thank_text_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Thank's for installing"
-        android:textColor="#fff"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/thank_text_2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/thank_text_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Let's get you in!"
-        android:textColor="#fff"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/facebookButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.shaishavgandhi.loginbuttons.GoogleButton
-        android:id="@+id/googleButton"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        app:iconSize="30dp"
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bottom_rounded_corners"
+        android:backgroundTint="@color/google"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/facebookButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:transparentBackground="true" />
+        app:layout_constraintTop_toBottomOf="@+id/login_button"
+        app:layout_constraintVertical_bias="1.0">
 
-    <com.shaishavgandhi.loginbuttons.FacebookButton
-        android:id="@+id/facebookButton"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        app:iconSize="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/twitterButton"
-        app:layout_constraintHorizontal_bias="0.563"
-        app:layout_constraintStart_toEndOf="@+id/googleButton"
-        app:transparentBackground="true" />
 
-    <com.shaishavgandhi.loginbuttons.TwitterButton
-        android:id="@+id/twitterButton"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
-        app:iconSize="30dp"
+    </View>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/google"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/facebookButton"
-        app:transparentBackground="true" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </View>
+
+    <TextView
+
+        android:id="@+id/sing_up_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Sign up!"
+        android:elevation="8dp"
+        android:textColor="#000000"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
