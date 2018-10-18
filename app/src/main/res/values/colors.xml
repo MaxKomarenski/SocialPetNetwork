@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="primeBackground">#76cbf2</color>
+    <color name="textColorHintInRegistration1">#9d9d9d</color>
 
 
     <color name="loginTextcolor">#6C0CE8</color>

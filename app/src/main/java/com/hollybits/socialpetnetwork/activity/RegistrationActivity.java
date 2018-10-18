@@ -7,10 +7,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Base64;
@@ -80,8 +82,14 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.information_scroll_view)
     ScrollView informationScrollView;
 
+    @BindView(R.id.constraintLayout_registration)
+    ConstraintLayout mainConstraintLayout;
+
     @BindView(R.id.choose_icon_text_view)
     TextView chooseIconText;
+
+    @BindView(R.id.choose_icon_text_view2)
+    TextView chooseIconText2;
 
     @BindView(R.id.now_some_info_text_view)
     TextView textView1;
@@ -137,18 +145,9 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.confirm_password_edit_text_in_registration)
     EditText retypePassword;
 
-    @BindViews({R.id.rat_pet_type_image_button, R.id.cat_pet_type_image_button,
-            R.id.bird_pet_type_image_button, R.id.dog_pet_type_image_button,
-            R.id.rabbit_rat_pet_type_image_button, R.id.raccoon_pet_type_image_button})
+    @BindViews({R.id.cat_pet_type_image_button,
+            R.id.dog_pet_type_image_button})
     List<ImageButton> listOfPetTypes;
-
-    @BindViews({
-            R.id.cat_text,
-            R.id.dog_text,
-            R.id.rabbit_text,
-            R.id.bird_text,
-    })
-    List<TextView> names_of_pets;
 
     @BindView(R.id.sex_jelly_toggle_button)
     JellyToggleButton sexOfPetJelly;
@@ -191,26 +190,33 @@ public class RegistrationActivity extends AppCompatActivity {
         validator  = new RegistrationValidator();
         attachListeners();
         loadCountriesList();
-
-        sexOfPetJelly.setRightBackgroundColor("#f81894");
-        sexOfPetJelly.setLeftBackgroundColor("#0392cf");
-        sexOfPetJelly.setLeftText("Male");
-        sexOfPetJelly.setRightText("Female");
-        sexOfPetJelly.setRightTextColor("#000000");
-        sexOfPetJelly.setLeftTextColor("#000000");
-
-        massUnitJelly.setLeftText("kg");
-        massUnitJelly.setRightText("lb");
+        switchs();
 
         Typeface mainFont = Typeface.createFromAsset(this.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         chooseIconText.setTypeface(mainFont);
+        chooseIconText2.setTypeface(mainFont);
         textView1.setTypeface(mainFont);
         textView2.setTypeface(mainFont);
         accessButtonInRegistration.setTypeface(mainFont);
 
-        for( TextView textView: names_of_pets){
-            textView.setTypeface(mainFont);
-        }
+    }
+
+    private void switchs(){
+        sexOfPetJelly.setRightBackgroundColor("#d5f2fe");
+        sexOfPetJelly.setLeftBackgroundColor("#d5f2fe");
+        sexOfPetJelly.setLeftText("Male");
+        sexOfPetJelly.setRightText("Female");
+        sexOfPetJelly.setThumbColor("#8cdcfb");
+        sexOfPetJelly.setRightTextColor("#ffffff");
+        sexOfPetJelly.setLeftTextColor("#ffffff");
+
+        massUnitJelly.setRightBackgroundColor("#d5f2fe");
+        massUnitJelly.setLeftBackgroundColor("#d5f2fe");
+        massUnitJelly.setLeftText("kg");
+        massUnitJelly.setRightText("lb");
+        massUnitJelly.setThumbColor("#8cdcfb");
+        massUnitJelly.setRightTextColor("#ffffff");
+        massUnitJelly.setLeftTextColor("#ffffff");
     }
 
     private void dismissLoadingDialog(int time) {
@@ -308,7 +314,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     private void attachListeners(){
-        PetType[] allPetTypes = new PetType[]{PetType.RAT, PetType.CAT, PetType.BIRD, PetType.DOG, PetType.RABBIT, PetType.RACCOON};
+        PetType[] allPetTypes = new PetType[]{PetType.CAT, PetType.DOG};
 
         changeColorOfPetTypeButtons(allPetTypes);
 
@@ -332,6 +338,8 @@ public class RegistrationActivity extends AppCompatActivity {
         accessButtonInRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                mainConstraintLayout.setBackgroundColor(Color.parseColor("#8cdcfb"));
 
                 showDialogProgress("Validating info");
                 if(!validator.validate(instance, 0)){
