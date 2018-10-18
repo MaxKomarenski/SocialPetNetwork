@@ -14,24 +14,21 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SwitchCompat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.esotericsoftware.kryo.Registration;
-import com.hollybits.socialpetnetwork.Fragments.Account;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.adapters.AutoCompleteCountryAdapter;
 import com.hollybits.socialpetnetwork.enums.Attitude;
@@ -48,6 +45,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import com.hollybits.socialpetnetwork.adapters.BreedAdapter;
 import com.hollybits.socialpetnetwork.enums.PetType;
@@ -65,8 +63,6 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.paperdb.Paper;
-import lib.kingja.switchbutton.SwitchMultiButton;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -155,8 +151,43 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.weight_switch_compat_in_registration_activity)
     JellyToggleButton massUnitJelly;
 
-    @BindView(R.id.attitude_switch_multi_button)
-    SwitchMultiButton attitudeSwitchMultiButton;
+    //-----attitude table--------
+    @BindView(R.id.everyone_raw)
+    RelativeLayout everyoneRaw;
+
+    @BindView(R.id.female_raw)
+    RelativeLayout femaleRaw;
+
+    @BindView(R.id.male_raw)
+    RelativeLayout maleRaw;
+
+    @BindView(R.id.none_raw)
+    RelativeLayout noneRaw;
+
+    @BindView(R.id.heartImgInAttTable)
+    ImageView heartImg;
+
+    @BindView(R.id.femaleImgInAttTable)
+    ImageView femaleImg;
+
+    @BindView(R.id.maleImgInAttTable)
+    ImageView maleImg;
+
+    @BindView(R.id.noneImgInAttTable)
+    ImageView noneImg;
+
+    @BindView(R.id.everyoneText)
+    TextView everyoneText;
+
+    @BindView(R.id.femaleText)
+    TextView femaleText;
+
+    @BindView(R.id.maleText)
+    TextView maleText;
+
+    @BindView(R.id.noneText)
+    TextView noneText;
+    //-------------------------
 
     private BreedAdapter breedAdapter;
 
@@ -173,8 +204,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private RegistrationActivity instance;
     private Validator validator;
     private  MultipartBody.Part fileToUpload;
-
-
+    private Attitude attitude;
 
 
     @Override
@@ -188,9 +218,10 @@ public class RegistrationActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         instance = this;
         validator  = new RegistrationValidator();
+        switchs();
+        tableSettings();
         attachListeners();
         loadCountriesList();
-        switchs();
 
         Typeface mainFont = Typeface.createFromAsset(this.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         chooseIconText.setTypeface(mainFont);
@@ -199,6 +230,134 @@ public class RegistrationActivity extends AppCompatActivity {
         textView2.setTypeface(mainFont);
         accessButtonInRegistration.setTypeface(mainFont);
 
+    }
+
+    private void changeColorsOfTheTableRawsAndTexts(int everyoneBackground,
+                                                    int heartImgColor,
+                                                    int everyoneTextColor,
+                                                    int femaleBackground,
+                                                    int femaleImgColor,
+                                                    int femaleTextColor,
+                                                    int maleBackground,
+                                                    int maleImgColor,
+                                                    int maleTextColor,
+                                                    int noneBackground,
+                                                    int noneImgColor,
+                                                    int noneTextColor){
+        everyoneRaw.setBackgroundResource(everyoneBackground);
+        heartImg.setColorFilter(heartImgColor);
+        everyoneText.setTextColor(everyoneTextColor);
+
+        femaleRaw.setBackgroundColor(femaleBackground);
+        femaleImg.setColorFilter(femaleImgColor);
+        femaleText.setTextColor(femaleTextColor);
+
+        maleRaw.setBackgroundColor(maleBackground);
+        maleImg.setColorFilter(maleImgColor);
+        maleText.setTextColor(maleTextColor);
+
+        noneRaw.setBackgroundResource(noneBackground);
+        noneImg.setColorFilter(noneImgColor);
+        noneText.setTextColor(noneTextColor);
+    }
+
+    private void tableSettings(){
+
+
+        everyoneRaw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                changeColorsOfTheTableRawsAndTexts(R.drawable.attitude_background_everyone_active,
+                        Color.argb(255, 255, 255, 255),
+                        Color.parseColor("#ffffff"),
+
+                        Color.parseColor("#00FF0000"),
+                        Color.argb(255, 135, 219, 251),
+                        Color.parseColor("#000000"),
+
+                        Color.parseColor("#00FF0000"),
+                        Color.argb(255, 135, 219, 251),
+                        Color.parseColor("#000000"),
+
+                        R.drawable.attitude_background_none_not_active,
+                        Color.argb(255, 135, 219, 251),
+                        Color.parseColor("#000000"));
+
+                attitude = Attitude.GOODWITHALL;
+
+            }
+        });
+
+        femaleRaw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeColorsOfTheTableRawsAndTexts(R.drawable.attitude_background_everyone_not_active,
+                        Color.argb(255, 135, 219, 251),
+                        Color.parseColor("#000000"),
+
+                        Color.parseColor("#ffa700"),
+                        Color.argb(255, 255, 255, 255),
+                        Color.parseColor("#ffffff"),
+
+                        Color.parseColor("#00FF0000"),
+                        Color.argb(255, 135, 219, 251),
+                        Color.parseColor("#000000"),
+
+                        R.drawable.attitude_background_none_not_active,
+                        Color.argb(255, 135, 219, 251),
+                        Color.parseColor("#000000"));
+
+                attitude = Attitude.GOODWITHFEMALE;
+            }
+
+        });
+
+        maleRaw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeColorsOfTheTableRawsAndTexts(R.drawable.attitude_background_everyone_not_active,
+                        Color.argb(255, 135, 219, 251),
+                        Color.parseColor("#000000"),
+
+                        Color.parseColor("#00FF0000"),
+                        Color.argb(255, 135, 219, 251),
+                        Color.parseColor("#000000"),
+
+                        Color.parseColor("#ffa700"),
+                        Color.argb(255, 255, 255, 255),
+                        Color.parseColor("#ffffff"),
+
+                        R.drawable.attitude_background_none_not_active,
+                        Color.argb(255, 135, 219, 251),
+                        Color.parseColor("#000000"));
+
+                attitude = Attitude.GOODWITHMALE;
+            }
+        });
+
+        noneRaw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeColorsOfTheTableRawsAndTexts(R.drawable.attitude_background_everyone_not_active,
+                        Color.argb(255, 135, 219, 251),
+                        Color.parseColor("#000000"),
+
+                        Color.parseColor("#00FF0000"),
+                        Color.argb(255, 135, 219, 251),
+                        Color.parseColor("#000000"),
+
+                        Color.parseColor("#00FF0000"),
+                        Color.argb(255, 135, 219, 251),
+                        Color.parseColor("#000000"),
+
+                        R.drawable.attitude_background_none_active,
+                        Color.argb(255, 135, 219, 251),
+                        Color.parseColor("#ffffff"));
+
+                attitude = Attitude.BAD;
+            }
+        });
     }
 
     private void switchs(){
@@ -351,16 +510,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 Breed breedOfPet = getChosenBreed(breedInput.getText().toString());
                 breedOfPet.setType(petType);
 
-
-                Attitude attitude;
-                if (attitudeSwitchMultiButton.getSelectedTab() == 0)
-                    attitude = Attitude.GOODWITHALL;
-                else if(attitudeSwitchMultiButton.getSelectedTab() == 1)
-                    attitude = Attitude.GOODWITHMALE;
-                else if(attitudeSwitchMultiButton.getSelectedTab() == 2)
-                    attitude = Attitude.GOODWITHFEMALE;
-                else
-                    attitude = Attitude.BAD;
 
                 Sex s;
                 if (sexOfPetJelly.isChecked()) {

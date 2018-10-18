@@ -14,6 +14,7 @@
             android:padding="@dimen/padding_attitude_table">
 
             <ImageView
+                android:id="@+id/heartImgInAttTable"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentStart="true"
@@ -22,6 +23,7 @@
                 android:src="@drawable/heart" />
 
             <TextView
+                android:id="@+id/everyoneText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -39,6 +41,7 @@
         android:padding="@dimen/padding_attitude_table">
 
         <ImageView
+            android:id="@+id/femaleImgInAttTable"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentStart="true"
@@ -47,6 +50,7 @@
             android:src="@drawable/female" />
 
         <TextView
+            android:id="@+id/femaleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -63,6 +67,7 @@
         android:padding="@dimen/padding_attitude_table">
 
         <ImageView
+            android:id="@+id/maleImgInAttTable"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentStart="true"
@@ -71,6 +76,7 @@
             android:src="@drawable/male" />
 
         <TextView
+            android:id="@+id/maleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -87,6 +93,7 @@
         android:padding="@dimen/padding_attitude_table">
 
         <ImageView
+            android:id="@+id/noneImgInAttTable"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentStart="true"
@@ -95,6 +102,7 @@
             android:src="@drawable/test" />
 
         <TextView
+            android:id="@+id/noneText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
