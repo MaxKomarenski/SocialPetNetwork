@@ -135,25 +135,27 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private boolean login(final Credentials credentials, final boolean isReLogin){
+        try {
 
-        MainActivity.getServerRequests().login(credentials).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+
+            MainActivity.getServerRequests().login(credentials).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
                     String code = response.headers().get("authorization");
 
                     System.err.println(code);
 
                     try {
 
-                        if(!code.equals("Login Failed")){
-                            if(!isReLogin) {
+                        if (!code.equals("Login Failed")) {
+                            if (!isReLogin) {
                                 User user = new User();
                                 user.setAuthorizationCode(code);
                                 user.setCredentials(credentials);
                                 Long id = Long.decode(response.headers().get("id"));
                                 user.setId(id);
                                 loadUserInfo(user);
-                            }else {
+                            } else {
                                 User user = Paper.book().read(MainActivity.CURRENTUSER);
                                 user.setAuthorizationCode(code);
                                 Paper.book().write(MainActivity.CURRENTUSER, user);
@@ -164,20 +166,25 @@ public class LoginActivity extends AppCompatActivity {
                         dismissLoadingDialog(3000);
                         Log.d("LOGIN", "OK");
 
-                    }catch (NullPointerException e){
+                    } catch (NullPointerException e) {
                         dismissLoadingDialog(1000);
                         showErrorMessage();
                     }
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
 
-                Log.d("LOGIN EXEPTION", t.getMessage());
-            }
-        });
-        return true;
+                    Log.d("LOGIN EXEPTION", t.getMessage());
+                }
+            });
+            return true;
+        }catch (NullPointerException e){
+            dismissLoadingDialog(1000);
+            showErrorMessage();
+            return false;
+        }
     }
 
     private void dismissLoadingDialog(int time){

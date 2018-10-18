@@ -106,6 +106,7 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="16dp"
         android:background="#080"
+        android:text="Accept"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/place_of_user_in_friendship_recycler_view" />
 
@@ -115,6 +116,7 @@
         android:layout_height="50dp"
         android:layout_marginEnd="64dp"
         android:background="#d50c16"
+        android:text="Reject"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
