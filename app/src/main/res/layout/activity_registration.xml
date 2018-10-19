@@ -55,11 +55,15 @@
                 android:layout_height="wrap_content"
                 android:hint="Your name"
                 android:inputType="textPersonName"
-                android:backgroundTint="#fff"
+                android:background="@drawable/background_for_edit_text"
                 android:textColorHint="#fff"
                 android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:textColor="#fff"
-                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_edit_text_reg"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:textCursorDrawable="@drawable/color_cursor"/>
@@ -70,11 +74,15 @@
                 android:layout_height="wrap_content"
                 android:hint="Your surname"
                 android:inputType="text"
-                android:backgroundTint="#fff"
+                android:background="@drawable/background_for_edit_text"
                 android:textColorHint="#fff"
                 android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:textColor="#fff"
-                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_edit_text_reg"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:textCursorDrawable="@drawable/color_cursor"/>
@@ -85,11 +93,15 @@
                 android:layout_height="wrap_content"
                 android:hint="Phone"
                 android:inputType="phone"
-                android:backgroundTint="#fff"
+                android:background="@drawable/background_for_edit_text"
                 android:textColorHint="#fff"
                 android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:textColor="#fff"
-                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_edit_text_reg"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:textCursorDrawable="@drawable/color_cursor"/>
@@ -102,10 +114,14 @@
                 android:textColor="#fff"
                 android:inputType="text"
                 android:completionThreshold="1"
-                android:backgroundTint="#fff"
+                android:background="@drawable/background_for_edit_text"
                 android:textColorHint="#fff"
                 android:paddingStart="15dp"
-                android:layout_marginTop="10dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_edit_text_reg"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:textCursorDrawable="@drawable/color_cursor"/>
@@ -117,10 +133,14 @@
                 android:hint="City"
                 android:inputType="text"
                 android:textColor="#fff"
-                android:backgroundTint="#fff"
+                android:background="@drawable/background_for_edit_text"
                 android:textColorHint="#fff"
                 android:paddingStart="15dp"
-                android:layout_marginTop="10dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_edit_text_reg"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:textCursorDrawable="@drawable/color_cursor"/>
@@ -131,11 +151,15 @@
                 android:layout_height="wrap_content"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
-                android:backgroundTint="#fff"
+                android:background="@drawable/background_for_edittext_2"
                 android:textColor="#fff"
                 android:textColorHint="#fff"
                 android:paddingStart="15dp"
-                android:layout_marginTop="10dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_edit_text_reg"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:textCursorDrawable="@drawable/color_cursor"
@@ -147,11 +171,15 @@
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:backgroundTint="#fff"
+                android:background="@drawable/background_for_edittext_2"
                 android:textColor="#fff"
                 android:textColorHint="#fff"
                 android:paddingStart="15dp"
-                android:layout_marginTop="10dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_edit_text_reg"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:textCursorDrawable="@drawable/color_cursor"
@@ -163,11 +191,15 @@
                 android:layout_height="wrap_content"
                 android:hint="Confirm Password"
                 android:inputType="textPassword"
-                android:backgroundTint="#fff"
+                android:background="@drawable/background_for_edittext_2"
                 android:textColor="#fff"
                 android:textColorHint="#fff"
                 android:paddingStart="15dp"
-                android:layout_marginTop="10dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_edit_text_reg"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:textCursorDrawable="@drawable/color_cursor"
@@ -179,8 +211,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:src="@drawable/login_button"
-                android:layout_gravity="end"
-                android:background="@color/primeBackground"/>
+                android:layout_gravity="center_horizontal"
+                android:background="#8cdcfb"/>
         </LinearLayout>
 
     </ScrollView>
@@ -254,13 +286,6 @@
                             android:scaleType="fitCenter"
                             android:background="@drawable/circle_background"/>
 
-                        <!--<TextView-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:id="@+id/cat_text"-->
-                            <!--android:layout_marginTop="5dp"-->
-                            <!--android:text="cat"-->
-                            <!--android:textColor="#fff"/>-->
 
                     </LinearLayout>
 
@@ -303,8 +328,8 @@
 
                     <ImageButton
                         android:id="@+id/raccoon_pet_type_image_button"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:visibility="gone"
                         android:src="@drawable/ic_rabbit"
                         android:layout_marginStart="10dp"
@@ -319,7 +344,7 @@
                 android:id="@+id/choose_photo_in_registration"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:src="@drawable/plus_photo"
+                android:src="@mipmap/upload_photo_img"
                 />
 
                 <LinearLayout
@@ -329,8 +354,8 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_marginTop="10dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp">
+                    android:layout_marginStart="75dp"
+                    android:layout_marginEnd="75dp">
 
                     <EditText
                         android:id="@+id/name_edit_text_in_registration"
@@ -456,9 +481,12 @@
                 android:layout_marginTop="20dp">
 
                 <TextView
+                    android:id="@+id/iAmFriendlyToText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="I am friendly to"/>
+                    android:text="I am friendly to"
+                    android:layout_marginStart="20dp"
+                    android:textSize="18sp"/>
 
                 <include layout="@layout/attitute_table"/>
 
@@ -473,6 +501,7 @@
                 android:layout_marginEnd="100dp"
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/login_button_selector"
                 android:backgroundTint="#f36f21"
                 android:elevation="100dp"

@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -151,6 +150,9 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.weight_switch_compat_in_registration_activity)
     JellyToggleButton massUnitJelly;
 
+    @BindView(R.id.iAmFriendlyToText)
+    TextView iAmFriendlyToText;
+
     //-----attitude table--------
     @BindView(R.id.everyone_raw)
     RelativeLayout everyoneRaw;
@@ -205,6 +207,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private Validator validator;
     private  MultipartBody.Part fileToUpload;
     private Attitude attitude;
+    private Typeface fontForTable;
 
 
     @Override
@@ -222,9 +225,10 @@ public class RegistrationActivity extends AppCompatActivity {
         tableSettings();
         attachListeners();
         loadCountriesList();
-
+        fontForTable = Typeface.createFromAsset(this.getAssets(), "fonts/AvenirNextCyr-Regular.ttf");
         Typeface mainFont = Typeface.createFromAsset(this.getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
-        chooseIconText.setTypeface(mainFont);
+        iAmFriendlyToText.setTypeface(mainFont);
+        chooseIconText.setTypeface(fontForTable);
         chooseIconText2.setTypeface(mainFont);
         textView1.setTypeface(mainFont);
         textView2.setTypeface(mainFont);
@@ -262,7 +266,10 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void tableSettings(){
-
+        everyoneText.setTypeface(fontForTable);
+        femaleText.setTypeface(fontForTable);
+        maleText.setTypeface(fontForTable);
+        noneText.setTypeface(fontForTable);
 
         everyoneRaw.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -352,7 +359,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         Color.parseColor("#000000"),
 
                         R.drawable.attitude_background_none_active,
-                        Color.argb(255, 135, 219, 251),
+                        Color.argb(255, 255, 255, 255),
                         Color.parseColor("#ffffff"));
 
                 attitude = Attitude.BAD;

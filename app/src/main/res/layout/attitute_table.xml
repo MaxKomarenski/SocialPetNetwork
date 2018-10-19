@@ -11,16 +11,17 @@
             android:id="@+id/everyone_raw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_attitude_table">
+            android:padding="@dimen/padding_attitude_table"
+            >
 
             <ImageView
                 android:id="@+id/heartImgInAttTable"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="21dp"
-                android:src="@drawable/heart" />
+                android:layout_marginStart="15dp"
+                android:src="@mipmap/heart" />
 
             <TextView
                 android:id="@+id/everyoneText"
@@ -29,7 +30,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="70dp"
-                android:text="everyone" />
+                android:text="everyone"
+                android:textSize="18sp"/>
 
         </RelativeLayout>
 
@@ -42,12 +44,12 @@
 
         <ImageView
             android:id="@+id/femaleImgInAttTable"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="21dp"
-            android:src="@drawable/female" />
+            android:layout_marginStart="15dp"
+            android:src="@mipmap/female" />
 
         <TextView
             android:id="@+id/femaleText"
@@ -56,7 +58,8 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="70dp"
-            android:text="female" />
+            android:text="female"
+            android:textSize="18sp"/>
 
     </RelativeLayout>
 
@@ -68,12 +71,12 @@
 
         <ImageView
             android:id="@+id/maleImgInAttTable"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="21dp"
-            android:src="@drawable/male" />
+            android:layout_marginStart="15dp"
+            android:src="@mipmap/male" />
 
         <TextView
             android:id="@+id/maleText"
@@ -82,7 +85,8 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="70dp"
-            android:text="male" />
+            android:text="male"
+            android:textSize="18sp"/>
 
     </RelativeLayout>
 
@@ -94,12 +98,12 @@
 
         <ImageView
             android:id="@+id/noneImgInAttTable"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="21dp"
-            android:src="@drawable/test" />
+            android:layout_marginStart="15dp"
+            android:src="@mipmap/cross" />
 
         <TextView
             android:id="@+id/noneText"
@@ -108,7 +112,8 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="70dp"
-            android:text="none" />
+            android:text="none"
+            android:textSize="18sp"/>
 
     </RelativeLayout>
 
