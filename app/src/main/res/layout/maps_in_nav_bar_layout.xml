@@ -3,25 +3,28 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
+    android:layout_marginTop="5dp"
     android:layout_width="match_parent"
+    android:background="@drawable/rounded_corners_for_nav_menu_items"
     android:layout_height="wrap_content"
     android:gravity="center">
-
     <TextView
         android:id="@+id/text_in_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:textSize="21sp"
+        android:paddingStart="20dp"
         android:layout_centerVertical="true"
         android:text="Maps"
-        android:textColor="#f3732a"
+        android:textColor="@color/textColorNavBar"
         android:textStyle="bold"
         />
 
 
     <ImageView
-        android:layout_width="60dp"
-        android:layout_height="50dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignParentEnd="true"
         android:scaleType="fitCenter"
         android:src="@drawable/maps_in_nav_bar" />

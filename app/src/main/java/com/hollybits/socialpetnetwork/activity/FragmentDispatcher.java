@@ -2,6 +2,7 @@ package com.hollybits.socialpetnetwork.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -67,42 +68,6 @@ public class FragmentDispatcher extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         instance  = this;
 
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
-                //Catch your exception
-                // Without System.exit() this will not work.
-                User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-                Map<String, String> authorisationCode = new HashMap<>();
-                authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-                Exception exception = new Exception();
-                StringBuilder stringBuilder = new StringBuilder();
-                for (StackTraceElement element:
-                     paramThrowable.getStackTrace()) {
-                    stringBuilder.append(element.toString());
-                    stringBuilder.append("\n");
-                }
-
-
-                exception.setError(stringBuilder.toString());
-                exception.setIdFrom(currentUser.getId());
-                MainActivity.getServerRequests().recordException(authorisationCode, exception).enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-
-                    }
-                });
-                System.exit(2);
-            }
-        });
-
-
-
         setContentView(R.layout.activity_fragment_dispatcher);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -121,19 +86,27 @@ public class FragmentDispatcher extends AppCompatActivity
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        ImageView imageView = navigationView.getHeaderView(0).findViewById(R.id.image_in_header_fragment_dispatcher);
-
-
-        PhotoManager.loadDirectlyUserMainPhoto(imageView, this);
         messagesMenuItem = navigationView.getMenu().findItem(R.id.nav_messages);
         getUnReadMessagesAmount();
-        ImageButton logout = navigationView.getHeaderView(0).findViewById(R.id.logout_imagebutton_in_nav_header);
-        logout.setOnClickListener(new View.OnClickListener() {
+
+        MenuItem actions  = navigationView.getMenu().getItem(6);
+        ImageButton button = actions.getActionView().findViewById(R.id.sign_out_in_actions_nav);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logOut();
             }
         });
+        ImageButton setttings = actions.getActionView().findViewById(R.id.settings_in_actions_nav);
+        setttings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FragmentDispatcher.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         navigationView.setNavigationItemSelectedListener(this);
         loadUserInfo();
         launchFragment(StartingMenu.class);
@@ -161,7 +134,6 @@ public class FragmentDispatcher extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.fragment_dispatcher, menu);
-
         return true;
     }
 
@@ -188,14 +160,14 @@ public class FragmentDispatcher extends AppCompatActivity
         // Handle navigation view item clicks here.
         if(previoust != null){
             TextView textView = previoust.getActionView().findViewById(R.id.text_in_menu);
-            textView.setTextColor(getResources().getColor(R.color.not_active_item));
+            //textView.setTextColor(getResources().getColor(R.color.not_active_item));
         }
         previoust = item;
         int id = item.getItemId();
         Fragment fragment = null;
         Class fragmentClass;
         TextView textView = item.getActionView().findViewById(R.id.text_in_menu);
-        textView.setTextColor(getResources().getColor(R.color.active_item));
+       // textView.setTextColor(getResources().getColor(R.color.active_item));
         if(options.containsKey(id)){
             fragmentClass = options.get(id);
         }else {
