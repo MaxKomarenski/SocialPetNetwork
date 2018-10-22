@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:gravity="center">
+
+
+    <ImageButton
+        android:id="@+id/settings_in_actions_nav"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/google"
+        android:scaleType="fitCenter"
+        android:src="@drawable/settings"
+        android:text="Settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageButton
+        android:id="@+id/sign_out_in_actions_nav"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitCenter"
+        android:backgroundTint="@color/google"
+        android:src="@drawable/sign_out"
+        android:text="Sign out"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+</android.support.constraint.ConstraintLayout>

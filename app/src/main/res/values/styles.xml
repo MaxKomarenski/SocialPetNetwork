@@ -26,4 +26,9 @@
         <item name="android:background">@color/primeBackground</item>
     </style>
 
+
+    <style name="NavigationTheme" parent="AppTheme">
+        <item name="listPreferredItemHeightSmall">65dp</item><!-- menu item height- vary as u need -->
+    </style>
+
 </resources>

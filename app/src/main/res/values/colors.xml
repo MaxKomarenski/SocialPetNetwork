@@ -10,6 +10,7 @@
 
     <color name="loginTextcolor">#6C0CE8</color>
     <color name="colorButtonCompleteState">#0AFF26</color>
+    <color name="textColorNavBar">#8cddff</color>
 
     <color name="active_item">#7cc4ec</color>
     <color name="not_active_item">#f3732a</color>

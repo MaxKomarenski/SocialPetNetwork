@@ -6,96 +6,36 @@
     android:layout_width="match_parent"
     android:layout_height="170dp"
     android:background="#ffffff"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    tools:layout_editor_absoluteY="81dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="15dp">
 
-        <ImageButton
-            android:id="@+id/open_navigation_drawer_image_button"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:padding="12dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="30dp"
-            android:background="@null"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_menu"
-            android:tint="#1e90ff" />
-
-        <ImageButton
-            android:id="@+id/logout_imagebutton_in_nav_header"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="30dp"
-            android:backgroundTint="#fff"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/logout_button_in_nav_bar" />
-
-    </RelativeLayout>
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/name_surname_nav_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/image_in_header_fragment_dispatcher"
-        app:layout_constraintEnd_toStartOf="@+id/image_in_header_fragment_dispatcher"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="56dp"
+        android:text="Name"
+        android:textColor="#1b3665"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/image_in_header_fragment_dispatcher"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/name_surname_nav_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:textColor="#1b3665"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/edit_profile_nav_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="edit profile"
-            android:textColor="#1b3665"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/image_in_header_fragment_dispatcher"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="60dp"
-        android:src="@drawable/test_photo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+    <ImageView
+        android:id="@+id/edit_profile_nav_header"
+        android:layout_width="121dp"
+        android:layout_height="65dp"
         android:layout_marginTop="8dp"
-        android:background="#47b649"
+        android:scaleType="fitCenter"
+        android:src="@drawable/edit_profile"
+        android:textColor="#1b3665"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintEnd_toEndOf="@+id/name_surname_nav_header"
+        app:layout_constraintStart_toStartOf="@+id/name_surname_nav_header"
+        app:layout_constraintTop_toBottomOf="@+id/name_surname_nav_header" />
 
 
 
