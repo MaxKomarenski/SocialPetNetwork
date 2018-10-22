@@ -79,14 +79,7 @@
                     app:srcCompat="@drawable/ic_account_circle_black_24dp"
                     />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/owner_name_and_surname_in_expansion_panel"
-                    android:text=""
-                    android:textSize="15sp"
-                    android:layout_marginStart="10dp"
-                    />
+
             </LinearLayout>
 
             <LinearLayout
@@ -103,14 +96,7 @@
                     app:srcCompat="@drawable/ic_phone_black_24dp"
                     />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/owner_phone_in_expansion_panel"
-                    android:text=""
-                    android:textSize="15sp"
-                    android:layout_marginStart="10dp"
-                    />
+
             </LinearLayout>
 
             <LinearLayout
@@ -126,15 +112,7 @@
                     app:srcCompat="@drawable/ic_email_black_24dp"
                     />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:id="@+id/owner_email_in_expansion_panel"
-                    android:text=""
-                    android:layout_marginStart="10dp"
 
-                    />
 
             </LinearLayout>
 

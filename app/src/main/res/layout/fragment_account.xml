@@ -5,11 +5,10 @@
     android:id="@+id/fragment_account"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_for_account"
     tools:context=".Fragments.Account"
     android:orientation="vertical"
     android:gravity="center"
-    android:paddingTop="10dp">
+    android:background="#fff">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -24,205 +23,348 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="30dp"
-                            android:layout_marginStart="30dp">
+                            android:layout_marginTop="15dp"
+                            >
 
                                 <ImageButton
                                     android:id="@+id/open_navigation_drawer_image_button"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="30dp"
-                                    android:background="#fff"
+                                    android:layout_height="25dp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginStart="20dp"
+                                    android:background="@null"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_menu"
-                                    android:tint="@color/petInfoInAccount" />
+                                    android:tint="#aaeaff" />
+
+                                <TextView
+                                    android:id="@+id/my_profile_text_in_account"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="My Profile"
+                                    android:textSize="20sp"
+                                    android:textColor="#aaeaff"/>
 
                                 <ImageButton
                                     android:id="@+id/settings_account_img_button"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="30dp"
-                                    android:layout_alignParentEnd="true"
+                                    android:layout_height="25dp"
                                     android:layout_alignParentTop="true"
-                                    android:background="#fff"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="20dp"
+                                    android:background="@null"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/ic_settings"
-                                    android:tint="@color/petInfoInAccount" />
+                                    android:tint="#aaeaff" />
+
 
                         </RelativeLayout>
 
+
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/user_photo_in_account_fragment"
-                            android:layout_width="140dp"
-                            android:layout_height="140dp"
-                            android:layout_marginTop="5dp"
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
+                            android:layout_marginTop="25dp"
                             android:src="@drawable/test_photo"
-                            app:civ_border_color="#43b748"
-                            app:civ_border_width="6dp" />
+                            app:civ_border_color="#3ed611"
+                            app:civ_border_width="7dp" />
 
-                        <LinearLayout
+
+                        <TextView
+                            android:id="@+id/name_of_pet_text_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/background_for_name_of_pet"
-                            android:orientation="horizontal"
-                            android:paddingEnd="22dp"
-                            android:paddingStart="22dp">
-
-                                <TextView
-                                    android:id="@+id/name_of_pet_text_view"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Name"
-                                    android:textColor="#fff"
-                                    android:textSize="25sp" />
-
-                                <TextView
-                                    android:id="@+id/sex_of_pet_text_view"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginTop="2dp"
-                                    android:text="male"
-                                    android:textColor="@color/petInfoInAccount"
-                                    android:textSize="18sp" />
-
-                        </LinearLayout>
+                            android:layout_marginTop="4dp"
+                            android:text="Name"
+                            android:textColor="#000"
+                            android:textSize="25sp" />
 
 
-                        <android.support.constraint.ConstraintLayout
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/marg_top_in_accoutn"
+                            android:layout_marginStart="@dimen/margin_rel_account"
+                            android:layout_marginEnd="@dimen/margin_rel_account"
+                            >
 
                                 <TextView
                                     android:id="@+id/breed_word_text_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="80dp"
-                                    android:layout_marginTop="16dp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_alignParentTop="true"
                                     android:text="Breed"
-                                    android:textColor="#646464"
-                                    android:textSize="@dimen/size_of_text_in_account"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    android:textColor="@color/blue_for_text_in_account"
+                                    android:textSize="@dimen/size_of_text_in_account" />
 
                                 <TextView
                                     android:id="@+id/name_of_breed_text_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="36dp"
-                                    android:layout_marginTop="8dp"
+                                    android:layout_centerVertical="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="0dp"
                                     android:text="name Of breed"
-                                    android:textColor="@color/petInfoInAccount"
-                                    android:textSize="@dimen/size_of_text_in_account"
-                                    app:layout_constraintBottom_toBottomOf="@+id/breed_word_text_view"
-                                    app:layout_constraintStart_toEndOf="@+id/breed_word_text_view"
-                                    app:layout_constraintTop_toTopOf="@+id/breed_word_text_view"
-                                    app:layout_constraintVertical_bias="1.0" />
+                                    android:textColor="#000"
+                                    android:textSize="@dimen/size_of_text_in_account" />
 
+                                <ImageView
+                                    android:id="@+id/sexImageView"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_centerVertical="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:src="@mipmap/female" />
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginEnd="@dimen/margin_rel_account"
+                            android:layout_marginStart="@dimen/margin_rel_account"
+                            android:background="#bebebe"
+                            android:layout_marginTop="@dimen/marg_top_in_accoutn"/>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/marg_top_in_accoutn"
+                            android:layout_marginStart="@dimen/margin_rel_account"
+                            android:layout_marginEnd="@dimen/margin_rel_account">
 
                                 <TextView
                                     android:id="@+id/address_word_text_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="16dp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true"
                                     android:text="Address"
-                                    android:textColor="#646464"
-                                    android:textSize="@dimen/size_of_text_in_account"
-                                    app:layout_constraintEnd_toEndOf="@+id/breed_word_text_view"
-                                    app:layout_constraintTop_toBottomOf="@+id/breed_word_text_view" />
+                                    android:textColor="@color/blue_for_text_in_account"
+                                    android:textSize="@dimen/size_of_text_in_account" />
 
                                 <TextView
                                     android:id="@+id/place_of_user_text_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="36dp"
-                                    android:layout_marginTop="16dp"
+                                    android:layout_centerVertical="true"
+                                    android:layout_centerHorizontal="true"
                                     android:text="Lviv"
-                                    android:textColor="@color/petInfoInAccount"
-                                    android:textSize="@dimen/size_of_text_in_account"
-                                    app:layout_constraintStart_toEndOf="@+id/address_word_text_view"
-                                    app:layout_constraintTop_toBottomOf="@+id/name_of_breed_text_view" />
+                                    android:textColor="#000"
+                                    android:textSize="@dimen/size_of_text_in_account" />
+
+                                <ImageView
+                                    android:layout_width="33dp"
+                                    android:layout_height="33dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:src="@drawable/ic_location_on_black_24dp" />
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginEnd="@dimen/margin_rel_account"
+                            android:layout_marginStart="@dimen/margin_rel_account"
+                            android:background="#bebebe"
+                            android:layout_marginTop="@dimen/marg_top_in_accoutn"/>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/marg_top_in_accoutn"
+                            android:layout_marginStart="@dimen/margin_rel_account"
+                            android:layout_marginEnd="@dimen/margin_rel_account">
 
                                 <TextView
-                                    android:id="@+id/age_word_text_view"
+                                    android:id="@+id/owner_text_in_account"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="16dp"
-                                    android:text="Age"
-                                    android:textColor="#646464"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true"
+                                    android:text="Owner"
                                     android:textSize="@dimen/size_of_text_in_account"
-                                    app:layout_constraintEnd_toEndOf="@+id/address_word_text_view"
-                                    app:layout_constraintTop_toBottomOf="@+id/address_word_text_view" />
+                                    android:textColor="@color/blue_for_text_in_account"/>
 
                                 <TextView
-                                    android:id="@+id/number_of_age_word_text_view"
+                                    android:id="@+id/owner_name_and_surname_in_expansion_panel"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="8dp"
-                                    android:layout_marginStart="36dp"
-                                    android:layout_marginTop="16dp"
-                                    android:text="12"
-                                    android:textColor="@color/petInfoInAccount"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="5dp"
+                                    android:text="name owner"
                                     android:textSize="@dimen/size_of_text_in_account"
-                                    app:layout_constraintBottom_toBottomOf="@+id/age_word_text_view"
-                                    app:layout_constraintStart_toEndOf="@+id/age_word_text_view"
-                                    app:layout_constraintTop_toBottomOf="@+id/place_of_user_text_view"
-                                    app:layout_constraintVertical_bias="0.0" />
+                                    android:textColor="#000"/>
+
+                                <ImageView
+                                    android:layout_width="33dp"
+                                    android:layout_height="33dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:src="@drawable/ic_account_circle_black_24dp" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/marg_top_in_accoutn"
+                            android:layout_marginEnd="@dimen/margin_rel_account"
+                            android:layout_marginStart="@dimen/margin_rel_account">
+
+                                <TextView
+                                    android:id="@+id/email_text_in_account"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true"
+                                    android:text="Email"
+                                    android:textSize="@dimen/size_of_text_in_account"
+                                    android:textColor="@color/blue_for_text_in_account"/>
+
+                                <TextView
+                                    android:id="@+id/owner_email_in_expansion_panel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="email"
+                                    android:textSize="@dimen/size_of_text_in_account"
+                                    android:textColor="#000"/>
+
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:tint="#86dfff"
+                                    android:src="@drawable/ic_action_email" />
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="@dimen/marg_top_in_accoutn"
+                            android:layout_marginEnd="@dimen/margin_rel_account"
+                            android:layout_marginStart="@dimen/margin_rel_account"
+                            android:background="#bebebe"/>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_rel_account"
+                            android:layout_marginEnd="@dimen/margin_rel_account"
+                            android:layout_marginTop="@dimen/marg_top_in_accoutn">
+
+                                <TextView
+                                    android:id="@+id/phone_text_in_account"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="0dp"
+                                    android:text="Phone"
+                                    android:textSize="@dimen/size_of_text_in_account"
+                                    android:textColor="@color/blue_for_text_in_account"/>
+
+                                <TextView
+                                    android:id="@+id/owner_phone_in_expansion_panel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="1234567890"
+                                    android:textSize="@dimen/size_of_text_in_account"
+                                    android:textColor="#000"/>
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:src="@drawable/ic_phone_black_24dp"
+                                    android:tint="#86dfff"/>
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="@dimen/marg_top_in_accoutn"
+                            android:layout_marginEnd="@dimen/margin_rel_account"
+                            android:layout_marginStart="@dimen/margin_rel_account"
+                            android:background="#bebebe"/>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/marg_top_in_accoutn"
+                            android:layout_marginStart="@dimen/margin_rel_account"
+                            android:layout_marginEnd="@dimen/margin_rel_account">
 
                                 <TextView
                                     android:id="@+id/weight_word_text_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="16dp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_marginTop="0dp"
                                     android:text="Weight"
-                                    android:textColor="#646464"
-                                    android:textSize="@dimen/size_of_text_in_account"
-                                    app:layout_constraintEnd_toEndOf="@+id/age_word_text_view"
-                                    app:layout_constraintTop_toBottomOf="@+id/age_word_text_view" />
+                                    android:textColor="@color/blue_for_text_in_account"
+                                    android:textSize="@dimen/size_of_text_in_account" />
 
                                 <TextView
                                     android:id="@+id/amount_of_weight_text_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="8dp"
-                                    android:layout_marginStart="36dp"
-                                    android:layout_marginTop="16dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginStart="21dp"
+                                    android:layout_marginTop="0dp"
+                                    android:layout_toEndOf="@+id/weight_word_text_view"
                                     android:text="43"
-                                    android:textColor="@color/petInfoInAccount"
-                                    android:textSize="@dimen/size_of_text_in_account"
-                                    app:layout_constraintBottom_toBottomOf="@+id/weight_word_text_view"
-                                    app:layout_constraintStart_toEndOf="@+id/weight_word_text_view"
-                                    app:layout_constraintTop_toBottomOf="@+id/number_of_age_word_text_view"
-                                    app:layout_constraintVertical_bias="0.0" />
+                                    android:textColor="#000"
+                                    android:textSize="@dimen/size_of_text_in_account" />
+
 
                                 <TextView
-                                    android:id="@+id/attitude_word_text_view"
+                                    android:id="@+id/age_word_text_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="16dp"
-                                    android:text="Attitude"
-                                    android:textColor="#646464"
-                                    android:textSize="@dimen/size_of_text_in_account"
-                                    app:layout_constraintEnd_toEndOf="@+id/weight_word_text_view"
-                                    app:layout_constraintTop_toBottomOf="@+id/weight_word_text_view" />
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginTop="0dp"
+                                    android:layout_marginEnd="18dp"
+                                    android:layout_toStartOf="@+id/number_of_age_word_text_view"
+                                    android:text="Age"
+                                    android:textColor="@color/blue_for_text_in_account"
+                                    android:textSize="@dimen/size_of_text_in_account" />
 
                                 <TextView
-                                    android:id="@+id/attitude_state_text_view"
+                                    android:id="@+id/number_of_age_word_text_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="36dp"
-                                    android:layout_marginTop="16dp"
-                                    android:text="Friendly"
-                                    android:textColor="@color/petInfoInAccount"
-                                    android:textSize="@dimen/size_of_text_in_account"
-                                    app:layout_constraintStart_toEndOf="@+id/attitude_word_text_view"
-                                    app:layout_constraintTop_toBottomOf="@+id/amount_of_weight_text_view" />
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginTop="0dp"
+                                    android:text="12"
+                                    android:textColor="#000"
+                                    android:textSize="@dimen/size_of_text_in_account" />
+                        </RelativeLayout>
 
-
-                        </android.support.constraint.ConstraintLayout>
-
-                        <include layout="@layout/expansion_panel_for_user_information_in_account_fragment" />
-
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginEnd="@dimen/margin_rel_account"
+                            android:layout_marginStart="@dimen/margin_rel_account"
+                            android:background="#bebebe"
+                            android:layout_marginTop="@dimen/marg_top_in_accoutn"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"

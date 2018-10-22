@@ -505,14 +505,13 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                mainConstraintLayout.setBackgroundColor(Color.parseColor("#8cdcfb"));
-
                 showDialogProgress("Validating info");
                 if(!validator.validate(instance, 0)){
                     dismissLoadingDialog(1500);
                     return;
                 }
                 dismissLoadingDialog(1500);
+                mainConstraintLayout.setBackgroundColor(Color.parseColor("#8cdcfb"));
 
                 Breed breedOfPet = getChosenBreed(breedInput.getText().toString());
                 breedOfPet.setType(petType);
