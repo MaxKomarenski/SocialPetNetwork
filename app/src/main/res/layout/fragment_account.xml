@@ -38,6 +38,8 @@
                                     android:src="@drawable/ic_menu"
                                     android:tint="#aaeaff" />
 
+
+
                                 <TextView
                                     android:id="@+id/my_profile_text_in_account"
                                     android:layout_width="wrap_content"
