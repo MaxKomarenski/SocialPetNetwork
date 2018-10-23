@@ -6,49 +6,64 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.Messages">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout2"
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#7dc2eb">
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/to_profile_in_message_page"
+        <ImageButton
+            android:id="@+id/open_navigation_drawer_image_button_in_messages"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="25dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
             android:background="@null"
-            android:drawableStart="@drawable/background_for_button_to_profile"
-            android:text="Profile"
-            android:textColor="#fff"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_menu"
+            android:tint="#aaeaff" />
 
-        <TextView
-            android:id="@+id/chat_text_in_message_page"
+
+        <ImageButton
+            android:id="@+id/settings_account_img_button_in_messages"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:paddingBottom="10dp"
-            android:text="Chats"
-            android:textColor="#000"
-            android:textSize="17sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="25dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_settings"
+            android:tint="#aaeaff" />
 
-    </android.support.constraint.ConstraintLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/chat_text_in_message_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="28dp"
+        android:text="Chats"
+        android:textColor="#000"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/contacts_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/chat_text_in_message_page">
 
     </android.support.v7.widget.RecyclerView>
 
