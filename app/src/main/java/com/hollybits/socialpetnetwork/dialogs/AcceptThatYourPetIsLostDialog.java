@@ -58,6 +58,7 @@ public class AcceptThatYourPetIsLostDialog extends AppCompatDialogFragment {
                         try {
                             List<Address> addresses = locationInfoSupplier.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                             if(addresses.size()==1){
+                                System.err.println(addresses.get(0));
                                 MainActivity.getServerRequests().sos(code, currentUser.getId(),
                                         currentUser.getPets().get(0).getId(),
                                         addresses.get(0)).enqueue(new Callback<Void>() {

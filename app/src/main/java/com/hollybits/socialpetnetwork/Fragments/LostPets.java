@@ -1,6 +1,9 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
@@ -8,16 +11,22 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
@@ -32,6 +41,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,11 +68,12 @@ public class LostPets extends Fragment {
     List<LostPet> lostPetList;
     private Geocoder locationInfoSupplier = new Geocoder(FragmentDispatcher.getInstance());
     private Typeface breedFont, mainFont;
-
+    Double longitude;
+    Double latitude;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    FusedLocationProviderClient mFusedLocationClient;
     private static LostPets instance;
-
     public static LostPets getInstance() {
         return instance;
     }
@@ -132,12 +144,27 @@ public class LostPets extends Fragment {
     }
 
     private void getAllLostPetsFromUserDistrict() throws IOException {
-        double longitude = Paper.book().read(com.hollybits.socialpetnetwork.Fragments.Map.LONGITUDE);
-        double latitude = Paper.book().read(com.hollybits.socialpetnetwork.Fragments.Map.LATITUDE);
+        longitude = Paper.book().read(com.hollybits.socialpetnetwork.Fragments.Map.LONGITUDE);
+        latitude = Paper.book().read(com.hollybits.socialpetnetwork.Fragments.Map.LATITUDE);
+
+        if(latitude == null || longitude == null){
+            getCoordinates();
+        }else {
+            loadInfo();
+        }
+
+
+
+
+
+    }
+
+    private void loadInfo() throws IOException{
         List<Address> addresses = locationInfoSupplier.getFromLocation(latitude, longitude, 1);
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         Map<String, String> authorisationCode = new HashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+
 
         if(addresses.size() == 1){
             MainActivity.getServerRequests().getAllLostPetsFromUserDistrict(authorisationCode, addresses.get(0)).enqueue(new Callback<List<LostPet>>() {
@@ -165,9 +192,66 @@ public class LostPets extends Fragment {
                 }
             });
         }
-
-
     }
+
+
+
+
+    private void getCoordinates(){
+
+
+        if(this.getActivity()!= null) {
+            if (ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this.getActivity());
+                initializeCoordinates();
+            } else {
+                int ACCESS_FINE_LOCATION_CODE = 1001;
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},ACCESS_FINE_LOCATION_CODE);
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void initializeCoordinates(){
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+                try {
+                    loadInfo();
+                } catch (IOException e) {
+                    Toast.makeText(LostPets.this.getActivity(), "Cant find your location", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 1001) {
+            if (permissions.length == 1 &&
+                    permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                try {
+                    mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this.getActivity());
+                    initializeCoordinates();
+                } catch (SecurityException e) {
+                    Log.d("PERMISSION", "SecurityException");
+                }
+            } else {
+                Log.d("PERMISSION", "REJECTED"); // TODO ERROR MESSAGE
+            }
+        }
+    }
+
+
+
+
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

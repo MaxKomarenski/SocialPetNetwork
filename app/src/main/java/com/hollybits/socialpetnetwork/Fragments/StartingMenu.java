@@ -16,6 +16,7 @@ import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.activity.SettingsActivity;
 import com.hollybits.socialpetnetwork.enums.GalleryMode;
 import com.hollybits.socialpetnetwork.helper.FriendDownloader;
+import com.hollybits.socialpetnetwork.models.LostPet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +52,10 @@ public class StartingMenu extends Fragment {
 
     @BindView(R.id.store_in_starting_menu)
     ImageView store;
+
+
+    @BindView(R.id.lost_pets_menu)
+    ImageButton lostPets;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -160,6 +165,14 @@ public class StartingMenu extends Fragment {
                 FragmentDispatcher.launchFragment(UsersGallery.class);
             }
         });
+        lostPets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(LostPets.class);
+            }
+        });
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
