@@ -365,6 +365,7 @@
                             android:layout_height="1dp"
                             android:layout_marginEnd="@dimen/margin_rel_account"
                             android:layout_marginStart="@dimen/margin_rel_account"
+                            android:layout_marginBottom="20dp"
                             android:background="#bebebe"
                             android:layout_marginTop="@dimen/marg_top_in_accoutn"/>
 

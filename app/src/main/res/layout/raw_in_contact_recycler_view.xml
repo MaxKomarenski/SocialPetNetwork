@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contact_constraint_layout_in_contact_recycler_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -21,13 +22,13 @@
 
     <ImageView
         android:id="@+id/is_online_in_message_page"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginEnd="2dp"
+        android:layout_width="13dp"
+        android:layout_height="13dp"
+        android:layout_marginStart="10dp"
         android:src="@drawable/green_dot"
-        app:layout_constraintBottom_toBottomOf="@+id/user_photo_in_contact_recycler_view"
-        app:layout_constraintEnd_toEndOf="@+id/user_photo_in_contact_recycler_view" />
+        app:layout_constraintBottom_toBottomOf="@+id/user_name_in_contact_recycler_view"
+        app:layout_constraintStart_toEndOf="@+id/user_name_in_contact_recycler_view"
+        app:layout_constraintTop_toTopOf="@+id/user_name_in_contact_recycler_view" />
 
     <TextView
         android:id="@+id/user_name_in_contact_recycler_view"
@@ -36,7 +37,7 @@
         android:layout_marginStart="20dp"
         android:text="Max Komarenski"
         android:textColor="#000"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/user_photo_in_contact_recycler_view"
         app:layout_constraintTop_toTopOf="@+id/user_photo_in_contact_recycler_view" />
 
@@ -58,16 +59,17 @@
         android:layout_marginTop="8dp"
         android:text="20.14.2018"
         android:textSize="15sp"
-        android:textColor="#7dc2eb"
+        android:textColor="#a6a6a6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="99dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="87dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginTop="12dp"
-        android:background="#7dc2eb"
+        android:background="#a6a6a6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_photo_in_contact_recycler_view" />

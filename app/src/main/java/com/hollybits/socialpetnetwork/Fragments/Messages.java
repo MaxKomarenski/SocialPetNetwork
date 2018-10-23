@@ -1,22 +1,27 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.activity.SettingsActivity;
 import com.hollybits.socialpetnetwork.adapters.ContactAdapter;
 import com.hollybits.socialpetnetwork.models.Contact;
 import com.hollybits.socialpetnetwork.models.User;
@@ -37,14 +42,17 @@ import retrofit2.Response;
 
 public class Messages extends Fragment {
 
+    @BindView(R.id.settings_account_img_button_in_messages)
+    ImageButton settings;
+
+    @BindView(R.id.open_navigation_drawer_image_button_in_messages)
+    ImageButton openDrawerButton;
+
     @BindView(R.id.contacts_recycler_view)
     RecyclerView contactsRecyclerView;
 
     @BindView(R.id.chat_text_in_message_page)
     TextView chatText;
-
-    @BindView(R.id.to_profile_in_message_page)
-    Button backToProfile;
 
     private List<Contact> contacts;
     private ContactAdapter contactAdapter;
@@ -57,6 +65,7 @@ public class Messages extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private DrawerLayout drawer;
 
     private OnFragmentInteractionListener mListener;
 
@@ -94,20 +103,28 @@ public class Messages extends Fragment {
         anotherFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr.ttf");
 
         chatText.setTypeface(nameFont);
-        backToProfile.setTypeface(nameFont);
-
-        backToProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentDispatcher.launchFragment(Account.class);
-            }
-        });
 
         getContacts();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         contactsRecyclerView.setLayoutManager(layoutManager);
         SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
         contactsRecyclerView.setItemAnimator(animator);
+
+        openDrawerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+                drawer.openDrawer(Gravity.START);
+            }
+        });
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
