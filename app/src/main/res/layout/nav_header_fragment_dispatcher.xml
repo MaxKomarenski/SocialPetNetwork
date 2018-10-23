@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="170dp"
     android:background="#ffffff"
+    android:padding="0dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     tools:layout_editor_absoluteY="81dp">
 
@@ -13,9 +14,9 @@
     <TextView
         android:id="@+id/name_surname_nav_header"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="56dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="68dp"
         android:text="Name"
         android:textColor="#1b3665"
         android:textSize="20sp"
@@ -27,7 +28,7 @@
         android:id="@+id/edit_profile_nav_header"
         android:layout_width="121dp"
         android:layout_height="65dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:scaleType="fitCenter"
         android:src="@drawable/edit_profile"
         android:textColor="#1b3665"
@@ -37,6 +38,18 @@
         app:layout_constraintStart_toStartOf="@+id/name_surname_nav_header"
         app:layout_constraintTop_toBottomOf="@+id/name_surname_nav_header" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="23dp"
+        android:layout_height="28dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_profile_nav_header"
+        app:layout_constraintStart_toEndOf="@+id/edit_profile_nav_header"
+        app:layout_constraintTop_toTopOf="@+id/name_surname_nav_header"
+        app:layout_constraintVertical_bias="0.416"
+        app:srcCompat="@drawable/header_arrow" />
 
 
 </android.support.constraint.ConstraintLayout>

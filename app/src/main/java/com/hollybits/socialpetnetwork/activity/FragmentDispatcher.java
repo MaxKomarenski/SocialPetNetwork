@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.hollybits.socialpetnetwork.Fragments.Account;
 import com.hollybits.socialpetnetwork.Fragments.Store;
 import com.hollybits.socialpetnetwork.Fragments.UsersGallery;
@@ -44,6 +45,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import io.fabric.sdk.android.Fabric;
 import io.paperdb.Paper;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -83,6 +85,10 @@ public class FragmentDispatcher extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+
+        Fabric.with(this, new Crashlytics());
+        Log.d("FABRIC", "FABRIC CRASH REPORT INITIALIZED");
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);

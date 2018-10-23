@@ -138,11 +138,6 @@ public class UsersGallery extends Fragment {
         ButterKnife.bind(this, view);
         try {
 
-
-        if(this.getActivity() != null){
-            Fabric.with(this.getActivity(), new Crashlytics());
-            Log.d("GALLERY", "FABRIC CRASH REPORT INITIALIZED");
-        }
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
 
         numberOfFriends.setTypeface(mainFont);

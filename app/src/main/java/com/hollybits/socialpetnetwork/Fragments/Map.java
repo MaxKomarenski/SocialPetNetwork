@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -225,7 +226,8 @@ public class Map extends Fragment  {
                             });
 
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            Toast.makeText
+                                    (Map.this.getContext(), "Some error has happen, Please check if location service is ON",Toast.LENGTH_LONG).show();
                         }
                     }
             });
@@ -326,10 +328,16 @@ public class Map extends Fragment  {
                         mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
                             @Override
                             public void onSuccess(Location location) {
-                                Paper.book().write(LATITUDE, location.getLatitude());
-                                Paper.book().write(LONGITUDE, location.getLongitude());
-                                //bottomSheet.dismiss();
-                                FragmentDispatcher.launchFragment(LostPets.class);
+                                if(location != null) {
+                                    Paper.book().write(LATITUDE, location.getLatitude());
+                                    Paper.book().write(LONGITUDE, location.getLongitude());
+                                    //bottomSheet.dismiss();
+                                    FragmentDispatcher.launchFragment(LostPets.class);
+                                }
+                                else {
+                                    Toast.makeText
+                                            (Map.this.getContext(), "Some error has happen, Please check if location service are ON", Toast.LENGTH_LONG).show();
+                                }
                             }
                         });
                     }
