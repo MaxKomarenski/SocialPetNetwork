@@ -132,7 +132,7 @@ public class FragmentDispatcher extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        launchFragment(Account.class);
+        launchFragment(StartingMenu.class);
     }
 
 

@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
@@ -34,20 +34,23 @@ public class StartingMenu extends Fragment {
     @BindView(R.id.settings_starting_menu_img_button)
     ImageButton settingsButton;
 
-    @BindView(R.id.friends_card_view_in_starting_menu)
-    CardView friendsCardView;
+    @BindView(R.id.friends_in_starting_menu)
+    ImageView friends;
 
-    @BindView(R.id.profile_card_view_in_starting_menu)
-    CardView profileCardView;
+    @BindView(R.id.profile_in_starting_menu)
+    ImageView profile;
 
-    @BindView(R.id.messages_card_view_in_starting_menu)
-    CardView messagesCardView;
+    @BindView(R.id.messages_in_starting_menu)
+    ImageView messages;
 
-    @BindView(R.id.map_card_view_in_starting_menu)
-    CardView mapCardView;
+    @BindView(R.id.map_in_starting_menu)
+    ImageView map;
 
-    @BindView(R.id.gallery_card_view_in_starting_menu)
-    CardView galleryCardView;
+    @BindView(R.id.gallery_in_starting_menu)
+    ImageView gallery;
+
+    @BindView(R.id.store_in_starting_menu)
+    ImageView store;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -115,35 +118,42 @@ public class StartingMenu extends Fragment {
             }
         });
 
-        friendsCardView.setOnClickListener(new View.OnClickListener() {
+        friends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentDispatcher.launchFragment(UserFriends.class);
             }
         });
 
-        profileCardView.setOnClickListener(new View.OnClickListener() {
+        profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentDispatcher.launchFragment(Account.class);
             }
         });
 
-        messagesCardView.setOnClickListener(new View.OnClickListener() {
+        messages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentDispatcher.launchFragment(Messages.class);
             }
         });
 
-        mapCardView.setOnClickListener(new View.OnClickListener() {
+        store.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(Store.class);
+            }
+        });
+
+        map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentDispatcher.launchFragment(Map.class);
             }
         });
 
-        galleryCardView.setOnClickListener(new View.OnClickListener() {
+        gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Paper.book().write(MainActivity.GALLERY_MODE, GalleryMode.USERS_MODE);
