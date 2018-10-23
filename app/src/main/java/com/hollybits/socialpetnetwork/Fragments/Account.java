@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.activity.SettingsActivity;
 import com.hollybits.socialpetnetwork.enums.GalleryMode;
+import com.hollybits.socialpetnetwork.enums.Sex;
 import com.hollybits.socialpetnetwork.helper.GlideApp;
 import com.hollybits.socialpetnetwork.helper.PermissionManeger;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
@@ -83,16 +86,19 @@ public class Account extends Fragment {
     @BindView(R.id.open_gallery_from_account)
     ImageButton openGallery;
 
-    @BindViews({R.id.name_of_pet_text_view, R.id.sex_of_pet_text_view,
-                R.id.breed_word_text_view, R.id.name_of_breed_text_view, R.id.address_word_text_view,
-                R.id.place_of_user_text_view, R.id.age_word_text_view, R.id.number_of_age_word_text_view,
-                R.id.weight_word_text_view, R.id.amount_of_weight_text_view, R.id.attitude_word_text_view,
-                R.id.attitude_state_text_view})
+    @BindView(R.id.sexImageView)
+    ImageView sexImageView;
+
+    @BindViews({R.id.name_of_pet_text_view,
+            R.id.breed_word_text_view, R.id.name_of_breed_text_view, R.id.address_word_text_view,
+            R.id.place_of_user_text_view, R.id.age_word_text_view, R.id.number_of_age_word_text_view,
+            R.id.weight_word_text_view, R.id.amount_of_weight_text_view, R.id.owner_text_in_account,
+            R.id.phone_text_in_account, R.id.email_text_in_account})
     List<TextView> informationAboutPet;
 
     @BindViews({R.id.owner_name_and_surname_in_expansion_panel,
             R.id.owner_phone_in_expansion_panel,
-            R.id.owner_email_in_expansion_panel})
+            R.id.owner_email_in_expansion_panel, R.id.my_profile_text_in_account})
     List<TextView> informationAboutUser;
 
     @BindViews({R.id.map_text_in_account, R.id.gallery_text_in_account, R.id.store_text_in_account})
@@ -104,6 +110,7 @@ public class Account extends Fragment {
     private static final int PICK_IMAGE = 200;
     DrawerLayout drawer;
     private Uri imageUri;
+    private Typeface infoFont;
 
     private OnFragmentInteractionListener mListener;
 
@@ -151,37 +158,35 @@ public class Account extends Fragment {
         java.util.Map<String, String> authorisationCode = new HashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
 
-
         photoManager.loadUsersMainPhoto(userMainPhoto);
 
-
-        showAllInformationOnTheScreen();
-
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
-        changeFontForAllWordInList(informationAboutPet, mainFont);
+        infoFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/AvenirNextCyr-Demi.ttf");
+        changeFontForAllWordInList(informationAboutPet, infoFont);
         changeFontForAllWordInList(wordUnderButtins, mainFont);
+        showAllInformationOnTheScreen();
         listeners();
 
         return view;
     }
 
-    void changeFontForAllWordInList(List<TextView> words, Typeface font){
-        for (TextView textView:
+    void changeFontForAllWordInList(List<TextView> words, Typeface font) {
+        for (TextView textView :
                 words) {
             textView.setTypeface(font);
         }
     }
 
-    private void openGallery(){
+    private void openGallery() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             imageUri = data.getData();
 
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -233,7 +238,7 @@ public class Account extends Fragment {
         }
     }
 
-    private void listeners(){
+    private void listeners() {
         openDrawerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -255,7 +260,7 @@ public class Account extends Fragment {
             public void onClick(View v) {
                 try {
                     openGallery();
-                }catch (Exception e){
+                } catch (Exception e) {
                     Toast.makeText(Account.this.getActivity(), "SORRY IMAGE IS TOO LARGE", Toast.LENGTH_LONG).show();
                 }
 
@@ -278,23 +283,41 @@ public class Account extends Fragment {
         });
     }
 
-    private void showAllInformationOnTheScreen(){
+    private void showAllInformationOnTheScreen() {
+        Typeface avenirNextCyr_regular = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/AvenirNextCyr-Regular.ttf");
+
         //TODO make if user has more than one pet
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         Pet currentPet = currentUser.getPets().get(0);
 
 
         informationAboutPet.get(0).setText(currentPet.getName()); //name
-        informationAboutPet.get(1).setText(currentPet.getSex().name().toLowerCase()); //sex
-        informationAboutPet.get(3).setText(currentPet.getBreed().getName()); //breed
-        informationAboutPet.get(5).setText(currentUser.getCity().getName() + ", " + currentUser.getCity().getCountry().getName());// city and country
-        informationAboutPet.get(7).setText(currentPet.getAge().toString()); // age
-        informationAboutPet.get(9).setText(currentPet.getWeight().getMass().toString() + " " + currentPet.getWeight().getMassUnit().getName().toLowerCase());
-        informationAboutPet.get(11).setText(currentPet.getAttitude().getName());
+        informationAboutPet.get(0).setTypeface(infoFont);
+        //informationAboutPet.get(1).setText(currentPet.getSex().name().toLowerCase()); //sex
+        informationAboutPet.get(2).setText(currentPet.getBreed().getName()); //breed
+        informationAboutPet.get(2).setTypeface(avenirNextCyr_regular);
+        informationAboutPet.get(4).setText(currentUser.getCity().getName() + ", " + currentUser.getCity().getCountry().getName());// city and country
+        informationAboutPet.get(4).setTypeface(avenirNextCyr_regular);
+        informationAboutPet.get(6).setText(currentPet.getAge().toString()); // age
+        informationAboutPet.get(6).setTypeface(avenirNextCyr_regular);
+        informationAboutPet.get(8).setText(currentPet.getWeight().getMass().toString() + " " + currentPet.getWeight().getMassUnit().getName().toLowerCase());
+        informationAboutPet.get(8).setTypeface(avenirNextCyr_regular);
 
         informationAboutUser.get(0).setText(currentUser.getName() + " " + currentUser.getSurname());
         informationAboutUser.get(1).setText(currentUser.getPhone());
         informationAboutUser.get(2).setText(currentUser.getCredentials().email);
+
+        for (TextView text:
+             informationAboutUser) {
+            text.setTypeface(avenirNextCyr_regular);
+        }
+
+        if (currentPet.getSex() == Sex.FEMALE) {
+            sexImageView.setImageResource(R.mipmap.female);
+        } else {
+            sexImageView.setImageResource(R.mipmap.male);
+        }
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -309,7 +332,6 @@ public class Account extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 
 
     /**

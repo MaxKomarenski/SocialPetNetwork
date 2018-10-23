@@ -27,4 +27,6 @@
     <color name="blue_for_table">#b7ddf4</color>
     <color name="blue_for_table_pressed">#7dc2eb</color>
 
+    <color name="blue_for_text_in_account">#90d4f7</color>
+
 </resources>
