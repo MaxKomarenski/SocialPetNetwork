@@ -19,23 +19,22 @@
     <ImageButton
         android:id="@+id/sos"
         android:visibility="gone"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="90dp"
         android:background="@null"
         android:scaleType="fitCenter"
-        android:src="@drawable/sos_button"
-        android:text="SOS"
+        android:src="@mipmap/sos_signal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/help"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
@@ -43,8 +42,7 @@
         android:layout_marginEnd="90dp"
         android:background="@null"
         android:scaleType="fitCenter"
-        android:src="@drawable/help_button"
-        android:text="HELP"
+        android:src="@mipmap/lost_pets"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
