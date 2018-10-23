@@ -19,6 +19,7 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.enums.GalleryMode;
+import com.hollybits.socialpetnetwork.enums.Sex;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.Pet;
@@ -50,18 +51,18 @@ public class FriendAccount extends Fragment {
             R.id.address_word_text_view,
             R.id.age_word_text_view,
             R.id.weight_word_text_view,
-            R.id.attitude_word_text_view
+            R.id.owner_text_in_account_friend,
+            R.id.email_text_in_account_friend,
+            R.id.phone_text_in_account_friend
     })
     List<TextView> words;
 
     @BindViews({
             R.id.name_of_pet_text_view,
-            R.id.sex_of_pet_text_view,
             R.id.name_of_breed_text_view,
             R.id.place_of_user_text_view,
             R.id.number_of_age_word_text_view,
             R.id.amount_of_weight_text_view,
-            R.id.attitude_state_text_view,
             R.id.owner_name_and_surname_in_expansion_panel,
             R.id.owner_phone_in_expansion_panel,
             R.id.owner_email_in_expansion_panel
@@ -70,6 +71,9 @@ public class FriendAccount extends Fragment {
 
     @BindView(R.id.open_navigation_drawer_image_button)
     ImageView openNavigationDrawer;
+
+    @BindView(R.id.sexImageView_in_friend_account)
+    ImageView sexImg;
 
     @BindView(R.id.user_photo_in_friend_account_fragment)
     CircleImageView circleImageView;
@@ -147,11 +151,13 @@ public class FriendAccount extends Fragment {
 
 
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        Typeface avenirNextCyr_regular = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/AvenirNextCyr-Regular.ttf");
+
         for (TextView textView: words) {
             textView.setTypeface(mainFont);
         }
         for (TextView textView: allChangedInformation) {
-            textView.setTypeface(mainFont);
+            textView.setTypeface(avenirNextCyr_regular);
         }
 
         becomeFriendText.setTypeface(mainFont);
@@ -314,12 +320,10 @@ public class FriendAccount extends Fragment {
 
         String[] info = {
                 pet.getName(),
-                pet.getSex().name().toLowerCase(),
                 pet.getBreed().getName(),
                 userInfo.getCity().getName() + ", " + userInfo.getCity().getCountry().getName(),
                 pet.getAge().toString(),
                 pet.getWeight().getMass().toString() + " " + pet.getWeight().getMassUnit().name().toLowerCase(),
-                pet.getAttitude().getName(),
                 userInfo.getName() + " " + userInfo.getSurname(),
                 userInfo.getPhone(),
                 userInfo.getEmail()
@@ -327,6 +331,12 @@ public class FriendAccount extends Fragment {
 
         for(int i = 0; i < info.length; i++){
             allChangedInformation.get(i).setText(info[i]);
+        }
+
+        if (pet.getSex() == Sex.FEMALE) {
+            sexImg.setImageResource(R.mipmap.female);
+        } else {
+            sexImg.setImageResource(R.mipmap.male);
         }
 
     }
