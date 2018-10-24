@@ -48,7 +48,7 @@
 
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/lost_pets_menu"
         android:layout_width="227dp"
         android:layout_height="160dp"
         android:layout_gravity="center_horizontal"
