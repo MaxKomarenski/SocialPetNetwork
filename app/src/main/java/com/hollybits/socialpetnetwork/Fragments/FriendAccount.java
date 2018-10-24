@@ -41,7 +41,6 @@ import io.paperdb.Paper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.POST;
 
 
 public class FriendAccount extends Fragment {
@@ -98,6 +97,9 @@ public class FriendAccount extends Fragment {
 
     @BindView(R.id.leaveAMessage_text_in_friend_account)
     TextView leaveAMessage;
+
+    @BindView(R.id.some_profile_text_in_account_friend)
+    TextView whoseProfile;
 
     DrawerLayout drawer;
     UserInfo userInfo;
@@ -160,6 +162,7 @@ public class FriendAccount extends Fragment {
             textView.setTypeface(avenirNextCyr_regular);
         }
 
+        whoseProfile.setTypeface(avenirNextCyr_regular);
         becomeFriendText.setTypeface(mainFont);
         galleryText.setTypeface(mainFont);
         leaveAMessage.setTypeface(mainFont);
@@ -317,6 +320,8 @@ public class FriendAccount extends Fragment {
                 pet = p;
             }
         }
+
+        whoseProfile.setText(pet.getName() + "'s profile");
 
         String[] info = {
                 pet.getName(),

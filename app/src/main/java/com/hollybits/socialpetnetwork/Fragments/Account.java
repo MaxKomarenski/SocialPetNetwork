@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -106,6 +107,9 @@ public class Account extends Fragment {
 
     @BindView(R.id.settings_account_img_button)
     ImageButton settings;
+
+    @BindView(R.id.edit_button_in_account)
+    Button editButton;
 
     private static final int PICK_IMAGE = 200;
     DrawerLayout drawer;
@@ -239,6 +243,14 @@ public class Account extends Fragment {
     }
 
     private void listeners() {
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(EditInfo.class);
+            }
+        });
+
         openDrawerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

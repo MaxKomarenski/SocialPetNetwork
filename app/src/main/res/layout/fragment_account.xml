@@ -65,12 +65,28 @@
 
                         </RelativeLayout>
 
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                                <Button
+                                    android:id="@+id/edit_button_in_account"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="39dp"
+                                    android:background="@null"
+                                    android:text="Edit"
+                                    android:textSize="14sp"/>
+
+                        </RelativeLayout>
+
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/user_photo_in_account_fragment"
                             android:layout_width="130dp"
                             android:layout_height="130dp"
-                            android:layout_marginTop="25dp"
                             android:src="@drawable/test_photo"
                             app:civ_border_color="#3ed611"
                             app:civ_border_width="7dp" />

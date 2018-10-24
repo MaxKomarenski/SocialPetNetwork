@@ -12,4 +12,5 @@
     <dimen name="margin_edit_text_reg">13dp</dimen>
     <dimen name="margin_rel_account">30dp</dimen>
     <dimen name="marg_top_in_accoutn">11dp</dimen>
+    <dimen name="marg_left_edit_text">10dp</dimen>
 </resources>
