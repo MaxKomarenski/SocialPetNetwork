@@ -36,6 +36,7 @@
                         android:text="Cancel" />
 
                     <TextView
+                        android:id="@+id/edit_profile_text_in_edit_page"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -54,29 +55,36 @@
                 </RelativeLayout>
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/user_photo_in_account_fragment"
+                    android:id="@+id/user_photo_in_edit_fragment"
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:src="@drawable/test_photo"
+                    android:layout_marginTop="20dp"
                     app:civ_border_color="#3ed611"
                     app:civ_border_width="7dp" />
 
                 <TextView
+                    android:id="@+id/change_profile_photo_text_in_edit_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="Change profile photo"/>
 
                 <LinearLayout
+                    android:id="@+id/change_attitude_linear_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/attitude_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="friendly to everyone"/>
 
                     <ImageView
+                        android:id="@+id/edit_image_view"
+                        android:src="@drawable/edit_pensil"
                         android:layout_width="20dp"
                         android:layout_height="20dp" />
 
@@ -93,9 +101,10 @@
                 android:layout_marginEnd="@dimen/margin_edit_text_reg">
 
                 <TextView
+                    android:id="@+id/name_text_in_edit_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name"
+                    android:text="Pet name"
                     android:layout_marginStart="@dimen/marg_left_edit_text"/>
 
                 <LinearLayout
@@ -113,6 +122,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/sex_text_in_edit_page"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Sex"
@@ -126,6 +136,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/breed_text_in_edit_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Breed"
@@ -136,9 +147,21 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
+                    android:id="@+id/city_text_in_edit_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Address"
+                    android:text="City"
+                    android:layout_marginStart="@dimen/marg_left_edit_text"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/country_text_in_edit_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Country"
                     android:layout_marginStart="@dimen/marg_left_edit_text"/>
 
                 <EditText
@@ -146,9 +169,10 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:id="@+id/owner_name_text_in_edit_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Owner"
+                    android:text="Owner name"
                     android:layout_marginStart="@dimen/marg_left_edit_text"/>
 
                 <EditText
@@ -156,6 +180,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:id="@+id/email_text_in_edit_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Email"
@@ -166,6 +191,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
+                    android:id="@+id/phone_text_in_edit_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Phone"
@@ -176,6 +202,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
+                    android:id="@+id/weight_text_in_edit_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pet's weight"
@@ -186,6 +213,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
+                    android:id="@+id/age_text_in_edit_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Age"
