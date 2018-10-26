@@ -5,10 +5,13 @@ import android.graphics.ColorFilter;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,10 +20,19 @@ import android.widget.TextView;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.activity.RegistrationActivity;
+import com.hollybits.socialpetnetwork.adapters.AutoCompleteCountryAdapter;
+import com.hollybits.socialpetnetwork.adapters.BreedAdapter;
+import com.hollybits.socialpetnetwork.enums.Attitude;
+import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
+import com.hollybits.socialpetnetwork.models.Breed;
+import com.hollybits.socialpetnetwork.models.Country;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
+import com.hollybits.socialpetnetwork.validation.RegistrationValidator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,6 +40,9 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class EditInfo extends Fragment {
@@ -59,7 +74,21 @@ public class EditInfo extends Fragment {
     @BindView(R.id.edit_image_view)
     ImageView editPen;
 
+    @BindView(R.id.done_button)
+    Button doneButton;
+//--------------------------------------------------------
+    @BindView(R.id.country_auto_complete_in_edit)
+    AutoCompleteTextView countryAutocomplete;
+
+    @BindView(R.id.breed_edit_text_in_edit)
+    AutoCompleteTextView breedAutocomplete;
+
     private PhotoManager photoManager;
+
+    private BreedAdapter breedAdapter;
+    private AutoCompleteCountryAdapter autoCompleteCountryAdapter;
+    private List<Country> countries = new ArrayList<>();
+    private List<Breed> allBreadsForSelectedType;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -104,12 +133,15 @@ public class EditInfo extends Fragment {
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         Pet currentPet = currentUser.getPets().get(0);
 
+        loadBreedsForSelectedType(currentPet.getBreed().getType());
+        loadCountriesList();
+
         Typeface avenirNextCyr_regular = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/AvenirNextCyr-Regular.ttf");
         Typeface infoFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/AvenirNextCyr-Demi.ttf");
 
-        attitudeTextView.setText(currentPet.getAttitude().getName().toLowerCase());
+        attitudeTextView.setTypeface(infoFont);
 
-        changeFontForAllWordInList(topics, infoFont);
+        changeFontForAllWordInList(topics, infoFont, "#8edaff");
         editProfileText.setTypeface(infoFont);
         changeProfilePhotoText.setTypeface(infoFont);
         cancelButton.setTypeface(avenirNextCyr_regular);
@@ -120,16 +152,35 @@ public class EditInfo extends Fragment {
             }
         });
 
+        doneButton.setTypeface(avenirNextCyr_regular);
+
 
         String[] attitudes = {"friendly to everyone", "friendly to female", "friendly to male", "unfriendly"};
-        int[] colorFilters = {Color.argb(255, 255, 255, 255)};
+        int[] strokes = {R.drawable.attitude_edit_background_green,
+                R.drawable.attitude_edit_background_yellow,
+                R.drawable.attitude_edit_background_yellow,
+                R.drawable.attitude_edit_background_red};
+        int[] colorFilters = {Color.argb(255,0,135,68),
+                Color.argb(255, 255,167,0),
+                Color.argb(255, 255,167,0),
+                Color.argb(255, 214,45,32)};
+
+        attitudePosition = getAttitudePosition(currentPet);
+        attitudeTextView.setText(attitudes[attitudePosition]);
+        editPen.setColorFilter(colorFilters[attitudePosition]);
+        changeAttitudeLinearLayout.setBackgroundResource(strokes[attitudePosition]);
 
         changeAttitudeLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                attitudePosition++;
+                changeAttitudeLinearLayout.setBackgroundResource(strokes[attitudePosition]);
                 attitudeTextView.setText(attitudes[attitudePosition]);
                 editPen.setColorFilter(colorFilters[attitudePosition]);
-                attitudePosition++;
+
+                if(attitudePosition == 3){
+                    attitudePosition = -1;
+                }
 
             }
         });
@@ -139,10 +190,91 @@ public class EditInfo extends Fragment {
         return view;
     }
 
-    void changeFontForAllWordInList(List<TextView> words, Typeface font) {
+    private void loadBreedsForSelectedType(PetType petType){
+        Log.d("loadBreed for: ", petType.name());
+        MainActivity.getServerRequests().getBreedsForType(petType).enqueue(new Callback<List<Breed>>() {
+            @Override
+            public void onResponse(Call<List<Breed>> call, Response<List<Breed>> response) {
+                if(response.body() != null){
+                    allBreadsForSelectedType = response.body();
+                    breedAdapter = new BreedAdapter(getContext(), allBreadsForSelectedType);
+                    breedAutocomplete.setAdapter(breedAdapter);
+
+                }else {
+                    Log.d("getBreedsForType: ", "body null");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Breed>> call, Throwable t) {
+                Log.d("getBreedsForType: ", t.getMessage());
+            }
+        });
+    }
+
+    private Breed getChosenBreed(String nameOfChosenBreed){
+        if(allBreadsForSelectedType != null)
+            for (Breed b: allBreadsForSelectedType){
+                if(b.getName().equalsIgnoreCase(nameOfChosenBreed)){
+                    return b;
+                }
+            }
+
+        return new Breed(nameOfChosenBreed);
+    }
+
+    private Country getChosenCountry(String nameOfChosenCountry){
+        if(countries != null)
+            for (Country c: countries) {
+                if(c.getName().equalsIgnoreCase(nameOfChosenCountry)){
+                    return c;
+                }
+            }
+
+        return new Country(nameOfChosenCountry);
+    }
+
+    private void loadCountriesList(){
+        MainActivity.getServerRequests().getAllCountries().enqueue(new Callback<List<Country>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Country>> call, @NonNull Response<List<Country>> response) {
+                if(response.body() != null){
+                    countries.clear();
+                    countries.addAll(response.body());
+                    autoCompleteCountryAdapter = new AutoCompleteCountryAdapter(getContext(), countries);
+                    countryAutocomplete.setAdapter(autoCompleteCountryAdapter);
+                    autoCompleteCountryAdapter.notifyDataSetChanged();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Country>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    void changeFontForAllWordInList(List<TextView> words, Typeface font, String color) {
         for (TextView textView :
                 words) {
             textView.setTypeface(font);
+            textView.setTextColor(Color.parseColor(color));
+        }
+    }
+
+    int getAttitudePosition(Pet currentPet){
+        Attitude attitude = currentPet.getAttitude();
+
+        if (attitude == Attitude.GOODWITHALL){
+            return 0;
+        }else if(attitude == Attitude.GOODWITHFEMALE){
+            return 1;
+        }else if(attitude == Attitude.GOODWITHMALE) {
+            System.err.println("here");
+            return 2;
+        }else {
+            return 3;
         }
     }
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" android:padding="10dp">
+    <solid android:color="#fff"/>
+    <corners
+        android:bottomRightRadius="@dimen/radius_in_edit"
+        android:bottomLeftRadius="@dimen/radius_in_edit"
+        android:topLeftRadius="@dimen/radius_in_edit"
+        android:topRightRadius="@dimen/radius_in_edit"/>
+    <stroke
+        android:color="#ffa700"
+        android:width="2dp"
+        />
+</shape>

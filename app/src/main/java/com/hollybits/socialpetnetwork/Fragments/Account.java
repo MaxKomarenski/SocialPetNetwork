@@ -3,10 +3,7 @@ package com.hollybits.socialpetnetwork.Fragments;
 import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -53,15 +50,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Account.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Account#newInstance} factory method to
- * create an instance of this fragment.
- */
 
 public class Account extends Fragment {
     // TODO: Rename parameter arguments, choose names that match

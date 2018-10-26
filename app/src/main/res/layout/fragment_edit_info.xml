@@ -44,6 +44,7 @@
                         android:textSize="22sp" />
 
                     <Button
+                        android:id="@+id/done_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -74,19 +75,23 @@
                     android:id="@+id/change_attitude_linear_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/attitude_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="friendly to everyone"/>
+                        android:text="friendly to everyone"
+                        android:textSize="15sp"/>
 
                     <ImageView
                         android:id="@+id/edit_image_view"
                         android:src="@drawable/edit_pensil"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp" />
+                        android:layout_marginStart="10dp"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp" />
 
                 </LinearLayout>
 
@@ -111,8 +116,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center"
-                    >
+                    android:gravity="center">
 
                     <EditText
                         android:layout_width="0dp"
@@ -142,9 +146,11 @@
                     android:text="Breed"
                     android:layout_marginStart="@dimen/marg_left_edit_text"/>
 
-                <EditText
+                <AutoCompleteTextView
+                    android:id="@+id/breed_edit_text_in_edit"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    />
 
                 <TextView
                     android:id="@+id/city_text_in_edit_page"
@@ -164,7 +170,8 @@
                     android:text="Country"
                     android:layout_marginStart="@dimen/marg_left_edit_text"/>
 
-                <EditText
+                <AutoCompleteTextView
+                    android:id="@+id/country_auto_complete_in_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

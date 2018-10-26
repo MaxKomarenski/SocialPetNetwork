@@ -205,7 +205,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private PetType[] allPetTypes;
     private RegistrationActivity instance;
     private Validator validator;
-    private  MultipartBody.Part fileToUpload;
+    private MultipartBody.Part fileToUpload;
     private Attitude attitude;
     private Typeface fontForTable;
 
