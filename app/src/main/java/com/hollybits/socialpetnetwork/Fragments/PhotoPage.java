@@ -69,6 +69,10 @@ public class PhotoPage extends Fragment{
     @BindView(R.id.name_in_photo_page)
     TextView nameAndSurnameTextView;
 
+    private int like = 1;
+    private  int dislike = 0;
+    private int likesCount;
+    private int commentsCount;
 
     private int res_id;
 
@@ -184,14 +188,15 @@ public class PhotoPage extends Fragment{
                 MainActivity.getServerRequests().like(authorisationCode, currentUser.getId(), id).enqueue(new Callback<Boolean>() {
                     @Override
                     public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                        if(res_id == 1) {
-
+                        if(res_id == like) {
                             likeButton.getBackground().setTint(getResources().getColor(R.color.like_pressed));
-                            res_id = 0;
+                            res_id = dislike;
+                            likes.setText(++likesCount+" likes");
                         }
                         else {
                             likeButton.getBackground().setTint(getResources().getColor((R.color.like_not_pressed)));
-                            res_id = 1;
+                            res_id = like;
+                            likes.setText(--likesCount+" likes");
                         }
                     }
 
@@ -212,10 +217,10 @@ public class PhotoPage extends Fragment{
         MainActivity.getServerRequests().getAllCommentOfCurrentPhoto(authorisationCode, id).enqueue(new Callback<List<Comment>>() {
             @Override
             public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
-
                 if (response.body() != null){
                     comments.addAll(response.body());
-                    commentsText.setText(response.body().size()+" comments");
+                    commentsCount = response.body().size();
+                    commentsText.setText(commentsCount+" comments");
                     commentAdapter = new CommentAdapter(comments);
                     commentRecyclerView.setAdapter(commentAdapter);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PhotoPage.this.getContext());
@@ -256,12 +261,15 @@ public class PhotoPage extends Fragment{
                     if(response.body().contains(currentUser.getId())){
                         Log.d("likes", "LIKED!!!");
                         likeButton.getBackground().setTint(getResources().getColor(R.color.like_pressed));
-                        likes.setText(response.body().size()+" likes");
-                        res_id = 0;
+                        likesCount = response.body().size();
+                        likes.setText(likesCount+" likes");
+                        res_id = dislike;
                     }else {
                         Log.d("likes", "NOT LIKED!!!");
+                        likesCount = response.body().size();
+                        likes.setText(likesCount+" likes");
                         likeButton.getBackground().setTint(getResources().getColor((R.color.like_not_pressed)));
-                        res_id =1;
+                        res_id = like;
                     }
                 }
             }
