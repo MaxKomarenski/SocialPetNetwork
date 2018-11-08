@@ -13,26 +13,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
+import com.hollybits.socialpetnetwork.activity.LoginActivity;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.activity.RegistrationActivity;
 import com.hollybits.socialpetnetwork.adapters.AutoCompleteCountryAdapter;
 import com.hollybits.socialpetnetwork.adapters.BreedAdapter;
 import com.hollybits.socialpetnetwork.enums.Attitude;
 import com.hollybits.socialpetnetwork.enums.PetType;
+import com.hollybits.socialpetnetwork.forms.EditForm;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.Breed;
+import com.hollybits.socialpetnetwork.models.City;
 import com.hollybits.socialpetnetwork.models.Country;
 import com.hollybits.socialpetnetwork.models.Pet;
 import com.hollybits.socialpetnetwork.models.User;
+import com.hollybits.socialpetnetwork.models.Weight;
 import com.hollybits.socialpetnetwork.validation.RegistrationValidator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,9 +53,9 @@ import retrofit2.Response;
 
 public class EditInfo extends Fragment {
 
-    @BindViews({R.id.name_text_in_edit_page, R.id.sex_text_in_edit_page, R.id.breed_text_in_edit_page,
+    @BindViews({R.id.name_text_in_edit_page, R.id.breed_text_in_edit_page,
                 R.id.city_text_in_edit_page, R.id.country_text_in_edit_page, R.id.owner_name_text_in_edit_page,
-                R.id.email_text_in_edit_page, R.id.phone_text_in_edit_page, R.id.weight_text_in_edit_page,
+                R.id.phone_text_in_edit_page, R.id.weight_text_in_edit_page,
                 R.id.age_text_in_edit_page})
     List<TextView> topics;
 
@@ -77,11 +83,29 @@ public class EditInfo extends Fragment {
     @BindView(R.id.done_button)
     Button doneButton;
 //--------------------------------------------------------
-    @BindView(R.id.country_auto_complete_in_edit)
-    AutoCompleteTextView countryAutocomplete;
+    @BindView(R.id.pet_name_in_edit_page)
+    EditText petNameEditText;
 
     @BindView(R.id.breed_edit_text_in_edit)
     AutoCompleteTextView breedAutocomplete;
+
+    @BindView(R.id.city_edit_text_in_edit_page)
+    EditText cityEditText;
+
+    @BindView(R.id.country_auto_complete_in_edit)
+    AutoCompleteTextView countryAutocomplete;
+
+    @BindView(R.id.owner_name_edit_text_in_edit_page)
+    EditText ownerName;
+
+    @BindView(R.id.weight_edit_text_in_edit_page)
+    EditText weightEditText;
+
+    @BindView(R.id.age_edit_text_in_edit_page)
+    EditText ageEditText;
+
+    @BindView(R.id.phone_edit_text_in_edit_page)
+    EditText phoneEditText;
 
     private PhotoManager photoManager;
 
@@ -136,6 +160,8 @@ public class EditInfo extends Fragment {
         loadBreedsForSelectedType(currentPet.getBreed().getType());
         loadCountriesList();
 
+        changeTextInEditText(currentUser, currentPet);
+
         Typeface avenirNextCyr_regular = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/AvenirNextCyr-Regular.ttf");
         Typeface infoFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/AvenirNextCyr-Demi.ttf");
 
@@ -153,8 +179,97 @@ public class EditInfo extends Fragment {
         });
 
         doneButton.setTypeface(avenirNextCyr_regular);
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditForm editForm = new EditForm();
+
+                String pName = petNameEditText.getText().toString();
+                editForm.setPetName(pName);
+
+                Breed b = getChosenBreed(breedAutocomplete.getText().toString());
+                editForm.setBreed(b);
+
+                Country country = getChosenCountry(countryAutocomplete.getText().toString());
+                City city = new City(cityEditText.getText().toString(), country);
+                editForm.setCity(city);
+
+                String owName = ownerName.getText().toString();
+                editForm.setOwnerName(owName); //
+
+                String phone = phoneEditText.getText().toString();
+                editForm.setPhone(phone); //
+
+                Long age = Long.parseLong(ageEditText.getText().toString());
+                editForm.setAge(age);
+
+                Double weight = Double.parseDouble(weightEditText.getText().toString());
+                editForm.setWeight(weight);
+
+                String att = attitudeTextView.getText().toString();
+                Attitude at;
+
+                if (att.equals("friendly to everyone")){
+                    at = Attitude.GOODWITHALL;
+                } else if (att.equals("friendly to female")){
+                    at = Attitude.GOODWITHFEMALE;
+                } else if (att.equals("friendly to male")){
+                    at = Attitude.GOODWITHMALE;
+                }else {
+                    at = Attitude.BAD;
+                }
+
+                editForm.setAttitude(at);
+
+                User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+                java.util.Map<String, String> authorisationCode = new HashMap<>();
+                authorisationCode.put("authorization", currentUser.getAuthorizationCode());
 
 
+                MainActivity.getServerRequests().sendEditableInfo(authorisationCode,
+                        editForm, currentUser.getId(), currentPet.getId()).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        currentUser.setName(owName);
+                        currentUser.setCity(city);
+                        currentUser.setPhone(phone);
+
+                        currentPet.setAge(age);
+                        currentPet.setBreed(b);
+
+                        currentPet.setName(pName);
+
+                        Weight w = currentPet.getWeight();
+                        w.setMass(weight);
+                        currentPet.setWeight(w);
+
+                        currentPet.setAttitude(at);
+
+                        List<Pet> pets = new ArrayList<>();
+                        pets.add(currentPet);
+                        currentUser.setPets(pets);
+
+                        Paper.book().write(MainActivity.CURRENTUSER, currentUser);
+
+                        FragmentDispatcher.launchFragment(Account.class);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+
+        changeAttitude(currentPet);
+
+        photoManager.loadUsersMainPhoto(userPhoto);
+
+        return view;
+    }
+
+    void changeAttitude(Pet currentPet){
         String[] attitudes = {"friendly to everyone", "friendly to female", "friendly to male", "unfriendly"};
         int[] strokes = {R.drawable.attitude_edit_background_green,
                 R.drawable.attitude_edit_background_yellow,
@@ -184,10 +299,23 @@ public class EditInfo extends Fragment {
 
             }
         });
+    }
 
-        photoManager.loadUsersMainPhoto(userPhoto);
+    void changeTextInEditText(User currentUser, Pet currentPet){
+        breedAutocomplete.setText(currentPet.getBreed().getName());
+        countryAutocomplete.setText(currentUser.getCity().getCountry().getName());
 
-        return view;
+        EditText[] allEditTexts = {petNameEditText, cityEditText, ownerName, weightEditText, ageEditText, phoneEditText};
+        String[] info = {currentPet.getName(),
+                currentUser.getCity().getName(),
+                currentUser.getName(),
+                currentPet.getWeight().getMass().toString(),
+                currentPet.getAge().toString(),
+                currentUser.getPhone()};
+
+        for (int i = 0; i < allEditTexts.length; i++) {
+            allEditTexts[i].setText(info[i]);
+        }
     }
 
     private void loadBreedsForSelectedType(PetType petType){
@@ -271,7 +399,6 @@ public class EditInfo extends Fragment {
         }else if(attitude == Attitude.GOODWITHFEMALE){
             return 1;
         }else if(attitude == Attitude.GOODWITHMALE) {
-            System.err.println("here");
             return 2;
         }else {
             return 3;

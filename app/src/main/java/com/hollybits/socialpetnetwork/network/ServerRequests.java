@@ -7,6 +7,7 @@ import android.widget.Adapter;
 import com.android.volley.toolbox.StringRequest;
 import com.hollybits.socialpetnetwork.activity.LoginActivity;
 import com.hollybits.socialpetnetwork.enums.PetType;
+import com.hollybits.socialpetnetwork.forms.EditForm;
 import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
 import com.hollybits.socialpetnetwork.forms.RegistrationForm;
 import com.hollybits.socialpetnetwork.forms.UpdateTokenForm;
@@ -237,6 +238,12 @@ public interface ServerRequests {
                                  @Query("text") String text,
                                  @Query("photoID") Long photoID);
 
+
+    @POST("/editInfo")
+    Call<String> sendEditableInfo(@HeaderMap Map<String, String> headers,
+                                  @Body EditForm editForm,
+                                  @Query("user_id") Long id,
+                                  @Query("pet_id") Long petId);
 
 
     @POST("/recordExeptionInfo")
