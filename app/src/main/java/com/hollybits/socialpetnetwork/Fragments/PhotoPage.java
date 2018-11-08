@@ -97,6 +97,13 @@ public class PhotoPage extends Fragment{
     @BindView(R.id.like_button)
     LinearLayout likeButton;
 
+
+    @BindView(R.id.likes)
+    TextView likes;
+
+    @BindView(R.id.comments)
+    TextView commentsText;
+
     private CommentAdapter commentAdapter;
     private OnFragmentInteractionListener mListener;
     private List<Comment> comments;
@@ -208,6 +215,7 @@ public class PhotoPage extends Fragment{
 
                 if (response.body() != null){
                     comments.addAll(response.body());
+                    commentsText.setText(response.body().size()+" comments");
                     commentAdapter = new CommentAdapter(comments);
                     commentRecyclerView.setAdapter(commentAdapter);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PhotoPage.this.getContext());
@@ -248,6 +256,7 @@ public class PhotoPage extends Fragment{
                     if(response.body().contains(currentUser.getId())){
                         Log.d("likes", "LIKED!!!");
                         likeButton.getBackground().setTint(getResources().getColor(R.color.like_pressed));
+                        likes.setText(response.body().size()+" likes");
                         res_id = 0;
                     }else {
                         Log.d("likes", "NOT LIKED!!!");

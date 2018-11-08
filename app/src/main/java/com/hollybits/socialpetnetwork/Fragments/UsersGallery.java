@@ -95,6 +95,8 @@ public class UsersGallery extends Fragment {
     @BindView(R.id.gallery_avatar)
     CircleImageView avatar;
 
+
+
     private UserInfo userInfo;
     private Long target;
     private GalleryMode mode;
