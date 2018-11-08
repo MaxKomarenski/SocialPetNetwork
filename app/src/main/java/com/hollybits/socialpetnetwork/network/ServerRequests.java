@@ -194,6 +194,7 @@ public interface ServerRequests {
     @POST("/addNewPhoto")
     Call<Long> addNewPhoto(@HeaderMap Map<String, String> headers,
                                @Part MultipartBody.Part img,
+                               @Query("caption") String caption,
                                @Query("id") Long id);
 
 
@@ -248,4 +249,19 @@ public interface ServerRequests {
 
     @POST("/recordExeptionInfo")
     Call<Void> recordException(@HeaderMap Map<String, String> headers, @Body Exception e);
+
+
+
+    @GET("api/getPhotoCaption")
+    Call<String> getPhotoCaption(@HeaderMap Map<String, String> headers, @Query("photoId") String id);
+
+
+    @POST("/like")
+    Call<Boolean> like(@HeaderMap Map<String, String> headers, @Query("userID") Long userId, @Query("photoId") Long photoId);
+
+
+    @GET("/getLikesIds")
+    Call<List<Long>> getLikes(@HeaderMap Map<String, String> headers,@Query("photoId") Long photoId);
+
+
 }

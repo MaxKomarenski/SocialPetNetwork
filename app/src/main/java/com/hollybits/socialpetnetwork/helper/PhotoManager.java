@@ -148,7 +148,7 @@ public class PhotoManager {
                         //Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
                        // String path = saveToInternalStorage(bitmap);
                         Paper.book(PAPER_BOOK_NAME).write(REGULAR_PHOTO+id, content);
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }

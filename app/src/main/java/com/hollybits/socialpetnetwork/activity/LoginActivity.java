@@ -144,12 +144,10 @@ public class LoginActivity extends AppCompatActivity {
     private boolean login(final Credentials credentials, final boolean isReLogin){
         try {
 
-
             MainActivity.getServerRequests().login(credentials).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
                     String code = response.headers().get("authorization");
-
                     System.err.println(code);
 
                     try {
@@ -198,7 +196,6 @@ public class LoginActivity extends AppCompatActivity {
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-
                         progressDialog.dismiss();
                     }
                 }, time);
@@ -256,6 +253,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private  void moveToProfile(){
         getFCMToken();
+        dismissLoadingDialog(0);
+        finish();
         Intent intent = new Intent(LoginActivity.this, FragmentDispatcher.class);
         startActivity(intent);
     }

@@ -180,7 +180,7 @@ public class NotificationsAcceptor extends FirebaseMessagingService  {
         Map<String, String> data = remoteMessage.getData();
         NotificationType type = NotificationType.valueOf(data.get("type"));
         Log.d("NOTIFICATION ACCEPTOR", type.name());
-        showNotification(type, remoteMessage);
+        //showNotification(type, remoteMessage);
         switch (type){
 
             case PERSONALMESSAGE:{

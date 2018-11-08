@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
@@ -66,6 +69,9 @@ public class PhotoPage extends Fragment{
     @BindView(R.id.name_in_photo_page)
     TextView nameAndSurnameTextView;
 
+
+    private int res_id;
+
     @BindView(R.id.to_gallery_in_photo_page)
     ImageButton toGalleryButton;
 
@@ -84,13 +90,25 @@ public class PhotoPage extends Fragment{
     @BindView(R.id.sendNewCommentButton)
     ImageButton sendNewCommentButton;
 
+
+    @BindView(R.id.photo_caption)
+    TextView caption;
+
+    @BindView(R.id.like_button)
+    LinearLayout likeButton;
+
     private CommentAdapter commentAdapter;
     private OnFragmentInteractionListener mListener;
     private List<Comment> comments;
     private Long id;
 
+    User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+    Map<String, String> authorisationCode = new HashMap<>();
+
+
     public PhotoPage() {
         // Required empty public constructor
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
     }
 
     /**
@@ -138,6 +156,8 @@ public class PhotoPage extends Fragment{
         PhotoManager photoManager = new PhotoManager(PhotoPage.this);
         id = Paper.book().read("Current choice");
         getComments(id);
+        getLikes(id);
+
         if (galleryMode == GalleryMode.FRIENDS_MODE){
             Long friendID = Paper.book().read(MainActivity.ID_OF_FRIEND);
             photoManager.loadFriendsMainPhoto(userPhoto, friendID);
@@ -151,15 +171,37 @@ public class PhotoPage extends Fragment{
         }
 
 
+        likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.getServerRequests().like(authorisationCode, currentUser.getId(), id).enqueue(new Callback<Boolean>() {
+                    @Override
+                    public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                        if(res_id == 1) {
+
+                            likeButton.getBackground().setTint(getResources().getColor(R.color.like_pressed));
+                            res_id = 0;
+                        }
+                        else {
+                            likeButton.getBackground().setTint(getResources().getColor((R.color.like_not_pressed)));
+                            res_id = 1;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Boolean> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+
+
 
         return view;
     }
 
     private void getComments(Long id){
-        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-        Map<String, String> authorisationCode = new HashMap<>();
-        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-
         MainActivity.getServerRequests().getAllCommentOfCurrentPhoto(authorisationCode, id).enqueue(new Callback<List<Comment>>() {
             @Override
             public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
@@ -174,8 +216,6 @@ public class PhotoPage extends Fragment{
                     commentRecyclerView.setItemAnimator(animator);
                     commentAdapter.notifyDataSetChanged();
                 }
-
-
             }
 
             @Override
@@ -183,7 +223,51 @@ public class PhotoPage extends Fragment{
 
             }
         });
+        MainActivity.getServerRequests().getPhotoCaption(authorisationCode, String.valueOf(id)).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+                if(response.body()!=null){
+                    caption.setText(response.body().replaceAll("%"," "));
+                }
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
     }
+
+    private void getLikes(Long id){
+
+
+        MainActivity.getServerRequests().getLikes(authorisationCode, id).enqueue(new Callback<List<Long>>() {
+            @Override
+            public void onResponse(Call<List<Long>> call, Response<List<Long>> response) {
+                if(response.body() != null){
+                    if(response.body().contains(currentUser.getId())){
+                        Log.d("likes", "LIKED!!!");
+                        likeButton.getBackground().setTint(getResources().getColor(R.color.like_pressed));
+                        res_id = 0;
+                    }else {
+                        Log.d("likes", "NOT LIKED!!!");
+                        likeButton.getBackground().setTint(getResources().getColor((R.color.like_not_pressed)));
+                        res_id =1;
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Long>> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+
+
 
     private void listeners(){
         toGalleryButton.setOnClickListener(new View.OnClickListener() {
@@ -247,6 +331,8 @@ public class PhotoPage extends Fragment{
         super.onDetach();
         mListener = null;
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this

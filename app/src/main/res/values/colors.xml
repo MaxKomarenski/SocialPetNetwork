@@ -23,10 +23,15 @@
     <color name="blue">#7cc2eb</color>
     <color name="yellow">#f1712a</color>
     <color name="green">#37d137</color>
+    <color name="text_in_upload_photo">#91dbf3</color>
 
     <color name="blue_for_table">#b7ddf4</color>
     <color name="blue_for_table_pressed">#7dc2eb</color>
 
     <color name="blue_for_text_in_account">#90d4f7</color>
+
+
+    <color name="like_not_pressed">#a8a8a8</color>
+    <color name="like_pressed">#ff0000</color>
 
 </resources>

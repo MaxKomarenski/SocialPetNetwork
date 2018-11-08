@@ -227,53 +227,13 @@ public class UsersGallery extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d("AAAA", "onActivityResult");
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+            Log.d("AAAA", "RESULT OK!!");
             imageUri = data.getData();
-
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getActivity().getContentResolver().query(imageUri, filePathColumn, null, null, null);
-            assert cursor != null;
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String mediaPath = cursor.getString(columnIndex);
-            File file = new File(mediaPath);
-
-
-//            int compressionRatio = 4; //1 == originalImage, 2 = 50% compression, 4=25% compress
-//            try {
-//                Bitmap bitmap = BitmapFactory.decodeFile (file.getPath ());
-//                bitmap.compress (Bitmap.CompressFormat.JPEG, compressionRatio, new FileOutputStream(file));
-//            }
-//            catch (Throwable t) {
-//                Log.e("ERROR", "Error compressing file." + t.toString ());
-//                t.printStackTrace ();
-//            }
-            RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("img", file.getName(), requestBody);
-
-
-            Paper.book().write("PATH_TO_PHOTO", mediaPath);
-
-            System.err.println("ATTENTION");
-            System.err.println(mediaPath);
-
-
-            User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-            java.util.Map<String, String> authorisationCode = new HashMap<>();
-            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-
-            MainActivity.getServerRequests().addNewPhoto(authorisationCode, fileToUpload, currentUser.getId()).enqueue(new Callback<Long>() {
-                @Override
-                public void onResponse(Call<Long> call, Response<Long> response) {
-
-                    FragmentDispatcher.launchFragment(UsersGallery.class);
-                }
-
-                @Override
-                public void onFailure(Call<Long> call, Throwable t) {
-
-                }
-            });
+            Log.d("path", imageUri.getPath());
+            Paper.book().write("ImageToLoad", imageUri);
+            FragmentDispatcher.launchFragment(UploadPhoto.class);
         }
     }
 

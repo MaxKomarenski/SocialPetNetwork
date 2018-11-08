@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
@@ -217,16 +218,17 @@ public class Account extends Fragment {
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-
                     Log.d("FAIL:", t.getMessage());
                 }
             });
+
+
 
             GlideApp.with(this)
                     .load(imageUri)
                     .placeholder(R.drawable.test_photo)
                     .into(userMainPhoto);
-            //userMainPhoto.setImageURI(imageUri);
+            userMainPhoto.setImageURI(imageUri);
         }
     }
 
