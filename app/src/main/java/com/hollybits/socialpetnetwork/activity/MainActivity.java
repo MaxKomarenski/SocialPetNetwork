@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String MESSAGE_BOOK = "Messages";
     public static final String NAME_OF_FRIEND = "NameOfFriend";
     public static final String GALLERY_MODE = "galleryMode";
+    public static final String WANTED = "wanted";
     public static String PACKAGE_NAME;
 
 

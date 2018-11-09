@@ -3,15 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/raw_in_lost_pet_constraintLayout">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_photo_in_lost_pets_recycler_view"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:src="@drawable/test_photo"
         app:civ_border_color="#43b748"
         app:civ_border_width="2dp"
@@ -25,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/user_photo_in_lost_pets_recycler_view"
@@ -39,69 +40,60 @@
             android:layout_height="wrap_content"
             android:text="Dalbaobik"
             android:textColor="#000"
-            android:textSize="22sp" />
+            android:textSize="24sp" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/breed_of_pet_in_lost_pets_recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="breed"
             android:textColor="#979ea4"
-            android:textSize="20sp" />
+            android:textSize="23sp" />
 
         <TextView
             android:id="@+id/name_of_user_in_lost_pets_recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Max Komarenskii"
-            android:textSize="15sp"
+            android:text="owner"
+            android:textSize="17sp"
             />
 
     </LinearLayout>
 
 
-    <ImageButton
-        android:id="@+id/send_message_button_in_lost_pets"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@null"
-        android:scaleType="fitCenter"
-        android:src="@drawable/message_button_in_item"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout4"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--<ImageButton-->
+        <!--android:id="@+id/send_message_button_in_lost_pets"-->
+        <!--android:layout_width="60dp"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginEnd="60dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:background="@null"-->
+        <!--android:scaleType="fitCenter"-->
+        <!--android:src="@drawable/message_button_in_item"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="1.0"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/linearLayout4"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <ImageButton
-        android:id="@+id/i_found_my_pet_button_in_lost_pets"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@null"
-        android:scaleType="fitCenter"
-        android:src="@drawable/green_dot"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout4"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="#7dc2eb"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-        android:layout_marginStart="110dp"/>
+    <!--<ImageButton-->
+        <!--android:id="@+id/i_found_my_pet_button_in_lost_pets"-->
+        <!--android:layout_width="60dp"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginEnd="60dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:background="@null"-->
+        <!--android:scaleType="fitCenter"-->
+        <!--android:src="@drawable/green_dot"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="1.0"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/linearLayout4"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
 </android.support.constraint.ConstraintLayout>

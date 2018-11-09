@@ -14,7 +14,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="Lost Pets"
-        android:textColor="#000"
+        android:textColor="#37bef6"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
         android:layout_marginTop="8dp"
         android:background="@null"
         android:drawableStart="@drawable/background_for_button"
-        android:text="Map"
+        android:text=""
         android:textColor="#37bef6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -47,6 +47,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/back_to_map_button" />
 
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lost_pets_recycler_view"
         android:layout_width="match_parent"
@@ -56,5 +58,48 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:visibility="gone"
+            android:id="@+id/information_img_button"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/get_info" />
+
+        <ImageButton
+            android:visibility="gone"
+            android:id="@+id/contact_with_owner_img_button"
+            android:src="@drawable/contact_with_owner"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+
+
+        <ImageButton
+            android:visibility="gone"
+            android:id="@+id/i_found_my_pet"
+            android:src="@drawable/i_found_my_pet_img"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+
+    </LinearLayout>
+
+
+
 
 </android.support.constraint.ConstraintLayout>

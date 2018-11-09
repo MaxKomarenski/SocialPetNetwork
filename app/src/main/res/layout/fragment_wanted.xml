@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragments.Wanted">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            >
+
+            <ImageButton
+                android:id="@+id/open_navigation_drawer_image_button"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="20dp"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_menu"
+                android:tint="#aaeaff" />
+
+
+
+            <TextView
+                android:id="@+id/header_text_view_in_wanted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="lost post"
+                android:textSize="20sp"
+                android:textColor="#aaeaff"/>
+
+            <ImageButton
+                android:id="@+id/settings_wanted_img_button"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_settings"
+                android:tint="#aaeaff" />
+
+
+        </RelativeLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/photo_in_wanted"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/test_photo"
+            app:civ_border_color="#3ed611"
+            app:civ_border_width="7dp"
+            />
+
+        <TextView
+            android:id="@+id/name_in_wanted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Name"
+            android:textColor="#000"
+            android:textSize="25sp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marg_top_in_accoutn"
+            android:layout_marginStart="@dimen/margin_rel_account"
+            android:layout_marginEnd="@dimen/margin_rel_account"
+            >
+
+            <TextView
+                android:id="@+id/breed_word_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_alignParentTop="true"
+                android:text="Breed"
+                android:textColor="@color/blue_for_text_in_account"
+                android:textSize="@dimen/size_of_text_in_account" />
+
+            <TextView
+                android:id="@+id/name_of_breed_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:text="name Of breed"
+                android:textColor="#000"
+                android:textSize="@dimen/size_of_text_in_account" />
+
+            <ImageView
+                android:id="@+id/sexImageView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:src="@mipmap/female" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="@dimen/margin_rel_account"
+            android:layout_marginStart="@dimen/margin_rel_account"
+            android:background="#bebebe"
+            android:layout_marginTop="@dimen/marg_top_in_accoutn"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marg_top_in_accoutn"
+            android:layout_marginStart="@dimen/margin_rel_account"
+            android:layout_marginEnd="@dimen/margin_rel_account">
+
+            <TextView
+                android:id="@+id/owner_text_in_wanted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="Owner"
+                android:textSize="@dimen/size_of_text_in_account"
+                android:textColor="@color/blue_for_text_in_account"/>
+
+            <TextView
+                android:id="@+id/owner_name_and_surname_in_wanted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp"
+                android:text="name owner"
+                android:textSize="@dimen/size_of_text_in_account"
+                android:textColor="#000"/>
+
+            <ImageView
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_account_circle_black_24dp" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="@dimen/margin_rel_account"
+            android:layout_marginStart="@dimen/margin_rel_account"
+            android:background="#bebebe"
+            android:layout_marginTop="@dimen/marg_top_in_accoutn"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marg_top_in_accoutn"
+            android:layout_marginStart="@dimen/margin_rel_account"
+            android:layout_marginEnd="@dimen/margin_rel_account">
+
+            <TextView
+                android:id="@+id/where_lost_text_view_in_wanted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="Where lost?"
+                android:textSize="@dimen/size_of_text_in_account"
+                android:textColor="@color/blue_for_text_in_account"/>
+
+            <TextView
+                android:id="@+id/where_lost_in_wanted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp"
+                android:text="describe"
+                android:textSize="@dimen/size_of_text_in_account"
+                android:textColor="#000"/>
+
+            <ImageView
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_location_on_black_24dp" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="@dimen/margin_rel_account"
+            android:layout_marginStart="@dimen/margin_rel_account"
+            android:background="#bebebe"
+            android:layout_marginTop="@dimen/marg_top_in_accoutn"/>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="7dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Private information" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email, Phone and t.e" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/see_button_in_wanted"
+                android:layout_marginTop="10dp"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="right"
+                android:layout_marginEnd="30dp"
+                android:text="See"
+                android:textColor="#fff"
+                android:textSize="13dp"
+                android:background="@drawable/see_round_button_in_wanted"/>
+
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/contact_with_owner_rounded_button"
+            android:textSize="17sp"
+            android:textColor="#fff"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:text="Contact with owner"/>
+
+    </LinearLayout>
+
+
+
+</FrameLayout>

@@ -300,7 +300,11 @@ public class Chat extends Fragment implements MessageObserver {
                 @Override
                 public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
                     messages = new ArrayList<>();
-                    messages.addAll(response.body());
+
+                    if (response.body() != null){
+                        messages.addAll(response.body());
+                    }
+
                     messageAdapter = new MessageAdapter(messages, messageTextFont);
                     chatRecyclerView.setAdapter(messageAdapter);
                     messageAdapter.notifyDataSetChanged();

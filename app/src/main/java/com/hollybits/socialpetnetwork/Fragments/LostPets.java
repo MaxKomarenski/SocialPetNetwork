@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,8 +33,10 @@ import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.LostPetAdapter;
 import com.hollybits.socialpetnetwork.helper.MessageObserver;
+import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.LostPet;
 import com.hollybits.socialpetnetwork.models.User;
+import com.hollybits.socialpetnetwork.models.UserInfo;
 import com.hollybits.socialpetnetwork.notifications.NotificationsAcceptor;
 
 import java.io.IOException;
@@ -63,6 +66,16 @@ public class LostPets extends Fragment {
 
     @BindView(R.id.back_to_map_button)
     Button backToMap;
+
+    @BindView(R.id.contact_with_owner_img_button)
+    ImageButton contactButton;
+
+    @BindView(R.id.information_img_button)
+    ImageButton informationButton;
+
+    @BindView(R.id.i_found_my_pet)
+    ImageButton foundMyPet;
+
 
     LostPetAdapter lostPetAdapter;
     List<LostPet> lostPetList;
@@ -143,6 +156,92 @@ public class LostPets extends Fragment {
         return view;
     }
 
+    public void showDownBar(LostPet lostPet){
+        informationButton.setVisibility(View.VISIBLE);
+
+        if (!lostPet.getUserId().equals(MainActivity.getCurrentUser().getId())){
+            foundMyPet.setVisibility(View.GONE);
+            contactButton.setVisibility(View.VISIBLE);
+            contactButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(isLostPetInFriendshipWithUser(lostPet.getUserId())){
+                        Paper.book().write(MainActivity.ID_OF_FRIEND, lostPet.getUserId());
+                        Paper.book().write(MainActivity.NAME_OF_FRIEND, lostPet.getUserName());
+                        FragmentDispatcher.launchFragment(Chat.class);
+
+                    }else {
+                        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+                        Map<String, String> authorisationCode = new HashMap<>();
+                        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+                        MainActivity.getServerRequests().addToFriendsWhenOneUserFoundPetOfAnotherUser(authorisationCode,
+                                currentUser.getId(), lostPet.getUserId()).enqueue(new Callback<FriendInfo>() {
+                            @Override
+                            public void onResponse(Call<FriendInfo> call, Response<FriendInfo> response) {
+                                if(response.body() != null){
+                                    addNewFriendToPaperBook(response.body());
+                                    Paper.book().delete(MainActivity.CONTACT_LIST);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<FriendInfo> call, Throwable t) {
+
+                            }
+                        });
+                    }
+                }
+            });
+
+            informationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Paper.book().write(MainActivity.WANTED, lostPet);
+                    FragmentDispatcher.launchFragment(Wanted.class);
+                }
+            });
+        }else {
+            contactButton.setVisibility(View.GONE);
+            foundMyPet.setVisibility(View.VISIBLE);
+            foundMyPet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+                    Map<String, String> authorisationCode = new HashMap<>();
+                    authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+                    MainActivity.getServerRequests().userFoundHisPet(authorisationCode, lostPet.getPetId()).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            lostPetAdapter.deleteItem(lostPet);
+                            lostPetAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
+                }
+            });
+
+            informationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentDispatcher.launchFragment(Account.class);
+                }
+            });
+        }
+    }
+
+
+    private void addNewFriendToPaperBook(FriendInfo newFriend){
+        List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
+        friends.add(newFriend);
+        Paper.book().write(MainActivity.FRIEND_LIST, friends);
+    }
+
     private void getAllLostPetsFromUserDistrict() throws IOException {
         longitude = Paper.book().read(com.hollybits.socialpetnetwork.Fragments.Map.LONGITUDE);
         latitude = Paper.book().read(com.hollybits.socialpetnetwork.Fragments.Map.LATITUDE);
@@ -153,10 +252,17 @@ public class LostPets extends Fragment {
             loadInfo();
         }
 
+    }
 
+    private boolean isLostPetInFriendshipWithUser(Long id){
+        List<FriendInfo> userFriends = Paper.book().read(MainActivity.FRIEND_LIST);
+        for (FriendInfo friendInfo: userFriends){
+            if(friendInfo.getId().equals(id)){
+                return true;
+            }
+        }
 
-
-
+        return false;
     }
 
     private void loadInfo() throws IOException{
@@ -173,7 +279,7 @@ public class LostPets extends Fragment {
                     if (response.body() != null){
                         lostPetList.clear();
                         lostPetList.addAll(response.body());
-                        lostPetAdapter = new LostPetAdapter(lostPetList, mainFont, breedFont, LostPets.this);
+                        lostPetAdapter = new LostPetAdapter(lostPetList, mainFont, breedFont, LostPets.this, LostPets.this);
                         lostPetsRecyclerView.setAdapter(lostPetAdapter);
                         try{
                             LostPets.this.getActivity().runOnUiThread(()->{

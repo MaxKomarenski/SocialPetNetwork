@@ -1,10 +1,7 @@
 package com.hollybits.socialpetnetwork.network;
 
 import android.location.Address;
-import android.util.Log;
-import android.widget.Adapter;
 
-import com.android.volley.toolbox.StringRequest;
 import com.hollybits.socialpetnetwork.activity.LoginActivity;
 import com.hollybits.socialpetnetwork.enums.PetType;
 import com.hollybits.socialpetnetwork.forms.EditForm;
@@ -12,7 +9,6 @@ import com.hollybits.socialpetnetwork.forms.InformationOfUserAndHisPet;
 import com.hollybits.socialpetnetwork.forms.RegistrationForm;
 import com.hollybits.socialpetnetwork.forms.UpdateTokenForm;
 import com.hollybits.socialpetnetwork.helper.Pair;
-import com.hollybits.socialpetnetwork.helper.Test;
 import com.hollybits.socialpetnetwork.models.Breed;
 import com.hollybits.socialpetnetwork.models.Comment;
 import com.hollybits.socialpetnetwork.models.Contact;
@@ -33,16 +29,12 @@ import java.util.Set;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
-import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**

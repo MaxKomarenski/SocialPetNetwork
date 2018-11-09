@@ -14,13 +14,25 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.activity.SettingsActivity;
+import com.hollybits.socialpetnetwork.adapters.ContactAdapter;
 import com.hollybits.socialpetnetwork.enums.GalleryMode;
 import com.hollybits.socialpetnetwork.helper.FriendDownloader;
+import com.hollybits.socialpetnetwork.models.Contact;
+import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.LostPet;
+import com.hollybits.socialpetnetwork.models.User;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -104,8 +116,11 @@ public class StartingMenu extends Fragment {
         View view = inflater.inflate(R.layout.fragment_starting_menu, container, false);
         ButterKnife.bind(this, view);
 
+        getContacts();
         allListeners();
         getFriendsWhoAreNotInCache();
+        getFriends();
+
 
         return view;
     }
@@ -182,6 +197,48 @@ public class StartingMenu extends Fragment {
         }
     }
 
+    private void getContacts(){
+        List<Contact> contacts = Paper.book().read(MainActivity.CONTACT_LIST);
+        if(contacts == null){
+            User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+            java.util.Map<String, String> authorisationCode = new HashMap<>();
+            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+            MainActivity.getServerRequests().getAllContactsOfCurrentUser(authorisationCode ,MainActivity.getCurrentUser().getId()).enqueue(new Callback<List<Contact>>() {
+                @Override
+                public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
+                    List<Contact> contacts = response.body();
+                    Paper.book().write(MainActivity.CONTACT_LIST, contacts);
+                }
+
+                @Override
+                public void onFailure(Call<List<Contact>> call, Throwable t) {
+
+                }
+            });
+        }
+    }
+
+    private void getFriends(){
+        List<FriendInfo> userFriends = Paper.book().read(MainActivity.FRIEND_LIST);
+        if(userFriends == null){
+            User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+            java.util.Map<String, String> authorisationCode = new HashMap<>();
+            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+            MainActivity.getServerRequests().getAllUserFriends(authorisationCode, currentUser.getId()).enqueue(new Callback<Set<FriendInfo>>() {
+                @Override
+                public void onResponse(Call<Set<FriendInfo>> call, Response<Set<FriendInfo>> response) {
+                    List<FriendInfo> userFriends = new ArrayList<>();
+                    userFriends.addAll(response.body());
+                    Paper.book().write(MainActivity.FRIEND_LIST, userFriends);
+                }
+
+                @Override
+                public void onFailure(Call<Set<FriendInfo>> call, Throwable t) {
+
+                }
+            });
+        }
+    }
 
 
     @Override
