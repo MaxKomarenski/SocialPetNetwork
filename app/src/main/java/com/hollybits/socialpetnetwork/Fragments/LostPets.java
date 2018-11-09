@@ -182,6 +182,10 @@ public class LostPets extends Fragment {
                                 if(response.body() != null){
                                     addNewFriendToPaperBook(response.body());
                                     Paper.book().delete(MainActivity.CONTACT_LIST);
+
+                                    Paper.book().write(MainActivity.ID_OF_FRIEND, lostPet.getUserId());
+                                    Paper.book().write(MainActivity.NAME_OF_FRIEND, lostPet.getUserName());
+                                    FragmentDispatcher.launchFragment(Chat.class);
                                 }
                             }
 
