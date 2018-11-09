@@ -36,6 +36,7 @@ import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.Comment;
 import com.hollybits.socialpetnetwork.models.User;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.paperdb.Paper;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -176,8 +178,7 @@ public class PhotoPage extends Fragment{
         if (galleryMode == GalleryMode.FRIENDS_MODE){
             Long friendID = Paper.book().read(MainActivity.ID_OF_FRIEND);
             photoManager.loadFriendsMainPhoto(userPhoto, friendID);
-            photoManager.loadFriendPhoto(photoPageImage, id);
-
+            loadFriendPhoto(photoPageImage, id);
         }else {
             photoManager.loadUsersMainPhoto(userPhoto);
             byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME).read(PhotoManager.REGULAR_PHOTO+id);
@@ -359,6 +360,34 @@ public class PhotoPage extends Fragment{
                 .load(bitmap)
                 .into(imageView);
     }
+
+
+    public void loadFriendPhoto(ImageView target, Long id){
+        MainActivity.getServerRequests().getPhoto(authorisationCode, currentUser.getId(),id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                byte[] content;
+                if(response.body() != null){
+                    try {
+                        content = response.body().bytes();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
+                        loadBitmapToImageView(target, bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
