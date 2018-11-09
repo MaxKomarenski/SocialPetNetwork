@@ -56,8 +56,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     @BindView(R.id.data_usage_text)
     TextView dataSectionTextView;
-    @BindView(R.id.data_usae_value)
-    TextView dataTextValue;
+    @BindView(R.id.button_clear)
+    Button clear;
 
 
     @BindView(R.id.sos_switch_compat_in_settings_activity)
@@ -83,7 +83,7 @@ public class SettingsActivity extends AppCompatActivity {
         setNotificationText.setTypeface(mainFont);
         dataSection.setTypeface(mainFont);
         dataSectionTextView.setTypeface(anotherFont);
-        dataTextValue.setTypeface(anotherFont);
+        clear.setTypeface(mainFont);
         sosToggleButton.setRightBackgroundColor("#b6d9f5");
         sosToggleButton.setLeftBackgroundColor("#45b549");
         myLocationToggleButton.setRightBackgroundColor("#b6d9f5");
@@ -110,7 +110,14 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        clear.setText("Computing...");
 
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearCache();
+            }
+        });
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -118,6 +125,26 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
         thread.start();
+
+    }
+
+    private void clearCache() {
+
+        clear.setText("Cleaning...");
+        for (String s: Paper.book(PhotoManager.PAPER_BOOK_NAME).getAllKeys()){
+            Paper.book(PhotoManager.PAPER_BOOK_NAME).delete(s);
+        }
+        for (String s: Paper.book(PhotoManager.PAPER_BOOK_NAME_FRIENDS).getAllKeys()){
+            Paper.book(PhotoManager.PAPER_BOOK_NAME).delete(s);
+        }
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getFullCashSize();
+            }
+        });
+        thread.start();
+
 
     }
 
@@ -176,14 +203,14 @@ public class SettingsActivity extends AppCompatActivity {
             this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    dataTextValue.setText(readableSize);
+                    clear.setText("Clear "+readableSize);
                 }
             });
         }catch (ArrayIndexOutOfBoundsException e){
             this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    dataTextValue.setText("0.0 KB");
+                    clear.setText("Clear 0.0 KB");
                 }
             });
         }

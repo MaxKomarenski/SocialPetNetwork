@@ -179,10 +179,10 @@
 
         <ImageView
             android:layout_width="26dp"
-            android:tint="@color/google"
             android:layout_height="26dp"
             android:layout_marginStart="20dp"
-            android:src="@mipmap/data" />
+            android:src="@mipmap/data"
+            android:tint="@color/google" />
 
         <TextView
             android:id="@+id/data_text"
@@ -192,6 +192,7 @@
             android:text="Data Usage"
             android:textColor="#fff"
             android:textSize="22sp" />
+
 
     </LinearLayout>
 
@@ -220,16 +221,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout12" />
 
-    <TextView
-        android:id="@+id/data_usae_value"
+    <Button
+        android:id="@+id/button_clear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="100dp"
-        android:layout_marginTop="20dp"
-        android:text="0 MB"
-        android:textColor="#000"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout12" />
+        android:layout_marginEnd="64dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded_corners_like"
+        android:text="Button"
+        app:layout_constraintBaseline_toBaselineOf="@+id/data_usage_text"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
