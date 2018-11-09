@@ -119,6 +119,7 @@ public class PhotoPage extends Fragment{
     private OnFragmentInteractionListener mListener;
     private List<Comment> comments;
     private Long id;
+    private String name;
 
     User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
     Map<String, String> authorisationCode = new HashMap<>();
@@ -177,8 +178,10 @@ public class PhotoPage extends Fragment{
 
         if (galleryMode == GalleryMode.FRIENDS_MODE){
             Long friendID = Paper.book().read(MainActivity.ID_OF_FRIEND);
-            photoManager.loadFriendsMainPhoto(userPhoto, friendID);
-            loadFriendPhoto(photoPageImage, id);
+            byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME_FRIENDS).read(PhotoManager.REGULAR_PHOTO+id);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(photoBytes, 0,photoBytes.length);
+            loadBitmapToImageView(photoPageImage, bitmap);
+            name = Paper.book().read("last_chosen_friend_pet");
         }else {
             photoManager.loadUsersMainPhoto(userPhoto);
             byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME).read(PhotoManager.REGULAR_PHOTO+id);
@@ -226,7 +229,10 @@ public class PhotoPage extends Fragment{
         likes.setTypeface(mainFont);
         commentsText.setTypeface(mainFont);
         nameAndSurnameTextView.setTypeface(mainFont);
-        nameAndSurnameTextView.setText(currentUser.getPets().get(0).getName());
+        if(name!=null)
+            nameAndSurnameTextView.setText(name);
+        else
+            nameAndSurnameTextView.setText(currentUser.getPets().get(0).getName());
 
     }
 
@@ -360,33 +366,6 @@ public class PhotoPage extends Fragment{
                 .load(bitmap)
                 .into(imageView);
     }
-
-
-    public void loadFriendPhoto(ImageView target, Long id){
-        MainActivity.getServerRequests().getPhoto(authorisationCode, currentUser.getId(),id).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                byte[] content;
-                if(response.body() != null){
-                    try {
-                        content = response.body().bytes();
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
-                        loadBitmapToImageView(target, bitmap);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
-
-
-
 
 
     // TODO: Rename method, update argument and hook method into UI event

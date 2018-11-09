@@ -195,6 +195,7 @@ public class UsersGallery extends Fragment {
             target = userInfo.getId();
             petBreedText.setText(userInfo.getPets().get(0).getBreed().getName());
             petNameText.setText(userInfo.getPets().get(0).getName());
+            Paper.book().write("last_chosen_friend_pet",userInfo.getPets().get(0).getName());
 
 
             MainActivity.getServerRequests().getNumberOfFriendsOfAnotherUser(authorisationCode, target).enqueue(new Callback<Integer>() {
