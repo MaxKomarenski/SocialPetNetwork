@@ -16,6 +16,8 @@ import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.User;
 import com.nightonke.jellytogglebutton.JellyToggleButton;
 
+import java.io.File;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +51,15 @@ public class SettingsActivity extends AppCompatActivity {
     @BindView(R.id.my_location_text_in_settings)
     TextView myLocationTextView;
 
+    @BindView(R.id.data_text)
+    TextView dataSection;
+
+    @BindView(R.id.data_usage_text)
+    TextView dataSectionTextView;
+    @BindView(R.id.data_usae_value)
+    TextView dataTextValue;
+
+
     @BindView(R.id.sos_switch_compat_in_settings_activity)
     JellyToggleButton sosToggleButton;
 
@@ -70,13 +81,21 @@ public class SettingsActivity extends AppCompatActivity {
         privacyText.setTypeface(mainFont);
         myLocationTextView.setTypeface(anotherFont);
         setNotificationText.setTypeface(mainFont);
-
+        dataSection.setTypeface(mainFont);
+        dataSectionTextView.setTypeface(anotherFont);
+        dataTextValue.setTypeface(anotherFont);
         sosToggleButton.setRightBackgroundColor("#b6d9f5");
         sosToggleButton.setLeftBackgroundColor("#45b549");
-
         myLocationToggleButton.setRightBackgroundColor("#b6d9f5");
         myLocationToggleButton.setLeftBackgroundColor("#45b549");
 
+
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +110,15 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getFullCashSize();
+            }
+        });
+        thread.start();
+
     }
 
     private void logOut(){
@@ -104,6 +132,9 @@ public class SettingsActivity extends AppCompatActivity {
             Paper.book(MainActivity.MESSAGE_BOOK).delete(s);
         }
         for (String s: Paper.book(PhotoManager.PAPER_BOOK_NAME).getAllKeys()){
+            Paper.book(PhotoManager.PAPER_BOOK_NAME).delete(s);
+        }
+        for (String s: Paper.book(PhotoManager.PAPER_BOOK_NAME_FRIENDS).getAllKeys()){
             Paper.book(PhotoManager.PAPER_BOOK_NAME).delete(s);
         }
         finish();
@@ -127,6 +158,57 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void getFullCashSize(){
+        Log.d("PATH:",Paper.book(PhotoManager.PAPER_BOOK_NAME).getPath());
+        Log.d("PATH:",Paper.book(PhotoManager.PAPER_BOOK_NAME_FRIENDS).getPath());
+        long sizeMyPhotos = getFolderSize(new File(Paper.book(PhotoManager.PAPER_BOOK_NAME).getPath()));
+        long sizeFriendPhotos = getFolderSize(new File(Paper.book(PhotoManager.PAPER_BOOK_NAME_FRIENDS).getPath()));
+        long sum = sizeFriendPhotos+ sizeMyPhotos;
+
+        String[] units = new String[] { "B", "KB", "MB", "GB", "TB" };
+        int unitIndex = (int) (Math.log10(sum) / 3);
+        double unitValue = 1 << (unitIndex * 10);
+        try {
+            String readableSize = new DecimalFormat("#,##0.#")
+                    .format(sum / unitValue) + " "
+                    + units[unitIndex];
+            this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dataTextValue.setText(readableSize);
+                }
+            });
+        }catch (ArrayIndexOutOfBoundsException e){
+            this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dataTextValue.setText("0.0 KB");
+                }
+            });
+        }
+
+
+    }
+
+    private long getFolderSize(File folder) {
+        long length = 0;
+        File[] files = folder.listFiles();
+
+        int count = files.length;
+
+        for (int i = 0; i < count; i++) {
+            if (files[i].isFile()) {
+                length += files[i].length();
+            }
+            else {
+                length += getFolderSize(files[i]);
+            }
+        }
+        return length;
+    }
+
+
 
 
 }

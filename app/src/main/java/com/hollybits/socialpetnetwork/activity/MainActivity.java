@@ -14,11 +14,16 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.network.ServerRequests;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -27,6 +32,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -86,10 +92,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
+
+
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
 
     }
+
+
+
+
+
+
 
     private boolean retrofitInit(){
         Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy HH:mm:ss")

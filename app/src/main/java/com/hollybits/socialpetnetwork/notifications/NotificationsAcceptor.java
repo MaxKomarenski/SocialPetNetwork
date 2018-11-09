@@ -30,6 +30,7 @@ import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
 import com.hollybits.socialpetnetwork.models.LostPet;
 import com.hollybits.socialpetnetwork.models.Message;
 
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -272,7 +273,8 @@ public class NotificationsAcceptor extends FirebaseMessagingService  {
                 friends.remove(i);
             }
         }
-
+        Paper.book().delete(MainActivity.CONTACT_LIST);
+        Paper.book(MainActivity.MESSAGE_BOOK).delete(friendID.toString());
         Paper.book().write(MainActivity.FRIEND_LIST, friends);
     }
 }
