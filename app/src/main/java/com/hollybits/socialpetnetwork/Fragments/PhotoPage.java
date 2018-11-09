@@ -1,5 +1,7 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,6 +30,7 @@ import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.adapters.CommentAdapter;
 import com.hollybits.socialpetnetwork.adapters.FriendshipRequestAdapter;
 import com.hollybits.socialpetnetwork.enums.GalleryMode;
+import com.hollybits.socialpetnetwork.helper.BitmapRotator;
 import com.hollybits.socialpetnetwork.helper.GlideApp;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.Comment;
@@ -102,6 +106,7 @@ public class PhotoPage extends Fragment{
     LinearLayout likeButton;
 
 
+
     @BindView(R.id.likes)
     TextView likes;
 
@@ -156,8 +161,7 @@ public class PhotoPage extends Fragment{
         View view = inflater.inflate(R.layout.fragment_photo_page, container, false);
         ButterKnife.bind(this, view);
 
-        Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
-        photoTextView.setTypeface(mainFont);
+
 
         comments = new ArrayList<>();
 
@@ -213,6 +217,18 @@ public class PhotoPage extends Fragment{
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        photoTextView.setTypeface(mainFont);
+        likes.setTypeface(mainFont);
+        commentsText.setTypeface(mainFont);
+        nameAndSurnameTextView.setTypeface(mainFont);
+        nameAndSurnameTextView.setText(currentUser.getPets().get(0).getName());
+
+    }
+
     private void getComments(Long id){
         MainActivity.getServerRequests().getAllCommentOfCurrentPhoto(authorisationCode, id).enqueue(new Callback<List<Comment>>() {
             @Override
@@ -249,6 +265,14 @@ public class PhotoPage extends Fragment{
 
             }
         });
+    }
+
+    public void hideKeyboard(Activity activity) {
+        View view = activity.findViewById(android.R.id.content);
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     private void getLikes(Long id){
@@ -300,6 +324,7 @@ public class PhotoPage extends Fragment{
                 String commentText = writeNewCommentEditText.getText().toString();
                 if(!commentText.equals("")){
                     sendNewComment(commentText, id);
+                    hideKeyboard(getActivity());
 
 
                 }
@@ -331,7 +356,6 @@ public class PhotoPage extends Fragment{
     private void loadBitmapToImageView(ImageView  imageView, Bitmap bitmap){
         GlideApp.with(this)
                 .load(bitmap)
-                .placeholder(R.drawable.test_photo)
                 .into(imageView);
     }
 
