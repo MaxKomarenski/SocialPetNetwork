@@ -179,6 +179,7 @@
 
         <ImageView
             android:layout_width="26dp"
+            android:tint="@color/google"
             android:layout_height="26dp"
             android:layout_marginStart="20dp"
             android:src="@mipmap/data" />
