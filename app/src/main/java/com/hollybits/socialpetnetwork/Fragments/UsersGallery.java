@@ -32,6 +32,7 @@ import com.hollybits.socialpetnetwork.models.UserInfo;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -229,11 +230,8 @@ public class UsersGallery extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d("AAAA", "onActivityResult");
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
-            Log.d("AAAA", "RESULT OK!!");
             imageUri = data.getData();
-            Log.d("path", imageUri.getPath());
             Paper.book().write("ImageToLoad", imageUri);
             FragmentDispatcher.launchFragment(UploadPhoto.class);
         }
@@ -253,17 +251,21 @@ public class UsersGallery extends Fragment {
             @Override
             public void onResponse(Call<List<Long>> call, Response<List<Long>> response) {
 
-                photoGridAdapter = new PhotoGridAdapter(UsersGallery.this.getContext(), response.body(), UsersGallery.this, mode);
+                if(response.body()!=null) {
+                    List<Long> ids = response.body();
+                    Collections.sort(ids);
+                    photoGridAdapter = new PhotoGridAdapter(UsersGallery.this.getContext(), ids, UsersGallery.this, mode);
 
-                int gridWidth = getResources().getDisplayMetrics().widthPixels;
-                int imageWidth = gridWidth/3;
+                    int gridWidth = getResources().getDisplayMetrics().widthPixels;
+                    int imageWidth = gridWidth / 3;
 
-                photoGridView.setColumnWidth(imageWidth);
+                    photoGridView.setColumnWidth(imageWidth);
 
-                photoGridView.setAdapter(photoGridAdapter);
+                    photoGridView.setAdapter(photoGridAdapter);
 
-                String amountOfPhotos = photoGridAdapter.getCount() + " photos";
-                numberOfPhoto.setText(amountOfPhotos);
+                    String amountOfPhotos = photoGridAdapter.getCount() + " photos";
+                    numberOfPhoto.setText(amountOfPhotos);
+                }
             }
 
             @Override

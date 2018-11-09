@@ -3,10 +3,16 @@ package com.hollybits.socialpetnetwork.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,11 +60,10 @@ public class UploadPhoto extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private Uri imageUri;
+
 
     @BindView(R.id.photo_place)
     ImageView image;
-
 
     @BindView(R.id.uploadPhoto_button)
     Button upload;
@@ -107,25 +112,39 @@ public class UploadPhoto extends Fragment {
         View view = inflater.inflate(R.layout.fragment_upload_photo, container, false);
         ButterKnife.bind(this, view);
 
+        Uri imageUri;
         imageUri = Paper.book().read("ImageToLoad");
         if(imageUri == null){
             FragmentDispatcher.launchFragment(UsersGallery.class);
             return null;
         }
-       // image.setImageURI(imageUri);
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getActivity().getContentResolver().query(imageUri, filePathColumn, null, null, null);
+        assert cursor != null;
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String mediaPath = cursor.getString(columnIndex);
+        File file = new File(mediaPath);
+
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        image.setMinimumWidth(width);
 
 
-        
         GlideApp.with(this)
-                .load(imageUri)
+                .load(file)
                 .placeholder(R.drawable.test_photo)
+                .override(width, height)
                 .into(image);
 
 
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadPhoto();
+                loadPhoto(imageUri);
             }
         });
 
@@ -147,13 +166,20 @@ public class UploadPhoto extends Fragment {
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        cancel.setTypeface(mainFont);
+        upload.setTypeface(mainFont);
 
+    }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        imageUri = null;
+        image.setImageResource(R.drawable.test_photo);
     }
 
     /**
@@ -171,7 +197,7 @@ public class UploadPhoto extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void loadPhoto(){
+    public void loadPhoto(Uri imageUri){
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
             Cursor cursor = getActivity().getContentResolver().query(imageUri, filePathColumn, null, null, null);
             assert cursor != null;

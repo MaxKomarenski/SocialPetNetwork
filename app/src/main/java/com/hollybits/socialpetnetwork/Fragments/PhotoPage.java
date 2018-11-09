@@ -325,6 +325,7 @@ public class PhotoPage extends Fragment{
                 if(!commentText.equals("")){
                     sendNewComment(commentText, id);
                     hideKeyboard(getActivity());
+                    commentsText.setText(++commentsCount+" comments");
 
 
                 }
