@@ -256,6 +256,7 @@
         </RelativeLayout>
 
         <Button
+            android:id="@+id/contact_with_owner_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/contact_with_owner_rounded_button"

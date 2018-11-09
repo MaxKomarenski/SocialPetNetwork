@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.hollybits.socialpetnetwork.Fragments.Account;
+import com.hollybits.socialpetnetwork.Fragments.EditInfo;
 import com.hollybits.socialpetnetwork.Fragments.Store;
 import com.hollybits.socialpetnetwork.Fragments.UsersGallery;
 import com.hollybits.socialpetnetwork.Fragments.Messages;
@@ -286,6 +287,13 @@ public class FragmentDispatcher extends AppCompatActivity
 
                 NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                 TextView name = navigationView.getHeaderView(0).findViewById(R.id.name_surname_nav_header);
+                ImageView editButton = navigationView.getHeaderView(0).findViewById(R.id.edit_profile_nav_header);
+                editButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FragmentDispatcher.launchFragment(EditInfo.class);
+                    }
+                });
                 Pet currentPet = Paper.book().read(MainActivity.CURRENT_PET);
                 name.setText(currentPet.getName());
             }

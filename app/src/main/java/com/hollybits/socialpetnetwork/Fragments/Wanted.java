@@ -19,6 +19,7 @@ import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.activity.SettingsActivity;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
+import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.LostPet;
 import com.hollybits.socialpetnetwork.models.User;
 import com.hollybits.socialpetnetwork.models.UserInfo;
@@ -68,6 +69,9 @@ public class Wanted extends Fragment {
 
     @BindView(R.id.see_button_in_wanted)
     Button seeButton;
+
+    @BindView(R.id.contact_with_owner_button)
+    Button contactButton;
 
     Typeface font;
     Typeface infoFont;
@@ -143,6 +147,42 @@ public class Wanted extends Fragment {
             }
         });
 
+        contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(isLostPetInFriendshipWithUser(lostPet.getUserId())){
+                    Paper.book().write(MainActivity.ID_OF_FRIEND, lostPet.getUserId());
+                    Paper.book().write(MainActivity.NAME_OF_FRIEND, lostPet.getUserName());
+                    FragmentDispatcher.launchFragment(Chat.class);
+
+                }else {
+                    User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+                    Map<String, String> authorisationCode = new HashMap<>();
+                    authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+                    MainActivity.getServerRequests().addToFriendsWhenOneUserFoundPetOfAnotherUser(authorisationCode,
+                            currentUser.getId(), lostPet.getUserId()).enqueue(new Callback<FriendInfo>() {
+                        @Override
+                        public void onResponse(Call<FriendInfo> call, Response<FriendInfo> response) {
+                            if(response.body() != null){
+                                addNewFriendToPaperBook(response.body());
+                                Paper.book().delete(MainActivity.CONTACT_LIST);
+
+                                Paper.book().write(MainActivity.ID_OF_FRIEND, lostPet.getUserId());
+                                Paper.book().write(MainActivity.NAME_OF_FRIEND, lostPet.getUserName());
+                                FragmentDispatcher.launchFragment(Chat.class);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<FriendInfo> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+        });
+
     }
 
 
@@ -210,5 +250,22 @@ public class Wanted extends Fragment {
 
             }
         });
+    }
+
+    private boolean isLostPetInFriendshipWithUser(Long id){
+        List<FriendInfo> userFriends = Paper.book().read(MainActivity.FRIEND_LIST);
+        for (FriendInfo friendInfo: userFriends){
+            if(friendInfo.getId().equals(id)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void addNewFriendToPaperBook(FriendInfo newFriend){
+        List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
+        friends.add(newFriend);
+        Paper.book().write(MainActivity.FRIEND_LIST, friends);
     }
 }
