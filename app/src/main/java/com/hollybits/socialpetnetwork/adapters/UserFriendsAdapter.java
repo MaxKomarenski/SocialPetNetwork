@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.adapters;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.Fragments.Chat;
 import com.hollybits.socialpetnetwork.Fragments.FriendAccount;
+import com.hollybits.socialpetnetwork.Fragments.UserFriends;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
@@ -44,8 +46,9 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
     private MyViewHolder previousHolder;
     private Typeface nameFont, breedFont;
     private PhotoManager photoManager;
+    private UserFriends userFriendsFragment;
 
-    public UserFriendsAdapter(Typeface nameFont, Typeface breedFont, Fragment fragment){
+    public UserFriendsAdapter(Typeface nameFont, Typeface breedFont, Fragment fragment, UserFriends userFriends){
 
         this.friends = new ArrayList<>();
         photoManager = new PhotoManager(fragment);
@@ -53,6 +56,8 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
         notifyDataSetChanged();
         this.nameFont = nameFont;
         this.breedFont = breedFont;
+        this.userFriendsFragment = userFriends;
+
     }
 
     public void setFriends(List<FriendInfo> friends) {
@@ -63,41 +68,23 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ConstraintLayout primeConstraintLayout;
 
-        //-------------small---------------
         public ConstraintLayout smallConstraintLayout;
-        public TextView user_name_sm, pet_name_sm, breed_sm;
+        public TextView pet_name_sm, breed_sm, active_or_not;
         public CircleImageView img_sm;
         public ImageView indicator_sm;
-        //-------------big----------------
-        public ConstraintLayout bigConstraintLayout;
-        public TextView user_name_bg, pet_name_bg, breed_bg;
-        public CircleImageView img_bg;
-        public ImageView indicator_bg;
-        public ImageButton infoButton, messageButton, mapButton;
 
 
         public MyViewHolder(View view){
             super(view);
             primeConstraintLayout = view.findViewById(R.id.prime_constrainLayout_in_item);
 
-            //---------------small-----------------------------------------------------------------
             smallConstraintLayout = view.findViewById(R.id.small_constraintLayout_in_item);
-            user_name_sm = view.findViewById(R.id.name_of_user_in_user_friend_recycler_view);
             pet_name_sm = view.findViewById(R.id.name_of_pet_in_user_friend_recycler_view);
             breed_sm = view.findViewById(R.id.breed_of_pet_in_user_friend_recycler_view);
             img_sm = view.findViewById(R.id.user_photo_in_lost_pets_recycler_view);
             indicator_sm = view.findViewById(R.id.indicator_in_user_friend_recycler_view);
+            active_or_not = view.findViewById(R.id.active_or_not_text_in_friend_raw);
 
-            //----------------big------------------------------------------------------------------
-            bigConstraintLayout = view.findViewById(R.id.big_constraintLayout_in_item);
-            user_name_bg = view.findViewById(R.id.pressed_name_of_user_in_user_friend_recycler_view);
-            pet_name_bg = view.findViewById(R.id.pressed_name_of_pet_in_user_friend_recycler_view);
-            breed_bg = view.findViewById(R.id.pressed_breed_of_pet_in_user_friend_recycler_view);
-            img_bg = view.findViewById(R.id.pressed_user_photo_in_user_friend_recycler_view);
-            indicator_bg = view.findViewById(R.id.pressed_indicator_in_user_friend_recycler_view);
-            infoButton = view.findViewById(R.id.info_button_in_pressed_item);
-            messageButton = view.findViewById(R.id.message_button_in_pressed_item);
-            //mapButton
         }
     }
 
@@ -114,63 +101,32 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         FriendInfo friend = filtredFriends.get(position);
 
-        holder.user_name_sm.setText(friend.getName() + " " + friend.getSurname());
-        holder.user_name_sm.setTypeface(nameFont);
+        if (previousHolder != null){
+            previousHolder.smallConstraintLayout.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
+
         holder.pet_name_sm.setText(friend.getPetName());
         holder.pet_name_sm.setTypeface(nameFont);
         holder.breed_sm.setText(friend.getPetBreedName());
         holder.breed_sm.setTypeface(breedFont);
         photoManager.loadFriendsMainPhoto(holder.img_sm, friend.getId());
-        //----------------------------------
-        holder.user_name_bg.setText(friend.getName() + " " + friend.getSurname());
-        holder.user_name_bg.setTypeface(nameFont);
-        holder.pet_name_bg.setText(friend.getPetName());
-        holder.pet_name_bg.setTypeface(nameFont);
-        holder.breed_bg.setText(friend.getPetBreedName());
-        holder.breed_bg.setTypeface(breedFont);
 
         if(isUserOnline(friend.getLastActiveTime())){
             holder.indicator_sm.setImageResource(R.drawable.green_dot);
-            holder.indicator_bg.setImageResource(R.drawable.green_dot);
+            holder.active_or_not.setText("Active");
         }else {
+            holder.active_or_not.setText("Not active");
             holder.indicator_sm.setImageResource(R.drawable.red_lock);
-            holder.indicator_bg.setImageResource(R.drawable.red_lock);
         }
-
-        holder.infoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAllInformationOfChosenUser(friend.getId());
-            }
-        });
 
         holder.smallConstraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.smallConstraintLayout.setVisibility(View.GONE);
-                holder.bigConstraintLayout.setVisibility(View.VISIBLE);
-                holder.primeConstraintLayout.setBackgroundResource(R.drawable.background_for_raw_of_recycler_view_big);
-
-                if(previousHolder == null){
-                    previousHolder = holder;
-                }else {
-                    previousHolder.bigConstraintLayout.setVisibility(View.GONE);
-                    previousHolder.smallConstraintLayout.setVisibility(View.VISIBLE);
-                    previousHolder.primeConstraintLayout.setBackgroundResource(R.drawable.background_for_raw_of_recycler_view);
-                    previousHolder = holder;
-                }
-                photoManager.loadFriendsMainPhoto(holder.img_bg, friend.getId());
+                holder.smallConstraintLayout.setBackgroundColor(Color.parseColor("#f3fbfe"));
+                userFriendsFragment.showDownBar(friend);
             }
         });
-
-        holder.messageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Paper.book().write(MainActivity.ID_OF_FRIEND, friend.getId());
-                Paper.book().write(MainActivity.NAME_OF_FRIEND, friend.getName());
-                FragmentDispatcher.launchFragment(Chat.class);
-            }
-        });
+        previousHolder = holder;
 
     }
 

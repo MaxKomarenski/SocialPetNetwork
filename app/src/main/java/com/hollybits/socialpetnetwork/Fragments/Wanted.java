@@ -147,6 +147,7 @@ public class Wanted extends Fragment {
             }
         });
 
+        contactButton.setTypeface(buttonFont);
         contactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,7 +206,7 @@ public class Wanted extends Fragment {
         photoManager = new PhotoManager(Wanted.this);
         font = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         infoFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/AvenirNextCyr-Regular.ttf");
-        //buttonFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/");
+        buttonFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/CenturyGothicRegular.ttf");
 
         for (TextView word: words){
             word.setTypeface(font);
