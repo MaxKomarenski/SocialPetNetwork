@@ -396,13 +396,17 @@ public class Chat extends Fragment implements MessageObserver {
         if(messages.size() != 0){
             List<Contact> contactList = Paper.book().read(MainActivity.CONTACT_LIST);
 
-            for (int i = 0; i < contactList.size(); i++){
-                if (contactList.get(i).getFriendId().equals(friendId)){
-                    contactList.get(i).setLastMessage(messages.get(messages.size() - 1).getMessage());
+            try{
+                for (int i = 0; i < contactList.size(); i++){
+                    if (contactList.get(i).getFriendId().equals(friendId)){
+                        contactList.get(i).setLastMessage(messages.get(messages.size() - 1).getMessage());
+                    }
                 }
-            }
 
-            Paper.book().write(MainActivity.CONTACT_LIST, contactList);
+                Paper.book().write(MainActivity.CONTACT_LIST, contactList);
+            }catch (NullPointerException e){
+
+            }
         }
 
 

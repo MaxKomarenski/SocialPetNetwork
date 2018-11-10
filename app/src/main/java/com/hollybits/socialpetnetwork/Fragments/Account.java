@@ -97,9 +97,6 @@ public class Account extends Fragment {
     @BindView(R.id.settings_account_img_button)
     ImageButton settings;
 
-    @BindView(R.id.edit_button_in_account)
-    Button editButton;
-
     private static final int PICK_IMAGE = 200;
     DrawerLayout drawer;
     private Uri imageUri;
@@ -233,13 +230,6 @@ public class Account extends Fragment {
     }
 
     private void listeners() {
-
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentDispatcher.launchFragment(EditInfo.class);
-            }
-        });
 
         openDrawerButton.setOnClickListener(new View.OnClickListener() {
             @Override
