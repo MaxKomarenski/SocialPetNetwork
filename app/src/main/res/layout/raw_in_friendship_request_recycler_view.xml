@@ -1,125 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/small_constraintLayout_in_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="10dp"
+    android:layout_marginStart="10dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_photo_in_friendship_recycler_view"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/test_photo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/owner_text_in_friendship_raw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:text="owner:"
-        app:layout_constraintBottom_toBottomOf="@+id/name_of_user_in_friendship_recycler_view"
-        app:layout_constraintStart_toEndOf="@+id/user_photo_in_friendship_recycler_view"
-        app:layout_constraintTop_toTopOf="@+id/name_of_user_in_friendship_recycler_view" />
-
-    <TextView
-        android:id="@+id/name_of_user_in_friendship_recycler_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:text=""
-        android:textSize="17sp"
-        android:textColor="#000"
-        app:layout_constraintStart_toEndOf="@+id/owner_text_in_friendship_raw"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/address_text_in_friendship_raw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="address:"
-        app:layout_constraintBottom_toBottomOf="@+id/place_of_user_in_friendship_recycler_view"
-        app:layout_constraintStart_toStartOf="@+id/breed_text_in_friendship_raw"
-        app:layout_constraintTop_toTopOf="@+id/place_of_user_in_friendship_recycler_view" />
-
-    <TextView
-        android:id="@+id/place_of_user_in_friendship_recycler_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text=""
-        android:textStyle="italic"
-        android:textColor="#000"
-        android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="@+id/pet_breed_in_friendship_recycler_view"
-        app:layout_constraintTop_toBottomOf="@+id/pet_breed_in_friendship_recycler_view" />
-
-    <TextView
-        android:id="@+id/pet_text_in_friendship_raw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="pet:"
-        app:layout_constraintBottom_toBottomOf="@+id/pet_name_in_friendship_recycler_view"
-        app:layout_constraintStart_toStartOf="@+id/owner_text_in_friendship_raw"
-        app:layout_constraintTop_toTopOf="@+id/pet_name_in_friendship_recycler_view" />
-
-    <TextView
-        android:id="@+id/pet_name_in_friendship_recycler_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text=""
-        android:textColor="#000"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/name_of_user_in_friendship_recycler_view"
-        app:layout_constraintTop_toBottomOf="@+id/name_of_user_in_friendship_recycler_view" />
-
-    <TextView
-        android:id="@+id/breed_text_in_friendship_raw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="breed:"
-        app:layout_constraintBottom_toBottomOf="@+id/pet_breed_in_friendship_recycler_view"
-        app:layout_constraintStart_toStartOf="@+id/pet_text_in_friendship_raw"
-        app:layout_constraintTop_toTopOf="@+id/pet_breed_in_friendship_recycler_view" />
-
-    <TextView
-        android:id="@+id/pet_breed_in_friendship_recycler_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text=""
-        android:textColor="#000"
-        android:textSize="15sp"
-        app:layout_constraintStart_toStartOf="@+id/pet_name_in_friendship_recycler_view"
-        app:layout_constraintTop_toBottomOf="@+id/pet_name_in_friendship_recycler_view" />
-
-    <Button
-        android:id="@+id/accept_button_in_friendship_recycler_view"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="16dp"
-        android:background="#080"
-        android:text="Accept"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/place_of_user_in_friendship_recycler_view" />
-
-    <Button
-        android:id="@+id/reject_button_in_friendship_recycler_view"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="64dp"
-        android:background="#d50c16"
-        android:text="Reject"
+        app:civ_border_color="#43b748"
+        app:civ_border_width="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/accept"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/user_photo_in_friendship_recycler_view"
+        app:layout_constraintStart_toEndOf="@+id/user_photo_in_friendship_recycler_view"
+        app:layout_constraintTop_toTopOf="@+id/user_photo_in_friendship_recycler_view"
+        app:layout_constraintVertical_bias="0.444">
+
+        <TextView
+            android:id="@+id/pet_name_in_friendship_recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dalbaobik"
+            android:textColor="#000"
+            android:textSize="23sp" />
+
+        <TextView
+            android:id="@+id/pet_breed_in_friendship_recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="breed"
+            android:textColor="#979ea4"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/accept_button_in_friendship_recycler_view" />
+        app:layout_constraintStart_toEndOf="@+id/linearLayout4"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout4">
+
+        <ImageView
+            android:id="@+id/indicator_in_user_friend_recycler_view"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:src="@drawable/green_dot" />
+
+        <TextView
+            android:id="@+id/active_or_not_text_in_friend_raw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Active" />
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/accept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:buttonTint="@color/green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/user_photo_in_friendship_recycler_view"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

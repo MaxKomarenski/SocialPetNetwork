@@ -9,12 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hollybits.socialpetnetwork.Fragments.Chat;
 import com.hollybits.socialpetnetwork.Fragments.FriendAccount;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
@@ -100,7 +98,7 @@ public class PeopleSearchAdapter extends RecyclerView.Adapter<PeopleSearchAdapte
             user_name_sm = view.findViewById(R.id.name_of_user_in_user_friend_recycler_view);
             pet_name_sm = view.findViewById(R.id.name_of_pet_in_user_friend_recycler_view);
             breed_sm = view.findViewById(R.id.breed_of_pet_in_user_friend_recycler_view);
-            img_sm = view.findViewById(R.id.user_photo_in_lost_pets_recycler_view);
+            img_sm = view.findViewById(R.id.user_photo_in_friendship_recycler_view);
             indicator_sm = view.findViewById(R.id.indicator_in_user_friend_recycler_view);
             addTofriendsButton = view.findViewById(R.id.add_to_friends_button);
             textView = view.findViewById(R.id.add_to_friends_text);

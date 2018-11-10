@@ -1,6 +1,5 @@
 package com.hollybits.socialpetnetwork.adapters;
 
-import android.app.Fragment;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -8,26 +7,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.Fragments.LostPets;
 import com.hollybits.socialpetnetwork.R;
-import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
-import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.LostPet;
-import com.hollybits.socialpetnetwork.models.User;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.paperdb.Paper;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.MyViewHolder> {
 
@@ -58,7 +47,7 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.MyViewHo
             super(itemView);
 
             background = itemView.findViewById(R.id.raw_in_lost_pet_constraintLayout);
-            petImg = itemView.findViewById(R.id.user_photo_in_lost_pets_recycler_view);
+            petImg = itemView.findViewById(R.id.user_photo_in_friendship_recycler_view);
             petName = itemView.findViewById(R.id.name_of_pet_in_lost_pets_recycler_view);
             petBreed = itemView.findViewById(R.id.breed_of_pet_in_lost_pets_recycler_view);
             ownerName = itemView.findViewById(R.id.name_of_user_in_lost_pets_recycler_view);

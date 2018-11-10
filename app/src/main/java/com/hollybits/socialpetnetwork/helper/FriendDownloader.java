@@ -27,6 +27,15 @@ public class FriendDownloader {
             public void onResponse(Call<FriendInfo> call, Response<FriendInfo> response) {
                 FriendInfo newFriend = response.body();
                 List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
+                for(FriendInfo f: friends){
+                    try {
+                        if(f.getId().equals(newFriend.getId())){
+                            return;
+                        }
+                    }catch (Exception e){
+                        return;
+                    }
+                }
                 friends.add(newFriend);
                 Paper.book().write(MainActivity.FRIEND_LIST, friends);
                 Paper.book().delete(MainActivity.CONTACT_LIST);

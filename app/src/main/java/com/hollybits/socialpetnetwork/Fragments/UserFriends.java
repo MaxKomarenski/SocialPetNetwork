@@ -201,11 +201,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
         requestsTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeColorsAndVisibility(View.GONE, View.VISIBLE,
-                        R.drawable.background_for_table_friends,
-                        getResources().getDrawable(R.color.blue_for_table_pressed),
-                        R.drawable.background_for_table_people, View.GONE , View.GONE);
-
+                FragmentDispatcher.launchFragment(Requests.class);
             }
         });
 
@@ -284,7 +280,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 
     private void getAllFriendshipRequests(){
         friendShipRequests = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
-        friendshipRequestAdapter = new FriendshipRequestAdapter(friendShipRequests, userFriendsAdapter, mainFont, breedFont);
+        friendshipRequestAdapter = new FriendshipRequestAdapter(friendShipRequests, mainFont, breedFont);
         friendshipRequestRecyclerView.setAdapter(friendshipRequestAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         friendshipRequestRecyclerView.setLayoutManager(layoutManager);
@@ -322,8 +318,6 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
             userFriendsRecyclerView.setAdapter(userFriendsAdapter);
             userFriendsAdapter.notifyDataSetChanged();
         }
-
-
     }
 
 

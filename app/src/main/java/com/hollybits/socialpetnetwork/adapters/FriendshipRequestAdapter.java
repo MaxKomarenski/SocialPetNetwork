@@ -3,12 +3,17 @@ package com.hollybits.socialpetnetwork.adapters;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.hollybits.socialpetnetwork.Fragments.Chat;
+import com.hollybits.socialpetnetwork.Fragments.Requests;
 import com.hollybits.socialpetnetwork.Fragments.UserFriends;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
@@ -17,10 +22,13 @@ import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
 import com.hollybits.socialpetnetwork.models.User;
 
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -32,42 +40,38 @@ import retrofit2.Response;
 public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipRequestAdapter.MyViewHolder> {
 
     private List<InfoAboutUserFriendShipRequest> friendShipRequests;
-    private UserFriendsAdapter userFriendsAdapter;
     private Typeface first;
     private Typeface second;
+    public boolean cancel;
+    public boolean selectAll;
+    List<Long> checkedIds;
+    private User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+    private Map<String, String> authorisationCode = new HashMap<>();
+
 
     public FriendshipRequestAdapter(List<InfoAboutUserFriendShipRequest> friendShipRequests,
-                                    UserFriendsAdapter userFriendsAdapter,
                                     Typeface first,
                                     Typeface second){
         this.friendShipRequests = friendShipRequests;
-        this.userFriendsAdapter = userFriendsAdapter;
         this.first = first;
         this.second = second;
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        checkedIds = new ArrayList<>();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         CircleImageView userPhoto;
-        TextView userName, place, petName, breed;
-        TextView ownerText, petText, breedText, addressText;
+        TextView petName, breed;
+        CheckBox checkBox;
 
-        Button accept, reject;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             userPhoto = itemView.findViewById(R.id.user_photo_in_friendship_recycler_view);
-            userName = itemView.findViewById(R.id.name_of_user_in_friendship_recycler_view);
             petName = itemView.findViewById(R.id.pet_name_in_friendship_recycler_view);
-            place = itemView.findViewById(R.id.place_of_user_in_friendship_recycler_view);
-            accept = itemView.findViewById(R.id.accept_button_in_friendship_recycler_view);
-            reject = itemView.findViewById(R.id.reject_button_in_friendship_recycler_view);
             breed = itemView.findViewById(R.id.pet_breed_in_friendship_recycler_view);
-
-            ownerText = itemView.findViewById(R.id.owner_text_in_friendship_raw);
-            petText = itemView.findViewById(R.id.pet_text_in_friendship_raw);
-            breedText = itemView.findViewById(R.id.breed_text_in_friendship_raw);
-            addressText = itemView.findViewById(R.id.address_text_in_friendship_raw);
+            checkBox = itemView.findViewById(R.id.accept);
         }
     }
 
@@ -81,37 +85,30 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
 
     @Override
     public void onBindViewHolder(@NonNull FriendshipRequestAdapter.MyViewHolder holder, int position) {
+        Log.d("POS", String.valueOf(position));
         try {
             InfoAboutUserFriendShipRequest request = friendShipRequests.get(position);
-            holder.userName.setText(request.getName() + " " + request.getSurname());
-            holder.userName.setTypeface(first);
-            holder.place.setText(request.getCity() + ", " + request.getCountry());
-            holder.place.setTypeface(second);
             holder.petName.setTypeface(first);
             holder.petName.setText(request.getPetName());
             holder.breed.setText(request.getPetBreed());
             holder.breed.setTypeface(second);
-
-            holder.ownerText.setTypeface(first);
-            holder.breedText.setTypeface(first);
-            holder.addressText.setTypeface(first);
-            holder.petText.setTypeface(first);
-
-            holder.accept.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    acceptFriendshipRequest(request, true);
-                    Paper.book().delete(MainActivity.CONTACT_LIST);
-
+            if(selectAll){
+                holder.checkBox.setChecked(true);
+            }
+            if(cancel){
+                holder.checkBox.setChecked(false);
+            }
+            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(isChecked){
+                    checkedIds.add(friendShipRequests.get(position).getId());
+                    Log.d("FriendShip Adapter", "Added id "+ friendShipRequests.get(position).getId());
                 }
             });
+            if(position == friendShipRequests.size()-1){
+                selectAll = false;
+                cancel = false;
+            }
 
-            holder.reject.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    acceptFriendshipRequest(request, false);
-                }
-            });
         }catch (Exception e){
             FragmentDispatcher.launchFragment(UserFriends.class);
         }
@@ -126,58 +123,93 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
         friendShipRequests.add(request);
     }
 
-    private void acceptFriendshipRequest(InfoAboutUserFriendShipRequest request, boolean state){
 
-        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-        Map<String, String> authorisationCode = new HashMap<>();
-        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-        MainActivity.getServerRequests().acceptFriendshipInvitation(authorisationCode,
-                                                                    currentUser.getId(),
-                                                                    request.getId(),
-                                                                    state).enqueue(new Callback<FriendInfo>() {
-            @Override
-            public void onResponse(Call<FriendInfo> call, Response<FriendInfo> response) {
-                if(state){
-                    FriendInfo newFriend = response.body();
-                    userFriendsAdapter.addItem(newFriend);
-                    userFriendsAdapter.notifyDataSetChanged();
-                    addNewFriendToPaperBook(newFriend);
 
-                }
+    public List<Long> getCheckedIds() {
 
-            }
-
-            @Override
-            public void onFailure(Call<FriendInfo> call, Throwable t) {
-
-            }
-        });
-
-        deleteRequestFromPaperBook(request);
-        deleteItem(request);
-
-    }
-
-    private void addNewFriendToPaperBook(FriendInfo newFriend){
-        List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
-        friends.add(newFriend);
-        Paper.book().write(MainActivity.FRIEND_LIST, friends);
-    }
-
-    private void deleteRequestFromPaperBook(InfoAboutUserFriendShipRequest info){
-        List<InfoAboutUserFriendShipRequest> list = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
-        for (int i = 0; i < list.size(); i++){
-            if(info.equals(list.get(i))){
-                list.remove(i);
-            }
+        if(checkedIds == null){
+            return new ArrayList<>();
         }
-
-        Paper.book().write(MainActivity.FRIENDSHIP_REQUEST_LIST, list);
-        notifyDataSetChanged();
-
+        return checkedIds;
     }
 
-    private void deleteItem(InfoAboutUserFriendShipRequest infoAboutUserFriendShipRequest){
+    public void  selectAll(){
+        for(InfoAboutUserFriendShipRequest inf: friendShipRequests){
+            checkedIds.add(inf.getId());
+        }
+    }
+    public void cancelSelection(){
+        checkedIds.clear();
+    }
+
+    public void deleteItem(InfoAboutUserFriendShipRequest infoAboutUserFriendShipRequest){
+        if(infoAboutUserFriendShipRequest == null)
+            return;
         friendShipRequests.remove(infoAboutUserFriendShipRequest);
     }
+
+
+    public InfoAboutUserFriendShipRequest getRequestById(Long id){
+        for(InfoAboutUserFriendShipRequest r: friendShipRequests){
+            if(r.getId().equals(id)){
+                return r;
+            }
+        }
+        return null;
+    }
+
+
+    private void checkIfUserIsOnline(Long friendId){
+
+
+//        MainActivity.getServerRequests().getUserLastActiveTime(authorisationCode, friendId).enqueue(new Callback<String>() {
+//            @Override
+//            public void onResponse(Call<String> call, Response<String> response) {
+//
+//                String time = response.body().replaceAll("%", " ");
+//                Timestamp timestamp = Timestamp.valueOf(time.replaceAll("\\^", ":"));
+//
+//                long five_minutes = 5 * 60 * 1000;
+//                long currentTime = System.currentTimeMillis();
+//
+//                try{
+//                    if(currentTime - timestamp.getTime() < five_minutes){
+//
+//
+//                        greenIndicator.setVisibility(View.VISIBLE);
+//                        onlineOrNotOnlineText.setText("online");
+//                        onlineOrNotOnlineText.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(R.color.online));
+//
+//                    }else {
+//
+//                        Chat.this.getActivity().runOnUiThread(() -> {
+//
+//                            greenIndicator.setVisibility(View.INVISIBLE);
+//                            onlineOrNotOnlineText.setText("not online");
+//                            onlineOrNotOnlineText.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(R.color.not_online));
+//
+//                        });
+//                    }
+//                }catch (NullPointerException e){
+//
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<String> call, Throwable t) {
+//
+//            }
+//        });
+
+    }
+
+
+
+
+
+
+
+
 }
