@@ -131,6 +131,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 
     private UserFriendsAdapter userFriendsAdapter;
     private FriendshipRequestAdapter friendshipRequestAdapter;
+
     private PeopleSearchAdapter peopleSearchAdapter;
 
     private Typeface nameFont, breedFont, mainFont;
@@ -330,13 +331,16 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 
     private void getAllFriendshipRequests(){
         friendShipRequests = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
-        friendshipRequestAdapter = new FriendshipRequestAdapter(friendShipRequests, userFriendsAdapter, mainFont, breedFont);
         //friendshipRequestRecyclerView.setAdapter(friendshipRequestAdapter);
         friendshipRequestAdapter = new FriendshipRequestAdapter(friendShipRequests, mainFont, breedFont);
+
+
         //friendshipRequestRecyclerView.setAdapter(friendshipRequestAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         //friendshipRequestRecyclerView.setLayoutManager(layoutManager);
         SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
+
+
         //friendshipRequestRecyclerView.setItemAnimator(animator);
         friendshipRequestAdapter.notifyDataSetChanged();
     }
