@@ -8,9 +8,9 @@
     tools:context=".Fragments.SearchPeople">
 
     <RelativeLayout
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <ImageButton
             android:id="@+id/back_to_friends_img_button"
@@ -128,7 +128,6 @@
         android:textSize="16sp" />
 
     <AutoCompleteTextView
-        android:textSize="16sp"
         android:id="@+id/breed_autocomplete_in_search_people"
         android:layout_width="match_parent"
         android:layout_height="38dp"
@@ -139,7 +138,8 @@
         android:hint="Select breed"
         android:padding="7dp"
         android:paddingStart="15dp"
-        android:paddingEnd="15dp" />
+        android:paddingEnd="15dp"
+        android:textSize="16sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -156,8 +156,8 @@
             android:layout_marginEnd="120dp"
             android:background="@drawable/background_for_search_button"
             android:text="search"
-            android:textSize="19dp"
-            android:textColor="#fff" />
+            android:textColor="#fff"
+            android:textSize="19sp" />
 
     </RelativeLayout>
 

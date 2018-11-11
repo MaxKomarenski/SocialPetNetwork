@@ -11,10 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.adapters.SpinnerAnimalAdapter;
 
 import java.util.ArrayList;
@@ -49,6 +51,9 @@ public class SearchPeople extends Fragment {
 
     @BindView(R.id.search_button_in_search_people)
     Button searchButton;
+
+    @BindView(R.id.back_to_friends_img_button)
+    ImageButton backToFriends;
 
     Typeface gothic;
     Typeface avenirNextCyr_regular;
@@ -121,11 +126,18 @@ public class SearchPeople extends Fragment {
 
         searchTextView.setTypeface(avenirNextCyr_regular);
 
-        SpinnerAnimalAdapter adapter = new SpinnerAnimalAdapter(this.getContext(), android.R.layout.simple_spinner_item,animals);
+        SpinnerAnimalAdapter adapter = new SpinnerAnimalAdapter(this.getContext(), android.R.layout.simple_spinner_item, animals);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         animalSpinner.setAdapter(adapter);
 
         searchButton.setTypeface(gothicRegular);
+
+        backToFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(UserFriends.class);
+            }
+        });
 
         return view;
     }
