@@ -145,7 +145,6 @@
                 android:layout_height="wrap_content"
                 android:text="info"
                 android:textColor="#000"/>
-
         </LinearLayout>
 
 
