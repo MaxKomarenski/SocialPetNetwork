@@ -14,4 +14,6 @@
     <dimen name="marg_top_in_accoutn">11dp</dimen>
     <dimen name="marg_left_edit_text">10dp</dimen>
     <dimen name="radius_in_edit">25dp</dimen>
+    <dimen name="marg_top_in_search">10dp</dimen>
+    <dimen name="marg_top_edit_text_in_search">3dp</dimen>
 </resources>
