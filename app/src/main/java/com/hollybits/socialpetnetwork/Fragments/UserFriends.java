@@ -10,6 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -228,6 +230,18 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
         return view;
     }
 
+    private void filter(String text) {
+        ArrayList<FriendInfo> filteredList = new ArrayList<>();
+
+        for (FriendInfo friend : friends) {
+            if (friend.getPetName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(friend);
+            }
+        }
+
+        userFriendsAdapter.filterList(filteredList);
+    }
+
 
 //    private void changeTypeface(){
 //        friendsTextView.setTypeface(mainFont);
@@ -410,11 +424,20 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 
 
     private void attachListeners(){
-        searchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        searchView.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                userFriendsAdapter.getFilter().filter(v.toString());
-                return false;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
             }
         });
 

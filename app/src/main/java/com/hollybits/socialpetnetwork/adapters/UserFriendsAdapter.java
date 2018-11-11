@@ -148,6 +148,11 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
         friends.add(friendInfo);
     }
 
+    public void filterList(ArrayList<FriendInfo> filteredList) {
+        friends = filteredList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
