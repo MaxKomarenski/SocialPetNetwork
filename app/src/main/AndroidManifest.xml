@@ -38,18 +38,22 @@
 
         <activity
             android:name=".activity.FragmentDispatcher"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.RegistrationActivity"
+            android:screenOrientation="portrait"
             android:label="Sign up"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"
             android:label="Social Pet Network"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -70,6 +74,7 @@
 
         <activity
             android:name=".activity.SettingsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>

@@ -191,7 +191,6 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
         //searchView.setColor(getResources().getColor(R.color.online));
         friendsTextView.setTypeface(mainFont);
         getAllUserFriends();
-        getAllFriendshipRequests();
         FriendShipRequestQueue.getInstance().addObserver(this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         userFriendsRecyclerView.setLayoutManager(layoutManager);
@@ -365,21 +364,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 //        filterCardView.setVisibility(filterVisibility);
    // }
 
-    private void getAllFriendshipRequests(){
-        friendShipRequests = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
-        //friendshipRequestRecyclerView.setAdapter(friendshipRequestAdapter);
-        friendshipRequestAdapter = new FriendshipRequestAdapter(friendShipRequests, mainFont, breedFont);
 
-
-        //friendshipRequestRecyclerView.setAdapter(friendshipRequestAdapter);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
-        //friendshipRequestRecyclerView.setLayoutManager(layoutManager);
-        SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
-
-
-        //friendshipRequestRecyclerView.setItemAnimator(animator);
-        friendshipRequestAdapter.notifyDataSetChanged();
-    }
 
     private void getAllUserFriends(){
         userFriendsAdapter = new UserFriendsAdapter(mainFont, breedFont, UserFriends.this, UserFriends.this);
