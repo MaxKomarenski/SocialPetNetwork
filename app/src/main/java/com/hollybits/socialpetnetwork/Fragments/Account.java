@@ -26,6 +26,7 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.activity.SettingsActivity;
+import com.hollybits.socialpetnetwork.enums.Attitude;
 import com.hollybits.socialpetnetwork.enums.GalleryMode;
 import com.hollybits.socialpetnetwork.enums.Sex;
 import com.hollybits.socialpetnetwork.helper.GlideApp;
@@ -150,6 +151,8 @@ public class Account extends Fragment {
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
 
         photoManager.loadUsersMainPhoto(userMainPhoto);
+        Pet currentPet = currentUser.getPets().get(0);
+        changeBorder(userMainPhoto, currentPet.getAttitude());
 
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         infoFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/AvenirNextCyr-Demi.ttf");
@@ -157,8 +160,6 @@ public class Account extends Fragment {
         changeFontForAllWordInList(wordUnderButtins, mainFont);
         showAllInformationOnTheScreen();
         listeners();
-
-        userMainPhoto.setBorderColor(Color.parseColor("#000000"));
 
         return view;
     }
@@ -326,6 +327,16 @@ public class Account extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void changeBorder(CircleImageView photo, Attitude attitude){
+        if (attitude == Attitude.GOODWITHALL){
+            photo.setBorderColor(Color.parseColor("#3ed611"));
+        }else if(attitude == Attitude.BAD){
+            photo.setBorderColor(Color.parseColor("#d62d20"));
+        }else {
+            photo.setBorderColor(Color.parseColor("#ffa700"));
+        }
     }
 
 
