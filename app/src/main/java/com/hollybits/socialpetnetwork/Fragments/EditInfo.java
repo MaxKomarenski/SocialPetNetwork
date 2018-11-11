@@ -288,14 +288,14 @@ public class EditInfo extends Fragment {
         changeAttitudeLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(attitudePosition == 3){
+                    attitudePosition = -1;
+                }
+
                 attitudePosition++;
                 changeAttitudeLinearLayout.setBackgroundResource(strokes[attitudePosition]);
                 attitudeTextView.setText(attitudes[attitudePosition]);
                 editPen.setColorFilter(colorFilters[attitudePosition]);
-
-                if(attitudePosition == 3){
-                    attitudePosition = -1;
-                }
 
             }
         });

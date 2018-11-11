@@ -3,6 +3,7 @@ package com.hollybits.socialpetnetwork.Fragments;
 import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -156,6 +157,8 @@ public class Account extends Fragment {
         changeFontForAllWordInList(wordUnderButtins, mainFont);
         showAllInformationOnTheScreen();
         listeners();
+
+        userMainPhoto.setBorderColor(Color.parseColor("#000000"));
 
         return view;
     }

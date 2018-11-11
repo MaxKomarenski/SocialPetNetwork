@@ -12,11 +12,14 @@
 
         <ImageButton
             android:id="@+id/back_to_friends_img_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="26dp" />
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/blue_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -24,18 +27,28 @@
             android:layout_centerInParent="true"
             android:text="Search"
             android:textColor="#aaeaff"
-            android:textSize="17sp" />
+            android:textSize="22sp" />
 
         <ImageButton
             android:id="@+id/open_settings"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:src="@drawable/ic_settings_in_starting_menu"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="26dp" />
+            android:layout_marginEnd="5dp"
+            android:background="@null"/>
 
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#aaeaff"
+        android:text="Pet's name"
+        android:textSize="16sp"
+        android:layout_marginStart="45dp"/>
 
     <EditText
         android:id="@+id/pet_name_edit_text_in_search_people"
