@@ -50,7 +50,6 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
 
     public UserFriendsAdapter(Typeface nameFont, Typeface breedFont, Fragment fragment, UserFriends userFriends){
 
-
         this.friends = new ArrayList<>();
         photoManager = new PhotoManager(fragment);
         filtredFriends = friends;

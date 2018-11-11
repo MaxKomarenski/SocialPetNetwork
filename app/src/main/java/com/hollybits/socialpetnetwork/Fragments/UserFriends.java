@@ -68,6 +68,9 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 //    @BindView(R.id.friendship_request_recycler_view)
 //    RecyclerView friendshipRequestRecyclerView;
 
+    @BindView(R.id.move_to_search_fragment_button)
+    Button searchButton;
+
     @BindView(R.id.move_to_request_fragment_button)
     Button requestButton;
 
@@ -224,6 +227,13 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
             @Override
             public void onClick(View v) {
                 FragmentDispatcher.launchFragment(Requests.class);
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(SearchPeople.class);
             }
         });
 
