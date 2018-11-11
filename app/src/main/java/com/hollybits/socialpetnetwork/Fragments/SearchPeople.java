@@ -1,29 +1,61 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
-import android.content.Context;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.adapters.SpinnerAnimalAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SearchPeople.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SearchPeople#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SearchPeople extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+    @BindViews({R.id.pet_name_text_view,
+            R.id.owner_name_text_view,
+            R.id.animal_text_view,
+            R.id.breed_text_view})
+    List<TextView> texts;
+
+    @BindView(R.id.search_text)
+    TextView searchTextView;
+
+    @BindView(R.id.pet_name_edit_text_in_search_people)
+    EditText petNameEditText;
+
+    @BindView(R.id.owner_name_edit_text_in_search_people)
+    EditText ownerNameEditText;
+
+    @BindView(R.id.breed_autocomplete_in_search_people)
+    AutoCompleteTextView breedAutoComplete;
+
+    @BindView(R.id.animal_spinner_in_search_people)
+    Spinner animalSpinner;
+
+    @BindView(R.id.search_button_in_search_people)
+    Button searchButton;
+
+    Typeface gothic;
+    Typeface avenirNextCyr_regular;
+    Typeface gothicRegular;
+
+    List<String> animals;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -70,10 +102,34 @@ public class SearchPeople extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search_people, container, false);
         ButterKnife.bind(this, view);
 
+        animals = new ArrayList<>();
+        animals.add("Animals");
+        animals.add("Dog");
+        animals.add("Cat");
+
+        gothic = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
+        avenirNextCyr_regular = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/AvenirNextCyr-Regular.ttf");
+        gothicRegular = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/CenturyGothicRegular.ttf");
+
+        for (TextView word : texts) {
+            word.setTypeface(gothic);
+        }
+
+        petNameEditText.setTypeface(gothic);
+        ownerNameEditText.setTypeface(gothic);
+        breedAutoComplete.setTypeface(gothic);
+
+        searchTextView.setTypeface(avenirNextCyr_regular);
+
+        SpinnerAnimalAdapter adapter = new SpinnerAnimalAdapter(this.getContext(), android.R.layout.simple_spinner_item,animals);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        animalSpinner.setAdapter(adapter);
+
+        searchButton.setTypeface(gothicRegular);
+
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -86,18 +142,7 @@ public class SearchPeople extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

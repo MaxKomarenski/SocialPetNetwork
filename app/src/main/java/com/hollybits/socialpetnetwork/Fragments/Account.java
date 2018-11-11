@@ -224,7 +224,6 @@ public class Account extends Fragment {
             });
 
 
-
             GlideApp.with(this)
                     .load(imageUri)
                     .placeholder(R.drawable.test_photo)
@@ -303,8 +302,8 @@ public class Account extends Fragment {
         informationAboutUser.get(1).setText(currentUser.getPhone());
         informationAboutUser.get(2).setText(currentUser.getCredentials().email);
 
-        for (TextView text:
-             informationAboutUser) {
+        for (TextView text :
+                informationAboutUser) {
             text.setTypeface(avenirNextCyr_regular);
         }
 
@@ -329,12 +328,12 @@ public class Account extends Fragment {
         mListener = null;
     }
 
-    private void changeBorder(CircleImageView photo, Attitude attitude){
-        if (attitude == Attitude.GOODWITHALL){
+    private void changeBorder(CircleImageView photo, Attitude attitude) {
+        if (attitude == Attitude.GOODWITHALL) {
             photo.setBorderColor(Color.parseColor("#3ed611"));
-        }else if(attitude == Attitude.BAD){
+        } else if (attitude == Attitude.BAD) {
             photo.setBorderColor(Color.parseColor("#d62d20"));
-        }else {
+        } else {
             photo.setBorderColor(Color.parseColor("#ffa700"));
         }
     }
