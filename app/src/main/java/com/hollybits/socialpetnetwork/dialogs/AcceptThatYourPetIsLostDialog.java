@@ -46,15 +46,19 @@ public class AcceptThatYourPetIsLostDialog extends AppCompatDialogFragment {
     @SuppressLint("MissingPermission")
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Log.d("SOS DIALOG", "ON CREATE");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_accept_los_pet, null);
         return builder.setView(view).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Log.d("LOCATOR", "Click ON SOS!!");
+
                 mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
+                        Log.d("LOCATOR", "STARTING SOS!!");
                         try {
                             List<Address> addresses = locationInfoSupplier.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                             if(addresses.size()==1){

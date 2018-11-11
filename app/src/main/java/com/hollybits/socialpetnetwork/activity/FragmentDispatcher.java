@@ -71,6 +71,7 @@ public class FragmentDispatcher extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         instance  = this;
 
+
         setContentView(R.layout.activity_fragment_dispatcher);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

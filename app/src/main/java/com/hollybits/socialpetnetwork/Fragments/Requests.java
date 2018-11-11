@@ -65,9 +65,9 @@ public class Requests extends Fragment implements FriendShipRequestObserver {
     TextView requestsText;
 
     @BindView(R.id.accept_button)
-    Button accept;
+    public Button accept;
     @BindView(R.id.decline_button)
-    Button decline;
+    public Button decline;
 
     @BindView(R.id.cancel)
     TextView cancel;
@@ -121,7 +121,6 @@ public class Requests extends Fragment implements FriendShipRequestObserver {
         ButterKnife.bind(this, view);
         FriendShipRequestQueue.getInstance().addObserver(this);
         initFonts();
-
         return view;
     }
 
@@ -134,13 +133,20 @@ public class Requests extends Fragment implements FriendShipRequestObserver {
                 Log.d("REQUESTS:", "ACCEPTING REQUEST WITH ID "+ id);
                 acceptFriendshipRequest(id, true);
             }
+            accept.setVisibility(View.GONE);
+            decline.setVisibility(View.GONE);
         });
 
         decline.setOnClickListener(v -> {
             for(Long id: friendshipRequestAdapter.getCheckedIds()){
                 acceptFriendshipRequest(id, false);
             }
+            accept.setVisibility(View.GONE);
+            decline.setVisibility(View.GONE);
         });
+
+        accept.setVisibility(View.GONE);
+        decline.setVisibility(View.GONE);
 
 
         selectAll.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +154,7 @@ public class Requests extends Fragment implements FriendShipRequestObserver {
             public void onClick(View v) {
                 friendshipRequestAdapter.selectAll = true;
                 friendshipRequestAdapter.notifyDataSetChanged();
-                friendshipRequestAdapter.selectAll();
+
             }
         });
 
@@ -247,7 +253,7 @@ public class Requests extends Fragment implements FriendShipRequestObserver {
 
     private void getAllFriendshipRequests(){
         List<InfoAboutUserFriendShipRequest> friendShipRequests = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
-        friendshipRequestAdapter = new FriendshipRequestAdapter(friendShipRequests, mainFont, breedFont);
+        friendshipRequestAdapter = new FriendshipRequestAdapter(friendShipRequests, mainFont, breedFont, this);
         friendshipRequestRecyclerView.setAdapter(friendshipRequestAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         friendshipRequestRecyclerView.setLayoutManager(layoutManager);

@@ -41,6 +41,7 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
 
     private List<InfoAboutUserFriendShipRequest> friendShipRequests;
     private Typeface first;
+    private Requests root;
     private Typeface second;
     public boolean cancel;
     public boolean selectAll;
@@ -51,10 +52,12 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
 
     public FriendshipRequestAdapter(List<InfoAboutUserFriendShipRequest> friendShipRequests,
                                     Typeface first,
-                                    Typeface second){
+                                    Typeface second,
+                                    Requests root){
         this.friendShipRequests = friendShipRequests;
         this.first = first;
         this.second = second;
+        this.root = root;
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
         checkedIds = new ArrayList<>();
     }
@@ -100,8 +103,11 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
             }
             holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if(isChecked){
-                    checkedIds.add(friendShipRequests.get(position).getId());
+                    if(!checkedIds.contains(friendShipRequests.get(position).getId()))
+                        checkedIds.add(friendShipRequests.get(position).getId());
                     Log.d("FriendShip Adapter", "Added id "+ friendShipRequests.get(position).getId());
+                    root.accept.setVisibility(View.VISIBLE);
+                    root.decline.setVisibility(View.VISIBLE);
                 }
             });
             if(position == friendShipRequests.size()-1){
