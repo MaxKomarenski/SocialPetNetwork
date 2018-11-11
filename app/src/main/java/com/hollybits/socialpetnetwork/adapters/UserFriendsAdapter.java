@@ -39,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.MyViewHolder> implements Filterable{
+public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.MyViewHolder>{
 
     private List<FriendInfo> friends;
     private List<FriendInfo> filtredFriends;
@@ -68,10 +68,10 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ConstraintLayout primeConstraintLayout;
 
-        public ConstraintLayout smallConstraintLayout;
-        public TextView pet_name_sm, breed_sm, active_or_not;
-        public CircleImageView img_sm;
-        public ImageView indicator_sm;
+        ConstraintLayout smallConstraintLayout;
+        TextView pet_name_sm, breed_sm, active_or_not;
+        CircleImageView img_sm;
+        ImageView indicator_sm;
 
 
         public MyViewHolder(View view){
@@ -149,63 +149,9 @@ public class UserFriendsAdapter extends RecyclerView.Adapter<UserFriendsAdapter.
     }
 
     public void filterList(ArrayList<FriendInfo> filteredList) {
-        friends = filteredList;
+        friends.clear();
+        friends.addAll(filteredList);
         notifyDataSetChanged();
-    }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                String charString = charSequence.toString();
-                if (charString.isEmpty()) {
-                    filtredFriends = friends;
-                } else {
-                    List<FriendInfo> filteredList = new ArrayList<>();
-                    for (FriendInfo row : friends) {
-
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
-                        if((row.getName()+row.getSurname()).contains(charSequence)){
-                            filteredList.add(row);
-                        }
-                    }
-
-                    filtredFriends = filteredList;
-                }
-
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = filtredFriends;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filtredFriends = (ArrayList<FriendInfo>) filterResults.values;
-                // refresh the list with filtered data
-                notifyDataSetChanged();
-            }
-        };
-    }
-
-    private void getAllInformationOfChosenUser(Long id){
-        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-        Map<String, String> authorisationCode = new HashMap<>();
-        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-        MainActivity.getServerRequests().getInformationOfAnotherUser(authorisationCode, id).enqueue(new Callback<UserInfo>() {
-            @Override
-            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
-                Paper.book().write(MainActivity.CURRENT_CHOICE, response.body());
-                FragmentDispatcher.launchFragment(FriendAccount.class);
-
-            }
-
-            @Override
-            public void onFailure(Call<UserInfo> call, Throwable t) {
-
-            }
-        });
     }
 
 }

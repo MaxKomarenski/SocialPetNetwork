@@ -233,12 +233,14 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
     private void filter(String text) {
         ArrayList<FriendInfo> filteredList = new ArrayList<>();
 
+        System.err.println("text --->  " + text);
         for (FriendInfo friend : friends) {
             if (friend.getPetName().toLowerCase().contains(text.toLowerCase())) {
+                System.err.println("pet name ---->  " + friend.getPetName());
                 filteredList.add(friend);
             }
         }
-
+        System.err.println("size --->  " + filteredList.size());
         userFriendsAdapter.filterList(filteredList);
     }
 
