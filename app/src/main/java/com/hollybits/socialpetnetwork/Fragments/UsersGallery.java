@@ -261,8 +261,8 @@ public class UsersGallery extends Fragment {
                     int imageWidth = gridWidth / 3;
 
                     photoGridView.setColumnWidth(imageWidth);
-
                     photoGridView.setAdapter(photoGridAdapter);
+                    photoGridView.setMinimumHeight(1000);
 
                     String amountOfPhotos = photoGridAdapter.getCount() + " photos";
                     numberOfPhoto.setText(amountOfPhotos);

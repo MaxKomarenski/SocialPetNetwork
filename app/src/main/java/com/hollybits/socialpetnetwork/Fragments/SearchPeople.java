@@ -4,9 +4,13 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -17,14 +21,24 @@ import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
+import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.adapters.PeopleSearchAdapter;
 import com.hollybits.socialpetnetwork.adapters.SpinnerAnimalAdapter;
+import com.hollybits.socialpetnetwork.enums.PetType;
+import com.hollybits.socialpetnetwork.models.FriendInfo;
+import com.hollybits.socialpetnetwork.models.SearchForm;
+import com.hollybits.socialpetnetwork.models.User;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import io.paperdb.Paper;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchPeople extends Fragment {
 
@@ -55,6 +69,9 @@ public class SearchPeople extends Fragment {
     @BindView(R.id.back_to_friends_img_button)
     ImageButton backToFriends;
 
+
+    @BindView(R.id.user_search_recycler_view)
+    RecyclerView searchResults;
     Typeface gothic;
     Typeface avenirNextCyr_regular;
     Typeface gothicRegular;
@@ -69,6 +86,8 @@ public class SearchPeople extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private PeopleSearchAdapter peopleSearchAdapter;
 
     public SearchPeople() {
         // Required empty public constructor
@@ -119,6 +138,16 @@ public class SearchPeople extends Fragment {
         for (TextView word : texts) {
             word.setTypeface(gothic);
         }
+        peopleSearchAdapter = new PeopleSearchAdapter(this, avenirNextCyr_regular, avenirNextCyr_regular);
+
+        RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(this.getContext());
+        searchResults.setLayoutManager(layoutManager2);
+        SlideInUpAnimator animator2 = new SlideInUpAnimator(new OvershootInterpolator(1f));
+        searchResults.setItemAnimator(animator2);
+        searchResults.setAdapter(peopleSearchAdapter);
+
+
+
 
         petNameEditText.setTypeface(gothic);
         ownerNameEditText.setTypeface(gothic);
@@ -136,6 +165,13 @@ public class SearchPeople extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentDispatcher.launchFragment(UserFriends.class);
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search();
             }
         });
 
@@ -157,4 +193,50 @@ public class SearchPeople extends Fragment {
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
+
+
+    public void search() {
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        java.util.Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        SearchForm searchForm = new SearchForm();
+        searchForm.setUserCountry(currentUser.getCity().getCountry().getName());
+        searchForm.setUserCity(currentUser.getCity().getName());
+        if (ownerNameEditText.getText().toString().equals(""))
+            searchForm.setOwnersName(null);
+        else {
+            searchForm.setOwnersName(ownerNameEditText.getText().toString());
+        }
+        if (breedAutoComplete.getText().toString().equals(""))
+            searchForm.setBreed(null);
+        else {
+            searchForm.setBreed(breedAutoComplete.getText().toString());
+        }
+        if (petNameEditText.getText().toString().equals(""))
+            searchForm.setName(null);
+        else {
+            searchForm.setName(petNameEditText.getText().toString());
+        }
+        if (animalSpinner.getSelectedItem().toString().toUpperCase().equals("ANIMALS"))
+            searchForm.setPetType(null);
+        else {
+            searchForm.setPetType(PetType.valueOf(animalSpinner.getSelectedItem().toString().toUpperCase()));
+        }
+        MainActivity.getServerRequests().search(authorisationCode, searchForm).enqueue(new Callback<List<FriendInfo>>() {
+            @Override
+            public void onResponse(Call<List<FriendInfo>> call, Response<List<FriendInfo>> response) {
+                if (response.body() != null) {
+                    Log.d("SEARCH RES", String.valueOf(response.body().size()));
+                    peopleSearchAdapter.setFriends(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FriendInfo>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
 }
