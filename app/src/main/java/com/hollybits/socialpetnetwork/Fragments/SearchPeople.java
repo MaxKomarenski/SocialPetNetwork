@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.app.ProgressDialog;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -75,6 +76,7 @@ public class SearchPeople extends Fragment {
     Typeface gothic;
     Typeface avenirNextCyr_regular;
     Typeface gothicRegular;
+    private ProgressDialog progressDialog;
 
     List<String> animals;
 
@@ -126,6 +128,7 @@ public class SearchPeople extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search_people, container, false);
         ButterKnife.bind(this, view);
 
+        progressDialog = new ProgressDialog(this.getContext(), R.style.AppTheme_Dark_Dialog);
         animals = new ArrayList<>();
         animals.add("Animals");
         animals.add("Dog");
@@ -196,6 +199,10 @@ public class SearchPeople extends Fragment {
 
 
     public void search() {
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Uploading...");
+        progressDialog.show();
+
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         java.util.Map<String, String> authorisationCode = new HashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
@@ -228,6 +235,7 @@ public class SearchPeople extends Fragment {
                 if (response.body() != null) {
                     Log.d("SEARCH RES", String.valueOf(response.body().size()));
                     peopleSearchAdapter.setFriends(response.body());
+                    progressDialog.dismiss();
                 }
             }
 

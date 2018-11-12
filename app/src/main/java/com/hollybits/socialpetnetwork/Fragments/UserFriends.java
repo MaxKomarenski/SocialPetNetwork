@@ -147,6 +147,11 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    @BindView(R.id.no_res_layout)
+    private LinearLayout noResultsLayout;
+    private TextView noFriendsText;
+    private TextView startComunicatingText;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
