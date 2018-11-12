@@ -141,6 +141,39 @@ public class PhotoManager {
         });
     }
 
+    public void loadUsersPhoto(ImageView target, Long id){
+        byte[]  photoPath = Paper.book(PAPER_BOOK_NAME).read(REGULAR_PHOTO+id);
+        if(photoPath!=null){
+            loadBitmapToImageView(target, photoPath);
+            return;
+        }
+        MainActivity.getServerRequests().getPhoto(authorisationCode, currentUser.getId(), id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                byte[] content;
+                if(response.body() != null){
+                    try {
+                        content = response.body().bytes();
+                        loadBitmapToImageView(target, content);
+                        //ByteArrayOutputStream out = new ByteArrayOutputStream();
+//                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                        //Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0,content.length);
+                        // String path = saveToInternalStorage(bitmap);
+                        Paper.book(PAPER_BOOK_NAME).write(REGULAR_PHOTO+id, content);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+
    public void loadUsersMainPhoto(ImageView target){
 
        byte[]  photoPath  = Paper.book(PAPER_BOOK_NAME).read(MAIN_PHOTO);

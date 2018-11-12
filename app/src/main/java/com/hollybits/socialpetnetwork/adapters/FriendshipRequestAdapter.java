@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.adapters;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.Fragments.Chat;
@@ -18,6 +20,7 @@ import com.hollybits.socialpetnetwork.Fragments.UserFriends;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.InfoAboutUserFriendShipRequest;
 import com.hollybits.socialpetnetwork.models.User;
@@ -47,6 +50,7 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
     public boolean selectAll;
     List<Long> checkedIds;
     private User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+    private PhotoManager photoManager;
     private Map<String, String> authorisationCode = new HashMap<>();
 
 
@@ -58,6 +62,7 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
         this.first = first;
         this.second = second;
         this.root = root;
+        photoManager = new PhotoManager(root);
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
         checkedIds = new ArrayList<>();
     }
@@ -67,6 +72,8 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
         CircleImageView userPhoto;
         TextView petName, breed;
         CheckBox checkBox;
+        TextView onlineText;
+        ImageView indicator;
 
 
         public MyViewHolder(View itemView) {
@@ -74,6 +81,8 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
             userPhoto = itemView.findViewById(R.id.user_photo_in_friendship_recycler_view);
             petName = itemView.findViewById(R.id.pet_name_in_friendship_recycler_view);
             breed = itemView.findViewById(R.id.pet_breed_in_friendship_recycler_view);
+            indicator = itemView.findViewById(R.id.indicator_in_user_friend_recycler_view);
+            onlineText = itemView.findViewById(R.id.active_or_not_text_in_friend_raw);
             checkBox = itemView.findViewById(R.id.accept);
         }
     }
@@ -92,6 +101,7 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
         try {
             InfoAboutUserFriendShipRequest request = friendShipRequests.get(position);
             holder.petName.setTypeface(first);
+            photoManager.loadFriendsMainPhoto(holder.userPhoto, request.getId());
             holder.petName.setText(request.getPetName());
             holder.breed.setText(request.getPetBreed());
             holder.breed.setTypeface(second);
@@ -101,6 +111,7 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
             if(cancel){
                 holder.checkBox.setChecked(false);
             }
+            checkIfUserIsOnline(request.getId(), holder);
             holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if(isChecked){
                     if(!checkedIds.contains(friendShipRequests.get(position).getId()))
@@ -165,49 +176,44 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
     }
 
 
-    private void checkIfUserIsOnline(Long friendId){
+    private void checkIfUserIsOnline(Long friendId, MyViewHolder holder){
 
 
-//        MainActivity.getServerRequests().getUserLastActiveTime(authorisationCode, friendId).enqueue(new Callback<String>() {
-//            @Override
-//            public void onResponse(Call<String> call, Response<String> response) {
-//
-//                String time = response.body().replaceAll("%", " ");
-//                Timestamp timestamp = Timestamp.valueOf(time.replaceAll("\\^", ":"));
-//
-//                long five_minutes = 5 * 60 * 1000;
-//                long currentTime = System.currentTimeMillis();
-//
-//                try{
-//                    if(currentTime - timestamp.getTime() < five_minutes){
-//
-//
-//                        greenIndicator.setVisibility(View.VISIBLE);
-//                        onlineOrNotOnlineText.setText("online");
-//                        onlineOrNotOnlineText.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(R.color.online));
-//
-//                    }else {
-//
-//                        Chat.this.getActivity().runOnUiThread(() -> {
-//
-//                            greenIndicator.setVisibility(View.INVISIBLE);
-//                            onlineOrNotOnlineText.setText("not online");
-//                            onlineOrNotOnlineText.setTextColor(Objects.requireNonNull(getActivity()).getResources().getColor(R.color.not_online));
-//
-//                        });
-//                    }
-//                }catch (NullPointerException e){
-//
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<String> call, Throwable t) {
-//
-//            }
-//        });
+        MainActivity.getServerRequests().getUserLastActiveTime(authorisationCode, friendId).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+                String time = response.body().replaceAll("%", " ");
+                Timestamp timestamp = Timestamp.valueOf(time.replaceAll("\\^", ":"));
+
+                long five_minutes = 5 * 60 * 1000;
+                long currentTime = System.currentTimeMillis();
+
+                try{
+                    if(currentTime - timestamp.getTime() < five_minutes){
+
+
+                        holder.indicator.setVisibility(View.VISIBLE);
+                        holder.onlineText.setText("online");
+
+
+                    }else {
+                        holder.indicator.setVisibility(View.INVISIBLE);
+                        holder.onlineText.setText("not online");
+                        holder.onlineText.setTextColor(Color.parseColor("#ff0000"));
+                    }
+                }catch (NullPointerException e){
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
 
     }
 
