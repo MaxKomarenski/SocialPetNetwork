@@ -119,6 +119,8 @@ public class FriendshipRequestAdapter extends RecyclerView.Adapter<FriendshipReq
                     Log.d("FriendShip Adapter", "Added id "+ friendShipRequests.get(position).getId());
                     root.accept.setVisibility(View.VISIBLE);
                     root.decline.setVisibility(View.VISIBLE);
+                }else {
+                    checkedIds.remove(friendShipRequests.get(position).getId());
                 }
             });
             if(position == friendShipRequests.size()-1){
