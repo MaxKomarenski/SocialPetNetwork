@@ -98,6 +98,8 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
     @BindView(R.id.search_friend)
     EditText searchView;
 
+    @BindView(R.id.go_to_map)
+    ImageButton goToMap;
 
     private DrawerLayout drawer;
 
@@ -148,9 +150,11 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
     private static final String ARG_PARAM2 = "param2";
 
     @BindView(R.id.no_res_layout)
-    private LinearLayout noResultsLayout;
-    private TextView noFriendsText;
-    private TextView startComunicatingText;
+    LinearLayout noResultsLayout;
+    @BindView(R.id.no_friends_text)
+    TextView noFriendsText;
+    @BindView(R.id.start_communicating_text)
+    TextView startComunicatingText;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -190,6 +194,14 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
         breedFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr.ttf");
         mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
 
+        noFriendsText.setTypeface(mainFont);
+        startComunicatingText.setTypeface(mainFont);
+        goToMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(com.hollybits.socialpetnetwork.Fragments.Map.class);
+            }
+        });
         //changeTypeface();
         //listeners();
 
@@ -269,6 +281,9 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                 public void onResponse(Call<Set<FriendInfo>> call, Response<Set<FriendInfo>> response) {
                     friends = new ArrayList<>();
                     friends.addAll(response.body());
+                    if(response.body().size()==0){
+                        noResultsLayout.setVisibility(View.VISIBLE);
+                    }
                     userFriendsAdapter.setFriends(friends);
                     userFriendsRecyclerView.setAdapter(userFriendsAdapter);
                     userFriendsAdapter.notifyDataSetChanged();
@@ -283,6 +298,9 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
         } else {
             userFriendsAdapter = new UserFriendsAdapter(mainFont, breedFont, UserFriends.this, UserFriends.this);
             userFriendsAdapter.setFriends(friends);
+            if(friends.size()==0){
+                noResultsLayout.setVisibility(View.VISIBLE);
+            }
             userFriendsRecyclerView.setAdapter(userFriendsAdapter);
             userFriendsAdapter.notifyDataSetChanged();
         }

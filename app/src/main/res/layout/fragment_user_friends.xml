@@ -195,19 +195,25 @@
         <TextView
             android:id="@+id/no_friends_text"
             android:gravity="center"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:textColor="@color/common_text_color"
+            android:textSize="25sp"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="No Friends yet" />
 
         <TextView
             android:id="@+id/start_communicating_text"
             android:gravity="center"
+            android:layout_marginTop="100dp"
+            android:textSize="25sp"
+            android:textColor="@color/common_text_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="Find Users And Start Communicating" />
 
 
         <ImageButton
+            android:id="@+id/go_to_map"
             android:layout_width="300dp"
             android:layout_height="100dp"
             android:src="@drawable/search"
