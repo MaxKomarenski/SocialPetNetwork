@@ -1,206 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.UsersGallery">
-
+    tools:context=".Fragments.UsersGallery"
+    android:id="@+id/scroll_view_in_gallery">
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#7dc2eb">
+        android:layout_height="match_parent"
+        >
 
-        <Button
-            android:id="@+id/to_profile_in_gallery_page"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#7dc2eb">
+
+            <Button
+                android:id="@+id/to_profile_in_gallery_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:background="@null"
+                android:drawableStart="@drawable/background_for_button_to_profile"
+                android:text="Profile"
+                android:textColor="#fff"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/gallery_text_in_gallery_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="32dp"
+                android:paddingBottom="10dp"
+                android:text="Gallery"
+                android:textColor="#000"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/gallery_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:background="@null"
-            android:drawableStart="@drawable/background_for_button_to_profile"
-            android:text="Profile"
-            android:textColor="#fff"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/gallery_text_in_gallery_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:paddingBottom="10dp"
-            android:text="Gallery"
-            android:textColor="#000"
-            android:textSize="17sp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/gallery_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/gallery_avatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/test_photo"
+                app:civ_border_color="#43b748"
+                app:civ_border_width="6dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/gallery_avatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/test_photo"
-            app:civ_border_color="#43b748"
-            app:civ_border_width="6dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            <TextView
+                android:id="@+id/pet_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:text="TextView"
+                app:layout_constraintStart_toEndOf="@+id/gallery_avatar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/pet_breed"
+                android:textSize="22sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:text="TextView"
+                android:textColor="#8cdcfb"
+                app:layout_constraintStart_toEndOf="@+id/pet_name"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/uploadPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="25dp"
+                android:paddingEnd="25dp"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/background_for_button_in_gellery"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="4dp"
+                android:text="Upload photo"
+                android:textColor="@color/google"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/pet_breed"
+                app:layout_constraintStart_toStartOf="@+id/pet_name"
+                app:layout_constraintTop_toBottomOf="@+id/pet_name" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+
+        <LinearLayout
+            android:id="@+id/info_in_blue_stuff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/gallery_header">
 
-        <TextView
-            android:id="@+id/pet_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="16dp"
-            android:textStyle="bold"
-            android:textSize="22sp"
-            android:text="TextView"
-            app:layout_constraintStart_toEndOf="@+id/gallery_avatar"
-            app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_for_info_in_gallery"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="11dp"
+                android:paddingStart="17dp"
+                android:paddingEnd="17dp">
 
-        <TextView
-            android:id="@+id/pet_breed"
-            android:textSize="22sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="TextView"
-            android:textColor="#8cdcfb"
-            app:layout_constraintStart_toEndOf="@+id/pet_name"
-            app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
+                    android:src="@drawable/pet_hand" />
+
+                <TextView
+                    android:id="@+id/number_of_friends_in_gallery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="friends"
+                    android:textColor="#fff"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/uploadPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="25dp"
-            android:paddingEnd="25dp"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/background_for_info_in_gallery"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="11dp"
+                android:paddingStart="17dp"
+                android:paddingEnd="17dp">
+
+                <ImageView
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
+                    android:src="@drawable/photo" />
+
+                <TextView
+                    android:id="@+id/number_of_photo_in_gallery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="photos"
+                    android:textColor="#fff"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <GridView
+            android:id="@+id/photo_grid_view"
+            android:layout_width="match_parent"
+            android:layout_height="356dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/background_for_button_in_gellery"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="4dp"
-            android:text="Upload photo"
-            android:textColor="@color/google"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/pet_breed"
-            app:layout_constraintStart_toStartOf="@+id/pet_name"
-            app:layout_constraintTop_toBottomOf="@+id/pet_name" />
+            android:gravity="center"
+            android:horizontalSpacing="1dp"
+            android:numColumns="3"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/info_in_blue_stuff" />
+
 
 
     </android.support.constraint.ConstraintLayout>
-
-
-    <LinearLayout
-        android:id="@+id/info_in_blue_stuff"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gallery_header">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_for_info_in_gallery"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="11dp"
-            android:paddingStart="17dp"
-            android:paddingEnd="17dp">
-
-            <ImageView
-                android:layout_width="27dp"
-                android:layout_height="27dp"
-                android:src="@drawable/pet_hand" />
-
-            <TextView
-                android:id="@+id/number_of_friends_in_gallery"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="friends"
-                android:textColor="#fff"
-                android:textSize="17sp" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/background_for_info_in_gallery"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="11dp"
-            android:paddingStart="17dp"
-            android:paddingEnd="17dp">
-
-            <ImageView
-                android:layout_width="27dp"
-                android:layout_height="27dp"
-                android:src="@drawable/photo" />
-
-            <TextView
-                android:id="@+id/number_of_photo_in_gallery"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="photos"
-                android:textColor="#fff"
-                android:textSize="17sp" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-
-    <GridView
-        android:id="@+id/photo_grid_view"
-        android:layout_width="match_parent"
-        android:layout_height="356dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:horizontalSpacing="1dp"
-        android:numColumns="3"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_in_blue_stuff" />
-
-
-
-</android.support.constraint.ConstraintLayout>
+</ScrollView>
