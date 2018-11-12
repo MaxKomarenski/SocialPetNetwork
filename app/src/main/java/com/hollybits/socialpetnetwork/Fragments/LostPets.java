@@ -3,6 +3,7 @@ package com.hollybits.socialpetnetwork.Fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.location.Address;
@@ -12,14 +13,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,6 +38,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.activity.SettingsActivity;
 import com.hollybits.socialpetnetwork.adapters.LostPetAdapter;
 import com.hollybits.socialpetnetwork.helper.MessageObserver;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
@@ -66,9 +73,6 @@ public class LostPets extends Fragment {
     @BindView(R.id.lost_pets_text_in_lost_pets_fragment)
     TextView topicText;
 
-    @BindView(R.id.back_to_map_button)
-    Button backToMap;
-
     @BindView(R.id.contact_with_owner_img_button)
     ImageButton contactButton;
 
@@ -77,6 +81,12 @@ public class LostPets extends Fragment {
 
     @BindView(R.id.i_found_my_pet)
     ImageButton foundMyPet;
+
+    @BindView(R.id.open_navigation_drawer_image_button)
+    ImageButton openNavigation;
+
+    @BindView(R.id.settings_account_img_button)
+    ImageButton settingsButton;
 
     @BindView(R.id.contact_lin_layout)
     LinearLayout contactLinLayout;
@@ -90,6 +100,10 @@ public class LostPets extends Fragment {
     @BindViews({R.id.profile_text, R.id.found_my_pet_text, R.id.write_to_owner_text})
     List<TextView> textsUnderButtons;
 
+    @BindView(R.id.search_lost_pets)
+    EditText searchLostPet;
+
+    private DrawerLayout drawer;
 
     LostPetAdapter lostPetAdapter;
     List<LostPet> lostPetList;
@@ -148,13 +162,6 @@ public class LostPets extends Fragment {
             text.setTypeface(mainFont);
         }
 
-        backToMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentDispatcher.launchFragment(com.hollybits.socialpetnetwork.Fragments.Map.class);
-            }
-        });
-
         topicText.setTypeface(mainFont);
 
         lostPetList = new ArrayList<>();
@@ -170,8 +177,53 @@ public class LostPets extends Fragment {
             e.printStackTrace();
         }
 
+        openNavigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+                drawer.openDrawer(Gravity.START);
+            }
+        });
+
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        searchLostPet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
+
 
         return view;
+    }
+
+    private void filter(String text) {
+        ArrayList<LostPet> filteredList = new ArrayList<>();
+
+        for (LostPet item : lostPetList) {
+            if (item.getPetName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+
+        lostPetAdapter.filterList(filteredList);
     }
 
     public void showDownBar(LostPet lostPet) {
@@ -238,6 +290,7 @@ public class LostPets extends Fragment {
                         public void onResponse(Call<String> call, Response<String> response) {
                             lostPetAdapter.deleteItem(lostPet);
                             lostPetAdapter.notifyDataSetChanged();
+                            FragmentDispatcher.launchFragment(Account.class);
                         }
 
                         @Override

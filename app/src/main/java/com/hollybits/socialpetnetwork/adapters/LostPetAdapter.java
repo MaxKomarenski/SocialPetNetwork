@@ -14,6 +14,7 @@ import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.LostPet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -82,10 +83,11 @@ public class LostPetAdapter extends RecyclerView.Adapter<LostPetAdapter.MyViewHo
         holder.ownerName.setTypeface(another);
         photoManager.loadFriendsMainPhoto(holder.petImg, lostPet.getUserId());
 
+    }
 
-
-
-
+    public void filterList(ArrayList<LostPet> filteredList) {
+        lostPets = filteredList;
+        notifyDataSetChanged();
     }
 
     @Override

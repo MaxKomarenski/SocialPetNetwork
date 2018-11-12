@@ -1,21 +1,26 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
+import com.hollybits.socialpetnetwork.activity.SettingsActivity;
 import com.hollybits.socialpetnetwork.adapters.FriendshipRequestAdapter;
 import com.hollybits.socialpetnetwork.data_queues.FriendShipRequestQueue;
 import com.hollybits.socialpetnetwork.helper.FriendShipRequestObserver;
@@ -42,21 +47,13 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 public class Requests extends Fragment implements FriendShipRequestObserver {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    @BindView(R.id.open_navigation_drawer)
+    ImageButton openNavigation;
 
-    private OnFragmentInteractionListener mListener;
-
-
-
-
+    @BindView(R.id.settings_button)
+    ImageButton settingsButton;
 
     @BindView(R.id.friendship_request_recycler_view)
     RecyclerView friendshipRequestRecyclerView;
@@ -66,6 +63,7 @@ public class Requests extends Fragment implements FriendShipRequestObserver {
 
     @BindView(R.id.accept_button)
     public Button accept;
+
     @BindView(R.id.decline_button)
     public Button decline;
 
@@ -75,12 +73,20 @@ public class Requests extends Fragment implements FriendShipRequestObserver {
     @BindView(R.id.select_all)
     TextView selectAll;
 
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
+    private String mParam1;
+    private String mParam2;
+
+    private OnFragmentInteractionListener mListener;
 
     private FriendshipRequestAdapter friendshipRequestAdapter;
 
     private Typeface breedFont;
-    private Typeface  mainFont;
+    private Typeface mainFont;
+
+    private DrawerLayout drawer;
 
     public Requests() {
         // Required empty public constructor
@@ -129,8 +135,8 @@ public class Requests extends Fragment implements FriendShipRequestObserver {
         super.onStart();
         getAllFriendshipRequests();
         accept.setOnClickListener(v -> {
-            for(Long id: friendshipRequestAdapter.getCheckedIds()){
-                Log.d("REQUESTS:", "ACCEPTING REQUEST WITH ID "+ id);
+            for (Long id : friendshipRequestAdapter.getCheckedIds()) {
+                Log.d("REQUESTS:", "ACCEPTING REQUEST WITH ID " + id);
                 acceptFriendshipRequest(id, true);
             }
             accept.setVisibility(View.GONE);
@@ -138,7 +144,7 @@ public class Requests extends Fragment implements FriendShipRequestObserver {
         });
 
         decline.setOnClickListener(v -> {
-            for(Long id: friendshipRequestAdapter.getCheckedIds()){
+            for (Long id : friendshipRequestAdapter.getCheckedIds()) {
                 acceptFriendshipRequest(id, false);
             }
             accept.setVisibility(View.GONE);
@@ -166,11 +172,27 @@ public class Requests extends Fragment implements FriendShipRequestObserver {
                 friendshipRequestAdapter.cancelSelection();
             }
         });
+
+        openNavigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+                drawer.openDrawer(Gravity.START);
+            }
+        });
+
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
-
-    private void acceptFriendshipRequest(Long request, boolean state){
+    private void acceptFriendshipRequest(Long request, boolean state) {
 
 
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
@@ -183,12 +205,13 @@ public class Requests extends Fragment implements FriendShipRequestObserver {
                 state).enqueue(new Callback<FriendInfo>() {
             @Override
             public void onResponse(Call<FriendInfo> call, Response<FriendInfo> response) {
-                if(state){
+                if (state) {
                     FriendInfo newFriend = response.body();
                     addNewFriendToPaperBook(newFriend);
                     Log.d("ACCEPTOR", "SUCSESSFUL RESPONSE, ADDED FRIEND TO PAPER");
                 }
             }
+
             @Override
             public void onFailure(Call<FriendInfo> call, Throwable t) {
             }
@@ -202,27 +225,24 @@ public class Requests extends Fragment implements FriendShipRequestObserver {
     }
 
 
-    private void addNewFriendToPaperBook(FriendInfo newFriend){
+    private void addNewFriendToPaperBook(FriendInfo newFriend) {
         List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
         friends.add(newFriend);
         Paper.book().write(MainActivity.FRIEND_LIST, friends);
     }
 
-    private void deleteRequestFromPaperBook(InfoAboutUserFriendShipRequest info){
-        if(info == null)
+    private void deleteRequestFromPaperBook(InfoAboutUserFriendShipRequest info) {
+        if (info == null)
             return;
         List<InfoAboutUserFriendShipRequest> list = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
-        for (int i = 0; i < list.size(); i++){
-            if(info.equals(list.get(i))){
+        for (int i = 0; i < list.size(); i++) {
+            if (info.equals(list.get(i))) {
                 list.remove(i);
             }
         }
 
         Paper.book().write(MainActivity.FRIENDSHIP_REQUEST_LIST, list);
     }
-
-
-
 
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -245,13 +265,13 @@ public class Requests extends Fragment implements FriendShipRequestObserver {
         friendshipRequestAdapter.addItem(FriendShipRequestQueue.getInstance().poll());
         try {
             getActivity().runOnUiThread(() -> friendshipRequestAdapter.notifyDataSetChanged());
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
 
 
-    private void getAllFriendshipRequests(){
+    private void getAllFriendshipRequests() {
         List<InfoAboutUserFriendShipRequest> friendShipRequests = Paper.book().read(MainActivity.FRIENDSHIP_REQUEST_LIST);
         friendshipRequestAdapter = new FriendshipRequestAdapter(friendShipRequests, mainFont, breedFont, this);
         friendshipRequestRecyclerView.setAdapter(friendshipRequestAdapter);
@@ -262,7 +282,7 @@ public class Requests extends Fragment implements FriendShipRequestObserver {
         friendshipRequestAdapter.notifyDataSetChanged();
     }
 
-    private void initFonts(){
+    private void initFonts() {
         breedFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr.ttf");
         mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         requestsText.setTypeface(mainFont);
