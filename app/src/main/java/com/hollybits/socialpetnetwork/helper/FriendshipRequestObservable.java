@@ -23,4 +23,8 @@ public interface FriendshipRequestObservable {
         observerList.add(ob);
     }
 
+    default void  removeObserver(FriendShipRequestObserver ob){
+        observerList.remove(ob);
+    }
+
 }

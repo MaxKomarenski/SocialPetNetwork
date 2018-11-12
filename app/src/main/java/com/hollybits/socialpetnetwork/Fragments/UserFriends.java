@@ -354,6 +354,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        FriendShipRequestQueue.getInstance().removeObserver(this);
     }
 
     @Override
