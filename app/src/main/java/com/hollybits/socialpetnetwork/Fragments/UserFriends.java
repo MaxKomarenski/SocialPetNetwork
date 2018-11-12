@@ -186,7 +186,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
         mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
 
         //changeTypeface();
-        listeners();
+        //listeners();
 
         //searchView.setColor(getResources().getColor(R.color.online));
         friendsTextView.setTypeface(mainFont);
@@ -203,7 +203,6 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
         SlideInUpAnimator animator2 = new SlideInUpAnimator(new OvershootInterpolator(1f));
         //searchPeopleRecyclerView.setItemAnimator(animator2);
         //searchPeopleRecyclerView.setAdapter(peopleSearchAdapter);
-
 
 
         openDrawerButton.setOnClickListener(new View.OnClickListener() {
@@ -253,6 +252,132 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
         userFriendsAdapter.filterList(filteredList);
     }
 
+    private void getAllUserFriends() {
+        userFriendsAdapter = new UserFriendsAdapter(mainFont, breedFont, UserFriends.this, UserFriends.this);
+        friends = Paper.book().read(MainActivity.FRIEND_LIST);
+        if (friends == null) {
+            User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+            Map<String, String> authorisationCode = new HashMap<>();
+            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+            MainActivity.getServerRequests().getAllUserFriends(authorisationCode, currentUser.getId()).enqueue(new Callback<Set<FriendInfo>>() {
+                @Override
+                public void onResponse(Call<Set<FriendInfo>> call, Response<Set<FriendInfo>> response) {
+                    friends = new ArrayList<>();
+                    friends.addAll(response.body());
+                    userFriendsAdapter.setFriends(friends);
+                    userFriendsRecyclerView.setAdapter(userFriendsAdapter);
+                    userFriendsAdapter.notifyDataSetChanged();
+                    Paper.book().write(MainActivity.FRIEND_LIST, friends);
+                }
+
+                @Override
+                public void onFailure(Call<Set<FriendInfo>> call, Throwable t) {
+
+                }
+            });
+        } else {
+            userFriendsAdapter = new UserFriendsAdapter(mainFont, breedFont, UserFriends.this, UserFriends.this);
+            userFriendsAdapter.setFriends(friends);
+            userFriendsRecyclerView.setAdapter(userFriendsAdapter);
+            userFriendsAdapter.notifyDataSetChanged();
+        }
+
+
+    }
+
+    public void showDownBar(FriendInfo friendInfo) {
+        downBar.setVisibility(View.VISIBLE);
+
+        openFriendPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAllInformationOfChosenUser(friendInfo.getId());
+            }
+        });
+
+        openChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Paper.book().write(MainActivity.ID_OF_FRIEND, friendInfo.getId());
+                Paper.book().write(MainActivity.NAME_OF_FRIEND, friendInfo.getName());
+                FragmentDispatcher.launchFragment(Chat.class);
+            }
+        });
+    }
+
+
+    private void attachListeners() {
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
+
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public void update() {
+        Log.d("USER FRIENDS", "UPDATE CALL");
+        friendshipRequestAdapter.addItem(FriendShipRequestQueue.getInstance().poll());
+        try {
+            getActivity().runOnUiThread(() -> friendshipRequestAdapter.notifyDataSetChanged());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
+
+    private void getAllInformationOfChosenUser(Long id) {
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        MainActivity.getServerRequests().getInformationOfAnotherUser(authorisationCode, id).enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                Paper.book().write(MainActivity.CURRENT_CHOICE, response.body());
+                FragmentDispatcher.launchFragment(FriendAccount.class);
+
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+
+            }
+        });
+    }
 
 //    private void changeTypeface(){
 //        friendsTextView.setTypeface(mainFont);
@@ -260,7 +385,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 //        peopleTextView.setTypeface(mainFont);
 //    }
 
-    private void listeners(){
+//    private void listeners(){
 
 //        backButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -346,7 +471,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 //
 //            }
 //        });
-    }
+//    }
 
 //    private void changeColorsAndVisibility(int friendVisibility,
 //                                           int requestVisibility,
@@ -362,135 +487,6 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 ////        requestsTextView.setBackground(requestTextBackground);
 ////        friendsTextView.setBackgroundResource(friendTextBackground);
 //        filterCardView.setVisibility(filterVisibility);
-   // }
+    // }
 
-
-
-    private void getAllUserFriends(){
-        userFriendsAdapter = new UserFriendsAdapter(mainFont, breedFont, UserFriends.this, UserFriends.this);
-        friends = Paper.book().read(MainActivity.FRIEND_LIST);
-        if(friends == null){
-            User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-            Map<String, String> authorisationCode = new HashMap<>();
-            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-            MainActivity.getServerRequests().getAllUserFriends(authorisationCode, currentUser.getId()).enqueue(new Callback<Set<FriendInfo>>() {
-                @Override
-                public void onResponse(Call<Set<FriendInfo>> call, Response<Set<FriendInfo>> response) {
-                    friends = new ArrayList<>();
-                    friends.addAll(response.body());
-                    userFriendsAdapter.setFriends(friends);
-                    userFriendsRecyclerView.setAdapter(userFriendsAdapter);
-                    userFriendsAdapter.notifyDataSetChanged();
-                    Paper.book().write(MainActivity.FRIEND_LIST, friends);
-                }
-
-                @Override
-                public void onFailure(Call<Set<FriendInfo>> call, Throwable t) {
-
-                }
-            });
-        }else {
-            userFriendsAdapter = new UserFriendsAdapter(mainFont, breedFont,UserFriends.this, UserFriends.this);
-            userFriendsAdapter.setFriends(friends);
-            userFriendsRecyclerView.setAdapter(userFriendsAdapter);
-            userFriendsAdapter.notifyDataSetChanged();
-        }
-
-
-    }
-
-    public void showDownBar(FriendInfo friendInfo){
-        downBar.setVisibility(View.VISIBLE);
-
-        openFriendPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAllInformationOfChosenUser(friendInfo.getId());
-            }
-        });
-
-        openChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Paper.book().write(MainActivity.ID_OF_FRIEND, friendInfo.getId());
-                Paper.book().write(MainActivity.NAME_OF_FRIEND, friendInfo.getName());
-                FragmentDispatcher.launchFragment(Chat.class);
-            }
-        });
-    }
-
-
-    private void attachListeners(){
-        searchView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                filter(s.toString());
-            }
-        });
-
-
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
-    public void update() {
-        Log.d("USER FRIENDS", "UPDATE CALL");
-        friendshipRequestAdapter.addItem(FriendShipRequestQueue.getInstance().poll());
-        try {
-            getActivity().runOnUiThread(() -> friendshipRequestAdapter.notifyDataSetChanged());
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }
-
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
-    private void getAllInformationOfChosenUser(Long id){
-        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-        Map<String, String> authorisationCode = new HashMap<>();
-        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-        MainActivity.getServerRequests().getInformationOfAnotherUser(authorisationCode, id).enqueue(new Callback<UserInfo>() {
-            @Override
-            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
-                Paper.book().write(MainActivity.CURRENT_CHOICE, response.body());
-                FragmentDispatcher.launchFragment(FriendAccount.class);
-
-            }
-
-            @Override
-            public void onFailure(Call<UserInfo> call, Throwable t) {
-
-            }
-        });
-    }
 }

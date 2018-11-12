@@ -69,33 +69,74 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageButton
-            android:visibility="gone"
-            android:id="@+id/information_img_button"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@null"
-            android:scaleType="fitCenter"
-            android:src="@drawable/get_info" />
+        <LinearLayout
+            android:id="@+id/info_lin_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <ImageButton
-            android:visibility="gone"
-            android:id="@+id/contact_with_owner_img_button"
-            android:src="@drawable/contact_with_owner"
-            android:scaleType="fitCenter"
-            android:background="@null"
-            android:layout_width="100dp"
-            android:layout_height="100dp" />
+            <ImageButton
+                android:id="@+id/information_img_button"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/get_info" />
 
+            <TextView
+                android:id="@+id/profile_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"/>
 
-        <ImageButton
-            android:visibility="gone"
-            android:id="@+id/i_found_my_pet"
-            android:src="@drawable/i_found_my_pet_img"
-            android:scaleType="fitCenter"
-            android:background="@null"
-            android:layout_width="100dp"
-            android:layout_height="100dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/contact_lin_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/contact_with_owner_img_button"
+                android:src="@drawable/contact_with_owner"
+                android:scaleType="fitCenter"
+                android:background="@null"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+
+            <TextView
+                android:id="@+id/write_to_owner_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Write to owner"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/found_lin_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/i_found_my_pet"
+                android:src="@drawable/i_found_my_pet_img"
+                android:scaleType="fitCenter"
+                android:background="@null"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+
+            <TextView
+                android:id="@+id/found_my_pet_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Found my pet"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

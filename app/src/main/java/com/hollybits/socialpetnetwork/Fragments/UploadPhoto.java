@@ -1,5 +1,6 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.hollybits.socialpetnetwork.R;
 import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
+import com.hollybits.socialpetnetwork.activity.LoginActivity;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.helper.GlideApp;
 import com.hollybits.socialpetnetwork.models.User;
@@ -73,6 +75,8 @@ public class UploadPhoto extends Fragment {
 
     @BindView(R.id.photo_caption)
     EditText editText;
+
+    private ProgressDialog progressDialog;
     private OnFragmentInteractionListener mListener;
 
     public UploadPhoto() {
@@ -112,9 +116,11 @@ public class UploadPhoto extends Fragment {
         View view = inflater.inflate(R.layout.fragment_upload_photo, container, false);
         ButterKnife.bind(this, view);
 
+        progressDialog = new ProgressDialog(this.getContext(), R.style.AppTheme_Dark_Dialog);
+
         Uri imageUri;
         imageUri = Paper.book().read("ImageToLoad");
-        if(imageUri == null){
+        if (imageUri == null) {
             FragmentDispatcher.launchFragment(UsersGallery.class);
             return null;
         }
@@ -197,42 +203,46 @@ public class UploadPhoto extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void loadPhoto(Uri imageUri){
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getActivity().getContentResolver().query(imageUri, filePathColumn, null, null, null);
-            assert cursor != null;
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String mediaPath = cursor.getString(columnIndex);
-            File file = new File(mediaPath);
+    public void loadPhoto(Uri imageUri) {
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Uploading...");
+        progressDialog.show();
 
-            RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("img", file.getName(), requestBody);
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getActivity().getContentResolver().query(imageUri, filePathColumn, null, null, null);
+        assert cursor != null;
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String mediaPath = cursor.getString(columnIndex);
+        File file = new File(mediaPath);
 
-
-            Paper.book().write("PATH_TO_PHOTO", mediaPath);
-
-            System.err.println("ATTENTION");
-            System.err.println(mediaPath);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("img", file.getName(), requestBody);
 
 
-            User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-            java.util.Map<String, String> authorisationCode = new HashMap<>();
-            authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-            String caption = editText.getText().toString();
+        Paper.book().write("PATH_TO_PHOTO", mediaPath);
 
-            MainActivity.getServerRequests().addNewPhoto(authorisationCode, fileToUpload, caption, currentUser.getId()).enqueue(new Callback<Long>() {
-                @Override
-                public void onResponse(Call<Long> call, Response<Long> response) {
+        System.err.println("ATTENTION");
+        System.err.println(mediaPath);
 
-                    FragmentDispatcher.launchFragment(UsersGallery.class);
-                }
 
-                @Override
-                public void onFailure(Call<Long> call, Throwable t) {
+        User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
+        java.util.Map<String, String> authorisationCode = new HashMap<>();
+        authorisationCode.put("authorization", currentUser.getAuthorizationCode());
+        String caption = editText.getText().toString();
 
-                }
-            });
+        MainActivity.getServerRequests().addNewPhoto(authorisationCode, fileToUpload, caption, currentUser.getId()).enqueue(new Callback<Long>() {
+            @Override
+            public void onResponse(Call<Long> call, Response<Long> response) {
+                progressDialog.dismiss();
+                FragmentDispatcher.launchFragment(UsersGallery.class);
+            }
+
+            @Override
+            public void onFailure(Call<Long> call, Throwable t) {
+
+            }
+        });
     }
 
 }

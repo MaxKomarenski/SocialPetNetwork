@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import io.paperdb.Paper;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
@@ -76,6 +78,18 @@ public class LostPets extends Fragment {
     @BindView(R.id.i_found_my_pet)
     ImageButton foundMyPet;
 
+    @BindView(R.id.contact_lin_layout)
+    LinearLayout contactLinLayout;
+
+    @BindView(R.id.found_lin_layout)
+    LinearLayout foundLinLayout;
+
+    @BindView(R.id.info_lin_layout)
+    LinearLayout infoLinLayout;
+
+    @BindViews({R.id.profile_text, R.id.found_my_pet_text, R.id.write_to_owner_text})
+    List<TextView> textsUnderButtons;
+
 
     LostPetAdapter lostPetAdapter;
     List<LostPet> lostPetList;
@@ -87,6 +101,7 @@ public class LostPets extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     FusedLocationProviderClient mFusedLocationClient;
     private static LostPets instance;
+
     public static LostPets getInstance() {
         return instance;
     }
@@ -128,6 +143,10 @@ public class LostPets extends Fragment {
         breedFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr.ttf");
         mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
 
+        for (TextView text :
+                textsUnderButtons) {
+            text.setTypeface(mainFont);
+        }
 
         backToMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,8 +155,7 @@ public class LostPets extends Fragment {
             }
         });
 
-        Typeface topicFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
-        topicText.setTypeface(topicFont);
+        topicText.setTypeface(mainFont);
 
         lostPetList = new ArrayList<>();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
@@ -156,22 +174,22 @@ public class LostPets extends Fragment {
         return view;
     }
 
-    public void showDownBar(LostPet lostPet){
-        informationButton.setVisibility(View.VISIBLE);
+    public void showDownBar(LostPet lostPet) {
+        infoLinLayout.setVisibility(View.VISIBLE);
 
-        if (!lostPet.getUserId().equals(MainActivity.getCurrentUser().getId())){
-            foundMyPet.setVisibility(View.GONE);
-            contactButton.setVisibility(View.VISIBLE);
+        if (!lostPet.getUserId().equals(MainActivity.getCurrentUser().getId())) {
+            foundLinLayout.setVisibility(View.GONE);
+            contactLinLayout.setVisibility(View.VISIBLE);
             contactButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if(isLostPetInFriendshipWithUser(lostPet.getUserId())){
+                    if (isLostPetInFriendshipWithUser(lostPet.getUserId())) {
                         Paper.book().write(MainActivity.ID_OF_FRIEND, lostPet.getUserId());
                         Paper.book().write(MainActivity.NAME_OF_FRIEND, lostPet.getUserName());
                         FragmentDispatcher.launchFragment(Chat.class);
 
-                    }else {
+                    } else {
                         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
                         Map<String, String> authorisationCode = new HashMap<>();
                         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
@@ -179,7 +197,7 @@ public class LostPets extends Fragment {
                                 currentUser.getId(), lostPet.getUserId()).enqueue(new Callback<FriendInfo>() {
                             @Override
                             public void onResponse(Call<FriendInfo> call, Response<FriendInfo> response) {
-                                if(response.body() != null){
+                                if (response.body() != null) {
                                     addNewFriendToPaperBook(response.body());
                                     Paper.book().delete(MainActivity.CONTACT_LIST);
 
@@ -205,9 +223,9 @@ public class LostPets extends Fragment {
                     FragmentDispatcher.launchFragment(Wanted.class);
                 }
             });
-        }else {
-            contactButton.setVisibility(View.GONE);
-            foundMyPet.setVisibility(View.VISIBLE);
+        } else {
+            contactLinLayout.setVisibility(View.GONE);
+            foundLinLayout.setVisibility(View.VISIBLE);
             foundMyPet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -240,7 +258,7 @@ public class LostPets extends Fragment {
     }
 
 
-    private void addNewFriendToPaperBook(FriendInfo newFriend){
+    private void addNewFriendToPaperBook(FriendInfo newFriend) {
         List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
         friends.add(newFriend);
         Paper.book().write(MainActivity.FRIEND_LIST, friends);
@@ -250,18 +268,18 @@ public class LostPets extends Fragment {
         longitude = Paper.book().read(com.hollybits.socialpetnetwork.Fragments.Map.LONGITUDE);
         latitude = Paper.book().read(com.hollybits.socialpetnetwork.Fragments.Map.LATITUDE);
 
-        if(latitude == null || longitude == null){
+        if (latitude == null || longitude == null) {
             getCoordinates();
-        }else {
+        } else {
             loadInfo();
         }
 
     }
 
-    private boolean isLostPetInFriendshipWithUser(Long id){
+    private boolean isLostPetInFriendshipWithUser(Long id) {
         List<FriendInfo> userFriends = Paper.book().read(MainActivity.FRIEND_LIST);
-        for (FriendInfo friendInfo: userFriends){
-            if(friendInfo.getId().equals(id)){
+        for (FriendInfo friendInfo : userFriends) {
+            if (friendInfo.getId().equals(id)) {
                 return true;
             }
         }
@@ -269,27 +287,27 @@ public class LostPets extends Fragment {
         return false;
     }
 
-    private void loadInfo() throws IOException{
+    private void loadInfo() throws IOException {
         List<Address> addresses = locationInfoSupplier.getFromLocation(latitude, longitude, 1);
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         Map<String, String> authorisationCode = new HashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
 
 
-        if(addresses.size() == 1){
+        if (addresses.size() == 1) {
             MainActivity.getServerRequests().getAllLostPetsFromUserDistrict(authorisationCode, addresses.get(0)).enqueue(new Callback<List<LostPet>>() {
                 @Override
                 public void onResponse(Call<List<LostPet>> call, Response<List<LostPet>> response) {
-                    if (response.body() != null){
+                    if (response.body() != null) {
                         lostPetList.clear();
                         lostPetList.addAll(response.body());
                         lostPetAdapter = new LostPetAdapter(lostPetList, mainFont, breedFont, LostPets.this, LostPets.this);
                         lostPetsRecyclerView.setAdapter(lostPetAdapter);
-                        try{
-                            LostPets.this.getActivity().runOnUiThread(()->{
+                        try {
+                            LostPets.this.getActivity().runOnUiThread(() -> {
                                 lostPetAdapter.notifyDataSetChanged();
                             });
-                        }catch (NullPointerException e ){
+                        } catch (NullPointerException e) {
                             e.printStackTrace();
                         }
                     }
@@ -305,25 +323,23 @@ public class LostPets extends Fragment {
     }
 
 
+    private void getCoordinates() {
 
 
-    private void getCoordinates(){
-
-
-        if(this.getActivity()!= null) {
+        if (this.getActivity() != null) {
             if (ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this.getActivity());
                 initializeCoordinates();
             } else {
                 int ACCESS_FINE_LOCATION_CODE = 1001;
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},ACCESS_FINE_LOCATION_CODE);
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_FINE_LOCATION_CODE);
             }
         }
     }
 
     @SuppressLint("MissingPermission")
-    private void initializeCoordinates(){
+    private void initializeCoordinates() {
         mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
@@ -357,12 +373,6 @@ public class LostPets extends Fragment {
         }
     }
 
-
-
-
-
-
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -380,8 +390,7 @@ public class LostPets extends Fragment {
     }
 
 
-
-    public void update(){
+    public void update() {
         try {
             getAllLostPetsFromUserDistrict();
         } catch (IOException e) {

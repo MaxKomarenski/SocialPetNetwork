@@ -15,7 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -96,7 +99,8 @@ public class UsersGallery extends Fragment {
     @BindView(R.id.gallery_avatar)
     CircleImageView avatar;
 
-
+    @BindView(R.id.scroll_view_in_gallery)
+    ScrollView scrollView;
 
     private UserInfo userInfo;
     private Long target;
@@ -134,11 +138,23 @@ public class UsersGallery extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         ButterKnife.bind(this, view);
+
         try {
 
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
@@ -266,6 +282,24 @@ public class UsersGallery extends Fragment {
 
                     String amountOfPhotos = photoGridAdapter.getCount() + " photos";
                     numberOfPhoto.setText(amountOfPhotos);
+
+
+                    ViewGroup.LayoutParams params = photoGridView.getLayoutParams();
+                    System.err.println(ids.size()%3);
+                    int raws;
+                    if (ids.size()%3 == 0){
+                        raws = (ids.size()/3) * imageWidth + 30;
+                    }else {
+
+                        raws = (ids.size()/3) * imageWidth + 400;
+                    }
+
+                    params.height = raws;
+
+                    photoGridView.setLayoutParams(params);
+
+                    scrollView.scrollTo(0,0);
+                    System.err.println("Scroll to top");
                 }
             }
 
