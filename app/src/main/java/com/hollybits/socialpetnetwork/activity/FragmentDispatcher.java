@@ -89,6 +89,8 @@ public class FragmentDispatcher extends AppCompatActivity
         toggle.syncState();
 
 
+
+
         Fabric.with(this, new Crashlytics());
         Log.d("FABRIC", "FABRIC CRASH REPORT INITIALIZED");
 
@@ -114,6 +116,14 @@ public class FragmentDispatcher extends AppCompatActivity
             }
         });
 
+        ImageView editButton = navigationView.getHeaderView(0).findViewById(R.id.edit_profile_nav_header);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(EditInfo.class);
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
 
         navigationView.setNavigationItemSelectedListener(this);
         loadUserInfo();
@@ -288,13 +298,6 @@ public class FragmentDispatcher extends AppCompatActivity
 
                 NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                 TextView name = navigationView.getHeaderView(0).findViewById(R.id.name_surname_nav_header);
-                ImageView editButton = navigationView.getHeaderView(0).findViewById(R.id.edit_profile_nav_header);
-                editButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        FragmentDispatcher.launchFragment(EditInfo.class);
-                    }
-                });
                 Pet currentPet = Paper.book().read(MainActivity.CURRENT_PET);
                 name.setText(currentPet.getName());
             }
