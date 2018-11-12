@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
@@ -114,6 +115,9 @@ public class PhotoPage extends Fragment {
     @BindView(R.id.comments)
     TextView commentsText;
 
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+
     private CommentAdapter commentAdapter;
     private OnFragmentInteractionListener mListener;
     private List<Comment> comments;
@@ -171,22 +175,31 @@ public class PhotoPage extends Fragment {
         GalleryMode galleryMode = Paper.book().read(MainActivity.GALLERY_MODE);
         PhotoManager photoManager = new PhotoManager(PhotoPage.this);
         id = Paper.book().read("Current choice");
-        getComments(id);
-        getLikes(id);
 
-        if (galleryMode == GalleryMode.FRIENDS_MODE) {
-            Long friendID = Paper.book().read(MainActivity.ID_OF_FRIEND);
-            byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME_FRIENDS).read(PhotoManager.REGULAR_PHOTO + id);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
-            loadBitmapToImageView(photoPageImage, bitmap);
-            name = Paper.book().read("last_chosen_friend_pet");
-        } else {
-            photoManager.loadUsersMainPhoto(userPhoto);
-            byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME).read(PhotoManager.REGULAR_PHOTO + id);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
-            loadBitmapToImageView(photoPageImage, bitmap);
+        try {
+            getComments(id);
+            getLikes(id);
+
+            if (galleryMode == GalleryMode.FRIENDS_MODE) {
+                Long friendID = Paper.book().read(MainActivity.ID_OF_FRIEND);
+                byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME_FRIENDS).read(PhotoManager.REGULAR_PHOTO + id);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
+                loadBitmapToImageView(photoPageImage, bitmap);
+                name = Paper.book().read("last_chosen_friend_pet");
+            } else {
+                photoManager.loadUsersMainPhoto(userPhoto);
+                byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME).read(PhotoManager.REGULAR_PHOTO + id);
+                if (photoBytes == null){
+                    photoManager.loadUsersPhoto(photoPageImage, id, progressBar);
+                }else {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
+                    loadBitmapToImageView(photoPageImage, bitmap);
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        } catch (Exception e){
+            FragmentDispatcher.launchFragment(UsersGallery.class);
         }
-
 
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -285,21 +298,26 @@ public class PhotoPage extends Fragment {
         MainActivity.getServerRequests().getLikes(authorisationCode, id).enqueue(new Callback<List<Long>>() {
             @Override
             public void onResponse(Call<List<Long>> call, Response<List<Long>> response) {
-                if (response.body() != null) {
-                    if (response.body().contains(currentUser.getId())) {
-                        Log.d("likes", "LIKED!!!");
-                        likeButton.getBackground().setTint(getResources().getColor(R.color.like_pressed));
-                        likesCount = response.body().size();
-                        likes.setText(likesCount + " likes");
-                        res_id = dislike;
-                    } else {
-                        Log.d("likes", "NOT LIKED!!!");
-                        likesCount = response.body().size();
-                        likes.setText(likesCount + " likes");
-                        likeButton.getBackground().setTint(getResources().getColor((R.color.like_not_pressed)));
-                        res_id = like;
+                try {
+                    if (response.body() != null) {
+                        if (response.body().contains(currentUser.getId())) {
+                            Log.d("likes", "LIKED!!!");
+                            likeButton.getBackground().setTint(getResources().getColor(R.color.like_pressed));
+                            likesCount = response.body().size();
+                            likes.setText(likesCount + " likes");
+                            res_id = dislike;
+                        } else {
+                            Log.d("likes", "NOT LIKED!!!");
+                            likesCount = response.body().size();
+                            likes.setText(likesCount + " likes");
+                            likeButton.getBackground().setTint(getResources().getColor((R.color.like_not_pressed)));
+                            res_id = like;
+                        }
                     }
+                }catch (Exception e){
+                    FragmentDispatcher.launchFragment(UsersGallery.class);
                 }
+
             }
 
             @Override
