@@ -169,14 +169,6 @@ public class FriendAccount extends Fragment {
 
         AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
 
-        openNavigationDrawer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
-                drawer.openDrawer(Gravity.START);
-            }
-        });
-
         View acceptDeletingFriend = FriendAccount.this.getLayoutInflater().inflate(R.layout.accept_deleting_friend, null);
 
         Button accept = acceptDeletingFriend.findViewById(R.id.acceptDeletingFriend);
@@ -226,6 +218,14 @@ public class FriendAccount extends Fragment {
             public void onClick(View v) {
                 Paper.book().write(MainActivity.GALLERY_MODE, GalleryMode.FRIENDS_MODE);
                 FragmentDispatcher.launchFragment(UsersGallery.class);
+            }
+        });
+
+        openNavigationDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+                drawer.openDrawer(Gravity.START);
             }
         });
 
@@ -321,7 +321,8 @@ public class FriendAccount extends Fragment {
             }
         }
 
-        whoseProfile.setText(pet.getName() + "'s profile");
+        String prof = pet.getName() + "'s profile";
+        whoseProfile.setText(prof);
 
         String[] info = {
                 pet.getName(),

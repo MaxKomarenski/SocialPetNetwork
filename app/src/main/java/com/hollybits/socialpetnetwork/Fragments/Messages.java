@@ -1,6 +1,5 @@
 package com.hollybits.socialpetnetwork.Fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -14,19 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
-import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.activity.SettingsActivity;
 import com.hollybits.socialpetnetwork.adapters.ContactAdapter;
 import com.hollybits.socialpetnetwork.models.Contact;
 import com.hollybits.socialpetnetwork.models.User;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,13 +125,13 @@ public class Messages extends Fragment {
         return view;
     }
 
-    private void getContacts(){
+    private void getContacts() {
         contacts = Paper.book().read(MainActivity.CONTACT_LIST);
-        if(contacts == null){
+        if (contacts == null) {
             User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
             Map<String, String> authorisationCode = new HashMap<>();
             authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-            MainActivity.getServerRequests().getAllContactsOfCurrentUser(authorisationCode ,MainActivity.getCurrentUser().getId()).enqueue(new Callback<List<Contact>>() {
+            MainActivity.getServerRequests().getAllContactsOfCurrentUser(authorisationCode, MainActivity.getCurrentUser().getId()).enqueue(new Callback<List<Contact>>() {
                 @Override
                 public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
                     contacts = response.body();
@@ -150,13 +146,12 @@ public class Messages extends Fragment {
 
                 }
             });
-        }else {
-            contactAdapter = new ContactAdapter(contacts, nameFont, anotherFont,Messages.this);
+        } else {
+            contactAdapter = new ContactAdapter(contacts, nameFont, anotherFont, Messages.this);
             contactsRecyclerView.setAdapter(contactAdapter);
         }
 
     }
-
 
 
     // TODO: Rename method, update argument and hook method into UI event

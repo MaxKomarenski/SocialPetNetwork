@@ -60,7 +60,7 @@ import retrofit2.Response;
  * Use the {@link PhotoPage#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PhotoPage extends Fragment{
+public class PhotoPage extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -76,7 +76,7 @@ public class PhotoPage extends Fragment{
     TextView nameAndSurnameTextView;
 
     private int like = 1;
-    private  int dislike = 0;
+    private int dislike = 0;
     private int likesCount;
     private int commentsCount;
 
@@ -106,7 +106,6 @@ public class PhotoPage extends Fragment{
 
     @BindView(R.id.like_button)
     LinearLayout likeButton;
-
 
 
     @BindView(R.id.likes)
@@ -165,7 +164,6 @@ public class PhotoPage extends Fragment{
         ButterKnife.bind(this, view);
 
 
-
         comments = new ArrayList<>();
 
         listeners();
@@ -176,16 +174,16 @@ public class PhotoPage extends Fragment{
         getComments(id);
         getLikes(id);
 
-        if (galleryMode == GalleryMode.FRIENDS_MODE){
+        if (galleryMode == GalleryMode.FRIENDS_MODE) {
             Long friendID = Paper.book().read(MainActivity.ID_OF_FRIEND);
-            byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME_FRIENDS).read(PhotoManager.REGULAR_PHOTO+id);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(photoBytes, 0,photoBytes.length);
+            byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME_FRIENDS).read(PhotoManager.REGULAR_PHOTO + id);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
             loadBitmapToImageView(photoPageImage, bitmap);
             name = Paper.book().read("last_chosen_friend_pet");
-        }else {
+        } else {
             photoManager.loadUsersMainPhoto(userPhoto);
-            byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME).read(PhotoManager.REGULAR_PHOTO+id);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(photoBytes, 0,photoBytes.length);
+            byte[] photoBytes = Paper.book(PhotoManager.PAPER_BOOK_NAME).read(PhotoManager.REGULAR_PHOTO + id);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
             loadBitmapToImageView(photoPageImage, bitmap);
         }
 
@@ -196,15 +194,14 @@ public class PhotoPage extends Fragment{
                 MainActivity.getServerRequests().like(authorisationCode, currentUser.getId(), id).enqueue(new Callback<Boolean>() {
                     @Override
                     public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                        if(res_id == like) {
+                        if (res_id == like) {
                             likeButton.getBackground().setTint(getResources().getColor(R.color.like_pressed));
                             res_id = dislike;
-                            likes.setText(++likesCount+" likes");
-                        }
-                        else {
+                            likes.setText(++likesCount + " likes");
+                        } else {
                             likeButton.getBackground().setTint(getResources().getColor((R.color.like_not_pressed)));
                             res_id = like;
-                            likes.setText(--likesCount+" likes");
+                            likes.setText(--likesCount + " likes");
                         }
                     }
 
@@ -215,7 +212,6 @@ public class PhotoPage extends Fragment{
                 });
             }
         });
-
 
 
         return view;
@@ -229,21 +225,21 @@ public class PhotoPage extends Fragment{
         likes.setTypeface(mainFont);
         commentsText.setTypeface(mainFont);
         nameAndSurnameTextView.setTypeface(mainFont);
-        if(name!=null)
+        if (name != null)
             nameAndSurnameTextView.setText(name);
         else
             nameAndSurnameTextView.setText(currentUser.getPets().get(0).getName());
 
     }
 
-    private void getComments(Long id){
+    private void getComments(Long id) {
         MainActivity.getServerRequests().getAllCommentOfCurrentPhoto(authorisationCode, id).enqueue(new Callback<List<Comment>>() {
             @Override
             public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
-                if (response.body() != null){
+                if (response.body() != null) {
                     comments.addAll(response.body());
                     commentsCount = response.body().size();
-                    commentsText.setText(commentsCount+" comments");
+                    commentsText.setText(commentsCount + " comments");
                     commentAdapter = new CommentAdapter(comments);
                     commentRecyclerView.setAdapter(commentAdapter);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PhotoPage.this.getContext());
@@ -263,10 +259,11 @@ public class PhotoPage extends Fragment{
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
 
-                if(response.body()!=null){
-                    caption.setText(response.body().replaceAll("%"," "));
+                if (response.body() != null) {
+                    caption.setText(response.body().replaceAll("%", " "));
                 }
             }
+
             @Override
             public void onFailure(Call<String> call, Throwable t) {
 
@@ -282,23 +279,23 @@ public class PhotoPage extends Fragment{
         }
     }
 
-    private void getLikes(Long id){
+    private void getLikes(Long id) {
 
 
         MainActivity.getServerRequests().getLikes(authorisationCode, id).enqueue(new Callback<List<Long>>() {
             @Override
             public void onResponse(Call<List<Long>> call, Response<List<Long>> response) {
-                if(response.body() != null){
-                    if(response.body().contains(currentUser.getId())){
+                if (response.body() != null) {
+                    if (response.body().contains(currentUser.getId())) {
                         Log.d("likes", "LIKED!!!");
                         likeButton.getBackground().setTint(getResources().getColor(R.color.like_pressed));
                         likesCount = response.body().size();
-                        likes.setText(likesCount+" likes");
+                        likes.setText(likesCount + " likes");
                         res_id = dislike;
-                    }else {
+                    } else {
                         Log.d("likes", "NOT LIKED!!!");
                         likesCount = response.body().size();
-                        likes.setText(likesCount+" likes");
+                        likes.setText(likesCount + " likes");
                         likeButton.getBackground().setTint(getResources().getColor((R.color.like_not_pressed)));
                         res_id = like;
                     }
@@ -315,9 +312,7 @@ public class PhotoPage extends Fragment{
     }
 
 
-
-
-    private void listeners(){
+    private void listeners() {
         toGalleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -329,10 +324,10 @@ public class PhotoPage extends Fragment{
             @Override
             public void onClick(View v) {
                 String commentText = writeNewCommentEditText.getText().toString();
-                if(!commentText.equals("")){
+                if (!commentText.equals("")) {
                     sendNewComment(commentText, id);
                     hideKeyboard(getActivity());
-                    commentsText.setText(++commentsCount+" comments");
+                    commentsText.setText(++commentsCount + " comments");
 
 
                 }
@@ -340,7 +335,7 @@ public class PhotoPage extends Fragment{
         });
     }
 
-    private void sendNewComment(String text, Long photoID){
+    private void sendNewComment(String text, Long photoID) {
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         Map<String, String> authorisationCode = new HashMap<>();
         authorisationCode.put("authorization", currentUser.getAuthorizationCode());
@@ -348,7 +343,7 @@ public class PhotoPage extends Fragment{
         MainActivity.getServerRequests().sendNewComment(authorisationCode, time.toString(), currentUser.getId(), text, photoID).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                commentAdapter.addItem(new Comment(text ,currentUser.getName(), currentUser.getSurname()));
+                commentAdapter.addItem(new Comment(text, currentUser.getName(), currentUser.getSurname()));
                 commentAdapter.notifyDataSetChanged();
             }
 
@@ -361,7 +356,7 @@ public class PhotoPage extends Fragment{
         writeNewCommentEditText.setText("");
     }
 
-    private void loadBitmapToImageView(ImageView  imageView, Bitmap bitmap){
+    private void loadBitmapToImageView(ImageView imageView, Bitmap bitmap) {
         GlideApp.with(this)
                 .load(bitmap)
                 .into(imageView);
@@ -381,7 +376,6 @@ public class PhotoPage extends Fragment{
         super.onDetach();
         mListener = null;
     }
-
 
 
     /**
