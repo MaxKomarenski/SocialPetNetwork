@@ -2,7 +2,6 @@ package com.hollybits.socialpetnetwork.Fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -24,14 +23,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,20 +37,15 @@ import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.activity.SettingsActivity;
 import com.hollybits.socialpetnetwork.adapters.LostPetAdapter;
-import com.hollybits.socialpetnetwork.helper.MessageObserver;
 import com.hollybits.socialpetnetwork.models.FriendInfo;
 import com.hollybits.socialpetnetwork.models.LostPet;
 import com.hollybits.socialpetnetwork.models.User;
-import com.hollybits.socialpetnetwork.models.UserInfo;
-import com.hollybits.socialpetnetwork.notifications.NotificationsAcceptor;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.BindViews;

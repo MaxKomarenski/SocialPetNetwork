@@ -71,6 +71,7 @@ public class PhotoGridAdapter extends BaseAdapter {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     Paper.book().write("Current choice", images.get(position));
                     FragmentDispatcher.launchFragment(PhotoPage.class);
                 }
