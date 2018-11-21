@@ -19,8 +19,12 @@ import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.helper.PhotoManager;
 import com.hollybits.socialpetnetwork.models.Contact;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
@@ -76,9 +80,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHo
         String nameAndSurname = contact.getName() + " " + contact.getSurname();
 
         holder.userName.setText(nameAndSurname);
-        if(contact.getLastMessage().length() < 27){
+        if (contact.getLastMessage().length() < 27) {
             holder.lastMessage.setText(contact.getLastMessage());
-        }else {
+        } else {
             //contact.getLastMessage();
             String message = String.format("%.26s", contact.getLastMessage()) + "...";
             holder.lastMessage.setText(message);
@@ -88,10 +92,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHo
         holder.lastMessage.setTypeface(anotherFont);
 
 
-        if(contact.getTimestamp() == null){
+        if (contact.getTimestamp() == null) {
             holder.time.setText("");
-        }else {
-            holder.time.setText(contact.getTimestamp().toString());
+        } else {
+            String day = showTimeOfLastMessage(contact.getTimestamp());
+            holder.time.setText(day);
         }
         holder.time.setTypeface(anotherFont);
         photoManager.loadFriendsMainPhoto(holder.userPhoto, contact.getFriendId());
@@ -99,10 +104,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHo
         long five_minutes = 5 * 60 * 1000;
         long currentTime = System.currentTimeMillis();
 
-        if(currentTime - contact.getOnlineTime().getTime() < five_minutes){
-                holder.greenDot.setVisibility(View.VISIBLE);
-        }else {
-                holder.greenDot.setVisibility(View.INVISIBLE);
+        if (currentTime - contact.getOnlineTime().getTime() < five_minutes) {
+            holder.greenDot.setVisibility(View.VISIBLE);
+        } else {
+            holder.greenDot.setVisibility(View.INVISIBLE);
         }
 
         holder.contactConstraintLayout.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +120,27 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHo
         });
 
 
+    }
+
+    private String showTimeOfLastMessage(Timestamp timestamp) {
+        long hours_24 = 24 * 60 * 60 * 1000;
+        long week = 7 * hours_24;
+        String day;
+        if (System.currentTimeMillis() - timestamp.getTime() > hours_24) {
+            day = (new SimpleDateFormat("EEEE")).format(timestamp.getTime());
+        }else if (System.currentTimeMillis() - timestamp.getTime() > week){
+
+            Date date = new Date(timestamp.getTime());
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+            day = sdf.format(date);
+        } else {
+            Date date = new Date(timestamp.getTime());
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+            day = sdf.format(date);
+        }
+        return day;
     }
 
     @Override
