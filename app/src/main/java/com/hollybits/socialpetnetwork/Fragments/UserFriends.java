@@ -104,7 +104,6 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
     private DrawerLayout drawer;
 
 
-
     private List<FriendInfo> friends;
     private List<InfoAboutUserFriendShipRequest> friendShipRequests;
 
@@ -250,7 +249,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
                 public void onResponse(Call<Set<FriendInfo>> call, Response<Set<FriendInfo>> response) {
                     friends = new ArrayList<>();
                     friends.addAll(response.body());
-                    if(response.body().size()==0){
+                    if (response.body().size() == 0) {
                         noResultsLayout.setVisibility(View.VISIBLE);
                     }
                     userFriendsAdapter.setFriends(friends);
@@ -267,7 +266,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
         } else {
             userFriendsAdapter = new UserFriendsAdapter(mainFont, breedFont, UserFriends.this, UserFriends.this);
             userFriendsAdapter.setFriends(friends);
-            if(friends.size()==0){
+            if (friends.size() == 0) {
                 noResultsLayout.setVisibility(View.VISIBLE);
             }
             userFriendsRecyclerView.setAdapter(userFriendsAdapter);
@@ -280,20 +279,12 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
     public void showDownBar(FriendInfo friendInfo) {
         downBar.setVisibility(View.VISIBLE);
 
-        openFriendPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAllInformationOfChosenUser(friendInfo.getId());
-            }
-        });
+        openFriendPage.setOnClickListener(v -> getAllInformationOfChosenUser(friendInfo.getId()));
 
-        openChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Paper.book().write(MainActivity.ID_OF_FRIEND, friendInfo.getId());
-                Paper.book().write(MainActivity.NAME_OF_FRIEND, friendInfo.getName());
-                FragmentDispatcher.launchFragment(Chat.class);
-            }
+        openChat.setOnClickListener(v -> {
+            Paper.book().write(MainActivity.ID_OF_FRIEND, friendInfo.getId());
+            Paper.book().write(MainActivity.NAME_OF_FRIEND, friendInfo.getName());
+            FragmentDispatcher.launchFragment(Chat.class);
         });
     }
 
@@ -371,115 +362,5 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
             }
         });
     }
-
-//    private void changeTypeface(){
-//        friendsTextView.setTypeface(mainFont);
-//        requestsTextView.setTypeface(mainFont);
-//        peopleTextView.setTypeface(mainFont);
-//    }
-
-//    private void listeners(){
-
-//        backButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FragmentDispatcher.launchFragment(Account.class);
-//            }
-//        });
-
-//        friendsTextView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                changeColorsAndVisibility(View.VISIBLE, View.GONE,
-//                        R.drawable.background_for_table_friends_pressed,
-//                        getResources().getDrawable(R.color.blue_for_table),
-//                        R.drawable.background_for_table_people, View.GONE , View.GONE  );
-//
-//            }
-//        });
-
-//        requestsTextView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                changeColorsAndVisibility(View.GONE, View.VISIBLE,
-//                        R.drawable.background_for_table_friends,
-//                        getResources().getDrawable(R.color.blue_for_table_pressed),
-//                        R.drawable.background_for_table_people, View.GONE , View.GONE);
-//
-//            }
-//        });
-
-//        peopleTextView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                changeColorsAndVisibility(View.GONE, View.GONE,
-//                        R.drawable.background_for_table_friends,
-//                        getResources().getDrawable(R.color.blue_for_table),
-//                        R.drawable.background_for_table_people_pressed, View.VISIBLE, View.VISIBLE);
-//            }
-//        });
-
-//        searchPeopleButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
-//                Map<String, String> authorisationCode = new HashMap<>();
-//                authorisationCode.put("authorization", currentUser.getAuthorizationCode());
-//                SearchForm searchForm = new SearchForm();
-//                searchForm.setUserCountry(currentUser.getCity().getCountry().getName());
-//                searchForm.setUserCity(currentUser.getCity().getName());
-//                if(ownerNameEditText.getText().toString().equals(""))
-//                    searchForm.setOwnersName(null);
-//                else {
-//                    searchForm.setOwnersName(ownerNameEditText.getText().toString());
-//                }
-//                if(breedEditText.getText().toString().equals(""))
-//                    searchForm.setBreed(null);
-//                else {
-//                    searchForm.setBreed(breedEditText.getText().toString());
-//                }
-//                if(petNameEditText.getText().toString().equals(""))
-//                    searchForm.setName(null);
-//                else {
-//                    searchForm.setName(petNameEditText.getText().toString());
-//                }
-//                if(animalEditText.getText().toString().toUpperCase().equals(""))
-//                    searchForm.setPetType(null);
-//                else {
-//                    searchForm.setPetType(PetType.valueOf(animalEditText.getText().toString().toUpperCase()));
-//                }
-//                MainActivity.getServerRequests().search(authorisationCode, searchForm).enqueue(new Callback<List<FriendInfo>>() {
-//                    @Override
-//                    public void onResponse(Call<List<FriendInfo>> call, Response<List<FriendInfo>> response) {
-//                        if(response.body()!=null){
-//                            peopleSearchAdapter.setFriends(response.body());
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<List<FriendInfo>> call, Throwable t) {
-//
-//                    }
-//                });
-//
-//            }
-//        });
-//    }
-
-//    private void changeColorsAndVisibility(int friendVisibility,
-//                                           int requestVisibility,
-////                                           int friendTextBackground,
-////                                           Drawable requestTextBackground,
-////                                           int peopleTextBackground,
-//                                           int peopleVisibility,
-//                                           int filterVisibility){
-//        userFriendsRecyclerView.setVisibility(friendVisibility);
-//        friendshipRequestRecyclerView.setVisibility(requestVisibility);
-//        searchPeopleRecyclerView.setVisibility(peopleVisibility);
-////        peopleTextView.setBackgroundResource(peopleTextBackground);
-////        requestsTextView.setBackground(requestTextBackground);
-////        friendsTextView.setBackgroundResource(friendTextBackground);
-//        filterCardView.setVisibility(filterVisibility);
-    // }
 
 }

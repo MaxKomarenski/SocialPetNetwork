@@ -181,17 +181,9 @@ public class FragmentDispatcher extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        if(previoust != null){
-            TextView textView = previoust.getActionView().findViewById(R.id.text_in_menu);
-            //textView.setTextColor(getResources().getColor(R.color.not_active_item));
-        }
         previoust = item;
         int id = item.getItemId();
-        Fragment fragment = null;
         Class fragmentClass;
-        TextView textView = item.getActionView().findViewById(R.id.text_in_menu);
-       // textView.setTextColor(getResources().getColor(R.color.active_item));
         if(options.containsKey(id)){
             fragmentClass = options.get(id);
         }else {
@@ -200,7 +192,7 @@ public class FragmentDispatcher extends AppCompatActivity
         if(fragmentClass == UsersGallery.class){
             Paper.book().write(MainActivity.GALLERY_MODE, GalleryMode.USERS_MODE);
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         launchFragment(fragmentClass);
         setTitle(item.getTitle());
         drawer.closeDrawer(GravityCompat.START);

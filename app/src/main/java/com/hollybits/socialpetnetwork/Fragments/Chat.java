@@ -2,6 +2,7 @@ package com.hollybits.socialpetnetwork.Fragments;
 
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,6 +33,8 @@ import com.hollybits.socialpetnetwork.models.UserInfo;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -304,6 +307,16 @@ public class Chat extends Fragment implements MessageObserver {
                     if (response.body() != null){
                         messages.addAll(response.body());
                     }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        messages.sort((o1, o2)-> o1.getTimestamp().compareTo(o2.getTimestamp()));
+                    }else {
+                        Collections.sort(messages,new Comparator<Message>() {
+                            @Override
+                            public int compare(Message o1, Message o2) {
+                                return o1.getTimestamp().compareTo(o2.getTimestamp());
+                            }
+                        });
+                    }
 
                     messageAdapter = new MessageAdapter(messages, messageTextFont);
                     chatRecyclerView.setAdapter(messageAdapter);
@@ -320,6 +333,11 @@ public class Chat extends Fragment implements MessageObserver {
         }else {
 
             User user = Paper.book().read(MainActivity.CURRENTUSER);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                messages.sort((o1, o2)-> o1.getTimestamp().compareTo(o2.getTimestamp()));
+            }else {
+                Collections.sort(messages, (o1, o2) -> o1.getTimestamp().compareTo(o2.getTimestamp()));
+            }
             messageAdapter = new MessageAdapter(messages, messageTextFont);
             chatRecyclerView.setAdapter(messageAdapter);
             getAllUnreadMessages(friendId, user.getId());
