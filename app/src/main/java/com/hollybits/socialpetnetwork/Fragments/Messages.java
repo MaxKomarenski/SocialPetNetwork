@@ -14,9 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hollybits.socialpetnetwork.R;
+import com.hollybits.socialpetnetwork.activity.FragmentDispatcher;
 import com.hollybits.socialpetnetwork.activity.MainActivity;
 import com.hollybits.socialpetnetwork.activity.SettingsActivity;
 import com.hollybits.socialpetnetwork.adapters.ContactAdapter;
@@ -63,6 +65,16 @@ public class Messages extends Fragment {
     private String mParam2;
     private DrawerLayout drawer;
 
+    @BindView(R.id.no_res_layout)
+    LinearLayout noResultsLayout;
+    @BindView(R.id.no_friends_text)
+    TextView noFriendsText;
+    @BindView(R.id.start_communicating_text)
+    TextView startComunicatingText;
+
+    @BindView(R.id.go_to_map)
+    ImageButton goToMap;
+
     private OnFragmentInteractionListener mListener;
 
     public Messages() {
@@ -97,6 +109,17 @@ public class Messages extends Fragment {
 
         nameFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         anotherFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/HelveticaNeueCyr.ttf");
+
+
+        noFriendsText.setTypeface(nameFont);
+        startComunicatingText.setTypeface(nameFont);
+        goToMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentDispatcher.launchFragment(com.hollybits.socialpetnetwork.Fragments.Map.class);
+            }
+        });
+
 
         chatText.setTypeface(nameFont);
 
@@ -138,6 +161,9 @@ public class Messages extends Fragment {
                     Paper.book().write(MainActivity.CONTACT_LIST, contacts);
                     contactAdapter = new ContactAdapter(contacts, nameFont, anotherFont, Messages.this);
                     contactsRecyclerView.setAdapter(contactAdapter);
+                    if(response.body().size()==0){
+                        noResultsLayout.setVisibility(View.VISIBLE);
+                    }
 
                 }
 
@@ -147,6 +173,9 @@ public class Messages extends Fragment {
                 }
             });
         } else {
+            if(contacts.size()==0){
+                noResultsLayout.setVisibility(View.VISIBLE);
+            }
             contactAdapter = new ContactAdapter(contacts, nameFont, anotherFont, Messages.this);
             contactsRecyclerView.setAdapter(contactAdapter);
         }

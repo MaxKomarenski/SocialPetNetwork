@@ -165,7 +165,9 @@ public class LoginActivity extends AppCompatActivity {
                                 user.setAuthorizationCode(code);
                                 Paper.book().write(MainActivity.CURRENTUSER, user);
                             }
-
+                        }else {
+                            dismissLoadingDialog(1000);
+                            showErrorMessage("Wrong email or password. Please try again");
                         }
 
                         dismissLoadingDialog(3000);
@@ -173,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     } catch (NullPointerException e) {
                         dismissLoadingDialog(1000);
-                        showErrorMessage();
+                        showErrorMessage("Wrong email or password. Please try again");
                     }
 
                 }
@@ -187,7 +189,7 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         }catch (NullPointerException e){
             dismissLoadingDialog(1000);
-            showErrorMessage();
+            showErrorMessage("Something went wrong");
             return false;
         }
     }
@@ -201,10 +203,10 @@ public class LoginActivity extends AppCompatActivity {
                 }, time);
     }
 
-    private void showErrorMessage(){
+    private void showErrorMessage(String mess){
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setTitle("Error")
-                .setMessage("Some issues with login. Please, try again.")
+                .setMessage(mess)
                 .setCancelable(false)
                 .setNegativeButton("OK, I'll try again",
                         new DialogInterface.OnClickListener() {

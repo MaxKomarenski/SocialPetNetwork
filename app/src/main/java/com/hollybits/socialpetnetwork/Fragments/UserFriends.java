@@ -103,38 +103,7 @@ public class UserFriends extends Fragment implements FriendShipRequestObserver {
 
     private DrawerLayout drawer;
 
-//    @BindView(R.id.search_people_recycler_view)
-//    RecyclerView searchPeopleRecyclerView;
-//
-//    @BindView(R.id.search_in_friends)
-//    ExpandableSearchView searchView;
-//
-//    @BindView(R.id.back_move_button)
-//    ImageButton backButton;
 
-//    @BindView(R.id.open_friend_list_in_user_friends_page)
-//    TextView friendsTextView;
-//
-//    @BindView(R.id.open_requests_list_in_user_friends_page)
-//    TextView requestsTextView;
-//
-//    @BindView(R.id.open_people_list_in_user_friends_page)
-//    TextView peopleTextView;
-
-//    @BindView(R.id.owner_name_edit_text_in_people_search)
-//    EditText ownerNameEditText;
-//
-//    @BindView(R.id.animal_edit_text_in_people_search)
-//    EditText animalEditText;
-//
-//    @BindView(R.id.breed_edit_text_in_people_search)
-//    EditText breedEditText;
-//
-//    @BindView(R.id.pet_name_edit_text_in_people_search)
-//    EditText petNameEditText;
-//
-//    @BindView(R.id.search_people_button)
-//    Button searchPeopleButton;
 
     private List<FriendInfo> friends;
     private List<InfoAboutUserFriendShipRequest> friendShipRequests;

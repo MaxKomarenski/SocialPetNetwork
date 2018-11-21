@@ -259,6 +259,8 @@ public class UsersGallery extends Fragment {
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
+    
+
     private void getIdsOfUserPhoto(){
         User currentUser = Paper.book().read(MainActivity.CURRENTUSER);
         Map<String, String> authorisationCode = new HashMap<>();

@@ -64,6 +64,9 @@ public class FragmentDispatcher extends AppCompatActivity
     private  static MenuItem messagesMenuItem;
     private static  int  counterOfNewMessages;
 
+    private static Class previoustFragment;
+    private static Class currentFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,6 +130,8 @@ public class FragmentDispatcher extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
         loadUserInfo();
+        previoustFragment = StartingMenu.class;
+        currentFragment = StartingMenu.class;
         launchFragment(StartingMenu.class);
         setTitle("Account");
 
@@ -144,7 +149,8 @@ public class FragmentDispatcher extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        launchFragment(StartingMenu.class);
+        Log.d("BACK TO:", previoustFragment.getName());
+        launchFragment(previoustFragment);
     }
 
 
@@ -194,16 +200,8 @@ public class FragmentDispatcher extends AppCompatActivity
         if(fragmentClass == UsersGallery.class){
             Paper.book().write(MainActivity.GALLERY_MODE, GalleryMode.USERS_MODE);
         }
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
+        launchFragment(fragmentClass);
         setTitle(item.getTitle());
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -331,9 +329,14 @@ public class FragmentDispatcher extends AppCompatActivity
 
     public static boolean launchFragment(Class fragmentClass){
 
+
+        previoustFragment = currentFragment;
+        currentFragment = fragmentClass;
+        Log.d("Launching:", currentFragment.getName());
+        Log.d("Previoust Fragment:", previoustFragment.getName());
         Fragment fragment = null;
         try {
-            fragment = (Fragment) fragmentClass.newInstance();
+            fragment = (Fragment) currentFragment.newInstance();
         }catch (java.lang.Exception e){
             e.printStackTrace();
         }
