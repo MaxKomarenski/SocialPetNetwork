@@ -126,8 +126,6 @@ public class FriendAccount extends Fragment {
     }
 
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,10 +153,10 @@ public class FriendAccount extends Fragment {
         Typeface mainFont = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/911Fonts.com_CenturyGothicBold__-_911fonts.com_fonts_pMgo.ttf");
         Typeface avenirNextCyr_regular = Typeface.createFromAsset(this.getActivity().getAssets(), "fonts/AvenirNextCyr-Regular.ttf");
 
-        for (TextView textView: words) {
+        for (TextView textView : words) {
             textView.setTypeface(mainFont);
         }
-        for (TextView textView: allChangedInformation) {
+        for (TextView textView : allChangedInformation) {
             textView.setTypeface(avenirNextCyr_regular);
         }
 
@@ -171,10 +169,10 @@ public class FriendAccount extends Fragment {
 
         View acceptDeletingFriend = FriendAccount.this.getLayoutInflater().inflate(R.layout.accept_deleting_friend, null);
 
-        Button accept = acceptDeletingFriend.findViewById(R.id.acceptDeletingFriend);
-        Button reject = acceptDeletingFriend.findViewById(R.id.rejectDeletingFriends);
+        ImageButton accept = acceptDeletingFriend.findViewById(R.id.acceptDeletingFriend);
+        ImageButton reject = acceptDeletingFriend.findViewById(R.id.rejectDeletingFriends);
         TextView warning = acceptDeletingFriend.findViewById(R.id.warningTextView);
-        warning.setTypeface(mainFont);
+        warning.setTypeface(avenirNextCyr_regular);
         BottomSheet bottomSheet = new BottomSheet.Builder(FriendAccount.this.getActivity())
                 .setView(acceptDeletingFriend).create();
 
@@ -201,7 +199,6 @@ public class FriendAccount extends Fragment {
                 bottomSheet.dismiss();
             }
         });
-
 
 
         startChatWithFriend.setOnClickListener(new View.OnClickListener() {
@@ -232,13 +229,13 @@ public class FriendAccount extends Fragment {
         return view;
     }
 
-    private void deleteFriendFromFriendListInPaperBook(){
+    private void deleteFriendFromFriendListInPaperBook() {
 
         deleteFriendFromDB();
 
         List<FriendInfo> friends = Paper.book().read(MainActivity.FRIEND_LIST);
-        for (int i = 0; i < friends.size(); i++){
-            if(userInfo.getId().equals(friends.get(i).getId())){
+        for (int i = 0; i < friends.size(); i++) {
+            if (userInfo.getId().equals(friends.get(i).getId())) {
                 friends.remove(i);
             }
         }
@@ -246,7 +243,7 @@ public class FriendAccount extends Fragment {
         Paper.book().write(MainActivity.FRIEND_LIST, friends);
     }
 
-    private void deleteFriendFromDB(){
+    private void deleteFriendFromDB() {
         MainActivity.getServerRequests().deleteUserFromFriendList(authorisationCode, currentUser.getId(), userInfo.getId()).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -260,43 +257,43 @@ public class FriendAccount extends Fragment {
         });
     }
 
-    private void isThisUserAFriend(){
+    private void isThisUserAFriend() {
         friends = Paper.book().read(MainActivity.FRIEND_LIST);
 
-        if(friends == null){
+        if (friends == null) {
             MainActivity.getServerRequests().getAllUserFriends(authorisationCode, currentUser.getId()).enqueue(new Callback<Set<FriendInfo>>() {
                 @Override
-                    public void onResponse(Call<Set<FriendInfo>> call, Response<Set<FriendInfo>> response) {
-                        friends = new ArrayList<>();
-                        friends.addAll(response.body());
-                        Paper.book().write(MainActivity.FRIEND_LIST, friends);
+                public void onResponse(Call<Set<FriendInfo>> call, Response<Set<FriendInfo>> response) {
+                    friends = new ArrayList<>();
+                    friends.addAll(response.body());
+                    Paper.book().write(MainActivity.FRIEND_LIST, friends);
 
-                        for (FriendInfo friend:
-                                friends) {
-                            if(friend.getId().equals(userInfo.getId())){
-                                friendOrNot = true;
-                                helperInIsThisAFriend(friendOrNot);
-                                return;
-                            }
+                    for (FriendInfo friend :
+                            friends) {
+                        if (friend.getId().equals(userInfo.getId())) {
+                            friendOrNot = true;
+                            helperInIsThisAFriend(friendOrNot);
+                            return;
                         }
-
-                        friendOrNot = false;
-                        helperInIsThisAFriend(friendOrNot);
                     }
 
-                    @Override
-                    public void onFailure(Call<Set<FriendInfo>> call, Throwable t) {
+                    friendOrNot = false;
+                    helperInIsThisAFriend(friendOrNot);
+                }
 
-                    }
-                });
-            }else{
-                for (FriendInfo friend:
-                        friends) {
-                    if(friend.getId().equals(userInfo.getId())){
-                        friendOrNot = true;
-                        helperInIsThisAFriend(friendOrNot);
-                        return;
-                    }
+                @Override
+                public void onFailure(Call<Set<FriendInfo>> call, Throwable t) {
+
+                }
+            });
+        } else {
+            for (FriendInfo friend :
+                    friends) {
+                if (friend.getId().equals(userInfo.getId())) {
+                    friendOrNot = true;
+                    helperInIsThisAFriend(friendOrNot);
+                    return;
+                }
             }
 
             friendOrNot = false;
@@ -304,19 +301,19 @@ public class FriendAccount extends Fragment {
         }
     }
 
-    private void helperInIsThisAFriend(boolean isFriend){
-        if(isFriend){
+    private void helperInIsThisAFriend(boolean isFriend) {
+        if (isFriend) {
             deleteFriendButton.setVisibility(View.VISIBLE);
             becomeFriendText.setText("Delete friend");
             becomeFriendButton.setVisibility(View.GONE);
         }
     }
 
-    private void fillAllInformation(){
+    private void fillAllInformation() {
         Pet pet = new Pet();
-        for (Pet p:
-             userInfo.getPets()) {
-            if(p.getId().equals(userInfo.getPet_id())){
+        for (Pet p :
+                userInfo.getPets()) {
+            if (p.getId().equals(userInfo.getPet_id())) {
                 pet = p;
             }
         }
@@ -335,7 +332,7 @@ public class FriendAccount extends Fragment {
                 userInfo.getEmail()
         };
 
-        for(int i = 0; i < info.length; i++){
+        for (int i = 0; i < info.length; i++) {
             allChangedInformation.get(i).setText(info[i]);
         }
 
@@ -346,6 +343,7 @@ public class FriendAccount extends Fragment {
         }
 
     }
+
     private void addToFriendRequest(Long target) {
 
         MainActivity.getServerRequests().newFriendshipRequest(authorisationCode, currentUser.getId(), target).enqueue(new Callback<String>() {
@@ -366,14 +364,14 @@ public class FriendAccount extends Fragment {
     }
 
 
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FriendAccount.
-         */
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment FriendAccount.
+     */
     // TODO: Rename and change types and number of parameters
     public static FriendAccount newInstance(String param1, String param2) {
         FriendAccount fragment = new FriendAccount();

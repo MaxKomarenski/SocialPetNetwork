@@ -14,6 +14,7 @@
         android:layout_marginTop="8dp"
         android:textStyle="bold"
         android:text="name surname"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="text comment comment"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/name_and_surname_in_comment_raw"
         app:layout_constraintStart_toEndOf="@+id/name_and_surname_in_comment_raw"
         app:layout_constraintTop_toTopOf="@+id/name_and_surname_in_comment_raw" />
