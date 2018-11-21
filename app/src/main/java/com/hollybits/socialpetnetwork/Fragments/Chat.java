@@ -328,6 +328,7 @@ public class Chat extends Fragment implements MessageObserver {
                 @Override
                 public void onFailure(Call<List<Message>> call, Throwable t) {
 
+
                 }
             });
         }else {

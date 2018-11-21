@@ -432,6 +432,7 @@
                     android:orientation="vertical">
 
                     <ImageButton
+                        android:id="@+id/open_store_from_account"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:background="@null"

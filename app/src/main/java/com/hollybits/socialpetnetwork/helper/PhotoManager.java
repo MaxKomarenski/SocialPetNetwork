@@ -276,22 +276,26 @@ public class PhotoManager {
 
 
    private void loadBitmapToImageView(ImageView  imageView, byte[] bitmap, ProgressBar progressBar){
-       GlideApp.with(fragment)
-               .load(bitmap)
-               .listener(new RequestListener<Drawable>() {
-                   @Override
-                   public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                       progressBar.setVisibility(View.GONE);
-                       return false;
-                   }
+        try {
+            GlideApp.with(fragment)
+                    .load(bitmap)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
 
-                   @Override
-                   public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                       progressBar.setVisibility(View.GONE);
-                       return false;
-                   }
-               })
-               .into(imageView);
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
+                    .into(imageView);
+        }catch (Exception e){
+            return;
+        }
    }
 
 

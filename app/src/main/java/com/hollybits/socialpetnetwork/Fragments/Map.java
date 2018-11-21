@@ -63,7 +63,7 @@ import retrofit2.Response;
  * Use the {@link Map#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Map extends Fragment  {
+public class Map extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,7 +81,6 @@ public class Map extends Fragment  {
 
     private static int ACCESS_FINE_LOCATION_CODE = 1001;
     private OnFragmentInteractionListener mListener;
-
 
 
     @BindView(R.id.mapView)
@@ -104,8 +103,6 @@ public class Map extends Fragment  {
 //     Button openSosMenuButton;
 
     private FusedLocationProviderClient mFusedLocationClient;
-
-
 
 
     public Map() {
@@ -162,11 +159,11 @@ public class Map extends Fragment  {
                     mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Map.this.getContext());
                     animateMapToUsersLocation();
                     positionTracker = Executors.newScheduledThreadPool(2);
-                    positionTracker.scheduleAtFixedRate(Map.this::startTracking,0, 1, TimeUnit.SECONDS );
-                    positionTracker.scheduleAtFixedRate(Map.this::locateOthers, 1, 1,TimeUnit.SECONDS);
+                    positionTracker.scheduleAtFixedRate(Map.this::startTracking, 0, 1, TimeUnit.SECONDS);
+                    positionTracker.scheduleAtFixedRate(Map.this::locateOthers, 1, 1, TimeUnit.SECONDS);
                     attachListeners();
                 } else {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},ACCESS_FINE_LOCATION_CODE);
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_FINE_LOCATION_CODE);
                 }
                 // For dropping a marker at a point on the Map
             }
@@ -175,15 +172,14 @@ public class Map extends Fragment  {
     }
 
 
-
     private void startTracking() throws SecurityException {
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(location -> {
                     if (location != null) {
                         try {
                             List<Address> addresses = locationInfoSupplier.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            if(addresses.size() == 1)
-                                MainActivity.getServerRequests().updateMyPosition(code,addresses.get(0), currentUser.getId(), (byte)currentUser.getPets().get(0).getAttitude().ordinal()).enqueue(new Callback<Void>() {
+                            if (addresses.size() == 1)
+                                MainActivity.getServerRequests().updateMyPosition(code, addresses.get(0), currentUser.getId(), (byte) currentUser.getPets().get(0).getAttitude().ordinal()).enqueue(new Callback<Void>() {
                                     @Override
                                     public void onResponse(Call<Void> call, Response<Void> response) {
 
@@ -205,7 +201,7 @@ public class Map extends Fragment  {
 
 
     @SuppressLint("MissingPermission")
-    private void locateOthers(){
+    private void locateOthers() {
         markersOnMapDisplayer.setCurrentUserId(currentUser.getId());
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(location -> {
@@ -215,10 +211,11 @@ public class Map extends Fragment  {
                             MainActivity.getServerRequests().getUsersNearMe(code, addresses.get(0), currentUser.getId()).enqueue(new Callback<java.util.Map<Long, Coordinates>>() {
                                 @Override
                                 public void onResponse(Call<java.util.Map<Long, Coordinates>> call, Response<java.util.Map<Long, Coordinates>> response) {
-                                    if(response.code() == 200){
+                                    if (response.code() == 200) {
                                         markersOnMapDisplayer.displayMarkers(response.body());
                                     }
                                 }
+
                                 @Override
                                 public void onFailure(Call<java.util.Map<Long, Coordinates>> call, Throwable t) {
 
@@ -227,23 +224,24 @@ public class Map extends Fragment  {
 
                         } catch (IOException e) {
                             Toast.makeText
-                                    (Map.this.getContext(), "Some error has happen, Please check if location service is ON",Toast.LENGTH_LONG).show();
+                                    (Map.this.getContext(), "Some error has happen, Please check if location service is ON", Toast.LENGTH_LONG).show();
                         }
                     }
-            });
+                });
     }
 
 
     @SuppressLint("MissingPermission")
-    private void animateMapToUsersLocation(){
+    private void animateMapToUsersLocation() {
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(location -> {
                     if (location != null) {
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15);
                         googleMap.animateCamera(cameraUpdate);
                     }
-    });
+                });
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == ACCESS_FINE_LOCATION_CODE) {
@@ -254,8 +252,8 @@ public class Map extends Fragment  {
                     googleMap.setMyLocationEnabled(true);
                     mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Map.this.getContext());
                     positionTracker = Executors.newScheduledThreadPool(2);
-                    positionTracker.scheduleAtFixedRate(Map.this::startTracking,0, 5, TimeUnit.SECONDS );
-                    positionTracker.scheduleAtFixedRate(Map.this::locateOthers, 0, 1,TimeUnit.SECONDS);
+                    positionTracker.scheduleAtFixedRate(Map.this::startTracking, 0, 5, TimeUnit.SECONDS);
+                    positionTracker.scheduleAtFixedRate(Map.this::locateOthers, 0, 1, TimeUnit.SECONDS);
                     animateMapToUsersLocation();
                     attachListeners();
                 } catch (SecurityException e) {
@@ -273,7 +271,6 @@ public class Map extends Fragment  {
 
 
     }
-
 
 
     @Override
@@ -299,49 +296,42 @@ public class Map extends Fragment  {
     }
 
 
-    private void attachListeners(){
+    private void attachListeners() {
+        AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
+        sos.setVisibility(View.VISIBLE);
+        sos.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void onClick(View v) {
+                sos.startAnimation(buttonClick);
+                AcceptThatYourPetIsLostDialog lostDialog = new AcceptThatYourPetIsLostDialog(Map.this.getContext());
+                lostDialog.initialise(locationInfoSupplier, currentUser, code, mFusedLocationClient);
+                lostDialog.show();
+            }
+        });
 
-//        openSosMenuButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-                AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
-
-
-                sos.setVisibility(View.VISIBLE);
-                sos.setOnClickListener(new View.OnClickListener() {
-                    @SuppressLint("MissingPermission")
+        help.setVisibility(View.VISIBLE);
+        help.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void onClick(View v) {
+                help.startAnimation(buttonClick);
+                mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
-                    public void onClick(View v) {
-                        sos.startAnimation(buttonClick);
-                        DialogFragment lostDialog = new AcceptThatYourPetIsLostDialog();
-                        ((AcceptThatYourPetIsLostDialog) lostDialog).initialise(locationInfoSupplier, currentUser, code, mFusedLocationClient);
-                        lostDialog.show(getFragmentManager(), "dialof");
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            Paper.book().write(LATITUDE, location.getLatitude());
+                            Paper.book().write(LONGITUDE, location.getLongitude());
+                            //bottomSheet.dismiss();
+                            FragmentDispatcher.launchFragment(LostPets.class);
+                        } else {
+                            Toast.makeText
+                                    (Map.this.getContext(), "Some error has happen, Please check if location service are ON", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
-
-                help.setVisibility(View.VISIBLE);
-                help.setOnClickListener(new View.OnClickListener() {
-                    @SuppressLint("MissingPermission")
-                    @Override
-                    public void onClick(View v) {
-                        help.startAnimation(buttonClick);
-                        mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location) {
-                                if(location != null) {
-                                    Paper.book().write(LATITUDE, location.getLatitude());
-                                    Paper.book().write(LONGITUDE, location.getLongitude());
-                                    //bottomSheet.dismiss();
-                                    FragmentDispatcher.launchFragment(LostPets.class);
-                                }
-                                else {
-                                    Toast.makeText
-                                            (Map.this.getContext(), "Some error has happen, Please check if location service are ON", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-                    }
-                });
+            }
+        });
 
     }
 

@@ -78,6 +78,9 @@ public class Account extends Fragment {
     @BindView(R.id.open_gallery_from_account)
     ImageButton openGallery;
 
+    @BindView(R.id.open_store_from_account)
+    ImageButton openStore;
+
     @BindView(R.id.sexImageView)
     ImageView sexImageView;
 
@@ -233,48 +236,27 @@ public class Account extends Fragment {
     }
 
     private void listeners() {
-
-        openDrawerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
-                drawer.openDrawer(Gravity.START);
-            }
+        openDrawerButton.setOnClickListener(v -> {
+            drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+            drawer.openDrawer(Gravity.START);
         });
-
-        openGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Paper.book().write(MainActivity.GALLERY_MODE, GalleryMode.USERS_MODE);
-                FragmentDispatcher.launchFragment(UsersGallery.class);
-            }
+        openGallery.setOnClickListener(v -> {
+            Paper.book().write(MainActivity.GALLERY_MODE, GalleryMode.USERS_MODE);
+            FragmentDispatcher.launchFragment(UsersGallery.class);
         });
-
-        userMainPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    openGallery();
-                } catch (Exception e) {
-                    Toast.makeText(Account.this.getActivity(), "SORRY IMAGE IS TOO LARGE", Toast.LENGTH_LONG).show();
-                }
-
+        openStore.setOnClickListener(v -> FragmentDispatcher.launchFragment(Store.class));
+        userMainPhoto.setOnClickListener(v -> {
+            try {
+                openGallery();
+            } catch (Exception e) {
+                Toast.makeText(Account.this.getActivity(), "SORRY IMAGE IS TOO LARGE", Toast.LENGTH_LONG).show();
             }
+
         });
-
-        openMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentDispatcher.launchFragment(Map.class);
-            }
-        });
-
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), SettingsActivity.class);
-                startActivity(intent);
-            }
+        openMap.setOnClickListener(v -> FragmentDispatcher.launchFragment(Map.class));
+        settings.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity().getApplicationContext(), SettingsActivity.class);
+            startActivity(intent);
         });
     }
 
